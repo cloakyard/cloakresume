@@ -1,0 +1,636 @@
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Lora:wght@600;700&display=swap");
+@import "tailwindcss";
+
+/* ────────────────────────────────────────────────────────────────
+ * Design system — ocean-blue, privacy-first.
+ * All tokens live inside @theme so they're exposed to Tailwind as
+ * `text-primary-600`, `bg-surface`, `rounded-lg`, etc. Legacy alias
+ * vars in :root keep inline `style={{}}` props and template code
+ * working without rewrites.
+ * ──────────────────────────────────────────────────────────────── */
+@theme {
+  /* Ocean-blue primary palette */
+  --color-primary-50: #eff6ff;
+  --color-primary-100: #dbeafe;
+  --color-primary-200: #bfdbfe;
+  --color-primary-300: #93c5fd;
+  --color-primary-400: #60a5fa;
+  --color-primary-500: #3b82f6;
+  --color-primary-600: #2563eb;
+  --color-primary-700: #1d4ed8;
+  --color-primary-800: #1e40af;
+  --color-primary-900: #1e3a8a;
+  --color-primary: #2563eb;
+
+  /* Text (ink) scale */
+  --color-ink-0: #050816;
+  --color-ink-1: #0b1220;
+  --color-ink-2: #1f2937;
+  --color-ink-3: #4b5563;
+  --color-ink-4: #6b7280;
+  --color-ink-5: #9ca3af;
+  --color-ink-6: #d1d5db;
+
+  /* Surfaces & lines */
+  --color-surface: #ffffff;
+  --color-surface-2: #f8fafc;
+  --color-surface-3: #f1f5f9;
+  --color-surface-panel: #fcfcfd;
+  --color-page-bg: #f8fafc;
+  --color-line: #e5e7eb;
+  --color-line-soft: #eff1f4;
+  --color-line-hairline: #f3f4f6;
+  --color-border: #e5e7eb;
+  --color-text: #0b1220;
+  --color-text-muted: #6b7280;
+
+  /* Status */
+  --color-ok: #059669;
+  --color-ok-bg: #ecfdf5;
+  --color-ok-border: #a7f3d0;
+  --color-warn: #d97706;
+  --color-warn-bg: #fffbeb;
+  --color-warn-border: #fde68a;
+  --color-danger: #dc2626;
+  --color-danger-bg: #fef2f2;
+  --color-danger-border: #fecaca;
+
+  /* Typography */
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --font-mono: "Geist Mono", ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 0 rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
+  --shadow-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
+  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
+
+  /* Radii (aligned with Tailwind's rounded-* scale) */
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+  --radius-2xl: 20px;
+
+  /* Custom animations — expose `animate-fade-in-up` / `animate-scale-in` / `animate-sheet-rise` */
+  --animate-fade-in-up: fade-in-up 0.28s ease-out both;
+  --animate-scale-in: scale-in 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-sheet-rise: sheet-rise 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --animate-ats-slide-up: ats-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+
+  @keyframes fade-in-up {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  @keyframes scale-in {
+    from {
+      opacity: 0;
+      transform: scale(0.96);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+  @keyframes sheet-rise {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+  @keyframes ats-slide-up {
+    from {
+      transform: translateY(28px);
+      opacity: 0.7;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+  @keyframes fade {
+    from {
+      opacity: 0;
+    }
+  }
+}
+
+/*
+ * Legacy CSS variable aliases — consumed by inline `style={{}}` props
+ * and the resume templates. Keeping them means we didn't have to rewrite
+ * every template or every use of `text-(--ink-3)` during the migration.
+ */
+:root {
+  --brand: #2563eb;
+  --brand-hover: #1d4ed8;
+  --brand-active: #1e40af;
+  --brand-50: #eff6ff;
+  --brand-100: #dbeafe;
+  --brand-200: #bfdbfe;
+  --brand-300: #93c5fd;
+  --brand-600: #2563eb;
+  --brand-700: #1d4ed8;
+
+  --ink-0: #050816;
+  --ink-1: #0b1220;
+  --ink-2: #1f2937;
+  --ink-3: #4b5563;
+  --ink-4: #6b7280;
+  --ink-5: #9ca3af;
+  --ink-6: #d1d5db;
+
+  --line: #e5e7eb;
+  --line-soft: #eff1f4;
+  --line-hairline: #f3f4f6;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --surface-3: #f1f5f9;
+  --surface-panel: #fcfcfd;
+
+  --ok: #059669;
+  --ok-bg: #ecfdf5;
+  --ok-border: #a7f3d0;
+  --warn: #d97706;
+  --warn-bg: #fffbeb;
+  --warn-border: #fde68a;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --danger-border: #fecaca;
+
+  --sh-xs: 0 1px 0 rgba(15, 23, 42, 0.04);
+  --sh-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
+  --sh-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
+  --sh-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
+  --sh-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
+  --sh-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
+
+  --r-xs: 4px;
+  --r-sm: 6px;
+  --r-md: 8px;
+  --r-lg: 10px;
+  --r-xl: 14px;
+  --r-2xl: 20px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * Base — html/body reset, page background, typography.
+ * Body locks overflow so the app shell owns scrolling; print resets it.
+ * ──────────────────────────────────────────────────────────────── */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    font-family: var(--font-sans);
+    font-feature-settings:
+      "cv11" on,
+      "ss01" on;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: var(--surface-2);
+    color: var(--ink-1);
+  }
+
+  body {
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * Component utilities — reusable primitives exposed as class names
+ * so markup stays readable. Every rule is `@apply`-based so editing
+ * them is editing Tailwind utilities.
+ * ──────────────────────────────────────────────────────────────── */
+@layer components {
+  /* Scrollbar styling for editor/preview scrollers. */
+  .cr-scroll {
+    scrollbar-gutter: stable;
+  }
+  .cr-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .cr-scroll::-webkit-scrollbar-thumb {
+    background: rgba(100, 116, 139, 0.3);
+    border-radius: 6px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+  }
+  .cr-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(100, 116, 139, 0.5);
+    background-clip: content-box;
+  }
+  .cr-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  /* ─── Buttons ───
+   * `.tb` is the canonical toolbar button. Variants opt in via modifier
+   * classes. Mobile-first: 38 px tall for touch targets, shrinks to 34 px
+   * on desktop where pointer precision is higher. */
+  .tb {
+    @apply inline-flex items-center gap-2 h-[38px] min-h-[38px] px-3
+      rounded-md border border-(--line) bg-(--surface)
+      text-[13px] font-medium text-(--ink-2) whitespace-nowrap
+      transition-[background-color,border-color,box-shadow,transform] duration-100
+      cursor-pointer select-none
+      hover:bg-(--surface-2) hover:border-[#d6dadf]
+      focus-visible:outline-none focus-visible:shadow-(--sh-focus)
+      active:translate-y-px
+      lg:h-[34px] lg:min-h-[34px];
+  }
+  .tb .caret {
+    @apply text-(--ink-5) ml-0.5;
+  }
+  .tb.ghost {
+    @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
+  }
+  .tb.primary {
+    @apply text-(--brand-700) border-(--brand-200)
+      [background:var(--brand-50)]
+      hover:[background:var(--brand-100)] hover:border-(--brand-300);
+  }
+  .tb.danger-ghost {
+    @apply border-transparent bg-transparent text-(--danger) hover:bg-(--danger-bg) hover:border-transparent;
+  }
+
+  /* Segmented button group — shares a single border with dividers. */
+  .tb-group {
+    @apply inline-flex items-stretch overflow-hidden rounded-md border border-(--line) bg-(--surface);
+  }
+  .tb-group > .tb {
+    @apply border-0 rounded-none h-8 lg:h-8 border-r border-(--line);
+  }
+  .tb-group > .tb:last-child {
+    @apply border-r-0;
+  }
+
+  /* ─── Glass surfaces & backdrops ───
+   *
+   * Central design primitives used by every popup, sheet, and modal.
+   * `.backdrop` dims the page behind an overlay; `.surface-glass` is
+   * the translucent frosted pane that sits on top. Keeping them as
+   * classes (not ad-hoc Tailwind strings in each component) means the
+   * whole app picks up look-and-feel tweaks from one place.
+   */
+
+  /* Page-wide dim used behind sheets and modals. */
+  .backdrop {
+    background: rgba(15, 23, 42, 0.28);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  /* Frosted-glass panel — the app's signature overlay surface.
+     Neutral white base at lower opacity so the heavy blur actually
+     reads through. Content that needs strong legibility (score numbers,
+     form fields) should sit inside solid `bg-white` cards — don't stack
+     translucent surfaces on the glass. */
+  .surface-glass {
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1px solid rgba(15, 23, 42, 0.06);
+    box-shadow:
+      0 24px 56px -14px rgba(15, 23, 42, 0.18),
+      0 4px 14px -4px rgba(15, 23, 42, 0.06);
+  }
+  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
+    .surface-glass {
+      background: var(--surface);
+    }
+  }
+
+  /* Dark frosted-glass surface — the complement to `.surface-glass`.
+     Used by floating docks and pills that sit over the preview or editor
+     (zoom dock, mobile section pill). Same blur recipe as the light
+     variant but with a deep-ink tint so it reads against bright content. */
+  .surface-glass-dark {
+    color: #fff;
+    background: rgba(11, 18, 32, 0.72);
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.1),
+      0 18px 40px -10px rgba(15, 23, 42, 0.45),
+      0 4px 10px rgba(15, 23, 42, 0.25);
+  }
+  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
+    .surface-glass-dark {
+      background: rgba(11, 18, 32, 0.95);
+    }
+  }
+
+  /* Small popover (dropdown menus, colour picker, date picker) — shares
+     the exact frosted-glass recipe as `.surface-glass` so every overlay
+     across the app reads as one design language. */
+  .popover {
+    @apply rounded-xl p-3.5;
+    background: rgba(248, 250, 252, 0.7);
+    backdrop-filter: blur(24px) saturate(160%);
+    -webkit-backdrop-filter: blur(24px) saturate(160%);
+    border: 1px solid rgba(15, 23, 42, 0.08);
+    box-shadow:
+      0 24px 56px -14px rgba(15, 23, 42, 0.18),
+      0 4px 14px -4px rgba(15, 23, 42, 0.06);
+  }
+  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
+    .popover {
+      background: var(--surface);
+    }
+  }
+
+  /* Lightness slider in the custom colour picker — thin rounded track with
+     the live gradient painted inline; a round thumb centred on the track. */
+  .color-lightness-slider {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 10px;
+    border-radius: 999px;
+    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+    cursor: pointer;
+    outline: none;
+  }
+  .color-lightness-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--ink-1);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    cursor: grab;
+  }
+  .color-lightness-slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--ink-1);
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    cursor: grab;
+  }
+  .color-lightness-slider:focus-visible {
+    box-shadow:
+      inset 0 0 0 1px rgba(15, 23, 42, 0.1),
+      var(--sh-focus);
+  }
+
+  /* ─── Accordion (editor sections) ─── */
+  .acc {
+    @apply mb-2.5 overflow-hidden rounded-lg border border-(--line-soft) bg-(--surface)
+      transition-[border-color,box-shadow] duration-150;
+  }
+  .acc.open {
+    @apply border-(--line) shadow-(--sh-xs);
+  }
+  .acc-head {
+    @apply flex items-center gap-3 w-full
+      px-4 py-3.5 min-h-14 text-left cursor-pointer bg-transparent border-0
+      transition-colors duration-100
+      hover:bg-(--surface-2)
+      lg:px-3.5 lg:py-3 lg:min-h-0;
+  }
+  .acc-icon {
+    @apply grid place-items-center w-7 h-7 shrink-0 rounded-sm text-(--brand) bg-(--brand-50);
+  }
+  .acc-text {
+    @apply flex-1 min-w-0;
+  }
+  .acc-title {
+    @apply text-[13.5px] font-semibold text-(--ink-1) tracking-[-0.005em];
+  }
+  .acc-sub {
+    @apply text-xs text-(--ink-4) mt-px truncate;
+  }
+  .acc-chev {
+    @apply text-(--ink-5) transition-transform duration-200;
+  }
+  .acc.open .acc-chev {
+    @apply rotate-90;
+  }
+  .acc-body {
+    @apply px-3.5 pt-3 pb-3.5 border-t border-(--line-hairline);
+  }
+
+  /* ─── Form primitives ───
+   * Mobile-first: inputs are 16 px on mobile (prevents iOS zoom-on-focus)
+   * and have generous 12 px padding for comfortable touch. Shrinks on
+   * `lg:` where pointer input is the norm. */
+  .cr-field {
+    @apply block;
+  }
+  .cr-field-label,
+  .field-label {
+    @apply block font-mono text-[10.5px] font-semibold text-(--ink-5) uppercase tracking-[0.08em] mb-1.5;
+  }
+  .cr-input {
+    @apply block w-full px-3 py-3 text-base leading-[1.45]
+      text-(--ink-1) bg-(--surface)
+      border border-(--line) rounded-md
+      placeholder:text-(--ink-5)
+      transition-[border-color,box-shadow,background] duration-100
+      hover:border-[#d6dadf]
+      focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)
+      lg:px-3 lg:py-2.5 lg:text-[13.5px];
+  }
+  .cr-input--compact {
+    @apply px-2.5 py-2 text-[14.5px]
+      lg:px-2.5 lg:py-2 lg:text-[13.5px];
+  }
+
+  /* Vertical rhythm inside a section body */
+  .cr-stack > * + * {
+    @apply mt-4;
+  }
+  .cr-stack--tight > * + * {
+    @apply mt-3;
+  }
+
+  /* Row used to pair a section-scope label with an inline action. */
+  .cr-field-row {
+    @apply flex items-center justify-between min-h-[22px] mb-1.5;
+  }
+  .cr-field-row .cr-field-label {
+    @apply mb-0;
+  }
+
+  /* Sub-card — a single entry within a list section (e.g. one role). */
+  .sub-card {
+    @apply p-2.5 rounded-md border border-(--line-soft) bg-(--surface-2)
+      lg:p-3;
+  }
+
+  /* Score ring (ATS) — absolute-centered text within an SVG. */
+  .score-ring {
+    @apply relative grid place-items-center;
+  }
+  .score-ring svg {
+    @apply -rotate-90;
+  }
+  .score-ring .score-num {
+    @apply absolute font-mono text-[22px] font-bold text-(--ink-1) tracking-[-0.02em]
+      tabular-nums leading-none;
+  }
+  .score-ring .score-sub {
+    @apply absolute top-[calc(50%+14px)] font-mono text-[9px] font-semibold
+      uppercase tracking-[0.08em] text-(--ink-4);
+  }
+
+  /* Tiny "section divider" tracked-caps style reused by templates. */
+  .uppercase-track {
+    @apply uppercase tracking-[1.3px];
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * Resume canvas — A4 page container inside the preview.
+ *
+ * MM-based measurements and print isolation cannot be expressed in
+ * Tailwind utilities, so the canvas keeps its own CSS. The page
+ * boundary `::after` marker is purely visual (dashed line at 297 mm).
+ * ──────────────────────────────────────────────────────────────── */
+.resume-root {
+  --resume-page-w: 210mm;
+  --resume-page-h: 297mm;
+  display: flex;
+  flex-direction: column;
+  gap: 8mm;
+  align-items: center;
+  padding: 8mm 0;
+}
+
+.resume-root .resume-page {
+  width: var(--resume-page-w);
+  min-height: var(--resume-page-h);
+  background: #ffffff;
+  box-shadow:
+    0 1px 3px rgba(15, 23, 42, 0.08),
+    0 24px 60px -24px rgba(15, 23, 42, 0.22),
+    0 6px 12px -6px rgba(15, 23, 42, 0.08);
+  position: relative;
+  color: #1f2937;
+  border-radius: 2px;
+  overflow: visible;
+}
+
+.resume-root .resume-page::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: var(--resume-page-h);
+  border-top: 1px dashed rgba(15, 23, 42, 0.18);
+  pointer-events: none;
+}
+
+.resume-root .page-gap {
+  width: 210mm;
+  height: 8mm;
+  pointer-events: none;
+}
+
+/* Preview scroller gets momentum scroll + the same gradient backing. */
+.cr-preview-scroll {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  background: linear-gradient(180deg, #eef2f7 0%, #e8edf4 100%);
+}
+
+/* Keyword highlight reserved for a future hover-over on ATS keywords. */
+.keyword-highlight {
+  background: linear-gradient(180deg, transparent 60%, rgba(37, 99, 235, 0.22) 60%);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * Print — isolate `.resume-root`, reset transforms, remove chrome.
+ * ──────────────────────────────────────────────────────────────── */
+@media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body,
+  #root {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    width: auto !important;
+    overflow: visible !important;
+  }
+
+  body,
+  body * {
+    max-height: none !important;
+    min-height: 0 !important;
+    overflow: visible !important;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  .resume-root {
+    display: block !important;
+    position: static !important;
+    padding: 0 !important;
+    gap: 0 !important;
+    transform: none !important;
+    margin: 0 !important;
+    width: 210mm !important;
+    min-width: 210mm !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .resume-root .resume-page {
+    display: block !important;
+    width: 210mm !important;
+    min-height: 297mm !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    background: #ffffff !important;
+    overflow: visible !important;
+  }
+
+  .resume-root .resume-page:has(+ .resume-page) {
+    break-after: page;
+    page-break-after: always;
+  }
+
+  .resume-root .resume-page::after {
+    display: none !important;
+  }
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * Editor panel responsive tweak — stacks 2-column editor grids on
+ * narrow viewports. Uses a descendant selector so it reaches every
+ * `grid grid-cols-2` inside the panel without touching JSX.
+ * ──────────────────────────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  [data-panel-root] .grid-cols-2 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

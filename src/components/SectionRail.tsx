@@ -1,0 +1,240 @@
+/**
+ * Section navigation — two layouts driven by one `variant` prop.
+ *
+ *   • `rail` (default, desktop) — icon-only vertical column pinned to
+ *     the left of the shell.
+ *   • `drawer` (mobile) — a full-width list with icon + label + short
+ *     description, rendered inside the bottom-sheet section picker.
+ *
+ * Keeping both surfaces in a single component avoids the list and the
+ * rail drifting as sections are added or relabelled.
+ */
+
+import {
+  Award,
+  BadgeCheck,
+  BarChart3,
+  Briefcase,
+  ChevronRight,
+  Folder,
+  Globe,
+  GraduationCap,
+  Heart,
+  HelpCircle,
+  type LucideIcon,
+  Mail,
+  Settings,
+  Sparkles,
+  Target,
+  User,
+} from "lucide-react";
+
+export type SectionId =
+  | "profile"
+  | "contact"
+  | "experience"
+  | "skills"
+  | "projects"
+  | "education"
+  | "certifications"
+  | "awards"
+  | "languages"
+  | "interests"
+  | "stats"
+  | "jd";
+
+export interface SectionMeta {
+  id: SectionId;
+  label: string;
+  description: string;
+  icon: LucideIcon;
+}
+
+/** Single source of truth for the section list, also consumed by the panel. */
+export const SECTIONS: SectionMeta[] = [
+  { id: "profile", label: "Profile", description: "Name, headline, logo, and summary", icon: User },
+  {
+    id: "contact",
+    label: "Contact",
+    description: "Email, phone, location, social links",
+    icon: Mail,
+  },
+  {
+    id: "experience",
+    label: "Experience",
+    description: "Roles, companies, dates, achievements",
+    icon: Briefcase,
+  },
+  {
+    id: "skills",
+    label: "Skills",
+    description: "Technical expertise grouped by category",
+    icon: Sparkles,
+  },
+  {
+    id: "projects",
+    label: "Projects",
+    description: "Notable work with description, role, and stack",
+    icon: Folder,
+  },
+  {
+    id: "education",
+    label: "Education",
+    description: "Degrees, schools, dates, and CGPA",
+    icon: GraduationCap,
+  },
+  {
+    id: "certifications",
+    label: "Certifications",
+    description: "Professional certifications and licences",
+    icon: BadgeCheck,
+  },
+  {
+    id: "awards",
+    label: "Awards",
+    description: "Honours, recognition, and achievements",
+    icon: Award,
+  },
+  {
+    id: "languages",
+    label: "Languages",
+    description: "Languages you speak and proficiency level",
+    icon: Globe,
+  },
+  {
+    id: "interests",
+    label: "Interests & Tools",
+    description: "Personal interests and daily tools",
+    icon: Heart,
+  },
+  {
+    id: "stats",
+    label: "Quick stats",
+    description: "Headline stats plus miscellaneous fields",
+    icon: BarChart3,
+  },
+  {
+    id: "jd",
+    label: "Target JD",
+    description: "Paste a JD to check ATS keyword coverage",
+    icon: Target,
+  },
+];
+
+interface Props {
+  active: SectionId;
+  onChange: (id: SectionId) => void;
+  /** Layout: condensed icon rail (default) or full list for the mobile drawer. */
+  variant?: "rail" | "drawer";
+}
+
+/** Shared icon-rail button — 40×40 tile with active-brand treatment. */
+const railButtonClass = [
+  "relative grid place-items-center w-10 h-10 rounded-md",
+  "bg-transparent border-0 cursor-pointer text-(--ink-4)",
+  "transition-colors duration-100",
+  "hover:bg-(--surface-3) hover:text-(--ink-1)",
+  "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
+].join(" ");
+
+const railButtonActiveClass = [
+  "bg-(--brand-50) text-(--brand)",
+  // Left brand accent bar for active state
+  "before:content-[''] before:absolute before:left-[-10px] before:top-2.5 before:bottom-2.5",
+  "before:w-[3px] before:rounded-r-[3px] before:bg-(--brand)",
+].join(" ");
+
+export function SectionRail({ active, onChange, variant = "rail" }: Props) {
+  if (variant === "drawer") {
+    return (
+      <nav className="flex flex-col gap-1" aria-label="Resume sections">
+        {SECTIONS.map((s) => {
+          const Icon = s.icon;
+          const isActive = s.id === active;
+          return (
+            <button
+              key={s.id}
+              type="button"
+              onClick={() => onChange(s.id)}
+              aria-current={isActive ? "page" : undefined}
+              className={[
+                "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-15",
+                "border-0 rounded-lg text-left cursor-pointer",
+                "transition-[background-color,box-shadow] duration-150",
+                isActive
+                  ? "bg-(--brand-50)/85 [box-shadow:inset_0_0_0_1px_var(--brand-100)]"
+                  : "bg-transparent hover:bg-(--ink-1)/4 active:bg-(--ink-1)/6",
+              ].join(" ")}
+            >
+              <span
+                aria-hidden="true"
+                className={[
+                  "grid place-items-center w-10 h-10 shrink-0 rounded-lg",
+                  "transition-[background-color,color,box-shadow] duration-150",
+                  isActive
+                    ? "bg-(--brand) text-white [box-shadow:0_4px_10px_-2px_rgba(37,99,235,0.35)]"
+                    : "bg-(--brand-50)/80 text-(--brand)",
+                ].join(" ")}
+              >
+                <Icon className="w-4.5 h-4.5" strokeWidth={2} />
+              </span>
+              <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                <span
+                  className={[
+                    "text-[14.5px] font-semibold tracking-[-0.005em]",
+                    isActive ? "text-(--brand-700)" : "text-(--ink-1)",
+                  ].join(" ")}
+                >
+                  {s.label}
+                </span>
+                <span className="text-[12px] text-(--ink-4) leading-[1.4] truncate">
+                  {s.description}
+                </span>
+              </span>
+              <ChevronRight
+                className={[
+                  "w-4 h-4 shrink-0 transition-[color,transform] duration-150",
+                  isActive ? "text-(--brand) translate-x-0.5" : "text-(--ink-5)",
+                ].join(" ")}
+                aria-hidden="true"
+              />
+            </button>
+          );
+        })}
+      </nav>
+    );
+  }
+
+  return (
+    <nav
+      className="flex flex-col items-center gap-0.5 w-full h-full print:hidden"
+      aria-label="Resume sections"
+    >
+      {SECTIONS.map((s) => {
+        const Icon = s.icon;
+        const isActive = s.id === active;
+        return (
+          <button
+            key={s.id}
+            type="button"
+            onClick={() => onChange(s.id)}
+            aria-current={isActive ? "page" : undefined}
+            aria-label={s.label}
+            title={s.label}
+            className={[railButtonClass, isActive ? railButtonActiveClass : ""].join(" ")}
+          >
+            <Icon className="w-4 h-4" strokeWidth={2} />
+          </button>
+        );
+      })}
+      <div className="flex-1" />
+      <div className="w-6 h-px bg-(--line) my-2" />
+      <button type="button" className={railButtonClass} aria-label="Help" title="Help">
+        <HelpCircle className="w-4 h-4" strokeWidth={2} />
+      </button>
+      <button type="button" className={railButtonClass} aria-label="Settings" title="Settings">
+        <Settings className="w-4 h-4" strokeWidth={2} />
+      </button>
+    </nav>
+  );
+}

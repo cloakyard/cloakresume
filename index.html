@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+
+    <!--
+      Content Security Policy — enforces the "no uploads, 100% private" promise.
+      All resume data stays in the browser; there is no path for content to leave.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'"
+    />
+
+    <!-- SVG favicon (primary + only) -->
+    <link rel="icon" href="/icons/favicon.svg" type="image/svg+xml" />
+
+    <!-- Safari pinned tab -->
+    <link rel="mask-icon" href="/icons/favicon.svg" color="#2563EB" />
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Theme -->
+    <meta name="theme-color" content="#2563EB" />
+    <meta name="color-scheme" content="light dark" />
+
+    <!-- iOS PWA -->
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="CloakResume" />
+
+    <!-- SEO -->
+    <meta
+      name="description"
+      content="CloakResume — build beautiful, ATS-friendly resumes in your browser. Pick a template, choose a colour, and export to PDF. 100% private, nothing uploaded."
+    />
+    <meta
+      name="keywords"
+      content="resume builder, ats resume, private resume builder, offline resume builder, free resume builder, resume pdf export, ats score, resume templates, cv builder"
+    />
+    <link rel="canonical" href="https://resume.cloakyard.com/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://resume.cloakyard.com/" />
+    <meta property="og:title" content="CloakResume — Private Resume Builder with ATS Score" />
+    <meta
+      property="og:description"
+      content="Build beautiful, ATS-friendly resumes entirely in your browser. Pick a template, choose a colour, export to PDF. No uploads, 100% private."
+    />
+    <meta property="og:image" content="https://resume.cloakyard.com/icons/og-image.png" />
+    <meta property="og:site_name" content="CloakResume" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="CloakResume — Private Resume Builder" />
+    <meta
+      name="twitter:description"
+      content="Build beautiful, ATS-friendly resumes in your browser. No uploads, 100% private."
+    />
+    <meta name="twitter:image" content="https://resume.cloakyard.com/icons/og-image.png" />
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "CloakResume",
+        "url": "https://resume.cloakyard.com",
+        "description": "Private, ATS-friendly resume builder that runs entirely in your browser. Pick a template, choose a colour, export to PDF. No uploads, 100% private.",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Any",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "featureList": [
+          "Beautiful Resume Templates",
+          "ATS Score & Keyword Matching",
+          "Customise Colours & Fonts",
+          "Reorder Sections",
+          "Export to PDF",
+          "Rich Text Editing",
+          "Works Offline",
+          "No Account Required"
+        ],
+        "browserRequirements": "Requires a modern web browser with JavaScript enabled"
+      }
+    </script>
+
+    <title>CloakResume — Private Resume Builder with ATS Score</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

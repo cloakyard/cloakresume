@@ -1,0 +1,458 @@
+/**
+ * Applicant Tracking System (ATS) scoring.
+ *
+ * The scorer evaluates the resume data across several dimensions that
+ * real-world ATS pipelines care about — contact completeness, keyword
+ * relevance, quantifiable impact in bullets, action-verb usage, summary
+ * length, structural markers like education & skills, and an optional
+ * target job description match.
+ *
+ * Scoring is deterministic and purely local: nothing ever leaves the
+ * browser.
+ */
+
+import type { AtsIssue, AtsReport, ResumeData } from "../types.ts";
+
+const ACTION_VERBS = new Set([
+  "architected",
+  "built",
+  "created",
+  "delivered",
+  "designed",
+  "developed",
+  "drove",
+  "drive",
+  "engineered",
+  "established",
+  "expanded",
+  "improved",
+  "increased",
+  "integrated",
+  "launched",
+  "led",
+  "leveraged",
+  "managed",
+  "mentored",
+  "migrated",
+  "optimised",
+  "optimized",
+  "owned",
+  "pioneered",
+  "reduced",
+  "refactored",
+  "resolved",
+  "scaled",
+  "shipped",
+  "spearheaded",
+  "standardised",
+  "standardized",
+  "streamlined",
+  "transformed",
+  "translated",
+  "unblocked",
+  "rolled",
+  "recognised",
+  "recognized",
+  "implemented",
+]);
+
+/** Regex covering metric-like strings: percentages, money, multipliers, counts. */
+const METRIC_RE =
+  /(\d+[\d,.]*\s*(?:%|x|×|k|m|b|\+|\/)|\$\s*\d+[\d,.]*|\d+[\d,.]*\s*(?:years?|months?|markets?|customers?|users?|teams?|projects?|apps?|solutions?))/i;
+
+/** Tokenise a blob of resume text, lower-cased and stripped of punctuation. */
+function tokenize(text: string): string[] {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9+#.\-/\s]/g, " ")
+    .split(/\s+/)
+    .filter(Boolean);
+}
+
+/** Collapse the whole resume into a single searchable lowercase string. */
+function flatten(resume: ResumeData): string {
+  const parts: string[] = [];
+  parts.push(resume.profile.name, resume.profile.title, resume.profile.summary);
+  for (const c of resume.contact) parts.push(c.value);
+  for (const s of resume.skills) parts.push(s.label, s.items);
+  for (const e of resume.experience) {
+    parts.push(e.title, e.company, e.location, e.start, e.end);
+    parts.push(...e.bullets);
+  }
+  for (const ed of resume.education) {
+    parts.push(ed.degree, ed.school, ed.location, ed.detail);
+  }
+  for (const p of resume.projects) {
+    parts.push(p.name, p.description, p.role ?? "", ...p.stack);
+  }
+  for (const ct of resume.certifications) parts.push(ct.issuer, ct.name);
+  for (const a of resume.awards) parts.push(a.title, a.detail);
+  for (const l of resume.languages) parts.push(l.name, l.level);
+  parts.push(...resume.interests, ...resume.tools);
+  return parts.join(" ").toLowerCase();
+}
+
+/** Count all words in the resume body (summary, bullets, project descriptions). */
+function wordCount(resume: ResumeData): number {
+  const text = [
+    resume.profile.summary,
+    ...resume.experience.flatMap((e) => e.bullets),
+    ...resume.projects.map((p) => `${p.description} ${p.role ?? ""}`),
+  ].join(" ");
+  return tokenize(text).length;
+}
+
+/** Extract distinctive keywords from a free-form job description blob. */
+export function extractKeywords(jd: string): string[] {
+  if (!jd.trim()) return [];
+  const stop = new Set([
+    "the",
+    "a",
+    "an",
+    "and",
+    "or",
+    "but",
+    "of",
+    "in",
+    "on",
+    "for",
+    "to",
+    "with",
+    "by",
+    "at",
+    "from",
+    "as",
+    "is",
+    "are",
+    "be",
+    "been",
+    "being",
+    "will",
+    "shall",
+    "this",
+    "that",
+    "these",
+    "those",
+    "you",
+    "your",
+    "we",
+    "our",
+    "their",
+    "they",
+    "it",
+    "its",
+    "have",
+    "has",
+    "had",
+    "do",
+    "does",
+    "did",
+    "can",
+    "could",
+    "should",
+    "would",
+    "may",
+    "might",
+    "must",
+    "not",
+    "no",
+    "yes",
+    "into",
+    "over",
+    "under",
+    "about",
+    "within",
+    "across",
+    "per",
+  ]);
+  const freq = new Map<string, number>();
+  const tokens = tokenize(jd);
+  for (const t of tokens) {
+    if (t.length < 3) continue;
+    if (stop.has(t)) continue;
+    if (/^\d+$/.test(t)) continue;
+    freq.set(t, (freq.get(t) ?? 0) + 1);
+  }
+  return [...freq.entries()]
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 25)
+    .map(([word]) => word);
+}
+
+function startsWithActionVerb(bullet: string): boolean {
+  const first =
+    bullet
+      .trim()
+      .split(/\s+/)[0]
+      ?.toLowerCase()
+      .replace(/[^a-z]/g, "") ?? "";
+  return ACTION_VERBS.has(first);
+}
+
+export function computeAts(resume: ResumeData, jobDescription: string = ""): AtsReport {
+  const issues: AtsIssue[] = [];
+  const wins: string[] = [];
+  const breakdown: AtsReport["breakdown"] = [];
+
+  // ── Contact completeness (max 10) ───────────────────────────────
+  const kinds = new Set(resume.contact.map((c) => c.kind));
+  const essential: ("email" | "phone" | "location" | "linkedin")[] = [
+    "email",
+    "phone",
+    "location",
+    "linkedin",
+  ];
+  const missingContacts = essential.filter((k) => !kinds.has(k));
+  const contactEarned = Math.max(0, 10 - missingContacts.length * 3);
+  breakdown.push({
+    category: "Contact details",
+    earned: contactEarned,
+    max: 10,
+    note:
+      missingContacts.length === 0
+        ? "All essential contacts present."
+        : `Missing: ${missingContacts.join(", ")}`,
+  });
+  if (missingContacts.length > 0) {
+    issues.push({
+      severity: "warn",
+      message: `Missing ${missingContacts.join(", ")} in contact block.`,
+      suggestion: "Most ATS parsers expect email, phone, location, and LinkedIn.",
+    });
+  } else {
+    wins.push("Contact block has email, phone, location, and LinkedIn.");
+  }
+
+  // ── Summary length (max 10) ─────────────────────────────────────
+  const summaryWords = tokenize(resume.profile.summary).length;
+  let summaryEarned = 0;
+  let summaryNote = "";
+  if (summaryWords === 0) {
+    summaryNote = "No professional summary provided.";
+    issues.push({
+      severity: "fail",
+      message: "Professional summary is empty.",
+      suggestion: "Add a 50–100 word summary that leads with your role and impact.",
+    });
+  } else if (summaryWords < 30) {
+    summaryEarned = 4;
+    summaryNote = `Summary is only ${summaryWords} words — a little thin.`;
+    issues.push({
+      severity: "warn",
+      message: "Summary is shorter than recruiters expect.",
+      suggestion: "Aim for 50–100 words with role, experience, and headline wins.",
+    });
+  } else if (summaryWords <= 120) {
+    summaryEarned = 10;
+    summaryNote = `Summary is a healthy ${summaryWords} words.`;
+    wins.push("Summary length is in the recruiter-friendly 50–120 word range.");
+  } else {
+    summaryEarned = 6;
+    summaryNote = `Summary is ${summaryWords} words — consider trimming.`;
+    issues.push({
+      severity: "info",
+      message: "Summary runs a bit long.",
+      suggestion: "Tighten to ≤120 words; move detail into experience bullets.",
+    });
+  }
+  breakdown.push({
+    category: "Professional summary",
+    earned: summaryEarned,
+    max: 10,
+    note: summaryNote,
+  });
+
+  // ── Experience bullets: count & action verbs (max 15) ───────────
+  const allBullets = resume.experience.flatMap((e) => e.bullets);
+  const totalBullets = allBullets.length;
+  let bulletEarned = 0;
+  if (totalBullets >= 10) bulletEarned = 8;
+  else if (totalBullets >= 6) bulletEarned = 6;
+  else if (totalBullets >= 3) bulletEarned = 4;
+  else if (totalBullets >= 1) bulletEarned = 2;
+  const actionCount = allBullets.filter(startsWithActionVerb).length;
+  const actionRatio = totalBullets === 0 ? 0 : actionCount / totalBullets;
+  const actionEarned = Math.round(actionRatio * 7);
+  breakdown.push({
+    category: "Experience bullets",
+    earned: bulletEarned + actionEarned,
+    max: 15,
+    note: `${totalBullets} bullets · ${actionCount} start with strong action verbs`,
+  });
+  if (totalBullets < 6) {
+    issues.push({
+      severity: "warn",
+      message: "Too few experience bullets overall.",
+      suggestion: "Aim for 3–5 bullets per role, focused on outcomes.",
+    });
+  }
+  if (totalBullets > 0 && actionRatio < 0.6) {
+    issues.push({
+      severity: "warn",
+      message: "Many bullets don't start with strong action verbs.",
+      suggestion:
+        "Lead every bullet with a verb like 'Architected', 'Delivered', 'Reduced', 'Shipped'.",
+    });
+  } else if (totalBullets > 0) {
+    wins.push("Most bullets lead with strong action verbs.");
+  }
+
+  // ── Quantifiable impact (max 15) ────────────────────────────────
+  const metricBullets = allBullets.filter((b) => METRIC_RE.test(b));
+  const metricRatio = totalBullets === 0 ? 0 : metricBullets.length / totalBullets;
+  const metricEarned = Math.round(metricRatio * 15);
+  breakdown.push({
+    category: "Quantifiable impact",
+    earned: metricEarned,
+    max: 15,
+    note: `${metricBullets.length} of ${totalBullets} bullets include metrics (%, $, counts).`,
+  });
+  if (totalBullets > 0 && metricRatio < 0.4) {
+    issues.push({
+      severity: "warn",
+      message: "Few bullets include measurable outcomes.",
+      suggestion:
+        "Add numbers where possible — e.g. 'reduced EMI collection time by 40%', '5× award winner'.",
+    });
+  } else if (totalBullets > 0) {
+    wins.push("Several bullets contain measurable metrics.");
+  }
+
+  // ── Skills coverage (max 10) ────────────────────────────────────
+  const skillItemCount = resume.skills.reduce(
+    (acc, group) => acc + group.items.split(",").filter((s) => s.trim().length > 0).length,
+    0,
+  );
+  let skillsEarned = 0;
+  if (skillItemCount >= 20) skillsEarned = 10;
+  else if (skillItemCount >= 10) skillsEarned = 7;
+  else if (skillItemCount >= 5) skillsEarned = 4;
+  breakdown.push({
+    category: "Skills coverage",
+    earned: skillsEarned,
+    max: 10,
+    note: `${skillItemCount} skills across ${resume.skills.length} groups`,
+  });
+  if (skillItemCount < 10) {
+    issues.push({
+      severity: "warn",
+      message: "Skills section is light.",
+      suggestion: "Add at least 10–20 relevant skills grouped by category.",
+    });
+  } else {
+    wins.push("Skills section has good breadth.");
+  }
+
+  // ── Education present (max 5) ───────────────────────────────────
+  const hasEducation = resume.education.length > 0;
+  breakdown.push({
+    category: "Education",
+    earned: hasEducation ? 5 : 0,
+    max: 5,
+    note: hasEducation ? `${resume.education.length} entry/entries` : "No education entry.",
+  });
+  if (!hasEducation) {
+    issues.push({
+      severity: "warn",
+      message: "No education entry provided.",
+      suggestion: "Most ATS parsers flag missing education — add at least one entry.",
+    });
+  }
+
+  // ── Projects (max 5) ────────────────────────────────────────────
+  const projCount = resume.projects.length;
+  const projEarned = projCount >= 3 ? 5 : projCount >= 1 ? 3 : 0;
+  breakdown.push({
+    category: "Projects",
+    earned: projEarned,
+    max: 5,
+    note: `${projCount} project${projCount === 1 ? "" : "s"} listed`,
+  });
+
+  // ── Overall length (max 10) ─────────────────────────────────────
+  const words = wordCount(resume);
+  let lengthEarned = 0;
+  let lengthNote = `${words} words across summary + bullets + projects`;
+  if (words < 250) {
+    lengthEarned = 4;
+    issues.push({
+      severity: "warn",
+      message: "Resume body is on the short side.",
+      suggestion: "Aim for 400–800 words of substance — hiring managers scan for depth.",
+    });
+  } else if (words <= 900) {
+    lengthEarned = 10;
+    wins.push("Resume length is in the optimal 400–900 word range.");
+  } else {
+    lengthEarned = 7;
+    issues.push({
+      severity: "info",
+      message: "Resume body is long.",
+      suggestion: "Consider trimming older or less relevant detail to stay under ~900 words.",
+    });
+  }
+  breakdown.push({ category: "Overall length", earned: lengthEarned, max: 10, note: lengthNote });
+
+  // ── Keyword match (max 20 when JD provided; 0 otherwise) ────────
+  const matched: string[] = [];
+  const missing: string[] = [];
+  if (!jobDescription.trim()) {
+    breakdown.push({
+      category: "Keyword match",
+      earned: 0,
+      max: 0,
+      note: "Paste a target job description to score keyword coverage.",
+    });
+  } else {
+    const keywords = extractKeywords(jobDescription);
+    const haystack = flatten(resume);
+    for (const kw of keywords) {
+      if (haystack.includes(kw)) matched.push(kw);
+      else missing.push(kw);
+    }
+    const ratio = keywords.length === 0 ? 0 : matched.length / keywords.length;
+    breakdown.push({
+      category: "Keyword match",
+      earned: Math.round(ratio * 20),
+      max: 20,
+      note: `${matched.length} of ${keywords.length} JD keywords found in resume`,
+    });
+    if (ratio < 0.5 && keywords.length > 0) {
+      issues.push({
+        severity: "warn",
+        message: "Less than half of the job description keywords appear in the resume.",
+        suggestion: "Naturally weave the missing terms into summary, skills, or bullets.",
+      });
+    } else if (ratio >= 0.75) {
+      wins.push("Strong keyword alignment with the provided job description.");
+    }
+  }
+
+  // ── Assemble ────────────────────────────────────────────────────
+  const maxTotal = breakdown.reduce((acc, b) => acc + b.max, 0);
+  const earnedTotal = breakdown.reduce((acc, b) => acc + b.earned, 0);
+  const score = maxTotal === 0 ? 0 : Math.round((earnedTotal / maxTotal) * 100);
+
+  return {
+    score,
+    breakdown,
+    issues,
+    wins,
+    keywords: { matched, missing },
+  };
+}
+
+export function scoreBand(score: number): {
+  label: string;
+  color: string;
+  bg: string;
+  border: string;
+} {
+  if (score >= 85)
+    return { label: "Excellent", color: "#059669", bg: "#ecfdf5", border: "#a7f3d0" };
+  if (score >= 70) return { label: "Strong", color: "#0D9488", bg: "#f0fdfa", border: "#99f6e4" };
+  if (score >= 55) return { label: "Decent", color: "#D97706", bg: "#fffbeb", border: "#fde68a" };
+  if (score >= 40)
+    return { label: "Needs work", color: "#DC2626", bg: "#fef2f2", border: "#fecaca" };
+  return { label: "Critical", color: "#B91C1C", bg: "#fef2f2", border: "#fca5a5" };
+}
