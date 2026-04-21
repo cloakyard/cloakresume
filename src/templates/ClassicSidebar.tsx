@@ -39,11 +39,11 @@ export function ClassicSidebar({ resume, palette }: Props) {
     .cs-skill-label { font-size: 8pt; font-weight: 700; color: #111827; margin-bottom: 0.5mm; display: flex; align-items: center; gap: 1.5mm; }
     .cs-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .cs-skill-list { font-size: 7.8pt; color: #1e293b; line-height: 1.4; }
-    .cs-main h2 { font-size: 10.5pt; color: #27272a; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700; margin: 0 0 2.5mm; padding-bottom: 1mm; border-bottom: 2px solid #27272a; position: relative; }
+    .cs-main h2 { font-size: 10.5pt; color: #27272a; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700; margin: 0 0 2.5mm; padding-bottom: 1mm; border-bottom: 2px solid #27272a; position: relative; break-after: avoid; page-break-after: avoid; }
     .cs-main h2::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 12mm; height: 2px; background: ${palette.primary600}; }
     .cs-section { margin-bottom: 3.5mm; }
     .cs-summary { font-size: 9pt; line-height: 1.55; color: #1e293b; text-align: justify; }
-    .cs-job { margin-bottom: 2.8mm; page-break-inside: avoid; }
+    .cs-job { margin-bottom: 2.8mm; page-break-inside: avoid; break-inside: avoid; }
     .cs-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
     .cs-jobtitle { font-size: 9.6pt; font-weight: 700; color: #27272a; }
     .cs-jobmeta { font-size: 8.2pt; color: #6b7280; font-style: italic; white-space: nowrap; }
@@ -51,12 +51,12 @@ export function ClassicSidebar({ resume, palette }: Props) {
     .cs-job ul { list-style: none; padding: 0; margin: 0; }
     .cs-job li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; }
     .cs-job li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
-    .cs-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; }
+    .cs-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; page-break-inside: avoid; break-inside: avoid; }
     .cs-edutitle { font-size: 9.4pt; font-weight: 700; color: #27272a; }
     .cs-eduschool { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; }
     .cs-edumeta { font-size: 8.4pt; color: #6b7280; font-style: italic; }
     .cs-proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2.8mm; }
-    .cs-proj { border: 1px solid #e5e7eb; border-left: 3px solid ${palette.primary600}; border-radius: 3px; padding: 2mm 2.5mm; background: #fafbfc; page-break-inside: avoid; }
+    .cs-proj { border: 1px solid #e5e7eb; border-left: 3px solid ${palette.primary600}; border-radius: 3px; padding: 2mm 2.5mm; background: #fafbfc; page-break-inside: avoid; break-inside: avoid; }
     .cs-projname { font-size: 8.8pt; font-weight: 700; color: #27272a; margin-bottom: 0.8mm; }
     .cs-projdesc { font-size: 7.9pt; color: #4b5563; line-height: 1.4; margin-bottom: 1.2mm; }
     .cs-projrole { font-size: 7.8pt; color: #27272a; line-height: 1.4; margin-bottom: 1.2mm; }

@@ -14,6 +14,8 @@ import type { PrimaryPalette } from "../utils/colors.ts";
 import { Academic } from "./Academic.tsx";
 import { AtsPlain } from "./AtsPlain.tsx";
 import { AtsProfessional } from "./AtsProfessional.tsx";
+import { Aurora } from "./Aurora.tsx";
+import { Bauhaus } from "./Bauhaus.tsx";
 import { ClassicSidebar } from "./ClassicSidebar.tsx";
 import { CompactTimeline } from "./CompactTimeline.tsx";
 import { DuoTone } from "./DuoTone.tsx";
@@ -21,6 +23,7 @@ import { ExecutiveSerif } from "./ExecutiveSerif.tsx";
 import { GradientHeader } from "./GradientHeader.tsx";
 import { Minimalist } from "./Minimalist.tsx";
 import { ModernMinimal } from "./ModernMinimal.tsx";
+import { Spotlight } from "./Spotlight.tsx";
 import { Typographic } from "./Typographic.tsx";
 
 export interface TemplateProps {
@@ -82,6 +85,26 @@ export const TEMPLATES: Record<
     badge: { label: "Popular", tone: "brand" },
     component: ModernMinimal,
   },
+  aurora: {
+    id: "aurora",
+    name: "Aurora",
+    description: "Mesh-gradient hero · Glass card",
+    accent: "#4F46E5",
+    level: "Tech · SaaS · Product · 3–10 years",
+    category: "modern",
+    badge: { label: "New", tone: "brand" },
+    component: Aurora,
+  },
+  spotlight: {
+    id: "spotlight",
+    name: "Spotlight",
+    description: "Dark sidebar · Hero stats",
+    accent: "#2563EB",
+    level: "Senior ICs · Founders · Leadership",
+    category: "modern",
+    badge: { label: "New", tone: "brand" },
+    component: Spotlight,
+  },
   minimalist: {
     id: "minimalist",
     name: "Minimalist",
@@ -119,6 +142,16 @@ export const TEMPLATES: Record<
     category: "creative",
     badge: { label: "New", tone: "brand" },
     component: DuoTone,
+  },
+  bauhaus: {
+    id: "bauhaus",
+    name: "Bauhaus",
+    description: "Geometric color-block · Editorial",
+    accent: "#DC2626",
+    level: "Designers · Creatives · Brand roles",
+    category: "creative",
+    badge: { label: "New", tone: "brand" },
+    component: Bauhaus,
   },
   "gradient-header": {
     id: "gradient-header",

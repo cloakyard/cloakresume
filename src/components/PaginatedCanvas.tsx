@@ -13,6 +13,23 @@
  * Classic Sidebar can split their sidebar content across pages (e.g.
  * contact+skills on page 1; certifications, awards, etc. from page 2
  * onwards).
+ *
+ * IMPORTANT: Heights are read from `offsetHeight`, NOT
+ * `getBoundingClientRect().height`. The preview wraps this canvas in a
+ * `transform: scale(zoom)` container, and `getBoundingClientRect` would
+ * return the *visually scaled* height — causing more content to appear
+ * to fit per page at lower zooms and fewer at higher ones. `offsetHeight`
+ * returns the unscaled layout box height, so pagination stays identical
+ * across all zoom levels and matches print output.
+ *
+ * KEEP-WITH-NEXT: an atom whose root element carries
+ * `data-keep-with-next="true"` is treated as "must not end a page" —
+ * the packer evicts it onto the next page alongside whatever would have
+ * caused the overflow. Templates use this on section headings (H2s) so
+ * that a heading like "Experience" can never be orphaned at the bottom
+ * of a page with its first item on the next. Multiple consecutive
+ * keep-with-next atoms are all evicted together. A safety rail prevents
+ * evicting every atom off a page (we always keep at least one).
  */
 
 import {
@@ -71,19 +88,44 @@ export function PaginatedCanvas({
     const container = measureRef.current;
     if (!container) return;
     const children = Array.from(container.children) as HTMLElement[];
-    const heights = children.map((el) => el.getBoundingClientRect().height);
+    // `offsetHeight` returns the element's layout box height in CSS pixels,
+    // independent of any `transform: scale` applied by an ancestor (the
+    // preview's zoom). `getBoundingClientRect` would return the *scaled*
+    // height and produce different pagination at each zoom level.
+    // If every child measures 0 (not yet laid out), skip this pass so we
+    // don't collapse everything onto page 1 and flash bad content.
+    const heights = children.map((el) => el.offsetHeight);
+    const total = heights.reduce((a, b) => a + b, 0);
+    if (total === 0 && heights.length > 0) return;
+    // "Keep with next": an atom whose root element has
+    // data-keep-with-next="true" must never be the LAST atom on a page.
+    // When overflow triggers a page break, any trailing keep-with-next
+    // atoms on the closing page are evicted and carried to the next page
+    // so their companion item stays adjacent (no orphaned headings).
+    const keep = children.map((el) => el.dataset.keepWithNext === "true");
     const groups: number[][] = [];
     let current: number[] = [];
     let used = 0;
+    const closePage = () => {
+      // Peel trailing keep-with-next atoms off the closing page. Safety
+      // rail: always leave at least one atom on the closing page (the
+      // loop stops when current has a single atom left), so a page is
+      // never emitted empty.
+      const carry: number[] = [];
+      while (current.length > 1 && keep[current[current.length - 1] as number]) {
+        const popped = current.pop() as number;
+        carry.unshift(popped);
+      }
+      groups.push(current);
+      current = carry;
+      used = carry.reduce((sum, i) => sum + heights[i], 0);
+    };
     heights.forEach((h, idx) => {
       if (current.length > 0 && used + h > budgetPx) {
-        groups.push(current);
-        current = [idx];
-        used = h;
-      } else {
-        current.push(idx);
-        used += h;
+        closePage();
       }
+      current.push(idx);
+      used += h;
     });
     if (current.length > 0) groups.push(current);
     if (groups.length === 0) groups.push([]);
