@@ -65,6 +65,17 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
   clone.style.padding = "0";
   clone.style.gap = "0";
 
+  // Any cloned <img> that came from an external URL needs `crossOrigin`
+  // set BEFORE html2canvas reads it — otherwise the browser serves a
+  // tainted version of the image and the canvas becomes unreadable. Data
+  // URLs and blob: URLs are unaffected.
+  for (const img of clone.querySelectorAll<HTMLImageElement>("img")) {
+    const src = img.getAttribute("src") ?? "";
+    if (src && !src.startsWith("data:") && !src.startsWith("blob:")) {
+      img.crossOrigin = "anonymous";
+    }
+  }
+
   host.appendChild(clone);
   document.body.appendChild(host);
 
@@ -72,6 +83,10 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
     if (document.fonts && typeof document.fonts.ready?.then === "function") {
       await document.fonts.ready.catch(() => undefined);
     }
+    // Give the browser a frame to settle layout/style on the freshly
+    // inserted clone. Without this, html2canvas can occasionally read
+    // positions before the first paint on complex templates.
+    await new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
 
     const pageEls = Array.from(clone.querySelectorAll<HTMLElement>(".resume-page"));
     if (pageEls.length === 0) {
@@ -107,9 +122,12 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
         windowHeight: Math.min(pageEl.offsetHeight, A4_HEIGHT_PX),
       });
 
-      const imgData = canvas.toDataURL("image/jpeg", 0.95);
+      // PNG at full quality — text (especially serif headings) stays crisp
+      // where JPEG 0.95 would soften thin strokes. File size is larger but
+      // resumes are short documents so the trade-off favours fidelity.
+      const imgData = canvas.toDataURL("image/png");
       if (i > 0) pdf.addPage("a4", "portrait");
-      pdf.addImage(imgData, "JPEG", 0, 0, A4_WIDTH_MM, A4_HEIGHT_MM, undefined, "FAST");
+      pdf.addImage(imgData, "PNG", 0, 0, A4_WIDTH_MM, A4_HEIGHT_MM, undefined, "FAST");
     }
 
     pdf.save(filename);

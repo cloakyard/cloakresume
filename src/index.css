@@ -515,6 +515,26 @@
   gap: 8mm;
   align-items: center;
   padding: 8mm 0;
+  /* Force browsers to honour backgrounds/colours when the user falls back
+   * to Cmd+P. Without this, most engines strip filled backgrounds from
+   * printed output, which blanks out sidebars, chips and hero gradients. */
+  print-color-adjust: exact;
+  -webkit-print-color-adjust: exact;
+}
+
+/* Consistent box model + long-token safety for every element rendered
+ * inside a resume. Templates can still override per-element as needed;
+ * elements that need unbroken text (dates, tabular numerics) already
+ * declare `white-space: nowrap` explicitly. */
+.resume-root,
+.resume-root *,
+.resume-root *::before,
+.resume-root *::after {
+  box-sizing: border-box;
+}
+
+.resume-root {
+  overflow-wrap: anywhere;
 }
 
 .resume-root .resume-page {

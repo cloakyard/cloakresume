@@ -26,7 +26,7 @@ export function GradientHeader({ resume, palette }: Props) {
   const css = `
     .gh-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; }
     .gh-head { background: linear-gradient(135deg, ${palette.primary600} 0%, ${palette.primary900} 100%); color: ${palette.primaryText}; padding: 12mm 14mm; display: flex; align-items: center; gap: 8mm; margin: -8mm -14mm 6mm; }
-    .gh-logo { width: 18mm; height: 18mm; border-radius: 4mm; background: rgba(255,255,255,0.18); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
+    .gh-logo { width: 18mm; height: 18mm; border-radius: 4mm; background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
     .gh-photo { width: 18mm; height: 18mm; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.6); }
     .gh-name { font-size: 20pt; font-weight: 700; letter-spacing: -0.3px; line-height: 1.05; margin: 0; }
     .gh-title { font-size: 10.2pt; margin-top: 1.2mm; letter-spacing: 1px; text-transform: uppercase; opacity: 0.92; font-weight: 600; }
