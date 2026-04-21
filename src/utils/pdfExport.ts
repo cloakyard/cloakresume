@@ -4,16 +4,18 @@
  * The preview wraps the resume in a `.resume-root` container that itself
  * sits inside a `transform: scale(zoom)` wrapper used by the zoom dock.
  * We clone `.resume-root` into an off-screen host with no ancestor
- * transform, then rasterise each `.resume-page` child to a canvas via
- * html2canvas-pro (which handles modern CSS colour spaces the baseline
- * html2canvas chokes on), and assemble the canvases into a multi-page
- * A4 PDF with jsPDF.
+ * transform, then for each `.resume-page` child we:
  *
- * Rasterising means the PDF text isn't selectable — that's an accepted
- * trade-off to avoid rewriting every template against @react-pdf. For
- * ATS-safe variants the rendered-to-PDF file preserves the on-screen
- * layout exactly; users can still Cmd+P the preview if they need a
- * text-layer PDF.
+ *   1. Rasterise it to a canvas via html2canvas-pro (which handles
+ *      modern CSS colour spaces the baseline html2canvas chokes on) and
+ *      add that canvas as the visible page image.
+ *   2. Walk the clone's text nodes and write them back onto the page as
+ *      INVISIBLE text (PDF text rendering mode 3). The raster stays
+ *      pixel-perfect; the hidden text layer gives ATS parsers, screen
+ *      readers, pdftotext, and select-all a real text stream in DOM
+ *      (reading) order.
+ *
+ * So the export is raster for fidelity + vector text for accessibility.
  */
 
 import html2canvas from "html2canvas-pro";
@@ -24,9 +26,12 @@ const A4_HEIGHT_MM = 297;
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
 const A4_HEIGHT_PX = A4_HEIGHT_MM * PX_PER_MM;
+/** 1pt in CSS pixels (1in = 72pt = 96px). */
+const PX_PER_PT = 96 / 72;
 
-/** Scale factor for rasterisation. 2× gives a crisp result without blowing up file size. */
-const RENDER_SCALE = 2;
+/** Scale factor for rasterisation. 3× keeps serif strokes crisp even when the
+ *  PDF is zoomed past 100 % on retina displays; pairs with PNG output. */
+const RENDER_SCALE = 3;
 
 function sanitiseFilename(input: string): string {
   const cleaned = input
@@ -41,6 +46,82 @@ export function buildPdfFilename(displayName: string): string {
   const name = sanitiseFilename(displayName || "resume");
   const date = new Date().toISOString().slice(0, 10);
   return `${name}-${date}.pdf`;
+}
+
+/** Elements we never want to pull text from — decoration, not content. */
+const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
+
+/**
+ * Write every text node inside `pageEl` into `pdf` at its on-page
+ * position as invisible text. This gives the PDF a real text stream
+ * (DOM order → reading order) without changing the raster appearance.
+ *
+ * Coordinates are computed from `Range.getBoundingClientRect()` of each
+ * text node, translated into mm relative to `pageEl`'s top-left.
+ */
+function addInvisibleTextLayer(pdf: jsPDF, pageEl: HTMLElement): void {
+  const pageRect = pageEl.getBoundingClientRect();
+  const walker = document.createTreeWalker(pageEl, NodeFilter.SHOW_TEXT, {
+    acceptNode(node) {
+      const text = node.nodeValue;
+      if (!text?.trim()) return NodeFilter.FILTER_REJECT;
+      let ancestor: HTMLElement | null = node.parentElement;
+      while (ancestor) {
+        if (SKIP_TAGS.has(ancestor.tagName)) return NodeFilter.FILTER_REJECT;
+        ancestor = ancestor.parentElement;
+      }
+      return NodeFilter.FILTER_ACCEPT;
+    },
+  });
+
+  // Use a reasonable default (13px ≈ 9.75pt) for parents that don't yield
+  // a numeric font-size (shouldn't happen, but keep defensive).
+  const DEFAULT_PT = 9.75;
+
+  let node = walker.nextNode();
+  while (node) {
+    const parent = node.parentElement;
+    const raw = node.nodeValue ?? "";
+    // Collapse whitespace the way browsers render it — otherwise we emit
+    // long runs of newlines/tabs from pretty-printed JSX into the PDF.
+    const text = raw.replace(/\s+/g, " ").trim();
+    if (parent && text) {
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      const rect = range.getBoundingClientRect();
+      range.detach?.();
+
+      if (rect.width > 0 && rect.height > 0) {
+        const xMm = (rect.left - pageRect.left) / PX_PER_MM;
+        const topMm = (rect.top - pageRect.top) / PX_PER_MM;
+        // Drop anything that lies outside the A4 page box — covers
+        // hidden/off-screen bits the walker accepted.
+        if (xMm >= -2 && xMm <= A4_WIDTH_MM + 2 && topMm >= -2 && topMm <= A4_HEIGHT_MM + 2) {
+          const cs = window.getComputedStyle(parent);
+          const fontSizePx = Number.parseFloat(cs.fontSize);
+          const fontSizePt =
+            Number.isFinite(fontSizePx) && fontSizePx > 0 ? fontSizePx / PX_PER_PT : DEFAULT_PT;
+          // Nudge to the glyph baseline — roughly 80% of the line-box
+          // height from the top. Good enough for text extraction; exact
+          // baseline alignment isn't required when the text is invisible.
+          const baselineMm = topMm + (rect.height / PX_PER_MM) * 0.8;
+
+          try {
+            pdf.setFontSize(fontSizePt);
+            pdf.text(text, xMm, baselineMm, {
+              renderingMode: "invisible",
+              baseline: "alphabetic",
+            });
+          } catch {
+            // jsPDF's core font can't encode some Unicode code points
+            // (e.g. rare symbols). Skip the offending node rather than
+            // failing the whole export — the raster is unaffected.
+          }
+        }
+      }
+    }
+    node = walker.nextNode();
+  }
 }
 
 /**
@@ -128,6 +209,11 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
       const imgData = canvas.toDataURL("image/png");
       if (i > 0) pdf.addPage("a4", "portrait");
       pdf.addImage(imgData, "PNG", 0, 0, A4_WIDTH_MM, A4_HEIGHT_MM, undefined, "FAST");
+      // Add the invisible text layer AFTER the image. Visual stacking
+      // doesn't matter since the text is rendered with mode 3 (invisible),
+      // but keeping the call order deterministic makes the PDF content
+      // stream predictable.
+      addInvisibleTextLayer(pdf, pageEl);
     }
 
     pdf.save(filename);
