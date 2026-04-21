@@ -135,9 +135,18 @@ export function App() {
 
   const TemplateComponent = TEMPLATES[templateId].component;
 
-  const handlePrint = useCallback(() => {
-    window.print();
-  }, []);
+  const handleExportPdf = useCallback(async () => {
+    const root = document.querySelector<HTMLElement>(".resume-root");
+    if (!root) return;
+    try {
+      // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
+      // in the client after the user actually asks for an export.
+      const { buildPdfFilename, exportResumeToPdf } = await import("./utils/pdfExport.ts");
+      await exportResumeToPdf(root, buildPdfFilename(resume.profile.name));
+    } catch (err) {
+      alert(`Couldn't generate the PDF. ${err instanceof Error ? err.message : "Unknown error."}`);
+    }
+  }, [resume.profile.name]);
 
   const handleSaveFile = useCallback(() => {
     downloadResumeFile({ resume, templateId, primary, jobDescription });
@@ -210,7 +219,7 @@ export function App() {
         toolbarRight={
           <>
             <ToolbarActions
-              onPrint={handlePrint}
+              onExportPdf={handleExportPdf}
               onSaveFile={handleSaveFile}
               onLoadFile={handleLoadFile}
               onNewResume={handleNewResume}

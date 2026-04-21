@@ -246,9 +246,7 @@ export function Spotlight({ resume, palette }: Props) {
       <div className="sp-left-slim">
         <div>
           <div className="sp-left-slim-name">{resume.profile.name}</div>
-          {resume.profile.title && (
-            <div className="sp-left-slim-title">{resume.profile.title}</div>
-          )}
+          {resume.profile.title && <div className="sp-left-slim-title">{resume.profile.title}</div>}
         </div>
         <div className="sp-left-slim-num">{String(pageIndex + 1).padStart(2, "0")}</div>
         <div className="sp-left-slim-cont">

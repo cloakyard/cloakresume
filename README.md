@@ -30,13 +30,13 @@ CloakResume is a full-featured resume builder, all running 100% client-side:
 
 _Eleven hand-crafted layouts across five design families_
 
-| Category      | Templates                                                                                   |
-| ------------- | ------------------------------------------------------------------------------------------- |
-| **ATS-Safe**  | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers |
-| **Classic**   | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles |
-| **Modern**    | **Modern Minimal** · clean single column. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
-| **Creative**  | **Typographic** · Swiss-style numbered sections. **DuoTone** · bold split panel with a magazine feel. **Gradient Header** · coloured banner with personality |
-| **Academic**  | **Academic CV** · scholarly layout for researchers and faculty                              |
+| Category     | Templates                                                                                                                                                    |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                        |
+| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                        |
+| **Modern**   | **Modern Minimal** · clean single column. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager                           |
+| **Creative** | **Typographic** · Swiss-style numbered sections. **DuoTone** · bold split panel with a magazine feel. **Gradient Header** · coloured banner with personality |
+| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                               |
 
 Switch between any template with a single click — your content stays, only the layout changes.
 
@@ -44,57 +44,57 @@ Switch between any template with a single click — your content stays, only the
 
 _Edit every section with live inline previews_
 
-| Feature                  | Description                                                                                       |
-| ------------------------ | ------------------------------------------------------------------------------------------------- |
-| **Profile & Headline**   | Name, role tagline, and rich-text summary with bold, italic, and inline link support              |
-| **Contact Links**        | Email, phone, location, website, LinkedIn, GitHub, Twitter, Medium — each with the right icon     |
-| **Experience**           | Unlimited roles with company, location, dates, and rich-text bullets                              |
-| **Education**            | Degrees, schools, dates, and free-form detail fields (e.g., CGPA, honours)                        |
-| **Projects**             | Name, description, role, and tech-stack chips                                                     |
-| **Skills**               | Grouped into categories with optional Lucide icons per group                                      |
-| **Certifications**       | Issuer, name, and year — ordered as you like                                                      |
-| **Awards**               | Recognition with year and supporting detail                                                       |
-| **Languages**            | Name and proficiency level                                                                        |
-| **Interests & Tools**    | Free-form chip lists for quick personality and stack signals                                      |
-| **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)                  |
-| **Reorder Sections**     | Drag sections to change the resume's narrative order                                              |
-| **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                    |
+| Feature                  | Description                                                                                   |
+| ------------------------ | --------------------------------------------------------------------------------------------- |
+| **Profile & Headline**   | Name, role tagline, and rich-text summary with bold, italic, and inline link support          |
+| **Contact Links**        | Email, phone, location, website, LinkedIn, GitHub, Twitter, Medium — each with the right icon |
+| **Experience**           | Unlimited roles with company, location, dates, and rich-text bullets                          |
+| **Education**            | Degrees, schools, dates, and free-form detail fields (e.g., CGPA, honours)                    |
+| **Projects**             | Name, description, role, and tech-stack chips                                                 |
+| **Skills**               | Grouped into categories with optional Lucide icons per group                                  |
+| **Certifications**       | Issuer, name, and year — ordered as you like                                                  |
+| **Awards**               | Recognition with year and supporting detail                                                   |
+| **Languages**            | Name and proficiency level                                                                    |
+| **Interests & Tools**    | Free-form chip lists for quick personality and stack signals                                  |
+| **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)              |
+| **Reorder Sections**     | Drag sections to change the resume's narrative order                                          |
+| **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                |
 
 ### 🧭 ATS Score
 
 _Know how your resume will be parsed before you send it_
 
-| Feature                    | Description                                                                            |
-| -------------------------- | -------------------------------------------------------------------------------------- |
-| **Score 0–100**            | Live scorecard rating your resume for applicant-tracking-system compatibility          |
-| **Category Breakdown**     | Earned-vs-max points across structure, content, contact, keywords, and formatting      |
-| **Keyword Matching**       | Paste a job description to see which keywords match and which are missing              |
-| **Issues & Wins**          | Actionable suggestions alongside a summary of what you're already doing well           |
-| **Template Warnings**      | Flags design choices (e.g., dense sidebars) that may hurt ATS parsing                  |
+| Feature                | Description                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| **Score 0–100**        | Live scorecard rating your resume for applicant-tracking-system compatibility     |
+| **Category Breakdown** | Earned-vs-max points across structure, content, contact, keywords, and formatting |
+| **Keyword Matching**   | Paste a job description to see which keywords match and which are missing         |
+| **Issues & Wins**      | Actionable suggestions alongside a summary of what you're already doing well      |
+| **Template Warnings**  | Flags design choices (e.g., dense sidebars) that may hurt ATS parsing             |
 
 ### 🎨 Design Controls
 
 _Make it yours without fighting the layout_
 
-| Feature                   | Description                                                                           |
-| ------------------------- | ------------------------------------------------------------------------------------- |
-| **Primary Colour**        | Pick any colour — the app derives a full palette (tints, borders, text) automatically |
-| **Live A4 Preview**       | Pixel-accurate page rendered at 210 × 297 mm with pagination across multiple pages    |
-| **Scaled Thumbnails**     | Template picker shows every layout with your actual content rendered to scale         |
-| **Section Rail & Pills**  | Jump between sections from a floating rail on desktop or a pill bar on mobile         |
-| **Bottom Sheet on Mobile**| Native-feeling drag-to-dismiss editor sheet for touch devices                         |
+| Feature                    | Description                                                                           |
+| -------------------------- | ------------------------------------------------------------------------------------- |
+| **Primary Colour**         | Pick any colour — the app derives a full palette (tints, borders, text) automatically |
+| **Live A4 Preview**        | Pixel-accurate page rendered at 210 × 297 mm with pagination across multiple pages    |
+| **Scaled Thumbnails**      | Template picker shows every layout with your actual content rendered to scale         |
+| **Section Rail & Pills**   | Jump between sections from a floating rail on desktop or a pill bar on mobile         |
+| **Bottom Sheet on Mobile** | Native-feeling drag-to-dismiss editor sheet for touch devices                         |
 
 ### 📤 Export & Persistence
 
 _Your resume is always within reach_
 
-| Feature                     | Description                                                                           |
-| --------------------------- | ------------------------------------------------------------------------------------- |
-| **Print to PDF**            | Browser-native print dialog produces a pixel-perfect PDF with correct page breaks     |
-| **JSON Import/Export**      | Download your resume as JSON, edit externally, or re-import later                     |
-| **Autosave**                | Every keystroke is saved to local storage — close the tab and come back anytime       |
-| **Start from Sample**       | Kick off with a fully-populated lorem-ipsum resume that showcases the layout          |
-| **Start Fresh**             | Or begin with a blank canvas — previews use sample data until you add your own        |
+| Feature                | Description                                                                       |
+| ---------------------- | --------------------------------------------------------------------------------- |
+| **Print to PDF**       | Browser-native print dialog produces a pixel-perfect PDF with correct page breaks |
+| **JSON Import/Export** | Download your resume as JSON, edit externally, or re-import later                 |
+| **Autosave**           | Every keystroke is saved to local storage — close the tab and come back anytime   |
+| **Start from Sample**  | Kick off with a fully-populated lorem-ipsum resume that showcases the layout      |
+| **Start Fresh**        | Or begin with a blank canvas — previews use sample data until you add your own    |
 
 ---
 
@@ -112,15 +112,15 @@ _Your resume is always within reach_
 
 ## 🛠️ Tech Stack
 
-| Category        | Technology                                                     |
-| --------------- | -------------------------------------------------------------- |
-| Framework       | [React 19](https://react.dev/)                                 |
-| Styling         | [Tailwind CSS 4](https://tailwindcss.com/)                     |
-| Build Tool      | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain) |
-| Language        | [TypeScript 6](https://www.typescriptlang.org/)                |
-| Icons           | [Lucide React](https://lucide.dev/)                            |
-| PWA / Offline   | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) |
-| Toolchain CLI   | [Vite+ (`vp`)](https://viteplus.dev/)                          |
+| Category      | Technology                                                                                                    |
+| ------------- | ------------------------------------------------------------------------------------------------------------- |
+| Framework     | [React 19](https://react.dev/)                                                                                |
+| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                    |
+| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                |
+| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                               |
+| Icons         | [Lucide React](https://lucide.dev/)                                                                           |
+| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) |
+| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                         |
 
 ---
 

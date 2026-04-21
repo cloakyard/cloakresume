@@ -503,8 +503,9 @@
  * Resume canvas — A4 page container inside the preview.
  *
  * MM-based measurements and print isolation cannot be expressed in
- * Tailwind utilities, so the canvas keeps its own CSS. The page
- * boundary `::after` marker is purely visual (dashed line at 297 mm).
+ * Tailwind utilities, so the canvas keeps its own CSS. Each page is
+ * rendered as its own `.resume-page` element with a drop shadow; the
+ * gap between pages is provided by the flex container.
  * ──────────────────────────────────────────────────────────────── */
 .resume-root {
   --resume-page-w: 210mm;
@@ -528,22 +529,6 @@
   color: #1f2937;
   border-radius: 2px;
   overflow: visible;
-}
-
-.resume-root .resume-page::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: var(--resume-page-h);
-  border-top: 1px dashed rgba(15, 23, 42, 0.18);
-  pointer-events: none;
-}
-
-.resume-root .page-gap {
-  width: 210mm;
-  height: 8mm;
-  pointer-events: none;
 }
 
 /* Preview scroller gets momentum scroll + the same gradient backing. */
@@ -617,10 +602,6 @@
   .resume-root .resume-page:has(+ .resume-page) {
     break-after: page;
     page-break-after: always;
-  }
-
-  .resume-root .resume-page::after {
-    display: none !important;
   }
 }
 

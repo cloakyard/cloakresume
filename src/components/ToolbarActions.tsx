@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 
 interface ToolbarActionsProps {
-  onPrint: () => void;
+  onExportPdf: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
   onNewResume: () => void;
@@ -22,7 +22,7 @@ function ToolbarDivider() {
 }
 
 export function ToolbarActions({
-  onPrint,
+  onExportPdf,
   onSaveFile,
   onLoadFile,
   onNewResume,
@@ -95,7 +95,7 @@ export function ToolbarActions({
       )}
       <button
         type="button"
-        onClick={onPrint}
+        onClick={onExportPdf}
         className="tb primary"
         aria-label="Export to PDF"
         title="Export to PDF"

@@ -300,7 +300,9 @@ export function Typographic({ resume, palette }: Props) {
           {resume.languages.length > 0 && (
             <div className="tg-inline" style={{ marginBottom: "1.8mm" }}>
               <strong>Languages — </strong>
-              {resume.languages.map((l) => (l.level ? `${l.name} (${l.level})` : l.name)).join(", ")}
+              {resume.languages
+                .map((l) => (l.level ? `${l.name} (${l.level})` : l.name))
+                .join(", ")}
             </div>
           )}
           {resume.tools.length > 0 && (

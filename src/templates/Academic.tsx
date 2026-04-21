@@ -169,9 +169,7 @@ export function Academic({ resume, palette }: Props) {
             <RichText value={p.description} />
             {p.role ? ` ${p.role}` : ""}
             {p.stack.length > 0 && (
-              <div
-                style={{ marginTop: "0.8mm", fontStyle: "italic", color: palette.primary700 }}
-              >
+              <div style={{ marginTop: "0.8mm", fontStyle: "italic", color: palette.primary700 }}>
                 {p.stack.join(" · ")}
               </div>
             )}
