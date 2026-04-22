@@ -48,6 +48,7 @@ const PERSONAL_DICTIONARY = [
   "APIs",
   "SaaS",
   "PaaS",
+  "IaaS",
   "iOS",
   "macOS",
   "Kubernetes",
@@ -90,6 +91,19 @@ const PERSONAL_DICTIONARY = [
   "RAG",
   "GPU",
   "GPUs",
+  // Newer AI / platform vocabulary not yet in the 2024 Hunspell en-US dict.
+  "agentic",
+  "multimodal",
+  "observability",
+  "scalability",
+  "tokenization",
+  "fine-tuning",
+  "autoscaling",
+  "containerization",
+  "refactored",
+  "refactoring",
+  "dockerized",
+  "kubernetes",
 ];
 
 /**
@@ -100,8 +114,18 @@ const PERSONAL_DICTIONARY = [
  */
 async function buildProcessor() {
   const [affResp, dicResp] = await Promise.all([fetch(affUrl), fetch(dicUrl)]);
-  const [affBuf, dicBuf] = await Promise.all([affResp.arrayBuffer(), dicResp.arrayBuffer()]);
-  const dictionary = { aff: new Uint8Array(affBuf), dic: new Uint8Array(dicBuf) };
+  // Decode to UTF-8 strings rather than passing raw Uint8Arrays. `nspell`
+  // (retext-spell's spell checker) calls `.toString('utf8')` on the buffers,
+  // which is the Node Buffer API — on a browser Uint8Array it returns the
+  // comma-joined byte list instead of the decoded text, so the dictionary
+  // parses as zero words and every token gets flagged as unknown.
+  const [affText, dicText] = await Promise.all([affResp.text(), dicResp.text()]);
+  // retext-spell's Dictionary type advertises Uint8Array, but nspell accepts
+  // either strings or Buffers and strings are the only browser-safe option.
+  const dictionary = { aff: affText, dic: dicText } as unknown as {
+    aff: Uint8Array;
+    dic: Uint8Array;
+  };
   return unified()
     .use(retextEnglish)
     .use(retextSpell, { dictionary, personal: PERSONAL_DICTIONARY.join("\n") })
