@@ -59,18 +59,20 @@ _Edit every section with live inline previews_
 | **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)              |
 | **Reorder Sections**     | Drag sections to change the resume's narrative order                                          |
 | **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                |
+| **Inline Spellcheck**    | Native browser spelling underlines on every prose field — zero dependencies, zero network     |
 
 ### 🧭 ATS Score
 
 _Know how your resume will be parsed before you send it_
 
-| Feature                | Description                                                                       |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| **Score 0–100**        | Live scorecard rating your resume for applicant-tracking-system compatibility     |
-| **Category Breakdown** | Earned-vs-max points across structure, content, contact, keywords, and formatting |
-| **Keyword Matching**   | Paste a job description to see which keywords match and which are missing         |
-| **Issues & Wins**      | Actionable suggestions alongside a summary of what you're already doing well      |
-| **Template Warnings**  | Flags design choices (e.g., dense sidebars) that may hurt ATS parsing             |
+| Feature                | Description                                                                                                                |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Score 0–100**        | Live scorecard rating your resume for applicant-tracking-system compatibility                                              |
+| **Category Breakdown** | Earned-vs-max points across structure, content, contact, keywords, formatting, and writing quality                         |
+| **Keyword Matching**   | Paste a job description to see which keywords match and which are missing                                                  |
+| **Writing Quality**    | In-browser grammar, spelling, passive-voice, and readability pass — every finding shown with the field and suggested fixes |
+| **Issues & Wins**      | Actionable suggestions alongside a summary of what you're already doing well                                               |
+| **Template Warnings**  | Flags design choices (e.g., dense sidebars) that may hurt ATS parsing                                                      |
 
 ### 🎨 Design Controls
 
@@ -112,15 +114,16 @@ _Your resume is always within reach_
 
 ## 🛠️ Tech Stack
 
-| Category      | Technology                                                                                                    |
-| ------------- | ------------------------------------------------------------------------------------------------------------- |
-| Framework     | [React 19](https://react.dev/)                                                                                |
-| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                    |
-| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                |
-| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                               |
-| Icons         | [Lucide React](https://lucide.dev/)                                                                           |
-| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) |
-| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                         |
+| Category      | Technology                                                                                                                         |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| Framework     | [React 19](https://react.dev/)                                                                                                     |
+| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                         |
+| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                                     |
+| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                                    |
+| Icons         | [Lucide React](https://lucide.dev/)                                                                                                |
+| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)                      |
+| Writing Check | [retext](https://github.com/retextjs/retext) + [nspell](https://github.com/wooorm/nspell) Hunspell engine, running in a Web Worker |
+| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                              |
 
 ---
 
@@ -175,7 +178,10 @@ cloakresume/
 │   ├── data/
 │   │   ├── sampleResume.ts  # Populated starter (lorem ipsum showcase)
 │   │   └── blankResume.ts   # Empty starter for "Start fresh"
-│   └── utils/               # Colour palette, ATS scoring, rich text, storage
+│   ├── workers/             # Off-main-thread jobs
+│   │   ├── grammar.worker.ts          # retext + nspell spelling/grammar engine
+│   │   └── dictionary-en/             # Hunspell .aff / .dic, fetched as assets
+│   └── utils/               # Colour palette, ATS scoring, grammar hook, rich text, storage
 ├── index.html               # HTML entry point + meta/OG tags + CSP
 ├── vite.config.ts           # Vite + Tailwind + PWA configuration
 ├── tsconfig.json            # TypeScript configuration
@@ -193,6 +199,7 @@ CloakResume is a single-page React app that keeps every resume entirely in memor
 - **Live A4 pagination** — `PaginatedCanvas` measures rendered content and slices it into 210 × 297 mm pages, matching exactly what the browser will print to PDF.
 - **Scaled previews** — the template picker renders each layout at full width with a CSS transform scale, using your actual resume content (or sample content when the resume is empty).
 - **ATS scoring** — [src/utils/ats.ts](src/utils/ats.ts) inspects the resume shape, checks for missing sections, and matches keywords against a pasted job description — entirely client-side.
+- **Writing quality** — the ATS review spawns a Web Worker ([src/workers/grammar.worker.ts](src/workers/grammar.worker.ts)) that runs a retext pipeline (spelling, repeated words, passive voice, readability) against every prose field. The Hunspell dictionary is fetched as a bundled asset, parsed in-worker, and the results are folded into the ATS scorecard as a "Writing quality" dimension with per-field findings.
 - **PDF export** — there is no PDF library bundled. The app styles a print stylesheet and defers to the browser's native print-to-PDF, which yields a pixel-accurate, selectable, ATS-parseable PDF.
 
 All operations happen in-memory. The strict Content Security Policy in [index.html](index.html) blocks any outbound network requests for user content — it is architecturally impossible for your resume to leave your device.
