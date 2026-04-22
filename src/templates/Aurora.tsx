@@ -15,7 +15,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { contactIcon, splitSkills } from "./shared.tsx";
+import { contactIcon, extractInitials, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -24,12 +24,7 @@ interface Props {
 
 export function Aurora({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
-  const initials = resume.profile.name
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0]?.toUpperCase() ?? "")
-    .join("");
+  const initials = extractInitials(resume.profile.name);
 
   const css = `
     .au-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; }

@@ -20,6 +20,7 @@
 
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
+import { safeFilename } from "./fileIO.ts";
 
 const A4_WIDTH_MM = 210;
 const A4_HEIGHT_MM = 297;
@@ -33,17 +34,8 @@ const PX_PER_PT = 96 / 72;
  *  PDF is zoomed past 100 % on retina displays; pairs with PNG output. */
 const RENDER_SCALE = 3;
 
-function sanitiseFilename(input: string): string {
-  const cleaned = input
-    .trim()
-    .replace(/[^\w\s.-]/g, "")
-    .replace(/\s+/g, "-")
-    .toLowerCase();
-  return cleaned || "resume";
-}
-
 export function buildPdfFilename(displayName: string): string {
-  const name = sanitiseFilename(displayName || "resume");
+  const name = safeFilename(displayName || "resume");
   const date = new Date().toISOString().slice(0, 10);
   return `${name}-${date}.pdf`;
 }

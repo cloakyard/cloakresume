@@ -88,26 +88,20 @@ export function contactIcon(kind: ContactLink["kind"], size: number = 12) {
   }
 }
 
-/** Human-readable label for a contact kind (used as aria-label/title). */
-export function contactLabel(kind: ContactLink["kind"]): string {
-  const map: Record<ContactLink["kind"], string> = {
-    email: "Email",
-    phone: "Phone",
-    location: "Location",
-    website: "Website",
-    linkedin: "LinkedIn",
-    github: "GitHub",
-    twitter: "Twitter",
-    medium: "Medium",
-    other: "Link",
-  };
-  return map[kind];
-}
-
 /** Split a comma-separated skill list into trimmed items, ignoring blanks. */
 export function splitSkills(items: string): string[] {
   return items
     .split(",")
     .map((s) => s.trim())
     .filter(Boolean);
+}
+
+/** Extract up to two uppercase initials from a display name (for avatar fallbacks). */
+export function extractInitials(name: string): string {
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((w) => w[0]?.toUpperCase() ?? "")
+    .join("");
 }

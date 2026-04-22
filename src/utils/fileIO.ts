@@ -21,7 +21,7 @@ export interface ResumeSaveFile {
 }
 
 /** Sanitise a candidate filename — strip anything filesystem-hostile. */
-function safeFilename(input: string): string {
+export function safeFilename(input: string): string {
   const cleaned = input
     .trim()
     .replace(/[^\w\s.-]/g, "")

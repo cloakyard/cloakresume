@@ -165,18 +165,9 @@ export function App() {
     }
   }, []);
 
-  /** Welcome-screen → Start blank. Also closes the onboarding overlay. */
-  const onboardStartBlank = useCallback(() => {
-    setResume(blankResume);
-    setJobDescription("");
-    setTemplateId("classic-sidebar");
-    setShowOnboarding(false);
-    setOnboardingDismissable(false);
-  }, []);
-
-  /** Welcome-screen → Load the bundled sample. */
-  const onboardLoadSample = useCallback(() => {
-    setResume(sampleResume);
+  /** Welcome-screen → seed with the given resume data and close the overlay. */
+  const startWithResume = useCallback((data: ResumeData) => {
+    setResume(data);
     setJobDescription("");
     setTemplateId("classic-sidebar");
     setShowOnboarding(false);
@@ -262,8 +253,8 @@ export function App() {
 
       {showOnboarding && (
         <OnboardingScreen
-          onStartBlank={onboardStartBlank}
-          onLoadSample={onboardLoadSample}
+          onStartBlank={() => startWithResume(blankResume)}
+          onLoadSample={() => startWithResume(sampleResume)}
           onLoadFile={handleLoadFile}
           onDismiss={onboardingDismissable ? dismissOnboarding : undefined}
         />

@@ -10,7 +10,7 @@
 
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
-import { contactIcon, splitSkills } from "./shared.tsx";
+import { contactIcon } from "./shared.tsx";
 import { RichText } from "../utils/richText.tsx";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 
@@ -322,6 +322,3 @@ export function ClassicSidebar({ resume, palette }: Props) {
     </div>
   );
 }
-
-// Silence unused import warning from splitSkills being reserved for future compact variant
-void splitSkills;
