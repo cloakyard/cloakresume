@@ -14,7 +14,7 @@
  */
 
 const MAX_POLL_FRAMES = 30; // ~0.5 s at 60 fps — covers animated transitions
-const GLOW_DURATION_MS = 2200; // keep in sync with @keyframes cr-field-glow
+const GLOW_DURATION_MS = 3600; // keep in sync with @keyframes cr-field-glow
 
 export function highlightField(segmentId: string): void {
   let frame = 0;

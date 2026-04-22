@@ -19,6 +19,8 @@ interface RichTextAreaProps {
   compact?: boolean;
   /** Auto-grow the textarea to fit its content (default: true). */
   autoGrow?: boolean;
+  /** Opt-in target for the ATS jump-to-fix glow highlight. */
+  fieldId?: string;
 }
 
 export function RichTextArea({
@@ -29,6 +31,7 @@ export function RichTextArea({
   rows = 4,
   compact = false,
   autoGrow = true,
+  fieldId,
 }: RichTextAreaProps) {
   const ref = useRef<HTMLTextAreaElement>(null);
   const scope = useFormatScope();
@@ -72,6 +75,7 @@ export function RichTextArea({
       {label && <span className="cr-field-label">{label}</span>}
       <textarea
         ref={ref}
+        data-field-id={fieldId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onFocus={registration.onFocus}

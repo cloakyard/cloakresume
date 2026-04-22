@@ -107,12 +107,13 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           />
         </div>
 
-        <div data-field-id="profile.summary">
+        <div>
           <div className="cr-field-row">
             <span className="cr-field-label">Professional summary</span>
             <FormatToolbar />
           </div>
           <RichTextArea
+            fieldId="profile.summary"
             value={resume.profile.summary}
             onChange={(v) => updateProfile({ summary: v })}
             rows={8}

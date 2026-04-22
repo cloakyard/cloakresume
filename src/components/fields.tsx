@@ -26,6 +26,8 @@ interface TextFieldProps {
   invalid?: boolean;
   /** Helper or error text shown under the input. Turns red when `invalid`. */
   hint?: string;
+  /** Opt-in target for the ATS jump-to-fix glow highlight. */
+  fieldId?: string;
 }
 
 export function TextField({
@@ -36,12 +38,14 @@ export function TextField({
   type = "text",
   invalid = false,
   hint,
+  fieldId,
 }: TextFieldProps) {
   return (
     <label className="cr-field">
       <span className="cr-field-label">{label}</span>
       <input
         type={type}
+        data-field-id={fieldId}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}

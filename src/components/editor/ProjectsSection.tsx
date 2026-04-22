@@ -73,12 +73,13 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                         patch("projects", next);
                       }}
                     />
-                    <div data-field-id={`projects.${i}.description`}>
+                    <div>
                       <div className="cr-field-row">
                         <span className="cr-field-label">Description</span>
                         <FormatToolbar compact />
                       </div>
                       <RichTextArea
+                        fieldId={`projects.${i}.description`}
                         value={p.description}
                         rows={5}
                         onChange={(v) => {
