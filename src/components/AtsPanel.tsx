@@ -8,7 +8,7 @@
  * across the others.
  */
 
-import { AlertTriangle, Download, FileText, Hash, LayoutGrid, RefreshCw, X } from "lucide-react";
+import { AlertTriangle, FileText, Hash, LayoutGrid, RefreshCw, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AtsReport, ResumeData } from "../types.ts";
 import { scoreBand } from "../utils/ats.ts";
@@ -130,12 +130,15 @@ export function AtsPanel({
         </div>
 
         <div className="flex items-center justify-between gap-3 px-4 pt-1 pb-3 border-b border-(--line-soft) shrink-0 sm:px-6 sm:py-3 sm:border-(--line)">
-          <div className="flex items-center gap-2">
-            <h2 className="m-0 text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+          <div className="flex items-baseline gap-2">
+            <h2 className="m-0 text-[15px] font-semibold leading-none tracking-[-0.005em] text-(--ink-1)">
               Résumé review
             </h2>
-            <span className="hidden sm:inline w-1 h-1 rounded-full bg-(--ink-6)" />
-            <span className="hidden sm:inline font-mono text-[10.5px] text-(--ink-5) tracking-[0.03em]">
+            <span
+              aria-hidden="true"
+              className="hidden sm:inline-block w-1 h-1 rounded-full bg-(--ink-6) -translate-y-0.5"
+            />
+            <span className="hidden sm:inline font-mono text-[10.5px] leading-none text-(--ink-5) tracking-[0.03em]">
               {timestamp}
             </span>
           </div>
@@ -217,7 +220,7 @@ export function AtsPanel({
                 <div className="flex gap-1.5 mt-2 sm:mt-3 sm:gap-2">
                   <button
                     type="button"
-                    className="tb ghost"
+                    className="tb"
                     onClick={() => {
                       setScanning(true);
                       window.setTimeout(() => setScanning(false), 900);
@@ -226,15 +229,6 @@ export function AtsPanel({
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
                     <span className="hidden sm:inline">Re-scan</span>
-                  </button>
-                  <button
-                    type="button"
-                    className="tb ghost"
-                    onClick={() => window.print()}
-                    aria-label="Export report"
-                  >
-                    <Download className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Export report</span>
                   </button>
                 </div>
               </div>

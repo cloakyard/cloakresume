@@ -87,7 +87,7 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
           {dimensions.map((d) => (
             <div
               key={d.label}
-              className="flex items-start gap-2.5 py-2 border-b border-(--line-soft) last:border-0 last:pb-0.5 sm:flex-col sm:py-0 sm:border-0 sm:gap-0"
+              className="flex items-start gap-2.5 py-2 border-b border-(--line-soft) last:border-0 last:pb-0.5 min-w-0 sm:flex-col sm:items-stretch sm:py-0 sm:border-0 sm:gap-0"
             >
               <div
                 className="[order:-1] font-mono text-[19px] font-bold tabular-nums leading-[1.1] tracking-[-0.02em] min-w-[44px] shrink-0 text-right sm:text-[24px] sm:min-w-0 sm:text-left sm:mb-px min-[900px]:text-[26px]"
@@ -108,7 +108,7 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
                     style={{ width: `${d.percent}%`, background: d.tone }}
                   />
                 </div>
-                <div className="font-mono text-[9.5px] text-(--ink-5) mt-0.5 tracking-[0.01em] whitespace-nowrap overflow-hidden text-ellipsis sm:text-[10.5px]">
+                <div className="font-mono text-[9.5px] text-(--ink-5) mt-0.5 tracking-[0.01em] leading-[1.35] line-clamp-2 sm:text-[10.5px]">
                   {d.caption}
                 </div>
               </div>
