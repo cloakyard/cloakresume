@@ -33,6 +33,8 @@ interface AtsPanelProps {
   engineProgress: number;
   /** Re-runs the grammar pass and restarts the local spinner. */
   onRescan: () => void;
+  /** Tap-to-fix: jump the editor to the field a grammar finding came from. */
+  onJumpToField?: (segmentId: string) => void;
 }
 
 type TabId = "overview" | "keywords" | "insights" | "parse";
@@ -56,6 +58,7 @@ export function AtsPanel({
   engineReady,
   engineProgress,
   onRescan,
+  onJumpToField,
 }: AtsPanelProps) {
   const [tab, setTab] = useState<TabId>("overview");
   const [minDelayPassed, setMinDelayPassed] = useState(false);
@@ -357,7 +360,9 @@ export function AtsPanel({
                   onOpenJdEditor={onOpenJdEditor}
                 />
               )}
-              {tab === "insights" && <AtsInsightsPane report={report} />}
+              {tab === "insights" && (
+                <AtsInsightsPane report={report} onJumpToField={onJumpToField} />
+              )}
               {tab === "parse" && <AtsParsePreview resume={resume} />}
             </div>
           </>

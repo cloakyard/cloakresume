@@ -29,6 +29,7 @@ import { derivePalette } from "./utils/colors.ts";
 import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
+import { highlightField } from "./utils/highlightField.ts";
 import { downloadResumeFile, normalizeResumeData, readResumeFile } from "./utils/fileIO.ts";
 import { blankResume } from "./data/blankResume.ts";
 
@@ -168,6 +169,32 @@ export function App() {
     setActiveSection("jd");
   }, []);
 
+  /**
+   * Tap-to-fix jump from the Insights tab: translate a grammar segment id
+   * (e.g. `experience.0.bullets.2`) into the editor rail section, close
+   * the review modal, then soft-glow the specific field so the user sees
+   * exactly which bullet / summary / description to edit.
+   */
+  const handleJumpToField = useCallback((segmentId: string) => {
+    const prefix = segmentId.split(".")[0];
+    const target: SectionId | null =
+      prefix === "profile"
+        ? "profile"
+        : prefix === "experience"
+          ? "experience"
+          : prefix === "projects"
+            ? "projects"
+            : prefix === "awards"
+              ? "awards"
+              : null;
+    if (!target) return;
+    setActiveSection(target);
+    setAtsOpen(false);
+    // Delay past the sheet's close animation + section mount so the field
+    // exists in the DOM by the time we try to query + scroll to it.
+    window.setTimeout(() => highlightField(segmentId), 320);
+  }, []);
+
   const TemplateComponent = TEMPLATES[templateId].component;
 
   const handleExportPdf = useCallback(async () => {
@@ -288,6 +315,7 @@ export function App() {
         engineReady={grammarEngineReady}
         engineProgress={grammarEngineProgress}
         onRescan={runGrammarScan}
+        onJumpToField={handleJumpToField}
       />
 
       {showOnboarding && (

@@ -79,15 +79,17 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
                       }}
                     />
                   </div>
-                  <TextField
-                    label="Detail (optional)"
-                    value={a.detail}
-                    onChange={(v) => {
-                      const next = [...resume.awards];
-                      next[i] = { ...a, detail: v };
-                      patch("awards", next);
-                    }}
-                  />
+                  <div data-field-id={`awards.${i}.detail`}>
+                    <TextField
+                      label="Detail (optional)"
+                      value={a.detail}
+                      onChange={(v) => {
+                        const next = [...resume.awards];
+                        next[i] = { ...a, detail: v };
+                        patch("awards", next);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             )}

@@ -4,7 +4,14 @@
  * `issueIcon`) translate raw report strings into a friendlier label + icon.
  */
 
-import { AlertTriangle, BarChart3, CheckCircle2, PencilLine, ShieldCheck } from "lucide-react";
+import {
+  AlertTriangle,
+  ArrowUpRight,
+  BarChart3,
+  CheckCircle2,
+  PencilLine,
+  ShieldCheck,
+} from "lucide-react";
 import type { AtsReport, GrammarIssue, GrammarIssueKind } from "../../types.ts";
 
 type InsightIcon = "check" | "alert" | "chart" | "shield";
@@ -58,9 +65,11 @@ function issueIcon(message: string): "alert" | "chart" {
 
 interface AtsInsightsPaneProps {
   report: AtsReport;
+  /** Tap-to-fix: jump the editor to the field a grammar finding originated from. */
+  onJumpToField?: (segmentId: string) => void;
 }
 
-export function AtsInsightsPane({ report }: AtsInsightsPaneProps) {
+export function AtsInsightsPane({ report, onJumpToField }: AtsInsightsPaneProps) {
   const severityRank: Record<string, number> = { fail: 0, warn: 1, info: 2 };
   const orderedIssues = [...report.issues].sort(
     (a, b) => severityRank[a.severity] - severityRank[b.severity],
@@ -105,7 +114,7 @@ export function AtsInsightsPane({ report }: AtsInsightsPaneProps) {
         <InsightCard key={it.key} tone={it.tone} icon={it.icon} title={it.title} body={it.body} />
       ))}
       {report.grammar && report.grammar.issues.length > 0 && (
-        <WritingDetails issues={report.grammar.issues} />
+        <WritingDetails issues={report.grammar.issues} onJumpToField={onJumpToField} />
       )}
     </div>
   );
@@ -130,7 +139,13 @@ const KIND_TONE: Record<GrammarIssueKind, { bg: string; fg: string; border: stri
  * doesn't turn the pane into a wall of cards — the aggregate counts in
  * the Insights feed already convey scale.
  */
-function WritingDetails({ issues }: { issues: GrammarIssue[] }) {
+function WritingDetails({
+  issues,
+  onJumpToField,
+}: {
+  issues: GrammarIssue[];
+  onJumpToField?: (segmentId: string) => void;
+}) {
   const capped = issues.slice(0, 25);
   const overflow = issues.length - capped.length;
   const counts = new Map<string, number>();
@@ -150,33 +165,9 @@ function WritingDetails({ issues }: { issues: GrammarIssue[] }) {
         </span>
       </div>
       <ul className="divide-y divide-(--line-soft)">
-        {keyed.map(({ key, issue }) => {
-          const tone = KIND_TONE[issue.kind];
-          const preview = issue.actual.length > 72 ? `${issue.actual.slice(0, 72)}…` : issue.actual;
-          return (
-            <li key={key} className="flex items-start gap-2.5 px-3 py-2.5">
-              <span
-                className={`shrink-0 inline-flex items-center h-5 px-1.5 rounded-md border font-mono text-[9.5px] font-semibold tracking-[0.04em] uppercase ${tone.bg} ${tone.fg} ${tone.border}`}
-              >
-                {KIND_LABEL[issue.kind]}
-              </span>
-              <div className="flex-1 min-w-0">
-                <div className="text-[12.5px] text-(--ink-1) leading-snug">
-                  <mark className="bg-(--warn-bg) text-(--ink-1) px-1 rounded">{preview}</mark>
-                  {issue.suggestions.length > 0 && (
-                    <span className="text-(--ink-3)">
-                      {" "}
-                      → {issue.suggestions.map((s) => `"${s}"`).join(", ")}
-                    </span>
-                  )}
-                </div>
-                <div className="text-[11px] text-(--ink-4) mt-0.5 truncate">
-                  {issue.segmentLabel}
-                </div>
-              </div>
-            </li>
-          );
-        })}
+        {keyed.map(({ key, issue }) => (
+          <WritingDetailRow key={key} issue={issue} onJumpToField={onJumpToField} />
+        ))}
       </ul>
       {overflow > 0 && (
         <div className="px-3 py-2 text-[11px] text-(--ink-5) text-center border-t border-(--line-soft) bg-(--surface-2)">
@@ -184,6 +175,58 @@ function WritingDetails({ issues }: { issues: GrammarIssue[] }) {
         </div>
       )}
     </div>
+  );
+}
+
+function WritingDetailRow({
+  issue,
+  onJumpToField,
+}: {
+  issue: GrammarIssue;
+  onJumpToField?: (segmentId: string) => void;
+}) {
+  const tone = KIND_TONE[issue.kind];
+  const preview = issue.actual.length > 72 ? `${issue.actual.slice(0, 72)}…` : issue.actual;
+  const interactive = Boolean(onJumpToField);
+  const content = (
+    <>
+      <span
+        className={`shrink-0 inline-flex items-center h-5 px-1.5 rounded-md border font-mono text-[9.5px] font-semibold tracking-[0.04em] uppercase ${tone.bg} ${tone.fg} ${tone.border}`}
+      >
+        {KIND_LABEL[issue.kind]}
+      </span>
+      <div className="flex-1 min-w-0 text-left">
+        <div className="text-[12.5px] text-(--ink-1) leading-snug">
+          <mark className="bg-(--warn-bg) text-(--ink-1) px-1 rounded">{preview}</mark>
+          {issue.suggestions.length > 0 && (
+            <span className="text-(--ink-3)">
+              {" "}
+              → {issue.suggestions.map((s) => `"${s}"`).join(", ")}
+            </span>
+          )}
+        </div>
+        <div className="text-[11px] text-(--ink-4) mt-0.5 truncate">{issue.segmentLabel}</div>
+      </div>
+      {interactive && (
+        <ArrowUpRight aria-hidden="true" className="shrink-0 w-3.5 h-3.5 text-(--ink-5) mt-0.5" />
+      )}
+    </>
+  );
+  return (
+    <li>
+      {interactive ? (
+        <button
+          type="button"
+          onClick={() => onJumpToField?.(issue.segmentId)}
+          className="w-full flex items-start gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-(--surface-2) focus-visible:outline-none focus-visible:bg-(--surface-2) focus-visible:shadow-(--sh-focus)"
+          aria-label={`Jump to ${issue.segmentLabel}`}
+        >
+          {content}
+        </button>
+      ) : (
+        <div className="flex items-start gap-2.5 px-3 py-2.5">{content}</div>
+      )}
+    </li>
   );
 }
 

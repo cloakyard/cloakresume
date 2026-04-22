@@ -125,6 +125,34 @@
       opacity: 0;
     }
   }
+  /*
+   * Soft-glow highlight applied when the user taps an insight to jump to
+   * a specific field. Pulses once, then clears so the editor returns to
+   * its baseline appearance. Timed to match the ~2.2 s duration added by
+   * `highlightField()` in src/utils/highlightField.ts.
+   */
+  @keyframes cr-field-glow {
+    0% {
+      box-shadow:
+        0 0 0 0 color-mix(in oklab, var(--brand) 55%, transparent),
+        0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent);
+    }
+    20% {
+      box-shadow:
+        0 0 0 3px color-mix(in oklab, var(--brand) 35%, transparent),
+        0 0 0 10px color-mix(in oklab, var(--brand) 14%, transparent);
+    }
+    100% {
+      box-shadow:
+        0 0 0 0 transparent,
+        0 0 0 0 transparent;
+    }
+  }
+  .cr-field-glow {
+    animation: cr-field-glow 2.2s ease-out;
+    border-radius: 12px;
+    scroll-margin: 120px;
+  }
 }
 
 /*

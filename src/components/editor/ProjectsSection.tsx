@@ -73,7 +73,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                         patch("projects", next);
                       }}
                     />
-                    <div>
+                    <div data-field-id={`projects.${i}.description`}>
                       <div className="cr-field-row">
                         <span className="cr-field-label">Description</span>
                         <FormatToolbar compact />

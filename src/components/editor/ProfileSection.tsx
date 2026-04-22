@@ -107,7 +107,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           />
         </div>
 
-        <div>
+        <div data-field-id="profile.summary">
           <div className="cr-field-row">
             <span className="cr-field-label">Professional summary</span>
             <FormatToolbar />
