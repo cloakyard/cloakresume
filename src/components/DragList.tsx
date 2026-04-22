@@ -5,8 +5,12 @@
  * each <DragItem> child so that grabbing its handle moves the item to
  * wherever it's dropped. Uses HTML5 drag-and-drop — no external lib.
  *
- * Only the handle is draggable. The row itself is the drop target, so
- * text selection inside inputs keeps working normally.
+ * Only the grip is draggable. The row itself is the drop target, so
+ * text selection inside inputs keeps working normally. Up/down arrow
+ * buttons are exposed separately from the grip so sections can place
+ * the drag handle on the left and the tap-to-nudge arrows on the right
+ * — useful on touch devices where drag across a scrolling viewport is
+ * awkward.
  */
 
 import {
@@ -18,7 +22,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { GripVertical, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, GripVertical, Trash2 } from "lucide-react";
 import { moveItem } from "../utils/arrayMove.ts";
 
 interface DragListContextValue {
@@ -71,10 +75,17 @@ function useDragList() {
 interface DragItemProps {
   index: number;
   onDelete: () => void;
-  /** Caller-provided wrapper so the item renders with its own border/layout. */
-  children: (handle: ReactNode, deleteBtn: ReactNode) => ReactNode;
+  /**
+   * Caller-provided wrapper so the item renders with its own border/layout.
+   * `handle` is the draggable grip, `deleteBtn` is the trash button, and
+   * `moveBtns` is a separate up/down tap cluster — sections typically put
+   * `handle` on the left and `moveBtns` near the delete button on the right.
+   */
+  children: (handle: ReactNode, deleteBtn: ReactNode, moveBtns: ReactNode) => ReactNode;
   /** Smaller grip + delete — for bullet rows inside a larger card. */
   compact?: boolean;
+  /** Stack up/down as a vertical column — pairs well with a vertical delete to free horizontal content width. */
+  stackMoves?: boolean;
 }
 
 /**
@@ -82,7 +93,13 @@ interface DragItemProps {
  * handle and delete button are placed inside their row. That avoids
  * forcing a uniform chrome on every list item.
  */
-export function DragItem({ index, onDelete, children, compact = false }: DragItemProps) {
+export function DragItem({
+  index,
+  onDelete,
+  children,
+  compact = false,
+  stackMoves = false,
+}: DragItemProps) {
   const ctx = useDragList();
   const rowRef = useRef<HTMLDivElement>(null);
   const isDragging = ctx.dragIndex === index;
@@ -90,9 +107,14 @@ export function DragItem({ index, onDelete, children, compact = false }: DragIte
 
   const handleSize = compact ? "p-1" : "p-1.5";
   const iconSize = compact ? "w-3.5 h-3.5" : "w-4 h-4";
+  const arrowIconSize = compact ? "w-3 h-3" : "w-3.5 h-3.5";
+  const arrowBtnClass = `${handleSize} inline-flex items-center justify-center rounded-md text-slate-400 hover:text-primary-600 hover:bg-primary-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400`;
+  const isFirst = index === 0;
+  const isLast = index === ctx.total - 1;
 
   const handle = (
-    <span
+    <button
+      type="button"
       draggable
       onDragStart={(e) => {
         ctx.setDragIndex(index);
@@ -119,6 +141,35 @@ export function DragItem({ index, onDelete, children, compact = false }: DragIte
       className={`${handleSize} inline-flex items-center justify-center rounded-md text-slate-400 hover:text-primary-600 hover:bg-primary-50 cursor-grab active:cursor-grabbing transition-colors select-none`}
     >
       <GripVertical className={iconSize} />
+    </button>
+  );
+
+  const moveBtns = (
+    <span
+      className={
+        stackMoves ? "inline-flex flex-col items-center gap-0" : "inline-flex items-center gap-0.5"
+      }
+    >
+      <button
+        type="button"
+        onClick={() => ctx.commitMove(index, index - 1)}
+        disabled={isFirst}
+        aria-label="Move up"
+        title="Move up"
+        className={arrowBtnClass}
+      >
+        <ChevronUp className={arrowIconSize} />
+      </button>
+      <button
+        type="button"
+        onClick={() => ctx.commitMove(index, index + 1)}
+        disabled={isLast}
+        aria-label="Move down"
+        title="Move down"
+        className={arrowBtnClass}
+      >
+        <ChevronDown className={arrowIconSize} />
+      </button>
     </span>
   );
 
@@ -157,7 +208,7 @@ export function DragItem({ index, onDelete, children, compact = false }: DragIte
         isDragging ? "opacity-40" : ""
       } ${isOver ? "ring-2 ring-primary-400 ring-offset-2 ring-offset-slate-50 rounded-lg" : ""}`}
     >
-      {children(handle, deleteBtn)}
+      {children(handle, deleteBtn, moveBtns)}
     </div>
   );
 }

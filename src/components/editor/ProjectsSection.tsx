@@ -49,12 +49,13 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn) => (
+              {(handle, _deleteBtn, moveBtns) => (
                 <div className="sub-card mb-2.5">
                   <SubCardHead
                     index={i}
                     prefix="Project"
                     drag={handle}
+                    moveBtns={moveBtns}
                     onDelete={() =>
                       patch(
                         "projects",

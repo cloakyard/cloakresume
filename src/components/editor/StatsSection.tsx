@@ -1,8 +1,16 @@
 /** Quick stats + extras (visa, availability, etc.). */
 
 import { BarChart3 } from "lucide-react";
+import { TextField } from "../fields.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
-import { AddButton, EmptyState, newId, usePatch, type SectionProps } from "./shared.tsx";
+import {
+  AddButton,
+  EmptyState,
+  SubCardHead,
+  newId,
+  usePatch,
+  type SectionProps,
+} from "./shared.tsx";
 
 export function StatsSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
@@ -31,7 +39,6 @@ export function StatsSection({ resume, onChange }: SectionProps) {
             <DragItem
               key={s.id}
               index={i}
-              compact
               onDelete={() =>
                 patch(
                   "quickStats",
@@ -39,32 +46,42 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, deleteBtn) => (
-                <div className="grid grid-cols-[auto_100px_1fr_auto] gap-2 items-center">
-                  <div>{handle}</div>
-                  <input
-                    type="text"
-                    value={s.value}
-                    placeholder="15+"
-                    onChange={(e) => {
-                      const next = [...resume.quickStats];
-                      next[i] = { ...s, value: e.target.value };
-                      patch("quickStats", next);
-                    }}
-                    className="cr-input font-bold"
+              {(handle, _deleteBtn, moveBtns) => (
+                <div className="sub-card mb-2.5">
+                  <SubCardHead
+                    index={i}
+                    prefix="Stat"
+                    drag={handle}
+                    moveBtns={moveBtns}
+                    onDelete={() =>
+                      patch(
+                        "quickStats",
+                        resume.quickStats.filter((_, j) => j !== i),
+                      )
+                    }
                   />
-                  <input
-                    type="text"
-                    value={s.label}
-                    placeholder="years in software"
-                    onChange={(e) => {
-                      const next = [...resume.quickStats];
-                      next[i] = { ...s, label: e.target.value };
-                      patch("quickStats", next);
-                    }}
-                    className="cr-input"
-                  />
-                  <div>{deleteBtn}</div>
+                  <div className="grid grid-cols-[120px_1fr] gap-3">
+                    <TextField
+                      label="Value"
+                      placeholder="15+"
+                      value={s.value}
+                      onChange={(v) => {
+                        const next = [...resume.quickStats];
+                        next[i] = { ...s, value: v };
+                        patch("quickStats", next);
+                      }}
+                    />
+                    <TextField
+                      label="Label"
+                      placeholder="years in software"
+                      value={s.label}
+                      onChange={(v) => {
+                        const next = [...resume.quickStats];
+                        next[i] = { ...s, label: v };
+                        patch("quickStats", next);
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </DragItem>
@@ -82,7 +99,6 @@ export function StatsSection({ resume, onChange }: SectionProps) {
             <DragItem
               key={x.id}
               index={i}
-              compact
               onDelete={() =>
                 patch(
                   "extras",
@@ -90,32 +106,42 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, deleteBtn) => (
-                <div className="grid grid-cols-[auto_140px_1fr_auto] gap-2 items-center">
-                  <div>{handle}</div>
-                  <input
-                    type="text"
-                    value={x.label}
-                    placeholder="Visa"
-                    onChange={(e) => {
-                      const next = [...resume.extras];
-                      next[i] = { ...x, label: e.target.value };
-                      patch("extras", next);
-                    }}
-                    className="cr-input"
+              {(handle, _deleteBtn, moveBtns) => (
+                <div className="sub-card mb-2.5">
+                  <SubCardHead
+                    index={i}
+                    prefix="Extra"
+                    drag={handle}
+                    moveBtns={moveBtns}
+                    onDelete={() =>
+                      patch(
+                        "extras",
+                        resume.extras.filter((_, j) => j !== i),
+                      )
+                    }
                   />
-                  <input
-                    type="text"
-                    value={x.value}
-                    placeholder="No sponsorship required"
-                    onChange={(e) => {
-                      const next = [...resume.extras];
-                      next[i] = { ...x, value: e.target.value };
-                      patch("extras", next);
-                    }}
-                    className="cr-input"
-                  />
-                  <div>{deleteBtn}</div>
+                  <div className="grid grid-cols-[140px_1fr] gap-3">
+                    <TextField
+                      label="Label"
+                      placeholder="Visa"
+                      value={x.label}
+                      onChange={(v) => {
+                        const next = [...resume.extras];
+                        next[i] = { ...x, label: v };
+                        patch("extras", next);
+                      }}
+                    />
+                    <TextField
+                      label="Value"
+                      placeholder="No sponsorship required"
+                      value={x.value}
+                      onChange={(v) => {
+                        const next = [...resume.extras];
+                        next[i] = { ...x, value: v };
+                        patch("extras", next);
+                      }}
+                    />
+                  </div>
                 </div>
               )}
             </DragItem>

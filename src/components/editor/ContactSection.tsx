@@ -50,35 +50,41 @@ export function ContactSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, deleteBtn) => (
-              <div className="flex items-center gap-1.5 rounded-md transition-shadow border border-(--line) bg-(--surface)">
-                <div className="pl-1">{handle}</div>
-                <div className="w-7 h-9 flex items-center justify-center text-(--ink-4) shrink-0">
-                  {contactIcon(c.kind, 14)}
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="rounded-md border border-(--line) bg-(--surface) overflow-hidden">
+                <div className="flex items-center gap-1.5 px-1 py-1 bg-(--surface-2) border-b border-(--line-soft)">
+                  {handle}
+                  <div className="w-6 h-6 flex items-center justify-center text-(--ink-4) shrink-0">
+                    {contactIcon(c.kind, 14)}
+                  </div>
+                  <select
+                    value={c.kind}
+                    onChange={(e) => {
+                      const next = [...resume.contact];
+                      next[i] = { ...c, kind: e.target.value as typeof c.kind };
+                      patch("contact", next);
+                    }}
+                    aria-label="Contact kind"
+                    className="appearance-none pl-2 pr-5 py-1 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
+                      backgroundRepeat: "no-repeat",
+                      backgroundPosition: "right 4px center",
+                      backgroundSize: "10px 10px",
+                    }}
+                  >
+                    {CONTACT_KINDS.map((k) => (
+                      <option key={k} value={k}>
+                        {k}
+                      </option>
+                    ))}
+                  </select>
+                  <div className="ml-auto flex items-center gap-0.5">
+                    {moveBtns}
+                    {deleteBtn}
+                  </div>
                 </div>
-                <select
-                  value={c.kind}
-                  onChange={(e) => {
-                    const next = [...resume.contact];
-                    next[i] = { ...c, kind: e.target.value as typeof c.kind };
-                    patch("contact", next);
-                  }}
-                  aria-label="Contact kind"
-                  className="appearance-none pl-2 pr-5 py-1.5 font-mono text-[10px] bg-(--surface-2) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-transparent"
-                  style={{
-                    backgroundImage:
-                      "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8' stroke-width='2.5'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "right 4px center",
-                    backgroundSize: "10px 10px",
-                  }}
-                >
-                  {CONTACT_KINDS.map((k) => (
-                    <option key={k} value={k}>
-                      {k}
-                    </option>
-                  ))}
-                </select>
                 <input
                   type="text"
                   value={c.value}
@@ -88,9 +94,8 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                     patch("contact", next);
                   }}
                   placeholder="Enter value…"
-                  className="flex-1 min-w-0 px-2 py-2 text-sm bg-transparent focus:outline-none placeholder:text-(--ink-5)"
+                  className="w-full px-3 py-2 text-sm bg-transparent focus:outline-none placeholder:text-(--ink-5)"
                 />
-                <div className="pr-1">{deleteBtn}</div>
               </div>
             )}
           </DragItem>

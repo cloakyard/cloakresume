@@ -106,11 +106,13 @@ export function SubCardHead({
   prefix,
   onDelete,
   drag,
+  moveBtns,
 }: {
   index: number;
   prefix: string;
   onDelete: () => void;
   drag?: ReactNode;
+  moveBtns?: ReactNode;
 }) {
   return (
     <div className="flex items-center gap-2 mb-2">
@@ -118,14 +120,17 @@ export function SubCardHead({
       <span className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-[0.06em]">
         {prefix} #{index + 1}
       </span>
-      <button
-        type="button"
-        onClick={onDelete}
-        className="ml-auto w-7 h-7 rounded-md grid place-items-center text-(--ink-5) hover:text-(--danger) hover:bg-(--danger-bg) transition-colors"
-        aria-label={`Delete ${prefix.toLowerCase()} ${index + 1}`}
-      >
-        <Trash2 className="w-3.5 h-3.5" />
-      </button>
+      <div className="ml-auto flex items-center gap-1">
+        {moveBtns}
+        <button
+          type="button"
+          onClick={onDelete}
+          className="w-7 h-7 rounded-md grid place-items-center text-(--ink-5) hover:text-(--danger) hover:bg-(--danger-bg) transition-colors"
+          aria-label={`Delete ${prefix.toLowerCase()} ${index + 1}`}
+        >
+          <Trash2 className="w-3.5 h-3.5" />
+        </button>
+      </div>
     </div>
   );
 }

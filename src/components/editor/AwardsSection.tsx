@@ -44,12 +44,13 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn) => (
+            {(handle, _deleteBtn, moveBtns) => (
               <div className="sub-card mb-2.5">
                 <SubCardHead
                   index={i}
                   prefix="Award"
                   drag={handle}
+                  moveBtns={moveBtns}
                   onDelete={() =>
                     patch(
                       "awards",

@@ -58,12 +58,13 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn) => (
+              {(handle, _deleteBtn, moveBtns) => (
                 <div className="sub-card mb-2.5">
                   <SubCardHead
                     index={i}
                     prefix="Role"
                     drag={handle}
+                    moveBtns={moveBtns}
                     onDelete={() =>
                       patch(
                         "experience",
@@ -154,6 +155,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                             key={`${job.id}-bullet-${bi}`}
                             index={bi}
                             compact
+                            stackMoves
                             onDelete={() => {
                               const next = [...resume.experience];
                               next[i] = {
@@ -163,7 +165,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                               patch("experience", next);
                             }}
                           >
-                            {(bHandle, bDelete) => (
+                            {(bHandle, bDelete, bMove) => (
                               <div className="flex gap-1.5 items-start">
                                 <div className="mt-2">{bHandle}</div>
                                 <div className="flex-1">
@@ -180,7 +182,10 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                                     }}
                                   />
                                 </div>
-                                <div className="mt-2">{bDelete}</div>
+                                <div className="mt-2 flex flex-col items-center gap-0">
+                                  {bMove}
+                                  {bDelete}
+                                </div>
                               </div>
                             )}
                           </DragItem>

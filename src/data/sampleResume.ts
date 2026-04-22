@@ -210,9 +210,9 @@ export const sampleResume: ResumeData = {
     { id: "a6", title: "Incididunt WinnerCircle", year: "2016", detail: "Labore Dolore Services" },
   ],
   languages: [
-    { id: "l1", name: "Lorem", level: "Professional" },
-    { id: "l2", name: "Ipsum", level: "Professional" },
-    { id: "l3", name: "Dolor", level: "Native or Bilingual" },
+    { id: "l1", name: "Lorem", level: "Advanced" },
+    { id: "l2", name: "Ipsum", level: "Advanced" },
+    { id: "l3", name: "Dolor", level: "Expert" },
   ],
   interests: ["Lorem Ipsum", "Dolor Sit"],
   tools: ["Lorem", "Ipsum", "Dolor", "Sit", "Amet", "Consectetur", "Adipiscing", "Elit", "Sed"],

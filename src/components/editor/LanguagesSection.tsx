@@ -3,15 +3,16 @@
 import { Globe } from "lucide-react";
 import { TextField, SelectField } from "../fields.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
-import { AddButton, EmptyState, newId, usePatch, type SectionProps } from "./shared.tsx";
+import {
+  AddButton,
+  EmptyState,
+  SubCardHead,
+  newId,
+  usePatch,
+  type SectionProps,
+} from "./shared.tsx";
 
-const LANGUAGE_LEVELS = [
-  "Elementary",
-  "Limited Working",
-  "Professional",
-  "Full Professional",
-  "Native or Bilingual",
-] as const;
+const LANGUAGE_LEVELS = ["Beginner", "Intermediate", "Experienced", "Advanced", "Expert"] as const;
 
 export function LanguagesSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
@@ -45,29 +46,41 @@ export function LanguagesSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, deleteBtn) => (
-              <div className="grid grid-cols-[auto_1fr_1fr_auto] gap-2 items-end mb-2">
-                <div className="pb-2">{handle}</div>
-                <TextField
-                  label="Language"
-                  value={l.name}
-                  onChange={(v) => {
-                    const next = [...resume.languages];
-                    next[i] = { ...l, name: v };
-                    patch("languages", next);
-                  }}
+            {(handle, _deleteBtn, moveBtns) => (
+              <div className="sub-card mb-2.5">
+                <SubCardHead
+                  index={i}
+                  prefix="Language"
+                  drag={handle}
+                  moveBtns={moveBtns}
+                  onDelete={() =>
+                    patch(
+                      "languages",
+                      resume.languages.filter((_, j) => j !== i),
+                    )
+                  }
                 />
-                <SelectField
-                  label="Proficiency"
-                  value={l.level}
-                  options={LANGUAGE_LEVELS}
-                  onChange={(v) => {
-                    const next = [...resume.languages];
-                    next[i] = { ...l, level: v };
-                    patch("languages", next);
-                  }}
-                />
-                <div className="pb-2">{deleteBtn}</div>
+                <div className="grid grid-cols-2 gap-3">
+                  <TextField
+                    label="Language"
+                    value={l.name}
+                    onChange={(v) => {
+                      const next = [...resume.languages];
+                      next[i] = { ...l, name: v };
+                      patch("languages", next);
+                    }}
+                  />
+                  <SelectField
+                    label="Proficiency"
+                    value={l.level}
+                    options={LANGUAGE_LEVELS}
+                    onChange={(v) => {
+                      const next = [...resume.languages];
+                      next[i] = { ...l, level: v };
+                      patch("languages", next);
+                    }}
+                  />
+                </div>
               </div>
             )}
           </DragItem>

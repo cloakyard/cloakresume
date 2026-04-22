@@ -56,12 +56,13 @@ export function EducationSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn) => (
+            {(handle, _deleteBtn, moveBtns) => (
               <div className="sub-card mb-2.5">
                 <SubCardHead
                   index={i}
                   prefix="Entry"
                   drag={handle}
+                  moveBtns={moveBtns}
                   onDelete={() =>
                     patch(
                       "education",
@@ -69,7 +70,7 @@ export function EducationSection({ resume, onChange }: SectionProps) {
                     )
                   }
                 />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="cr-stack">
                   <TextField
                     label="Degree"
                     value={ed.degree}
@@ -106,25 +107,27 @@ export function EducationSection({ resume, onChange }: SectionProps) {
                       patch("education", next);
                     }}
                   />
-                  <MonthYearField
-                    label="Start"
-                    value={ed.start}
-                    onChange={(v) => {
-                      const next = [...resume.education];
-                      next[i] = { ...ed, start: v };
-                      patch("education", next);
-                    }}
-                  />
-                  <MonthYearField
-                    label="End"
-                    allowPresent
-                    value={ed.end}
-                    onChange={(v) => {
-                      const next = [...resume.education];
-                      next[i] = { ...ed, end: v };
-                      patch("education", next);
-                    }}
-                  />
+                  <div className="grid grid-cols-2 gap-3">
+                    <MonthYearField
+                      label="Start"
+                      value={ed.start}
+                      onChange={(v) => {
+                        const next = [...resume.education];
+                        next[i] = { ...ed, start: v };
+                        patch("education", next);
+                      }}
+                    />
+                    <MonthYearField
+                      label="End"
+                      allowPresent
+                      value={ed.end}
+                      onChange={(v) => {
+                        const next = [...resume.education];
+                        next[i] = { ...ed, end: v };
+                        patch("education", next);
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             )}
