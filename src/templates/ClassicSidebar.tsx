@@ -78,11 +78,11 @@ export function ClassicSidebar({ resume, palette }: Props) {
   const sidebarContactKinds = resume.contact;
 
   return (
-    <div className="cs-root">
+    <>
       <style>{css}</style>
 
       {/* ───── Page 1 ───── */}
-      <div className="resume-page">
+      <div className="resume-page cs-root">
         <div className="cs-page">
           <aside className="cs-sidebar">
             {resume.profile.photoUrl ? (
@@ -194,7 +194,7 @@ export function ClassicSidebar({ resume, palette }: Props) {
       </div>
 
       {/* ───── Page 2 ───── */}
-      <div className="resume-page">
+      <div className="resume-page cs-root">
         <div className="cs-page">
           <aside className="cs-sidebar">
             {resume.certifications.length > 0 && (
@@ -324,6 +324,6 @@ export function ClassicSidebar({ resume, palette }: Props) {
           </main>
         </div>
       </div>
-    </div>
+    </>
   );
 }
