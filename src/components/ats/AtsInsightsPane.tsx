@@ -31,7 +31,9 @@ function issueTitle(message: string): string {
   if (m.includes("summary is empty")) return "Add a professional summary";
   if (m.includes("summary is shorter")) return "Summary too short";
   if (m.includes("summary runs")) return "Summary too long";
-  if (m.includes("too few experience bullets")) return "Add more experience bullets";
+  if (m.includes("too few") && m.includes("experience bullets"))
+    return "Add more experience bullets";
+  if (m.includes("resume body is empty")) return "Résumé body is empty";
   if (m.includes("don't start with strong action") || m.includes("strong action verbs"))
     return "Use stronger action verbs";
   if (m.includes("measurable outcomes") || m.includes("metric")) return "Add one more metric";

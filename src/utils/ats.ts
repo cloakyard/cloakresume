@@ -574,17 +574,24 @@ export function computeAts(resume: ResumeData, jobDescription: string = ""): Ats
   const words = wordCount(resume);
   let baseLengthEarned = 0;
   const lengthNote = `${words} words across summary + bullets + projects`;
-  if (words < 250) {
+  if (words === 0) {
+    baseLengthEarned = 0;
+    issues.push({
+      severity: "fail",
+      message: "Resume body is empty.",
+      suggestion: "Add a summary, experience bullets, or project descriptions before exporting.",
+    });
+  } else if (words < 250) {
     baseLengthEarned = 4;
     issues.push({
       severity: "warn",
       message: "Resume body is on the short side.",
-      suggestion: "Aim for 400–800 words of substance — hiring managers scan for depth.",
+      suggestion: "Aim for 250–900 words of substance — hiring managers scan for depth.",
     });
   } else if (words <= 900) {
     baseLengthEarned = 10;
     if (contentMultiplier === 1) {
-      wins.push("Resume length is in the optimal 400–900 word range.");
+      wins.push("Resume length is in the optimal 250–900 word range.");
     }
   } else {
     baseLengthEarned = 7;
@@ -614,21 +621,32 @@ export function computeAts(resume: ResumeData, jobDescription: string = ""): Ats
       if (haystack.includes(kw)) matched.push(kw);
       else missing.push(kw);
     }
-    const ratio = keywords.length === 0 ? 0 : matched.length / keywords.length;
-    breakdown.push({
-      category: "Keyword match",
-      earned: Math.round(ratio * 20),
-      max: 20,
-      note: `${matched.length} of ${keywords.length} JD keywords found in resume`,
-    });
-    if (ratio < 0.5 && keywords.length > 0) {
-      issues.push({
-        severity: "warn",
-        message: "Less than half of the job description keywords appear in the resume.",
-        suggestion: "Naturally weave the missing terms into summary, skills, or bullets.",
+    if (keywords.length === 0) {
+      // JD was non-empty but resolved to zero distinctive keywords (e.g. only
+      // stop-words or numbers). Don't let that silently cost 20 points.
+      breakdown.push({
+        category: "Keyword match",
+        earned: 0,
+        max: 0,
+        note: "Job description didn't contain scorable keywords.",
       });
-    } else if (ratio >= 0.75) {
-      wins.push("Strong keyword alignment with the provided job description.");
+    } else {
+      const ratio = matched.length / keywords.length;
+      breakdown.push({
+        category: "Keyword match",
+        earned: Math.round(ratio * 20),
+        max: 20,
+        note: `${matched.length} of ${keywords.length} JD keywords found in resume`,
+      });
+      if (ratio < 0.5) {
+        issues.push({
+          severity: "warn",
+          message: "Less than half of the job description keywords appear in the resume.",
+          suggestion: "Naturally weave the missing terms into summary, skills, or bullets.",
+        });
+      } else if (ratio >= 0.75) {
+        wins.push("Strong keyword alignment with the provided job description.");
+      }
     }
   }
 

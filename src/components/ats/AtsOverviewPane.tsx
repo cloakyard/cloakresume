@@ -4,7 +4,7 @@
  * consumes it.
  */
 
-import { ChevronDown, ShieldCheck } from "lucide-react";
+import { ShieldCheck } from "lucide-react";
 import type { AtsReport } from "../../types.ts";
 import { Card, CardHead } from "./AtsCard.tsx";
 import { pct, toneColor } from "./atsShared.ts";
@@ -71,10 +71,9 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
 interface AtsOverviewPaneProps {
   report: AtsReport;
   hasJobDescription: boolean;
-  onApplyFix: () => void;
 }
 
-export function AtsOverviewPane({ report, hasJobDescription, onApplyFix }: AtsOverviewPaneProps) {
+export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPaneProps) {
   const dimensions = buildDimensions(report, hasJobDescription);
   const topFixes = report.issues.slice(0, 3);
   const hasFixes = topFixes.length > 0;
@@ -155,15 +154,6 @@ export function AtsOverviewPane({ report, hasJobDescription, onApplyFix }: AtsOv
                       </div>
                     )}
                   </div>
-                  <button
-                    type="button"
-                    className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-[6px] border border-(--line) bg-(--surface) text-[11.5px] font-medium text-(--ink-2) shrink-0 cursor-pointer hover:bg-(--surface-2) transition-colors duration-100 ml-auto sm:ml-0"
-                    onClick={onApplyFix}
-                    aria-label={`Apply fix: ${issue.message}`}
-                  >
-                    Apply
-                    <ChevronDown className="w-3 h-3" />
-                  </button>
                 </div>
               );
             })}

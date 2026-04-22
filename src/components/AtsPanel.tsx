@@ -8,16 +8,7 @@
  * across the others.
  */
 
-import {
-  AlertTriangle,
-  Check,
-  Download,
-  FileText,
-  Hash,
-  LayoutGrid,
-  RefreshCw,
-  X,
-} from "lucide-react";
+import { AlertTriangle, Download, FileText, Hash, LayoutGrid, RefreshCw, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import type { AtsReport, ResumeData } from "../types.ts";
 import { scoreBand } from "../utils/ats.ts";
@@ -226,17 +217,6 @@ export function AtsPanel({
                 <div className="flex gap-1.5 mt-2 sm:mt-3 sm:gap-2">
                   <button
                     type="button"
-                    className="tb primary flex-1 justify-center sm:flex-none sm:justify-start"
-                    onClick={() => setTab("insights")}
-                    disabled={failCount === 0}
-                  >
-                    <Check className="w-3.5 h-3.5" />
-                    {failCount > 0
-                      ? `Apply ${failCount} fix${failCount === 1 ? "" : "es"}`
-                      : "No fixes needed"}
-                  </button>
-                  <button
-                    type="button"
                     className="tb ghost"
                     onClick={() => {
                       setScanning(true);
@@ -306,11 +286,7 @@ export function AtsPanel({
               role="tabpanel"
             >
               {tab === "overview" && (
-                <AtsOverviewPane
-                  report={report}
-                  hasJobDescription={hasJobDescription}
-                  onApplyFix={() => setTab("insights")}
-                />
+                <AtsOverviewPane report={report} hasJobDescription={hasJobDescription} />
               )}
               {tab === "keywords" && (
                 <AtsKeywordsPane
