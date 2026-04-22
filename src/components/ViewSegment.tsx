@@ -54,7 +54,7 @@ function SegmentButton({
       aria-label={ariaLabel}
       className={[
         "grid place-items-center appearance-none bg-transparent border-0",
-        "rounded-[6px] px-2.5 min-h-[30px] min-w-[36px] cursor-pointer",
+        "rounded-md px-2.5 min-h-[30px] min-w-[36px] cursor-pointer",
         "transition-[background-color,color] duration-100",
         active
           ? "bg-(--surface) text-(--brand) shadow-(--sh-xs)"

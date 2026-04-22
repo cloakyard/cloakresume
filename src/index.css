@@ -408,7 +408,7 @@
       lg:px-3.5 lg:py-3 lg:min-h-0;
   }
   .acc-icon {
-    @apply grid place-items-center w-7 h-7 shrink-0 rounded-sm text-(--brand) bg-(--brand-50);
+    @apply grid place-items-center w-7 h-7 shrink-0 rounded-md text-(--brand) bg-(--brand-50);
   }
   .acc-text {
     @apply flex-1 min-w-0;

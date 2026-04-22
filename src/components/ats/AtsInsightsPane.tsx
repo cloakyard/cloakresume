@@ -85,7 +85,7 @@ export function AtsInsightsPane({ report }: AtsInsightsPaneProps) {
 
   if (items.length === 0) {
     return (
-      <div className="bg-(--brand-50) border border-(--brand-200) rounded-[12px] p-4">
+      <div className="bg-(--brand-50) border border-(--brand-200) rounded-xl p-4">
         <h4 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">No insights yet</h4>
         <p className="m-0 text-[13px] leading-[1.5] text-(--ink-3)">
           Add résumé content to get personalised wins and suggestions.
@@ -130,9 +130,9 @@ function InsightCard({
   };
 
   return (
-    <div className="flex gap-2.5 p-2.5 sm:gap-3 sm:p-3.5 rounded-[10px] bg-(--surface) border border-(--line-soft) items-start">
+    <div className="flex gap-2.5 p-2.5 sm:gap-3 sm:p-3.5 rounded-lg bg-(--surface) border border-(--line-soft) items-start">
       <div
-        className={`w-7 h-7 rounded-[8px] shrink-0 grid place-items-center mt-px ${iconColors[tone]}`}
+        className={`w-7 h-7 rounded-md shrink-0 grid place-items-center mt-px ${iconColors[tone]}`}
       >
         <IconComp className="w-4 h-4" />
       </div>

@@ -55,7 +55,7 @@ export function AtsKeywordsPane({
 }: AtsKeywordsPaneProps) {
   if (!hasJobDescription) {
     return (
-      <div className="bg-(--brand-50) border border-(--brand-200) rounded-[12px] p-4 sm:p-5 sm:max-w-[540px]">
+      <div className="bg-(--brand-50) border border-(--brand-200) rounded-xl p-4 sm:p-5 sm:max-w-[540px]">
         <h4 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">
           Add a target job description
         </h4>
@@ -96,9 +96,9 @@ export function AtsKeywordsPane({
           return (
             <div
               key={`m-${k}`}
-              className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-[8px] bg-(--surface) min-w-0"
+              className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-lg bg-(--surface) min-w-0"
             >
-              <span className="w-[18px] h-[18px] rounded-[5px] grid place-items-center shrink-0 bg-(--ok-bg) text-(--ok)">
+              <span className="w-[18px] h-[18px] rounded-md grid place-items-center shrink-0 bg-(--ok-bg) text-(--ok)">
                 <Check className="w-3 h-3" />
               </span>
               <span className="flex-1 min-w-0 text-[12px] font-medium text-(--ink-1) whitespace-nowrap overflow-hidden text-ellipsis">
@@ -113,9 +113,9 @@ export function AtsKeywordsPane({
         {report.keywords.missing.map((k) => (
           <div
             key={`x-${k}`}
-            className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-[8px] bg-(--surface) min-w-0"
+            className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-lg bg-(--surface) min-w-0"
           >
-            <span className="w-[18px] h-[18px] rounded-[5px] grid place-items-center shrink-0 bg-(--danger-bg) text-(--danger)">
+            <span className="w-[18px] h-[18px] rounded-md grid place-items-center shrink-0 bg-(--danger-bg) text-(--danger)">
               <X className="w-3 h-3" />
             </span>
             <span className="flex-1 min-w-0 text-[12px] font-medium text-(--ink-4) line-through decoration-(--danger-border) whitespace-nowrap overflow-hidden text-ellipsis">

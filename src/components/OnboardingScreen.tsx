@@ -57,7 +57,7 @@ function GlowTile({ onClick, icon, title, subtitle, glow, iconTint }: GlowTilePr
     <button
       ref={ref}
       type="button"
-      className="group text-left px-4.5 pt-4.5 pb-5 border border-(--line) bg-(--surface) rounded-[14px] cursor-pointer transition-[border-color,box-shadow,transform] duration-200 relative overflow-hidden flex flex-col gap-1.5 text-(--ink-1) hover:border-(--brand-300) hover:shadow-(--sh-md) hover:-translate-y-0.5"
+      className="group text-left px-4.5 pt-4.5 pb-5 border border-(--line) bg-(--surface) rounded-xl cursor-pointer transition-[border-color,box-shadow,transform] duration-200 relative overflow-hidden flex flex-col gap-1.5 text-(--ink-1) hover:border-(--brand-300) hover:shadow-(--sh-md) hover:-translate-y-0.5"
       onClick={onClick}
       onMouseMove={(e) => setGlowAt(e.clientX, e.clientY)}
       onMouseLeave={() => setGlowStyle({ opacity: 0 })}
@@ -72,7 +72,7 @@ function GlowTile({ onClick, icon, title, subtitle, glow, iconTint }: GlowTilePr
         style={glowStyle}
       />
       <span
-        className={`relative z-[1] w-[38px] h-[38px] rounded-[10px] grid place-items-center mb-2 transition-[transform,background] duration-200 group-hover:-translate-y-px group-hover:scale-105 ${iconTint}`}
+        className={`relative z-[1] w-[38px] h-[38px] rounded-lg grid place-items-center mb-2 transition-[transform,background] duration-200 group-hover:-translate-y-px group-hover:scale-105 ${iconTint}`}
       >
         {icon}
       </span>
@@ -129,7 +129,7 @@ export function OnboardingScreen({ onStartBlank, onLoadSample, onLoadFile, onDis
         />
       )}
       <div
-        className="bg-(--surface) border border-(--line) rounded-[20px] shadow-(--sh-lg) w-full max-w-[920px] px-5 py-7 sm:px-8 sm:py-8 md:px-12 md:pt-10 md:pb-9 relative overflow-hidden"
+        className="bg-(--surface) border border-(--line) rounded-2xl shadow-(--sh-lg) w-full max-w-[920px] px-5 py-7 sm:px-8 sm:py-8 md:px-12 md:pt-10 md:pb-9 relative overflow-hidden"
         style={{ zIndex: 1 }}
       >
         {onDismiss && (
@@ -144,7 +144,7 @@ export function OnboardingScreen({ onStartBlank, onLoadSample, onLoadFile, onDis
         )}
 
         <div className="flex items-center gap-3.5 mb-6">
-          <span className="w-[42px] h-[42px] rounded-[10px] bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_60%,#1d4ed8_100%)] grid place-items-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_1px_2px_rgba(37,99,235,0.35)] shrink-0">
+          <span className="w-[42px] h-[42px] rounded-lg bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_60%,#1d4ed8_100%)] grid place-items-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_1px_2px_rgba(37,99,235,0.35)] shrink-0">
             <FileText className="w-5 h-5" strokeWidth={2.25} />
           </span>
           <div>

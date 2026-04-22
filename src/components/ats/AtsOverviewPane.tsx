@@ -130,11 +130,11 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
               return (
                 <div
                   key={issue.message}
-                  className="flex gap-2.5 p-2.5 border border-(--line) rounded-[10px] bg-(--surface-2) items-start sm:flex-nowrap sm:gap-3 sm:p-3"
+                  className="flex gap-2.5 p-2.5 border border-(--line) rounded-lg bg-(--surface-2) items-start sm:flex-nowrap sm:gap-3 sm:p-3"
                 >
                   <div
                     className={[
-                      "w-[26px] h-[26px] rounded-[7px] shrink-0 grid place-items-center font-mono text-[10px] font-bold border sm:w-[30px] sm:h-[30px]",
+                      "w-[26px] h-[26px] rounded-md shrink-0 grid place-items-center font-mono text-[10px] font-bold border sm:w-[30px] sm:h-[30px]",
                       tone === "err"
                         ? "bg-(--danger-bg) text-(--danger) border-(--danger-border)"
                         : tone === "warn"

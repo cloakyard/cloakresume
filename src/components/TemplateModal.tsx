@@ -100,7 +100,7 @@ export function TemplateModal({
       />
       <div
         ref={sheetRef}
-        className="surface-glass relative flex flex-col w-full max-w-275 max-h-[92svh] overflow-hidden rounded-t-[22px] sm:rounded-2xl"
+        className="surface-glass relative flex flex-col w-full max-w-275 max-h-[92svh] overflow-hidden rounded-t-2xl sm:rounded-2xl"
         role="dialog"
         aria-modal="true"
         aria-label="Choose a template"
@@ -153,7 +153,7 @@ export function TemplateModal({
                       type="button"
                       key={t.id}
                       onClick={() => onChange(t.id)}
-                      className={`border rounded-[14px] overflow-hidden bg-(--surface) cursor-pointer transition-all duration-150 flex flex-col text-left p-0 hover:border-(--brand-300) hover:-translate-y-0.5 hover:shadow-(--sh-md) ${
+                      className={`border rounded-xl overflow-hidden bg-(--surface) cursor-pointer transition-all duration-150 flex flex-col text-left p-0 hover:border-(--brand-300) hover:-translate-y-0.5 hover:shadow-(--sh-md) ${
                         active
                           ? "border-(--brand) shadow-[0_0_0_3px_var(--brand-100),var(--sh-md)]"
                           : "border-(--line)"

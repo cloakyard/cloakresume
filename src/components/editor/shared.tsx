@@ -71,7 +71,7 @@ export function EmptyState({
   onAdd: () => void;
 }) {
   return (
-    <div className="bg-(--surface) border border-(--line) rounded-[10px] overflow-hidden">
+    <div className="bg-(--surface) border border-(--line) rounded-xl overflow-hidden">
       <div className="flex items-center justify-between px-4 py-3 bg-(--surface-2) border-b border-(--line-soft)">
         <span className="text-[13.5px] font-semibold text-(--ink-1)">Empty {sectionLabel}</span>
         <span className="font-mono text-[11px] text-(--ink-3) px-2 py-0.75 border border-(--line) rounded-md bg-(--surface)">

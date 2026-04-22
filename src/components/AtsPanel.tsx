@@ -112,7 +112,7 @@ export function AtsPanel({
     >
       <div
         ref={sheetRef}
-        className="surface-glass relative w-full flex flex-col overflow-hidden rounded-t-[22px] h-[92svh] sm:rounded-[20px] sm:w-[min(920px,100%)] sm:mx-auto sm:h-[min(820px,calc(100svh-48px))] min-[900px]:w-[min(1100px,100%)]"
+        className="surface-glass relative w-full flex flex-col overflow-hidden rounded-t-2xl h-[92svh] sm:rounded-2xl sm:w-[min(920px,100%)] sm:mx-auto sm:h-[min(820px,calc(100svh-48px))] min-[900px]:w-[min(1100px,100%)]"
         style={{
           animation: "ats-slide-up 0.3s cubic-bezier(0.32,0.72,0,1)",
         }}
@@ -126,7 +126,7 @@ export function AtsPanel({
           onTouchEnd={onHandleTouchEnd}
           className="grid place-items-center pt-2 pb-1 cursor-grab touch-none sm:hidden"
         >
-          <span aria-hidden="true" className="w-10 h-1 rounded-sm bg-(--ink-6)" />
+          <span aria-hidden="true" className="w-10 h-1 rounded-full bg-(--ink-6)" />
         </div>
 
         <div className="flex items-center justify-between gap-3 px-4 pt-1 pb-3 border-b border-(--line-soft) shrink-0 sm:px-6 sm:py-3 sm:border-(--line)">
@@ -319,7 +319,7 @@ function TabButton({
       role="tab"
       aria-selected={active}
       className={[
-        "flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 text-[10px] font-medium rounded-[6px] cursor-pointer transition-all duration-100 min-h-[34px]",
+        "flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 text-[10px] font-medium rounded-md cursor-pointer transition-all duration-100 min-h-[34px]",
         "sm:flex-none sm:flex-row sm:gap-1.5 sm:py-3 sm:px-3 sm:text-[13px] sm:rounded-none sm:border-b-2 sm:-mb-px",
         active
           ? "bg-white text-(--brand) shadow-(--sh-xs) sm:bg-transparent sm:shadow-none sm:border-b-(--brand)"
@@ -332,7 +332,7 @@ function TabButton({
       {count != null && (
         <span
           className={[
-            "hidden sm:inline font-mono text-[10.5px] font-medium px-1.5 py-px rounded-[5px] border tracking-[0.02em]",
+            "hidden sm:inline font-mono text-[10.5px] font-medium px-1.5 py-px rounded-md border tracking-[0.02em]",
             active
               ? "text-(--brand) bg-(--brand-50) border-(--brand-200)"
               : "text-(--ink-5) bg-(--surface-2) border-(--line)",
