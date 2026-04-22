@@ -44,8 +44,8 @@ function issueTitle(message: string): string {
   if (m.includes("body is long") || m.includes("runs a bit long")) return "Résumé body is long";
   if (m.includes("less than half") && m.includes("keyword")) return "Keyword coverage is low";
   if (m.includes("spelling issue")) return "Possible spelling issues";
-  if (m.includes("repeated words")) return "Repeated words detected";
-  if (m.includes("passive-voice")) return "Passive voice in bullets";
+  if (m.includes("grammar finding")) return "Grammar findings";
+  if (m.includes("stylistic issue") || m.includes("style")) return "Stylistic issues";
   if (m.includes("hard-to-scan")) return "Long, hard-to-scan sentences";
   return message;
 }
@@ -113,15 +113,15 @@ export function AtsInsightsPane({ report }: AtsInsightsPaneProps) {
 
 const KIND_LABEL: Record<GrammarIssueKind, string> = {
   spelling: "Spelling",
-  repeated: "Repeated",
-  passive: "Passive",
+  grammar: "Grammar",
+  style: "Style",
   readability: "Long sentence",
 };
 
 const KIND_TONE: Record<GrammarIssueKind, { bg: string; fg: string; border: string }> = {
   spelling: { bg: "bg-(--danger-bg)", fg: "text-(--danger)", border: "border-(--danger-border)" },
-  repeated: { bg: "bg-(--warn-bg)", fg: "text-(--warn)", border: "border-(--warn-border)" },
-  passive: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
+  grammar: { bg: "bg-(--warn-bg)", fg: "text-(--warn)", border: "border-(--warn-border)" },
+  style: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
   readability: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
 };
 

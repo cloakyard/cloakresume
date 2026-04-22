@@ -61,18 +61,19 @@ _Edit every section with live inline previews_
 | **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                |
 | **Inline Spellcheck**    | Native browser spelling underlines on every prose field — zero dependencies, zero network     |
 
-### 🧭 ATS Score
+### 🧭 Résumé Review
 
-_Know how your resume will be parsed before you send it_
+_Know how your resume will be parsed and read before you send it_
 
-| Feature                | Description                                                                                                                |
-| ---------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| **Score 0–100**        | Live scorecard rating your resume for applicant-tracking-system compatibility                                              |
-| **Category Breakdown** | Earned-vs-max points across structure, content, contact, keywords, formatting, and writing quality                         |
-| **Keyword Matching**   | Paste a job description to see which keywords match and which are missing                                                  |
-| **Writing Quality**    | In-browser grammar, spelling, passive-voice, and readability pass — every finding shown with the field and suggested fixes |
-| **Issues & Wins**      | Actionable suggestions alongside a summary of what you're already doing well                                               |
-| **Template Warnings**  | Flags design choices (e.g., dense sidebars) that may hurt ATS parsing                                                      |
+| Feature                   | Description                                                                                                                        |
+| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| **Two scores, one tap**   | Separate **ATS** score (structure, contact, keywords) and **Writing** score (spelling, grammar, style, readability) — each 0–100   |
+| **ATS scorecard**         | Earned-vs-max points across content quality, formatting, keyword coverage, and impact & metrics                                    |
+| **Writing scorecard**     | Spelling, grammar, style, and readability each scored independently via Harper (Rust grammar engine compiled to WebAssembly)       |
+| **Keyword Matching**      | Paste a job description to see which keywords match and which are missing                                                          |
+| **Writing details**       | Every Harper finding shown with the field it came from and the suggested fix — spot a typo, see which bullet it's in               |
+| **Issues & Wins**         | Actionable suggestions alongside a summary of what you're already doing well                                                       |
+| **Progress on first run** | Harper's ~7 MB WASM engine downloads once with a visible progress bar; cached forever afterwards, then every scan is instantaneous |
 
 ### 🎨 Design Controls
 
@@ -114,16 +115,16 @@ _Your resume is always within reach_
 
 ## 🛠️ Tech Stack
 
-| Category      | Technology                                                                                                                         |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| Framework     | [React 19](https://react.dev/)                                                                                                     |
-| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                         |
-| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                                     |
-| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                                    |
-| Icons         | [Lucide React](https://lucide.dev/)                                                                                                |
-| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)                      |
-| Writing Check | [retext](https://github.com/retextjs/retext) + [nspell](https://github.com/wooorm/nspell) Hunspell engine, running in a Web Worker |
-| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                              |
+| Category      | Technology                                                                                                             |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| Framework     | [React 19](https://react.dev/)                                                                                         |
+| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                             |
+| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                         |
+| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                        |
+| Icons         | [Lucide React](https://lucide.dev/)                                                                                    |
+| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)          |
+| Writing Check | [Harper](https://writewithharper.com/) — a Rust grammar checker compiled to WebAssembly, running in a dedicated worker |
+| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                  |
 
 ---
 
@@ -178,10 +179,7 @@ cloakresume/
 │   ├── data/
 │   │   ├── sampleResume.ts  # Populated starter (lorem ipsum showcase)
 │   │   └── blankResume.ts   # Empty starter for "Start fresh"
-│   ├── workers/             # Off-main-thread jobs
-│   │   ├── grammar.worker.ts          # retext + nspell spelling/grammar engine
-│   │   └── dictionary-en/             # Hunspell .aff / .dic, fetched as assets
-│   └── utils/               # Colour palette, ATS scoring, grammar hook, rich text, storage
+│   └── utils/               # Colour palette, ATS scoring, Harper grammar hook, rich text, storage
 ├── index.html               # HTML entry point + meta/OG tags + CSP
 ├── vite.config.ts           # Vite + Tailwind + PWA configuration
 ├── tsconfig.json            # TypeScript configuration
@@ -199,7 +197,7 @@ CloakResume is a single-page React app that keeps every resume entirely in memor
 - **Live A4 pagination** — `PaginatedCanvas` measures rendered content and slices it into 210 × 297 mm pages, matching exactly what the browser will print to PDF.
 - **Scaled previews** — the template picker renders each layout at full width with a CSS transform scale, using your actual resume content (or sample content when the resume is empty).
 - **ATS scoring** — [src/utils/ats.ts](src/utils/ats.ts) inspects the resume shape, checks for missing sections, and matches keywords against a pasted job description — entirely client-side.
-- **Writing quality** — the ATS review spawns a Web Worker ([src/workers/grammar.worker.ts](src/workers/grammar.worker.ts)) that runs a retext pipeline (spelling, repeated words, passive voice, readability) against every prose field. The Hunspell dictionary is fetched as a bundled asset, parsed in-worker, and the results are folded into the ATS scorecard as a "Writing quality" dimension with per-field findings.
+- **Writing quality** — the review modal shows a second score alongside ATS, powered by [Harper](https://writewithharper.com/) ([src/utils/grammar.ts](src/utils/grammar.ts)). Harper is a Rust grammar engine compiled to WebAssembly, running in a dedicated worker (spawned by `WorkerLinter`). On the first scan, we fetch the ~7 MB WASM with a streaming reader so the UI can show byte-level download progress, then feed Harper a blob URL so the worker can bootstrap without a second round-trip. Subsequent scans reuse the cached linter — zero network, zero re-init.
 - **PDF export** — there is no PDF library bundled. The app styles a print stylesheet and defers to the browser's native print-to-PDF, which yields a pixel-accurate, selectable, ATS-parseable PDF.
 
 All operations happen in-memory. The strict Content Security Policy in [index.html](index.html) blocks any outbound network requests for user content — it is architecturally impossible for your resume to leave your device.

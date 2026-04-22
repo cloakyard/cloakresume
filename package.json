@@ -11,20 +11,12 @@
     "generate-icons": "pwa-assets-generator --preset minimal-2023 public/icons/logo.svg && mv public/icons/apple-touch-icon-180x180.png public/icons/apple-touch-icon.png"
   },
   "dependencies": {
-    "dictionary-en": "^4.0.0",
+    "harper.js": "^2.0.0",
     "html2canvas-pro": "^2.0.2",
     "jspdf": "^4.2.1",
     "lucide-react": "^1.8.0",
-    "nlcst-to-string": "^4.0.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "retext-english": "^5.0.0",
-    "retext-passive": "^5.0.0",
-    "retext-readability": "^8.0.0",
-    "retext-repeated-words": "^5.0.0",
-    "retext-spell": "^6.1.0",
-    "retext-stringify": "^4.0.0",
-    "unified": "^11.0.5",
     "workbox-window": "^7.4.0"
   },
   "devDependencies": {

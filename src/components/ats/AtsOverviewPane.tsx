@@ -1,7 +1,11 @@
 /**
- * Overview tab of the ATS review modal — scorecard by dimension plus a
- * top-3 fix list. Owns the dimension derivation because only this pane
- * consumes it.
+ * Overview tab of the résumé review modal.
+ *
+ * Renders two scorecards side-by-side (stacked on mobile): one for ATS
+ * parseability dimensions, one for writing-polish dimensions. A top-3
+ * fix list sits alongside them. The two scorecards are intentionally
+ * separate so the ATS dimensions can't be dragged down by writing
+ * findings (which is what recruiters / ATS pipelines care about).
  */
 
 import { ShieldCheck } from "lucide-react";
@@ -16,8 +20,8 @@ interface Dimension {
   tone: string;
 }
 
-function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
-  const find = (cat: string) => report.breakdown.find((b) => b.category === cat);
+function buildAtsDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
+  const find = (cat: string) => report.atsBreakdown.find((b) => b.category === cat);
   const summary = find("Professional summary");
   const bullets = find("Experience bullets");
   const impact = find("Quantifiable impact");
@@ -27,7 +31,6 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
   const projects = find("Projects");
   const length = find("Overall length");
   const keyword = find("Keyword match");
-  const writing = find("Writing quality");
 
   const contentEarned = (summary?.earned ?? 0) + (bullets?.earned ?? 0) + (length?.earned ?? 0);
   const contentMax = (summary?.max ?? 0) + (bullets?.max ?? 0) + (length?.max ?? 0);
@@ -40,8 +43,6 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
   const formatPct = pct(formatEarned, formatMax);
   const impactPct = pct(impact?.earned ?? 0, impact?.max ?? 0);
   const keywordPct = hasJd ? pct(keyword?.earned ?? 0, keyword?.max ?? 0) : 0;
-  const hasWriting = (writing?.max ?? 0) > 0;
-  const writingPct = hasWriting ? pct(writing?.earned ?? 0, writing?.max ?? 0) : 0;
 
   return [
     {
@@ -68,13 +69,14 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
       caption: impact?.note ?? "",
       tone: toneColor(impactPct),
     },
-    {
-      label: "Writing quality",
-      percent: writingPct,
-      caption: writing?.note ?? "Writing scan hasn't run yet.",
-      tone: hasWriting ? toneColor(writingPct) : "var(--ink-4)",
-    },
   ];
+}
+
+function buildWritingDimensions(report: AtsReport): Dimension[] {
+  return report.writingBreakdown.map((b) => {
+    const p = pct(b.earned, b.max);
+    return { label: b.category, percent: p, caption: b.note, tone: toneColor(p) };
+  });
 }
 
 interface AtsOverviewPaneProps {
@@ -83,48 +85,35 @@ interface AtsOverviewPaneProps {
 }
 
 export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPaneProps) {
-  const dimensions = buildDimensions(report, hasJobDescription);
+  const atsDimensions = buildAtsDimensions(report, hasJobDescription);
+  const writingDimensions = buildWritingDimensions(report);
   const topFixes = report.issues.slice(0, 3);
   const hasFixes = topFixes.length > 0;
   return (
-    <div
-      className={`flex flex-col gap-3 sm:gap-4 ${hasFixes ? "min-[900px]:grid min-[900px]:grid-cols-[1fr_1.1fr]" : ""}`}
-    >
-      <Card>
-        <CardHead title="Scorecard" sub={`${dimensions.length} dimensions`} />
-        <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-[14px_20px] min-[900px]:gap-[18px_20px]">
-          {dimensions.map((d) => (
-            <div
-              key={d.label}
-              className="flex items-start gap-2.5 py-2 border-b border-(--line-soft) last:border-0 last:pb-0.5 min-w-0 sm:flex-col sm:items-stretch sm:py-0 sm:border-0 sm:gap-0"
-            >
-              <div
-                className="[order:-1] font-mono text-[19px] font-bold tabular-nums leading-[1.1] tracking-[-0.02em] min-w-[44px] shrink-0 text-right sm:text-[24px] sm:min-w-0 sm:text-left sm:mb-px min-[900px]:text-[26px]"
-                style={{ color: d.tone }}
-              >
-                {d.percent}
-                <small className="font-mono text-[9px] text-(--ink-5) font-normal ml-px sm:text-[11px]">
-                  /100
-                </small>
-              </div>
-              <div className="flex-1 min-w-0 flex flex-col">
-                <div className="text-[12px] font-medium text-(--ink-2) mb-1 sm:text-[11.5px] sm:text-(--ink-3)">
-                  {d.label}
-                </div>
-                <div className="h-0.5 bg-(--line-soft) rounded-full overflow-hidden sm:h-[3px]">
-                  <div
-                    className="h-full rounded-full transition-[width] duration-500"
-                    style={{ width: `${d.percent}%`, background: d.tone }}
-                  />
-                </div>
-                <div className="font-mono text-[9.5px] text-(--ink-5) mt-0.5 tracking-[0.01em] leading-[1.35] line-clamp-2 sm:text-[10.5px]">
-                  {d.caption}
-                </div>
-              </div>
+    <div className="flex flex-col gap-3 sm:gap-4">
+      <div className="grid gap-3 sm:gap-4 min-[900px]:grid-cols-2">
+        <Card>
+          <CardHead title="ATS scorecard" sub={`${atsDimensions.length} dimensions`} />
+          <DimensionList dimensions={atsDimensions} />
+        </Card>
+
+        <Card>
+          <CardHead
+            title="Writing scorecard"
+            sub={
+              report.writingReady ? `${writingDimensions.length} dimensions` : "waiting for scan…"
+            }
+          />
+          {report.writingReady ? (
+            <DimensionList dimensions={writingDimensions} />
+          ) : (
+            <div className="text-[12.5px] text-(--ink-4) leading-[1.5] py-2">
+              Writing analysis hasn't completed yet. Once the scan finishes, spelling, grammar,
+              style, and readability each get their own score.
             </div>
-          ))}
-        </div>
-      </Card>
+          )}
+        </Card>
+      </div>
 
       {hasFixes && (
         <Card>
@@ -158,7 +147,7 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
                       {issue.message}
                     </div>
                     {issue.suggestion && (
-                      <div className="text-[12px] text-(--ink-4) leading-[1.45]">
+                      <div className="text-[12px] text-(--ink-4) leading-normal">
                         {issue.suggestion}
                       </div>
                     )}
@@ -175,12 +164,49 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
           <ShieldCheck className="w-5 h-5 shrink-0 text-(--ok)" />
           <div>
             <div className="text-[14px] font-semibold text-(--ink-1)">All clear</div>
-            <div className="text-[12.5px] text-(--ink-3) leading-[1.5] mt-px">
+            <div className="text-[12.5px] text-(--ink-3) leading-normal mt-px">
               No blocking issues detected — your résumé is in great shape.
             </div>
           </div>
         </div>
       )}
+    </div>
+  );
+}
+
+function DimensionList({ dimensions }: { dimensions: Dimension[] }) {
+  return (
+    <div className="flex flex-col sm:grid sm:grid-cols-2 sm:gap-[14px_20px] min-[900px]:gap-[18px_20px]">
+      {dimensions.map((d) => (
+        <div
+          key={d.label}
+          className="flex items-start gap-2.5 py-2 border-b border-(--line-soft) last:border-0 last:pb-0.5 min-w-0 sm:flex-col sm:items-stretch sm:py-0 sm:border-0 sm:gap-0"
+        >
+          <div
+            className="[order:-1] font-mono text-[19px] font-bold tabular-nums leading-[1.1] tracking-[-0.02em] min-w-[44px] shrink-0 text-right sm:text-[24px] sm:min-w-0 sm:text-left sm:mb-px min-[900px]:text-[26px]"
+            style={{ color: d.tone }}
+          >
+            {d.percent}
+            <small className="font-mono text-[9px] text-(--ink-5) font-normal ml-px sm:text-[11px]">
+              /100
+            </small>
+          </div>
+          <div className="flex-1 min-w-0 flex flex-col">
+            <div className="text-[12px] font-medium text-(--ink-2) mb-1 sm:text-[11.5px] sm:text-(--ink-3)">
+              {d.label}
+            </div>
+            <div className="h-0.5 bg-(--line-soft) rounded-full overflow-hidden sm:h-[3px]">
+              <div
+                className="h-full rounded-full transition-[width] duration-500"
+                style={{ width: `${d.percent}%`, background: d.tone }}
+              />
+            </div>
+            <div className="font-mono text-[9.5px] text-(--ink-5) mt-0.5 tracking-[0.01em] leading-[1.35] line-clamp-2 sm:text-[10.5px]">
+              {d.caption}
+            </div>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 /**
- * Right-hand toolbar cluster: Scan ATS · New · Save · Load · Export PDF.
+ * Right-hand toolbar cluster: Scan résumé · New · Save · Load · Export PDF.
  *
  * Desktop shows the full cluster. Mobile shows only the primary Export PDF
  * button — the remaining actions live in `ToolbarOverflow`.
@@ -39,11 +39,11 @@ export function ToolbarActions({
             type="button"
             onClick={onScanAts}
             className="tb ghost"
-            title="Scan for ATS issues"
-            aria-label="Scan for ATS issues"
+            title="Scan résumé for ATS and writing issues"
+            aria-label="Scan résumé for ATS and writing issues"
           >
             <ScanSearch className="w-4 h-4 text-(--ink-4)" />
-            <span>Scan ATS</span>
+            <span>Scan résumé</span>
           </button>
 
           <ToolbarDivider />

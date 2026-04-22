@@ -151,13 +151,31 @@ export interface AtsIssue {
   suggestion?: string;
 }
 
+export interface AtsBreakdownItem {
+  category: string;
+  earned: number;
+  max: number;
+  note: string;
+}
+
 export interface AtsReport {
-  score: number; // 0–100
-  breakdown: { category: string; earned: number; max: number; note: string }[];
+  /** Machine-parseability score: structure, contact, keywords, formatting. 0–100. */
+  atsScore: number;
+  /** Categories contributing to `atsScore`. */
+  atsBreakdown: AtsBreakdownItem[];
+  /**
+   * Writing-polish score: spelling, grammar, style, readability. 0–100.
+   * 0 (and `writingReady: false`) until the Harper scan finishes.
+   */
+  writingScore: number;
+  /** Categories contributing to `writingScore`. */
+  writingBreakdown: AtsBreakdownItem[];
+  /** True once the writing pass has produced a scorable result. */
+  writingReady: boolean;
   issues: AtsIssue[];
   wins: string[];
   keywords: { matched: string[]; missing: string[] };
-  /** Per-word / per-phrase grammar findings. Present once the worker has run. */
+  /** Per-word / per-phrase grammar findings. Present once the scan has run. */
   grammar?: GrammarReport;
 }
 
@@ -169,7 +187,7 @@ export interface GrammarSegment {
   text: string;
 }
 
-export type GrammarIssueKind = "spelling" | "repeated" | "passive" | "readability";
+export type GrammarIssueKind = "spelling" | "grammar" | "style" | "readability";
 
 export interface GrammarIssue {
   segmentId: string;

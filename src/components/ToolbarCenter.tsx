@@ -1,5 +1,5 @@
 /**
- * Centre toolbar cluster: template picker + colour picker + Scan ATS button.
+ * Centre toolbar cluster: template picker + colour picker + Scan résumé button.
  *
  * Desktop renders both pickers as inline controls; mobile hides them because
  * the same actions live in `ToolbarOverflow`. A window-event bridge lets the

@@ -146,6 +146,8 @@ export function App() {
   const {
     report: grammarReport,
     scanning: grammarScanning,
+    engineReady: grammarEngineReady,
+    engineProgress: grammarEngineProgress,
     scan: runGrammarScan,
   } = useGrammarScan(resume);
 
@@ -283,6 +285,8 @@ export function App() {
         hasJobDescription={jobDescription.trim().length > 0}
         onOpenJdEditor={focusJdEditor}
         grammarScanning={grammarScanning}
+        engineReady={grammarEngineReady}
+        engineProgress={grammarEngineProgress}
         onRescan={runGrammarScan}
       />
 

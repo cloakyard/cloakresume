@@ -80,7 +80,7 @@ export function ToolbarOverflow({
         <div className="flex flex-col gap-0.5">
           <OverflowItem
             icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
-            label="Scan ATS"
+            label="Scan résumé"
             onClick={() => {
               setOpen(false);
               window.dispatchEvent(new Event("cr:scan-ats"));

@@ -344,56 +344,121 @@ function inspectAuthenticity(
 }
 
 /**
- * Build a headline issue + suggestion pair for the most impactful grammar
- * problem of a given kind. Surfaces up to one issue per kind so the
- * Insights feed stays actionable instead of drowning in a flat list.
+ * Map issue density (findings per 100 words) to an earned-points value
+ * on a `max`-point scale. Short résumés with a few issues aren't punished
+ * as hard as tight ones riddled with errors.
  */
-function summariseGrammar(report: GrammarReport): AtsIssue[] {
-  const out: AtsIssue[] = [];
+function densityScore(issueCount: number, wordsChecked: number, max: number): number {
+  if (wordsChecked === 0) return 0;
+  if (issueCount === 0) return max;
+  const per100 = (issueCount / wordsChecked) * 100;
+  if (per100 >= 6) return 0;
+  if (per100 >= 4) return Math.round(max * 0.35);
+  if (per100 >= 2) return Math.round(max * 0.65);
+  if (per100 >= 1) return Math.round(max * 0.85);
+  return max;
+}
+
+/**
+ * Compute the writing-polish score (0–100) from a Harper report. Split
+ * across four sub-categories that map directly to Harper's lint kinds:
+ * spelling (30), grammar (30), style (20), readability (20).
+ */
+function computeWritingBreakdown(grammar: GrammarReport): {
+  breakdown: AtsReport["writingBreakdown"];
+  issues: AtsIssue[];
+  wins: string[];
+} {
+  const issues: AtsIssue[] = [];
+  const wins: string[] = [];
   const byKind = new Map<GrammarIssue["kind"], GrammarIssue[]>();
-  for (const issue of report.issues) {
+  for (const issue of grammar.issues) {
     const existing = byKind.get(issue.kind) ?? [];
     existing.push(issue);
     byKind.set(issue.kind, existing);
   }
   const spelling = byKind.get("spelling") ?? [];
+  const grammarIssues = byKind.get("grammar") ?? [];
+  const style = byKind.get("style") ?? [];
+  const readability = byKind.get("readability") ?? [];
+  const wordsChecked = grammar.wordsChecked;
+
+  const breakdown: AtsReport["writingBreakdown"] = [
+    {
+      category: "Spelling",
+      earned: densityScore(spelling.length, wordsChecked, 30),
+      max: 30,
+      note:
+        spelling.length === 0
+          ? "No spelling issues detected."
+          : `${spelling.length} possible misspelling${spelling.length === 1 ? "" : "s"}`,
+    },
+    {
+      category: "Grammar",
+      earned: densityScore(grammarIssues.length, wordsChecked, 30),
+      max: 30,
+      note:
+        grammarIssues.length === 0
+          ? "Grammar looks clean."
+          : `${grammarIssues.length} grammar finding${grammarIssues.length === 1 ? "" : "s"}`,
+    },
+    {
+      category: "Style",
+      earned: densityScore(style.length, wordsChecked, 20),
+      max: 20,
+      note:
+        style.length === 0
+          ? "Tight, active prose."
+          : `${style.length} style finding${style.length === 1 ? "" : "s"} (passive voice, wordiness)`,
+    },
+    {
+      category: "Readability",
+      earned: densityScore(readability.length, wordsChecked, 20),
+      max: 20,
+      note:
+        readability.length === 0
+          ? "Easy to scan."
+          : `${readability.length} hard-to-scan sentence${readability.length === 1 ? "" : "s"}`,
+    },
+  ];
+
   if (spelling.length > 0) {
     const sample = spelling
       .slice(0, 3)
       .map((i) => `"${i.actual}"`)
       .join(", ");
-    out.push({
+    issues.push({
       severity: spelling.length >= 3 ? "fail" : "warn",
       message: `${spelling.length} possible spelling issue${spelling.length === 1 ? "" : "s"} detected.`,
       suggestion: `Review ${sample}${spelling.length > 3 ? " and others" : ""} — open the Insights tab for fixes.`,
     });
   }
-  const repeated = byKind.get("repeated") ?? [];
-  if (repeated.length > 0) {
-    out.push({
-      severity: "warn",
-      message: `Repeated words found (${repeated.length}).`,
+  if (grammarIssues.length > 0) {
+    issues.push({
+      severity: grammarIssues.length >= 3 ? "warn" : "info",
+      message: `${grammarIssues.length} grammar finding${grammarIssues.length === 1 ? "" : "s"}.`,
       suggestion:
-        'Remove accidental duplicates like "the the" — they slip past most spellcheckers.',
+        "Harper flagged agreement, tense, or punctuation — check the Insights tab for specifics.",
     });
   }
-  const passive = byKind.get("passive") ?? [];
-  if (passive.length >= 3) {
-    out.push({
+  if (style.length >= 3) {
+    issues.push({
       severity: "info",
-      message: `${passive.length} passive-voice phrases.`,
+      message: `${style.length} stylistic issue${style.length === 1 ? "" : "s"}.`,
       suggestion: 'Recruiters favour active verbs. Rewrite "was delivered" as "delivered".',
     });
   }
-  const readability = byKind.get("readability") ?? [];
   if (readability.length >= 2) {
-    out.push({
+    issues.push({
       severity: "info",
       message: `${readability.length} hard-to-scan sentence${readability.length === 1 ? "" : "s"}.`,
       suggestion: "Split long bullets into two — recruiters spend ~6 seconds per résumé.",
     });
   }
-  return out;
+  if (grammar.issues.length === 0 && wordsChecked >= 100) {
+    wins.push("Writing is clean — no spelling, grammar, style, or readability flags.");
+  }
+  return { breakdown, issues, wins };
 }
 
 export function computeAts(
@@ -403,7 +468,7 @@ export function computeAts(
 ): AtsReport {
   const issues: AtsIssue[] = [];
   const wins: string[] = [];
-  const breakdown: AtsReport["breakdown"] = [];
+  const breakdown: AtsReport["atsBreakdown"] = [];
 
   // ── Content authenticity ───────────────────────────────────────
   // Computed once up-front so every prose-driven category can honour it.
@@ -661,39 +726,6 @@ export function computeAts(
   const lengthEarned = Math.round(baseLengthEarned * contentMultiplier);
   breakdown.push({ category: "Overall length", earned: lengthEarned, max: 10, note: lengthNote });
 
-  // ── Writing quality (max 10 when grammar report available) ──────
-  // Scales by issue density so a long résumé with a few typos isn't
-  // penalised as harshly as a short summary riddled with errors.
-  if (grammar && grammar.wordsChecked >= 20) {
-    const issueCount = grammar.issues.length;
-    const per100 = (issueCount / grammar.wordsChecked) * 100;
-    let writingEarned = 10;
-    if (per100 >= 6) writingEarned = 0;
-    else if (per100 >= 4) writingEarned = 4;
-    else if (per100 >= 2) writingEarned = 7;
-    else if (per100 >= 1) writingEarned = 9;
-    breakdown.push({
-      category: "Writing quality",
-      earned: writingEarned,
-      max: 10,
-      note:
-        issueCount === 0
-          ? "No grammar or spelling issues detected."
-          : `${issueCount} issue${issueCount === 1 ? "" : "s"} across ${grammar.wordsChecked} words`,
-    });
-    for (const grammarIssue of summariseGrammar(grammar)) issues.push(grammarIssue);
-    if (issueCount === 0 && grammar.wordsChecked >= 100) {
-      wins.push("Writing is clean — no spelling, grammar, or passive-voice flags.");
-    }
-  } else {
-    breakdown.push({
-      category: "Writing quality",
-      earned: 0,
-      max: 0,
-      note: grammar ? "Add more prose to score writing quality." : "Writing scan hasn't run yet.",
-    });
-  }
-
   // ── Keyword match (max 20 when JD provided; 0 otherwise) ────────
   const matched: string[] = [];
   const missing: string[] = [];
@@ -740,17 +772,31 @@ export function computeAts(
     }
   }
 
-  // ── Assemble ────────────────────────────────────────────────────
-  const maxTotal = breakdown.reduce((acc, b) => acc + b.max, 0);
-  const earnedTotal = breakdown.reduce((acc, b) => acc + b.earned, 0);
-  let score = maxTotal === 0 ? 0 : Math.round((earnedTotal / maxTotal) * 100);
+  // ── Assemble ATS score ──────────────────────────────────────────
+  const atsMax = breakdown.reduce((acc, b) => acc + b.max, 0);
+  const atsEarned = breakdown.reduce((acc, b) => acc + b.earned, 0);
+  let atsScore = atsMax === 0 ? 0 : Math.round((atsEarned / atsMax) * 100);
 
   // Hard ceiling when content is unusable — even perfect structure shouldn't
   // masquerade as an "Excellent" résumé if the words are placeholder text.
   if (authenticity.isPlaceholder) {
-    score = Math.min(score, 15);
+    atsScore = Math.min(atsScore, 15);
   } else if (authenticity.isLowEnglish) {
-    score = Math.min(score, 35);
+    atsScore = Math.min(atsScore, 35);
+  }
+
+  // ── Assemble Writing score ──────────────────────────────────────
+  let writingScore = 0;
+  let writingBreakdown: AtsReport["writingBreakdown"] = [];
+  const writingReady = Boolean(grammar && grammar.wordsChecked >= 20);
+  if (writingReady && grammar) {
+    const { breakdown: wb, issues: wIssues, wins: wWins } = computeWritingBreakdown(grammar);
+    writingBreakdown = wb;
+    const wMax = wb.reduce((acc, b) => acc + b.max, 0);
+    const wEarned = wb.reduce((acc, b) => acc + b.earned, 0);
+    writingScore = wMax === 0 ? 0 : Math.round((wEarned / wMax) * 100);
+    for (const i of wIssues) issues.push(i);
+    for (const w of wWins) wins.push(w);
   }
 
   // Drop inherited wins when content integrity failed — a positive note next
@@ -758,8 +804,11 @@ export function computeAts(
   const finalWins = authenticity.isPlaceholder || authenticity.isLowEnglish ? [] : wins;
 
   return {
-    score,
-    breakdown,
+    atsScore,
+    atsBreakdown: breakdown,
+    writingScore,
+    writingBreakdown,
+    writingReady,
     issues,
     wins: finalWins,
     keywords: { matched, missing },

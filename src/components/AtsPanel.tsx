@@ -25,9 +25,13 @@ interface AtsPanelProps {
   resume: ResumeData;
   hasJobDescription: boolean;
   onOpenJdEditor: () => void;
-  /** True while the grammar worker is still processing the current resume. */
+  /** True while the Harper worker is linting the current résumé. */
   grammarScanning: boolean;
-  /** Re-runs both the on-screen scan animation and a fresh grammar pass. */
+  /** True after Harper's WASM has been downloaded and instantiated. */
+  engineReady: boolean;
+  /** 0…1 progress of the Harper WASM download (only meaningful before `engineReady`). */
+  engineProgress: number;
+  /** Re-runs the grammar pass and restarts the local spinner. */
   onRescan: () => void;
 }
 
@@ -49,6 +53,8 @@ export function AtsPanel({
   hasJobDescription,
   onOpenJdEditor,
   grammarScanning,
+  engineReady,
+  engineProgress,
   onRescan,
 }: AtsPanelProps) {
   const [tab, setTab] = useState<TabId>("overview");
@@ -106,10 +112,13 @@ export function AtsPanel({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
-  const band = useMemo(() => scoreBand(report.score), [report.score]);
+  const atsBand = useMemo(() => scoreBand(report.atsScore), [report.atsScore]);
+  const writingBand = useMemo(() => scoreBand(report.writingScore), [report.writingScore]);
   const timestamp = useMemo(() => (open ? formatTimestamp(new Date()) : ""), [open]);
   const failCount = report.issues.filter((i) => i.severity !== "info").length;
   const kwTotal = report.keywords.matched.length + report.keywords.missing.length;
+  const downloadingEngine = !engineReady && engineProgress > 0;
+  const progressPct = Math.round(engineProgress * 100);
 
   if (!open) return null;
 
@@ -168,80 +177,126 @@ export function AtsPanel({
             <div className="text-center">
               <div className="w-16 h-16 rounded-full border-[3px] border-(--line) border-t-(--brand) animate-spin mx-auto mb-5 sm:w-20 sm:h-20" />
               <div className="text-[18px] font-semibold tracking-[-0.015em] text-(--ink-1) mb-1.5 sm:text-[20px]">
-                Scanning résumé{" "}
-                <em
-                  className="italic font-normal"
-                  style={{ fontFamily: "var(--font-serif)", color: "var(--brand)" }}
-                >
-                  locally
-                </em>
-                …
+                {downloadingEngine ? (
+                  <>
+                    Downloading writing engine{" "}
+                    <em
+                      className="italic font-normal"
+                      style={{ fontFamily: "var(--font-serif)", color: "var(--brand)" }}
+                    >
+                      locally
+                    </em>
+                    …
+                  </>
+                ) : (
+                  <>
+                    Analysing résumé{" "}
+                    <em
+                      className="italic font-normal"
+                      style={{ fontFamily: "var(--font-serif)", color: "var(--brand)" }}
+                    >
+                      locally
+                    </em>
+                    …
+                  </>
+                )}
               </div>
-              <div className="text-[13px] text-(--ink-4) max-w-[400px] mx-auto leading-[1.55]">
-                Checking keywords, structure, and parseability. Nothing leaves your browser.
+              <div className="text-[13px] text-(--ink-4) max-w-[400px] mx-auto leading-normal">
+                {downloadingEngine
+                  ? "Grammar check runs entirely in your browser. The ~7 MB WASM engine downloads once, then caches for every future scan."
+                  : "Checking keywords, structure, parseability, and writing quality. Nothing leaves your browser."}
               </div>
+              {downloadingEngine && (
+                <div className="mt-5 mx-auto max-w-[320px]">
+                  <div className="h-1.5 bg-(--line-soft) rounded-full overflow-hidden">
+                    <div
+                      className="h-full bg-(--brand) transition-[width] duration-150"
+                      style={{ width: `${progressPct}%` }}
+                    />
+                  </div>
+                  <div className="mt-1.5 font-mono text-[10.5px] text-(--ink-5) tabular-nums text-right tracking-[0.02em]">
+                    {progressPct}%
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         ) : (
           <>
-            <header className="flex items-start gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
-              <div className="shrink-0 flex flex-col items-center gap-1 sm:order-1 sm:p-4 sm:border sm:border-(--line) sm:rounded-2xl sm:bg-white sm:shadow-(--sh-xs) sm:gap-2 min-[900px]:p-5">
-                <AtsScoreRing score={report.score} color={band.color} size={80} />
-                <span
-                  className="font-mono text-[9px] font-bold tracking-[0.07em] px-2.5 py-0.5 rounded-full border uppercase sm:text-[10px] min-[900px]:text-[11px] min-[900px]:px-3"
-                  style={{ color: band.color, background: band.bg, borderColor: band.border }}
-                >
-                  {band.label}
-                </span>
-              </div>
-
-              <div className="flex-1 min-w-0 flex flex-col gap-1 sm:order-0 sm:gap-0">
-                <h1 className="text-[18px] font-bold tracking-[-0.025em] leading-[1.2] text-(--ink-1) m-0 sm:text-[26px] sm:mb-1.5 min-[900px]:text-[32px] min-[900px]:leading-[1.1]">
-                  Scored{" "}
-                  <em
-                    style={{
-                      fontFamily: "var(--font-serif)",
-                      color: band.color,
-                      fontStyle: "italic",
-                      fontWeight: 400,
-                    }}
-                  >
-                    {band.label.toLowerCase()}
-                  </em>
-                  .
-                </h1>
-                <p className="m-0 text-[11.5px] leading-[1.4] text-(--ink-3) sm:text-[13.5px] min-[900px]:text-[14px] min-[900px]:leading-[1.55]">
-                  {report.score >= 85
-                    ? "Passes Workday, Greenhouse, and Lever."
-                    : report.score >= 55
-                      ? "Parses reliably — a few tweaks will push it into the green."
-                      : "Fundamentals need work before most ATS pipelines will rank this well."}{" "}
-                  {failCount > 0 ? (
-                    <>
-                      Fix{" "}
-                      <strong className="text-(--ink-1) font-semibold">
-                        {failCount} issue{failCount === 1 ? "" : "s"}
-                      </strong>{" "}
-                      to reach 95+.
-                    </>
-                  ) : (
-                    <>No blocking issues detected.</>
-                  )}
-                </p>
-                <div className="flex gap-1.5 mt-2 sm:mt-3 sm:gap-2">
-                  <button
-                    type="button"
-                    className="tb primary"
-                    onClick={() => {
-                      setMinDelayPassed(false);
-                      window.setTimeout(() => setMinDelayPassed(true), 900);
-                      onRescan();
-                    }}
-                    aria-label="Re-scan"
-                  >
-                    <RefreshCw className="w-3.5 h-3.5" />
-                    <span>Re-scan</span>
-                  </button>
+            <header className="flex flex-col gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
+              <div className="flex items-start gap-3 sm:gap-5">
+                <ScorePill label="ATS" score={report.atsScore} band={atsBand} />
+                <ScorePill
+                  label="Writing"
+                  score={report.writingScore}
+                  band={writingBand}
+                  muted={!report.writingReady}
+                />
+                <div className="flex-1 min-w-0 flex flex-col gap-1">
+                  <h1 className="text-[18px] font-bold tracking-[-0.025em] leading-[1.2] text-(--ink-1) m-0 sm:text-[22px] sm:mb-0.5 min-[900px]:text-[26px]">
+                    Résumé scored{" "}
+                    <em
+                      style={{
+                        fontFamily: "var(--font-serif)",
+                        color: atsBand.color,
+                        fontStyle: "italic",
+                        fontWeight: 400,
+                      }}
+                    >
+                      {atsBand.label.toLowerCase()}
+                    </em>
+                    {report.writingReady && (
+                      <>
+                        {" "}
+                        on ATS,{" "}
+                        <em
+                          style={{
+                            fontFamily: "var(--font-serif)",
+                            color: writingBand.color,
+                            fontStyle: "italic",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {writingBand.label.toLowerCase()}
+                        </em>{" "}
+                        on writing
+                      </>
+                    )}
+                    .
+                  </h1>
+                  <p className="m-0 text-[11.5px] leading-snug text-(--ink-3) sm:text-[13px] min-[900px]:text-[13.5px]">
+                    {report.atsScore >= 85
+                      ? "Passes Workday, Greenhouse, and Lever."
+                      : report.atsScore >= 55
+                        ? "Parses reliably — a few tweaks will push it into the green."
+                        : "Fundamentals need work before most ATS pipelines will rank this well."}{" "}
+                    {failCount > 0 ? (
+                      <>
+                        Fix{" "}
+                        <strong className="text-(--ink-1) font-semibold">
+                          {failCount} issue{failCount === 1 ? "" : "s"}
+                        </strong>{" "}
+                        to lift both scores.
+                      </>
+                    ) : (
+                      <>No blocking issues detected.</>
+                    )}
+                  </p>
+                  <div className="flex gap-1.5 mt-2 sm:mt-2 sm:gap-2">
+                    <button
+                      type="button"
+                      className="tb primary"
+                      onClick={() => {
+                        setMinDelayPassed(false);
+                        window.setTimeout(() => setMinDelayPassed(true), 900);
+                        onRescan();
+                      }}
+                      aria-label="Re-scan"
+                    >
+                      <RefreshCw className="w-3.5 h-3.5" />
+                      <span>Re-scan</span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </header>
@@ -308,6 +363,46 @@ export function AtsPanel({
           </>
         )}
       </div>
+    </div>
+  );
+}
+
+function ScorePill({
+  label,
+  score,
+  band,
+  muted = false,
+}: {
+  label: string;
+  score: number;
+  band: { label: string; color: string; bg: string; border: string };
+  muted?: boolean;
+}) {
+  return (
+    <div
+      className={[
+        "shrink-0 flex flex-col items-center gap-1 p-2 rounded-xl border sm:p-3 sm:gap-1.5 min-[900px]:p-3.5",
+        muted ? "border-(--line) bg-(--surface-2)" : "border-(--line) bg-white shadow-(--sh-xs)",
+      ].join(" ")}
+    >
+      <span className="font-mono text-[9px] font-semibold text-(--ink-5) tracking-[0.09em] uppercase sm:text-[9.5px]">
+        {label}
+      </span>
+      <AtsScoreRing
+        score={muted ? 0 : score}
+        color={muted ? "var(--ink-5)" : band.color}
+        size={58}
+      />
+      <span
+        className="font-mono text-[8.5px] font-bold tracking-[0.07em] px-2 py-0.5 rounded-full border uppercase sm:text-[9.5px] sm:px-2.5"
+        style={
+          muted
+            ? { color: "var(--ink-4)", background: "var(--surface)", borderColor: "var(--line)" }
+            : { color: band.color, background: band.bg, borderColor: band.border }
+        }
+      >
+        {muted ? "Pending" : band.label}
+      </span>
     </div>
   );
 }

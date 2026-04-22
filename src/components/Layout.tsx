@@ -26,7 +26,7 @@ import { SECTIONS, SectionRail, type SectionId } from "./SectionRail.tsx";
 import { ViewSegment, type MobileView } from "./ViewSegment.tsx";
 
 interface LayoutProps {
-  /** Centred toolbar cluster: template picker + colour + Scan ATS button. */
+  /** Centred toolbar cluster: template picker + colour + Scan résumé button. */
   toolbarCenter: ReactNode;
   /** Right action group: New / Save / Load / Export PDF (+ Overflow on mobile). */
   toolbarRight: ReactNode;
