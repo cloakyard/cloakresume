@@ -166,7 +166,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                             }}
                           >
                             {(bHandle, bDelete, bMove) => (
-                              <div className="flex gap-1.5 items-start">
+                              <div className={`flex gap-1.5 items-start ${bi > 0 ? "mt-2.5" : ""}`}>
                                 <div className="mt-2">{bHandle}</div>
                                 <div className="flex-1">
                                   <RichTextArea
