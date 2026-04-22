@@ -79,7 +79,7 @@ export function AtsKeywordsPane({
   const matchPct = total === 0 ? 0 : (report.keywords.matched.length / total) * 100;
 
   return (
-    <Card>
+    <Card boxed>
       <CardHead
         title="Keyword coverage"
         sub={`${report.keywords.matched.length} of ${total} matched from target JD`}

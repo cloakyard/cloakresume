@@ -92,12 +92,12 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
   return (
     <div className="flex flex-col gap-3 sm:gap-4">
       <div className="grid gap-3 sm:gap-4 min-[900px]:grid-cols-2">
-        <Card>
+        <Card boxed>
           <CardHead title="ATS scorecard" sub={`${atsDimensions.length} dimensions`} />
           <DimensionList dimensions={atsDimensions} />
         </Card>
 
-        <Card>
+        <Card boxed>
           <CardHead
             title="Writing scorecard"
             sub={
@@ -183,7 +183,7 @@ function DimensionList({ dimensions }: { dimensions: Dimension[] }) {
           className="flex items-start gap-2.5 py-2 border-b border-(--line-soft) last:border-0 last:pb-0.5 min-w-0 sm:flex-col sm:items-stretch sm:py-0 sm:border-0 sm:gap-0"
         >
           <div
-            className="[order:-1] font-mono text-[19px] font-bold tabular-nums leading-[1.1] tracking-[-0.02em] min-w-[44px] shrink-0 text-right sm:text-[24px] sm:min-w-0 sm:text-left sm:mb-px min-[900px]:text-[26px]"
+            className="[order:-1] font-mono text-[19px] font-bold tabular-nums leading-[1.1] tracking-[-0.02em] w-[68px] shrink-0 text-right sm:text-[24px] sm:w-auto sm:text-left sm:mb-px min-[900px]:text-[26px]"
             style={{ color: d.tone }}
           >
             {d.percent}

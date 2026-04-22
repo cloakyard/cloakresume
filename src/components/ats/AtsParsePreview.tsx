@@ -73,7 +73,7 @@ export function AtsParsePreview({ resume }: AtsParsePreviewProps) {
   }
 
   return (
-    <Card>
+    <Card boxed>
       <CardHead title="Raw ATS parse" sub={'How Workday "sees" your résumé'} />
       <pre className="font-mono text-[11px] text-(--ink-2) leading-[1.65] whitespace-pre-wrap break-words m-0 p-0 sm:text-[12.5px]">
         {lines.join("\n")}

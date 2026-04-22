@@ -1,10 +1,12 @@
 /**
  * Shared card primitives used by the ATS review panes.
  *
- * On mobile the cards render as transparent sections (content flows directly
- * into the scroll body); sm+ adds the white card chrome so each pane reads
- * as an individual surface. Kept together because `CardHead` is only ever
- * placed inside a `Card`.
+ * By default, on mobile the cards render as transparent sections (content
+ * flows directly into the scroll body); sm+ adds the white card chrome so
+ * each pane reads as an individual surface. Pass `boxed` to force the
+ * chrome on mobile too — useful when the card content (scorecards,
+ * stat grids) needs visual containment even on small screens.
+ * Kept together because `CardHead` is only ever placed inside a `Card`.
  */
 
 import type { ReactNode } from "react";
@@ -22,10 +24,20 @@ export function CardHead({ title, sub }: { title: string; sub: string }) {
   );
 }
 
-export function Card({ children, className = "" }: { children: ReactNode; className?: string }) {
+export function Card({
+  children,
+  className = "",
+  boxed = false,
+}: {
+  children: ReactNode;
+  className?: string;
+  /** Force white card chrome on mobile. Default = transparent on mobile, chrome at sm+. */
+  boxed?: boolean;
+}) {
+  const mobileChrome = boxed ? "bg-white border border-(--line) rounded-xl p-3.5" : "";
   return (
     <section
-      className={`min-w-0 sm:bg-white sm:border sm:border-(--line) sm:rounded-xl sm:shadow-(--sh-xs) sm:p-4 min-[900px]:p-5 ${className}`}
+      className={`min-w-0 ${mobileChrome} sm:bg-white sm:border sm:border-(--line) sm:rounded-xl sm:shadow-(--sh-xs) sm:p-4 min-[900px]:p-5 ${className}`}
     >
       {children}
     </section>
