@@ -231,7 +231,7 @@ export function AtsPanel({
                 <div className="flex gap-1.5 mt-2 sm:mt-3 sm:gap-2">
                   <button
                     type="button"
-                    className="tb"
+                    className="tb primary"
                     onClick={() => {
                       setMinDelayPassed(false);
                       window.setTimeout(() => setMinDelayPassed(true), 900);
@@ -240,7 +240,7 @@ export function AtsPanel({
                     aria-label="Re-scan"
                   >
                     <RefreshCw className="w-3.5 h-3.5" />
-                    <span className="hidden sm:inline">Re-scan</span>
+                    <span>Re-scan</span>
                   </button>
                 </div>
               </div>
