@@ -128,27 +128,36 @@ interface Props {
   variant?: "rail" | "drawer";
 }
 
-/** Shared icon-rail button — 40×40 tile with active-brand treatment. */
-const railButtonClass = [
+/**
+ * Structural styles shared by every rail tile — layout, size, focus.
+ * Kept free of colour utilities so the active/inactive variants below
+ * fully own bg/text without fighting Tailwind's compiled-rule ordering.
+ */
+const railButtonBase = [
   "relative grid place-items-center w-10 h-10 rounded-md",
-  "bg-transparent border-0 cursor-pointer text-(--ink-4)",
+  "border-0 cursor-pointer",
   "transition-[background-color,color,box-shadow] duration-150",
-  "hover:bg-(--surface-3) hover:text-(--ink-1)",
   "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
 ].join(" ");
 
+/** Resting tile: transparent background, muted glyph, subtle hover. */
+const railButtonInactive = [
+  "bg-transparent text-(--ink-4)",
+  "hover:bg-(--surface-3) hover:text-(--ink-1)",
+].join(" ");
+
 /**
- * Active state for the rail tile. Reads strongly as "selected":
- *   • filled brand background with white glyph (high contrast)
- *   • subtle brand-tinted drop shadow to lift the tile off the rail
+ * Active tile. Reads clearly as "selected" without overpowering the rail:
+ *   • soft brand-tinted background with the brand-coloured glyph (icon
+ *     stays readable, tile doesn't turn into a solid block)
+ *   • 1px inset brand ring for a crisp edge
  *   • thicker (4px) left accent bar extending further top/bottom
  *     so the selected row is scannable from the far edge of the rail
  */
-const railButtonActiveClass = [
-  "bg-(--brand) text-white",
-  "[box-shadow:0_4px_10px_-2px_rgba(37,99,235,0.35),0_0_0_1px_var(--brand-600)]",
-  "hover:bg-(--brand-hover) hover:text-white",
-  // Left brand accent bar — extended height and width for stronger cue
+const railButtonActive = [
+  "bg-(--brand-50) text-(--brand)",
+  "[box-shadow:inset_0_0_0_1px_var(--brand-100)]",
+  "hover:bg-(--brand-100) hover:text-(--brand-700)",
   "before:content-[''] before:absolute before:left-[-10px] before:top-1 before:bottom-1",
   "before:w-[4px] before:rounded-r-[4px] before:bg-(--brand)",
 ].join(" ");
@@ -230,7 +239,7 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
             aria-current={isActive ? "page" : undefined}
             aria-label={s.label}
             title={s.label}
-            className={[railButtonClass, isActive ? railButtonActiveClass : ""].join(" ")}
+            className={[railButtonBase, isActive ? railButtonActive : railButtonInactive].join(" ")}
           >
             <Icon className="w-4 h-4" strokeWidth={2} />
           </button>
@@ -238,10 +247,20 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
       })}
       <div className="flex-1" />
       <div className="w-6 h-px bg-(--line) my-2" />
-      <button type="button" className={railButtonClass} aria-label="Help" title="Help">
+      <button
+        type="button"
+        className={`${railButtonBase} ${railButtonInactive}`}
+        aria-label="Help"
+        title="Help"
+      >
         <HelpCircle className="w-4 h-4" strokeWidth={2} />
       </button>
-      <button type="button" className={railButtonClass} aria-label="Settings" title="Settings">
+      <button
+        type="button"
+        className={`${railButtonBase} ${railButtonInactive}`}
+        aria-label="Settings"
+        title="Settings"
+      >
         <Settings className="w-4 h-4" strokeWidth={2} />
       </button>
     </nav>
