@@ -118,7 +118,9 @@ export function AtsPanel({
   const atsBand = useMemo(() => scoreBand(report.atsScore), [report.atsScore]);
   const writingBand = useMemo(() => scoreBand(report.writingScore), [report.writingScore]);
   const timestamp = useMemo(() => (open ? formatTimestamp(new Date()) : ""), [open]);
-  const failCount = report.issues.filter((i) => i.severity !== "info").length;
+  // Match the "Top fixes" list below — every entry in report.issues is a
+  // surfaced fix (any severity), so the header should count the same set.
+  const issueCount = report.issues.length;
   const kwTotal = report.keywords.matched.length + report.keywords.missing.length;
   const downloadingEngine = !engineReady && engineProgress > 0;
   const progressPct = Math.round(engineProgress * 100);
@@ -266,11 +268,11 @@ export function AtsPanel({
                       : report.atsScore >= 55
                         ? "Parses reliably — a few tweaks will push it into the green."
                         : "Fundamentals need work before most ATS pipelines will rank this well."}{" "}
-                    {failCount > 0 ? (
+                    {issueCount > 0 ? (
                       <>
                         Fix{" "}
                         <strong className="text-(--ink-1) font-semibold">
-                          {failCount} issue{failCount === 1 ? "" : "s"}
+                          {issueCount} issue{issueCount === 1 ? "" : "s"}
                         </strong>{" "}
                         to lift both scores.
                       </>
