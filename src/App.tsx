@@ -28,10 +28,20 @@ import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
 import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
-import { downloadResumeFile, readResumeFile } from "./utils/fileIO.ts";
+import { downloadResumeFile, normalizeResumeData, readResumeFile } from "./utils/fileIO.ts";
 import { blankResume } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
+const DEFAULT_TEMPLATE_ID: TemplateId = "classic-sidebar";
+const DEFAULT_PRIMARY = "#2563EB";
+
+/** Accept only known template ids; fall back silently so a removed template can't crash the preview. */
+function resolveTemplateId(candidate: unknown): TemplateId {
+  if (typeof candidate === "string" && candidate in TEMPLATES) {
+    return candidate as TemplateId;
+  }
+  return DEFAULT_TEMPLATE_ID;
+}
 
 interface Persisted {
   resume: ResumeData;
@@ -50,8 +60,8 @@ interface InitialState {
 function loadPersisted(): InitialState {
   const defaults: Persisted = {
     resume: blankResume,
-    templateId: "classic-sidebar",
-    primary: "#2563EB",
+    templateId: DEFAULT_TEMPLATE_ID,
+    primary: DEFAULT_PRIMARY,
     jobDescription: "",
     activeSection: "profile",
   };
@@ -59,14 +69,17 @@ function loadPersisted(): InitialState {
     const raw = localStorage.getItem(LS_KEY);
     if (raw) {
       const parsed = JSON.parse(raw) as Partial<Persisted>;
-      if (parsed.resume && parsed.templateId && parsed.primary) {
+      if (parsed.resume && typeof parsed.resume === "object") {
         return {
           persisted: {
-            resume: parsed.resume,
-            templateId: parsed.templateId,
-            primary: parsed.primary,
-            jobDescription: parsed.jobDescription ?? "",
-            activeSection: parsed.activeSection ?? "profile",
+            resume: normalizeResumeData(parsed.resume),
+            templateId: resolveTemplateId(parsed.templateId),
+            primary:
+              typeof parsed.primary === "string" && parsed.primary
+                ? parsed.primary
+                : DEFAULT_PRIMARY,
+            jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
+            activeSection: (parsed.activeSection ?? "profile") as SectionId,
           },
           firstRun: false,
         };
@@ -156,7 +169,7 @@ export function App() {
     try {
       const payload = await readResumeFile(file);
       setResume(payload.resume);
-      setTemplateId(payload.templateId);
+      setTemplateId(resolveTemplateId(payload.templateId));
       setPrimary(payload.primary);
       setJobDescription(payload.jobDescription);
       setShowOnboarding(false);
@@ -169,7 +182,7 @@ export function App() {
   const startWithResume = useCallback((data: ResumeData) => {
     setResume(data);
     setJobDescription("");
-    setTemplateId("classic-sidebar");
+    setTemplateId(DEFAULT_TEMPLATE_ID);
     setShowOnboarding(false);
     setOnboardingDismissable(false);
   }, []);

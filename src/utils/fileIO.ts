@@ -8,6 +8,7 @@
  * validates the minimum fields, and hands it to the caller.
  */
 
+import { blankResume } from "../data/blankResume.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 
 export interface ResumeSaveFile {
@@ -18,6 +19,43 @@ export interface ResumeSaveFile {
   templateId: TemplateId;
   primary: string;
   jobDescription: string;
+}
+
+/**
+ * Fill in any missing top-level fields from the blank baseline.
+ *
+ * Guards the render path from partial or slightly-outdated JSON — e.g. a
+ * file saved before a new section existed, or one hand-edited to remove
+ * an array. Array item shape isn't deep-checked: the save-file format is
+ * owned by this app, so we trust inner shapes once the discriminator
+ * matches.
+ */
+export function normalizeResumeData(data: unknown): ResumeData {
+  if (!data || typeof data !== "object") return blankResume;
+  const src = data as Partial<ResumeData>;
+  const profile =
+    src.profile && typeof src.profile === "object"
+      ? { ...blankResume.profile, ...src.profile }
+      : blankResume.profile;
+  const arr = <T>(value: unknown, fallback: T[]): T[] =>
+    Array.isArray(value) ? (value as T[]) : fallback;
+  return {
+    profile,
+    contact: arr(src.contact, blankResume.contact),
+    skills: arr(src.skills, blankResume.skills),
+    experience: arr(src.experience, blankResume.experience),
+    education: arr(src.education, blankResume.education),
+    projects: arr(src.projects, blankResume.projects),
+    certifications: arr(src.certifications, blankResume.certifications),
+    awards: arr(src.awards, blankResume.awards),
+    languages: arr(src.languages, blankResume.languages),
+    interests: arr(src.interests, blankResume.interests),
+    tools: arr(src.tools, blankResume.tools),
+    interestsLabel: typeof src.interestsLabel === "string" ? src.interestsLabel : undefined,
+    toolsLabel: typeof src.toolsLabel === "string" ? src.toolsLabel : undefined,
+    quickStats: arr(src.quickStats, blankResume.quickStats),
+    extras: arr(src.extras, blankResume.extras),
+  };
 }
 
 /** Sanitise a candidate filename — strip anything filesystem-hostile. */
@@ -66,15 +104,18 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
   if (obj.kind !== "cloakresume.v1") {
     throw new Error("This doesn't look like a CloakResume save file.");
   }
-  if (!obj.resume || !obj.templateId || !obj.primary) {
-    throw new Error("Save file is missing required fields.");
+  if (!obj.resume || typeof obj.resume !== "object") {
+    throw new Error("Save file is missing resume data.");
+  }
+  if (typeof obj.templateId !== "string") {
+    throw new Error("Save file is missing a template selection.");
   }
   return {
     kind: "cloakresume.v1",
-    savedAt: obj.savedAt ?? new Date().toISOString(),
-    resume: obj.resume,
-    templateId: obj.templateId,
-    primary: obj.primary,
-    jobDescription: obj.jobDescription ?? "",
+    savedAt: typeof obj.savedAt === "string" ? obj.savedAt : new Date().toISOString(),
+    resume: normalizeResumeData(obj.resume),
+    templateId: obj.templateId as TemplateId,
+    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#2563EB",
+    jobDescription: typeof obj.jobDescription === "string" ? obj.jobDescription : "",
   };
 }
