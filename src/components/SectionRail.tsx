@@ -132,16 +132,25 @@ interface Props {
 const railButtonClass = [
   "relative grid place-items-center w-10 h-10 rounded-md",
   "bg-transparent border-0 cursor-pointer text-(--ink-4)",
-  "transition-colors duration-100",
+  "transition-[background-color,color,box-shadow] duration-150",
   "hover:bg-(--surface-3) hover:text-(--ink-1)",
   "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
 ].join(" ");
 
+/**
+ * Active state for the rail tile. Reads strongly as "selected":
+ *   • filled brand background with white glyph (high contrast)
+ *   • subtle brand-tinted drop shadow to lift the tile off the rail
+ *   • thicker (4px) left accent bar extending further top/bottom
+ *     so the selected row is scannable from the far edge of the rail
+ */
 const railButtonActiveClass = [
-  "bg-(--brand-50) text-(--brand)",
-  // Left brand accent bar for active state
-  "before:content-[''] before:absolute before:left-[-10px] before:top-2.5 before:bottom-2.5",
-  "before:w-[3px] before:rounded-r-[3px] before:bg-(--brand)",
+  "bg-(--brand) text-white",
+  "[box-shadow:0_4px_10px_-2px_rgba(37,99,235,0.35),0_0_0_1px_var(--brand-600)]",
+  "hover:bg-(--brand-hover) hover:text-white",
+  // Left brand accent bar — extended height and width for stronger cue
+  "before:content-[''] before:absolute before:left-[-10px] before:top-1 before:bottom-1",
+  "before:w-[4px] before:rounded-r-[4px] before:bg-(--brand)",
 ].join(" ");
 
 export function SectionRail({ active, onChange, variant = "rail" }: Props) {

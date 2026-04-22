@@ -27,7 +27,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { splitSkills } from "./shared.tsx";
+import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -101,7 +101,7 @@ export function Typographic({ resume, palette }: Props) {
           <strong>Contact</strong>
           <div className="tg-contact">
             {resume.contact.map((c) => (
-              <span key={c.id}>{c.value}</span>
+              <span key={c.id}>{renderContactValue(c)}</span>
             ))}
           </div>
         </div>
@@ -259,7 +259,7 @@ export function Typographic({ resume, palette }: Props) {
               <div>
                 {resume.certifications.map((c) => (
                   <div className="tg-cert" key={c.id}>
-                    <strong>{c.name}</strong>
+                    {certificationLink(c, <strong>{c.name}</strong>)}
                     {c.issuer ? ` — ${c.issuer}` : ""}
                     {c.year ? <span className="meta"> · {c.year}</span> : null}
                   </div>

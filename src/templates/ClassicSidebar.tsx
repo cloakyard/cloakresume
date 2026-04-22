@@ -10,7 +10,7 @@
 
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
-import { contactIcon } from "./shared.tsx";
+import { certificationLink, contactIcon, renderContactValue } from "./shared.tsx";
 import { RichText } from "../utils/richText.tsx";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 
@@ -107,7 +107,7 @@ export function ClassicSidebar({ resume, palette }: Props) {
                 {sidebarContactKinds.map((c) => (
                   <div key={c.id} className="cs-contact">
                     <span className="i">{contactIcon(c.kind, 10)}</span>
-                    <span>{c.value}</span>
+                    <span>{renderContactValue(c)}</span>
                   </div>
                 ))}
               </>
@@ -202,8 +202,13 @@ export function ClassicSidebar({ resume, palette }: Props) {
                 <div className="cs-h3 first">Certifications</div>
                 {resume.certifications.map((c) => (
                   <div className="cs-cert" key={c.id}>
-                    <strong>{c.issuer}</strong>
-                    {c.name}
+                    {certificationLink(
+                      c,
+                      <>
+                        <strong>{c.issuer}</strong>
+                        {c.name}
+                      </>,
+                    )}
                     {c.year ? ` (${c.year})` : ""}
                   </div>
                 ))}

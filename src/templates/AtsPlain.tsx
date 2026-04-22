@@ -23,7 +23,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { splitSkills } from "./shared.tsx";
+import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -51,7 +51,7 @@ export function AtsPlain({ resume }: Props) {
     .ats-skill-row .ats-strong { margin-right: 1mm; }
   `;
 
-  const contactLine = resume.contact.map((c) => c.value).filter(Boolean);
+  const visibleContacts = resume.contact.filter((c) => c.value.trim());
 
   const atoms: React.ReactNode[] = [];
 
@@ -59,10 +59,10 @@ export function AtsPlain({ resume }: Props) {
     <header key="head">
       <h1 className="ats-name">{resume.profile.name}</h1>
       {resume.profile.title && <div className="ats-title">{resume.profile.title}</div>}
-      {contactLine.length > 0 && (
+      {visibleContacts.length > 0 && (
         <div className="ats-contact">
-          {contactLine.map((v) => (
-            <span key={v}>{v}</span>
+          {visibleContacts.map((c) => (
+            <span key={c.id}>{renderContactValue(c)}</span>
           ))}
         </div>
       )}
@@ -196,7 +196,7 @@ export function AtsPlain({ resume }: Props) {
     resume.certifications.forEach((c) => {
       atoms.push(
         <div className="ats-cert" key={`cert-${c.id}`}>
-          <span className="ats-strong">{c.name}</span>
+          {certificationLink(c, <span className="ats-strong">{c.name}</span>)}
           {c.issuer ? `, ${c.issuer}` : ""}
           {c.year ? ` (${c.year})` : ""}
         </div>,

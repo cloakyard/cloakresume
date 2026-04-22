@@ -1,6 +1,7 @@
-/** Certifications: name + issuer + year. */
+/** Certifications: name + issuer + year + optional verification URL. */
 
 import { BadgeCheck } from "lucide-react";
+import { isValidHttpUrl } from "../../utils/validation.ts";
 import { TextField } from "../fields.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
 import {
@@ -17,7 +18,7 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
   const addCert = () =>
     patch("certifications", [
       ...resume.certifications,
-      { id: newId("ct"), issuer: "", name: "", year: "" },
+      { id: newId("ct"), issuer: "", name: "", year: "", url: "" },
     ]);
 
   if (resume.certifications.length === 0) {
@@ -91,6 +92,23 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
                       }}
                     />
                   </div>
+                  <TextField
+                    label="Verification link (optional)"
+                    type="url"
+                    placeholder="https://credly.com/badges/…"
+                    value={c.url ?? ""}
+                    invalid={!!(c.url?.trim() && !isValidHttpUrl(c.url))}
+                    hint={
+                      c.url?.trim() && !isValidHttpUrl(c.url)
+                        ? "Enter a valid URL (https://…)."
+                        : "Renders as a clickable link in the exported PDF."
+                    }
+                    onChange={(v) => {
+                      const next = [...resume.certifications];
+                      next[i] = { ...c, url: v };
+                      patch("certifications", next);
+                    }}
+                  />
                 </div>
               </div>
             )}

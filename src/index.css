@@ -454,6 +454,19 @@
     @apply px-2.5 py-2 text-[14.5px]
       lg:px-2.5 lg:py-2 lg:text-[13.5px];
   }
+  /* Invalid state for text inputs — red border, red focus halo. */
+  .cr-input--invalid {
+    @apply border-(--danger-border) bg-(--danger-bg)/50
+      hover:border-(--danger-border)
+      focus:border-(--danger) focus:shadow-[0_0_0_3px_rgba(220,38,38,0.12)];
+  }
+  /* Helper text shown below a field. Red variant signals validation errors. */
+  .cr-field-hint {
+    @apply block mt-1 text-[11.5px] leading-snug text-(--ink-4);
+  }
+  .cr-field-hint--error {
+    @apply text-(--danger);
+  }
 
   /* Vertical rhythm inside a section body */
   .cr-stack > * + * {
@@ -549,6 +562,20 @@
   color: #1f2937;
   border-radius: 2px;
   overflow: visible;
+}
+
+/* Anchors rendered inside a resume template — kept subtle so they look
+ * native to the layout but still read as links. The PDF export layer
+ * turns these into real clickable link annotations. */
+.resume-root a.tpl-link,
+.resume-root a.tpl-link:visited {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px dotted currentColor;
+}
+.resume-root a.tpl-link:hover {
+  color: #2563eb;
+  border-bottom-color: #2563eb;
 }
 
 /* Preview scroller gets momentum scroll + the same gradient backing. */

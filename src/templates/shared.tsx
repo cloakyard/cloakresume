@@ -10,9 +10,11 @@
  * lucide package and inline SVG is also more print-stable.
  */
 
-import { Mail, Phone, MapPin, Globe, PenLine, Link as LinkIcon } from "lucide-react";
-import type { CSSProperties } from "react";
-import type { ContactLink } from "../types.ts";
+import { Globe, Link as LinkIcon, Mail, MapPin, PenLine, Phone } from "lucide-react";
+import type { CSSProperties, ReactNode } from "react";
+
+import type { Certification, ContactLink } from "../types.ts";
+import { isValidEmail, isValidPhone, normaliseHttpUrl } from "../utils/validation.ts";
 
 interface BrandIconProps {
   size?: number;
@@ -86,6 +88,67 @@ export function contactIcon(kind: ContactLink["kind"], size: number = 12) {
     default:
       return <LinkIcon {...common} />;
   }
+}
+
+/**
+ * Resolve a contact row to its canonical href, or `null` when the value
+ * isn't something we can meaningfully link to.
+ *
+ *   email → `mailto:<value>`  (only when the value looks like a real address)
+ *   phone → `tel:+<digits>`   (digits/`+` only; dashes, spaces, parens dropped)
+ *   URL-ish kinds → `https://<value>` (adds the scheme when missing)
+ *   location / malformed values → `null`
+ */
+export function contactHref(kind: ContactLink["kind"], value: string): string | null {
+  const v = value.trim();
+  if (!v) return null;
+  switch (kind) {
+    case "email":
+      return isValidEmail(v) ? `mailto:${v}` : null;
+    case "phone": {
+      if (!isValidPhone(v)) return null;
+      const digits = v.replace(/[^+\d]/g, "");
+      return `tel:${digits}`;
+    }
+    case "location":
+      return null;
+    default:
+      // website, linkedin, github, twitter, medium, other — all URL-ish.
+      return normaliseHttpUrl(v);
+  }
+}
+
+/**
+ * Render a contact value — either as a styled anchor when the value
+ * resolves to an href (email, phone, URL) or as plain text otherwise.
+ * Templates use this to get clickable links in the live preview and in
+ * the exported PDF without each layout having to repeat the conversion.
+ */
+export function renderContactValue(c: ContactLink): ReactNode {
+  const href = contactHref(c.kind, c.value);
+  if (href) {
+    return (
+      <a href={href} target="_blank" rel="noopener noreferrer" className="tpl-link">
+        {c.value}
+      </a>
+    );
+  }
+  return c.value;
+}
+
+/**
+ * Wrap arbitrary content (typically a `<strong>` with the certification
+ * name) in an anchor when the certification has a validated URL.
+ * Templates call this so the existing name markup stays template-local.
+ */
+export function certificationLink(c: Certification, content: ReactNode): ReactNode {
+  const href = c.url ? normaliseHttpUrl(c.url) : null;
+  if (!href) return content;
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="tpl-link">
+      {content}
+    </a>
+  );
 }
 
 /** Split a comma-separated skill list into trimmed items, ignoring blanks. */

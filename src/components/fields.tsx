@@ -22,9 +22,21 @@ interface TextFieldProps {
   onChange: (v: string) => void;
   placeholder?: string;
   type?: "text" | "email" | "tel" | "url";
+  /** Render the red error border + hint row below the input. */
+  invalid?: boolean;
+  /** Helper or error text shown under the input. Turns red when `invalid`. */
+  hint?: string;
 }
 
-export function TextField({ label, value, onChange, placeholder, type = "text" }: TextFieldProps) {
+export function TextField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  type = "text",
+  invalid = false,
+  hint,
+}: TextFieldProps) {
   return (
     <label className="cr-field">
       <span className="cr-field-label">{label}</span>
@@ -33,8 +45,12 @@ export function TextField({ label, value, onChange, placeholder, type = "text" }
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
-        className="cr-input"
+        aria-invalid={invalid || undefined}
+        className={`cr-input${invalid ? " cr-input--invalid" : ""}`}
       />
+      {hint && (
+        <span className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}`}>{hint}</span>
+      )}
     </label>
   );
 }

@@ -16,7 +16,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { splitSkills } from "./shared.tsx";
+import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -68,7 +68,7 @@ export function Minimalist({ resume, palette }: Props) {
       {resume.contact.length > 0 && (
         <div className="ml-contact">
           {resume.contact.map((c) => (
-            <span key={c.id}>{c.value}</span>
+            <span key={c.id}>{renderContactValue(c)}</span>
           ))}
         </div>
       )}
@@ -195,7 +195,7 @@ export function Minimalist({ resume, palette }: Props) {
       <div className="ml-inline" key="cert-v">
         {resume.certifications.map((c) => (
           <span key={c.id}>
-            <strong>{c.name}</strong>
+            {certificationLink(c, <strong>{c.name}</strong>)}
             {c.issuer ? ` — ${c.issuer}` : ""}
             {c.year ? ` (${c.year})` : ""}
           </span>

@@ -64,6 +64,8 @@ export interface Certification {
   issuer: string;
   name: string;
   year: string;
+  /** Optional verification / credential link (e.g. Credly badge URL). */
+  url?: string;
 }
 
 export interface AwardItem {

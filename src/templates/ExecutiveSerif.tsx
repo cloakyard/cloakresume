@@ -15,7 +15,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { contactIcon, splitSkills } from "./shared.tsx";
+import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -80,7 +80,7 @@ export function ExecutiveSerif({ resume, palette }: Props) {
         {resume.contact.map((c) => (
           <span key={c.id}>
             {contactIcon(c.kind, 10)}
-            {c.value}
+            {renderContactValue(c)}
           </span>
         ))}
       </div>
@@ -208,7 +208,7 @@ export function ExecutiveSerif({ resume, palette }: Props) {
             <div>
               {resume.certifications.map((c) => (
                 <div className="es-item" key={c.id}>
-                  <strong>{c.name}</strong> — {c.issuer}
+                  {certificationLink(c, <strong>{c.name}</strong>)} — {c.issuer}
                   {c.year ? ` · ${c.year}` : ""}
                 </div>
               ))}

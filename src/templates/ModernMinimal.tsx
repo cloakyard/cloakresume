@@ -14,7 +14,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { contactIcon, splitSkills } from "./shared.tsx";
+import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -83,7 +83,7 @@ export function ModernMinimal({ resume, palette }: Props) {
           {resume.contact.map((c) => (
             <span key={c.id}>
               {contactIcon(c.kind, 11)}
-              {c.value}
+              {renderContactValue(c)}
             </span>
           ))}
         </div>
@@ -220,7 +220,7 @@ export function ModernMinimal({ resume, palette }: Props) {
             <h2 className="mm-h2">Certifications</h2>
             {resume.certifications.map((c) => (
               <div className="mm-cert" key={c.id}>
-                <strong>{c.name}</strong>
+                {certificationLink(c, <strong>{c.name}</strong>)}
                 {c.issuer}
                 {c.year ? <span className="year"> · {c.year}</span> : null}
               </div>

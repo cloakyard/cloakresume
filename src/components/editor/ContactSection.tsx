@@ -1,7 +1,9 @@
 /** Contact: drag-orderable rows of {kind, value}. */
 
-import { Mail } from "lucide-react";
+import { AlertCircle, Mail } from "lucide-react";
+import type { ContactLink } from "../../types.ts";
 import { contactIcon } from "../../templates/shared.tsx";
+import { isValidEmail, isValidHttpUrl, isValidPhone } from "../../utils/validation.ts";
 import { DragList, DragItem } from "../DragList.tsx";
 import { AddButton, EmptyState, newId, usePatch, type SectionProps } from "./shared.tsx";
 
@@ -16,6 +18,39 @@ const CONTACT_KINDS = [
   "twitter",
   "other",
 ] as const;
+
+/** Placeholder text shown in the empty value input for each contact kind. */
+const PLACEHOLDER_BY_KIND: Record<ContactLink["kind"], string> = {
+  email: "name@example.com",
+  phone: "+1 555 123 4567",
+  location: "City, Country",
+  website: "https://your-site.com",
+  linkedin: "https://linkedin.com/in/you",
+  github: "https://github.com/you",
+  twitter: "https://twitter.com/you",
+  medium: "https://medium.com/@you",
+  other: "https://…",
+};
+
+/**
+ * Validate a contact row against its declared `kind`. Empty values are
+ * never flagged — the user is still typing — so the UI only yells about
+ * values that are clearly malformed (e.g. "foo@" for an email).
+ */
+function validateContact(kind: ContactLink["kind"], value: string): string | null {
+  const v = value.trim();
+  if (!v) return null;
+  switch (kind) {
+    case "email":
+      return isValidEmail(v) ? null : "Enter a valid email address.";
+    case "phone":
+      return isValidPhone(v) ? null : "Enter a valid phone number.";
+    case "location":
+      return null;
+    default:
+      return isValidHttpUrl(v) ? null : "Enter a valid URL (https://…).";
+  }
+}
 
 export function ContactSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
@@ -86,16 +121,27 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                   </div>
                 </div>
                 <input
-                  type="text"
+                  type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
                   value={c.value}
                   onChange={(e) => {
                     const next = [...resume.contact];
                     next[i] = { ...c, value: e.target.value };
                     patch("contact", next);
                   }}
-                  placeholder="Enter value…"
-                  className="w-full px-3 py-2 text-sm bg-transparent focus:outline-none placeholder:text-(--ink-5)"
+                  placeholder={PLACEHOLDER_BY_KIND[c.kind]}
+                  aria-invalid={validateContact(c.kind, c.value) ? true : undefined}
+                  className={`w-full px-3 py-2 text-sm bg-transparent focus:outline-none placeholder:text-(--ink-5) ${
+                    validateContact(c.kind, c.value)
+                      ? "text-(--danger) placeholder:text-(--danger)/40"
+                      : ""
+                  }`}
                 />
+                {validateContact(c.kind, c.value) && (
+                  <div className="flex items-center gap-1.5 px-3 py-1.5 text-[11.5px] text-(--danger) bg-(--danger-bg) border-t border-(--danger-border)">
+                    <AlertCircle className="w-3 h-3 shrink-0" strokeWidth={2.25} />
+                    <span>{validateContact(c.kind, c.value)}</span>
+                  </div>
+                )}
               </div>
             )}
           </DragItem>

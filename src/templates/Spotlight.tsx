@@ -18,7 +18,13 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { contactIcon, extractInitials, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  extractInitials,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -144,7 +150,7 @@ export function Spotlight({ resume, palette }: Props) {
                 {resume.contact.map((c) => (
                   <span key={c.id}>
                     <span className="i">{contactIcon(c.kind, 10)}</span>
-                    <span>{c.value}</span>
+                    <span>{renderContactValue(c)}</span>
                   </span>
                 ))}
               </div>
@@ -386,7 +392,7 @@ export function Spotlight({ resume, palette }: Props) {
             <div>
               {resume.certifications.map((c) => (
                 <div className="sp-item" key={c.id}>
-                  <strong>{c.name}</strong>
+                  {certificationLink(c, <strong>{c.name}</strong>)}
                   {c.issuer ? ` — ${c.issuer}` : ""}
                   {c.year ? <span className="meta"> · {c.year}</span> : null}
                 </div>

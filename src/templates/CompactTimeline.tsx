@@ -15,7 +15,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { contactIcon, splitSkills } from "./shared.tsx";
+import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -83,7 +83,7 @@ export function CompactTimeline({ resume, palette }: Props) {
           {resume.contact.map((c) => (
             <span key={c.id}>
               {contactIcon(c.kind, 10)}
-              <span>{c.value}</span>
+              <span>{renderContactValue(c)}</span>
             </span>
           ))}
         </div>
@@ -214,7 +214,7 @@ export function CompactTimeline({ resume, palette }: Props) {
             <div className="ct-h2">Certifications</div>
             {resume.certifications.map((c) => (
               <div className="ct-kv" key={c.id}>
-                <strong>{c.name}</strong>
+                {certificationLink(c, <strong>{c.name}</strong>)}
                 <br />
                 {c.issuer}
                 {c.year ? ` · ${c.year}` : ""}

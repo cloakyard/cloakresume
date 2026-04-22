@@ -19,7 +19,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { splitSkills } from "./shared.tsx";
+import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -53,19 +53,19 @@ export function AtsProfessional({ resume, palette }: Props) {
     .atp-cert-year { color: #6b7280; font-style: italic; }
   `;
 
-  const contactLine = resume.contact.map((c) => c.value).filter(Boolean);
+  const visibleContacts = resume.contact.filter((c) => c.value.trim());
   const atoms: React.ReactNode[] = [];
 
   atoms.push(
     <header className="atp-header" key="head">
       <h1 className="atp-name">{resume.profile.name}</h1>
       {resume.profile.title && <div className="atp-title">{resume.profile.title}</div>}
-      {contactLine.length > 0 && (
+      {visibleContacts.length > 0 && (
         <div className="atp-contact">
-          {contactLine.map((v, i) => (
-            <span key={v}>
-              {v}
-              {i < contactLine.length - 1 && <span className="sep"> · </span>}
+          {visibleContacts.map((c, i) => (
+            <span key={c.id}>
+              {renderContactValue(c)}
+              {i < visibleContacts.length - 1 && <span className="sep"> · </span>}
             </span>
           ))}
         </div>
@@ -201,7 +201,7 @@ export function AtsProfessional({ resume, palette }: Props) {
     resume.certifications.forEach((c) => {
       atoms.push(
         <div className="atp-kv" key={`cert-${c.id}`}>
-          <strong>{c.name}</strong>
+          {certificationLink(c, <strong>{c.name}</strong>)}
           {c.issuer ? `, ${c.issuer}` : ""}
           {c.year ? <span className="atp-cert-year"> ({c.year})</span> : null}
         </div>,

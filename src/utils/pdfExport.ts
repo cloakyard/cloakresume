@@ -44,6 +44,39 @@ export function buildPdfFilename(displayName: string): string {
 const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
 
 /**
+ * Walk every `<a href>` inside `pageEl` and register it as a PDF link
+ * annotation at the anchor's on-page bounding box. Pairs with the raster
+ * image and the invisible text layer: raster preserves the look, text
+ * layer makes the content selectable/searchable, and this layer makes
+ * URLs *actually* clickable in the exported PDF — which the raster
+ * (being just an image) can't do on its own.
+ *
+ * Only external http/https/mailto/tel hrefs are emitted. javascript:
+ * and in-document hash links are ignored.
+ */
+function addLinkAnnotations(pdf: jsPDF, pageEl: HTMLElement): void {
+  const pageRect = pageEl.getBoundingClientRect();
+  const anchors = pageEl.querySelectorAll<HTMLAnchorElement>("a[href]");
+  for (const a of anchors) {
+    const href = a.getAttribute("href");
+    if (!href) continue;
+    if (!/^(https?:|mailto:|tel:)/i.test(href)) continue;
+    const rect = a.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) continue;
+    const xMm = (rect.left - pageRect.left) / PX_PER_MM;
+    const yMm = (rect.top - pageRect.top) / PX_PER_MM;
+    const wMm = rect.width / PX_PER_MM;
+    const hMm = rect.height / PX_PER_MM;
+    // Skip anchors that lie outside the A4 page box (rare, but guards
+    // against accidental off-screen clones).
+    if (xMm > A4_WIDTH_MM + 2 || yMm > A4_HEIGHT_MM + 2 || xMm + wMm < -2 || yMm + hMm < -2) {
+      continue;
+    }
+    pdf.link(xMm, yMm, wMm, hMm, { url: href });
+  }
+}
+
+/**
  * Write every text node inside `pageEl` into `pdf` at its on-page
  * position as invisible text. This gives the PDF a real text stream
  * (DOM order → reading order) without changing the raster appearance.
@@ -206,6 +239,10 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
       // but keeping the call order deterministic makes the PDF content
       // stream predictable.
       addInvisibleTextLayer(pdf, pageEl);
+      // Emit PDF link annotations for every <a href> on the page so
+      // email/website/linkedin/certification links stay clickable in the
+      // exported document.
+      addLinkAnnotations(pdf, pageEl);
     }
 
     pdf.save(filename);
