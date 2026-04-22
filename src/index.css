@@ -523,6 +523,14 @@
       hover:border-(--danger-border)
       focus:border-(--danger) focus:shadow-[0_0_0_3px_rgba(220,38,38,0.12)];
   }
+  /* Live writing-hint state — amber border, reserves space on the right so
+     text doesn't run under the floating issue badge. */
+  .cr-input--has-issues {
+    @apply border-(--warn-border)
+      hover:border-(--warn-border)
+      focus:border-(--warn) focus:shadow-[0_0_0_3px_rgba(217,119,6,0.14)]
+      pr-10;
+  }
   /* Helper text shown below a field. Red variant signals validation errors. */
   .cr-field-hint {
     @apply block mt-1 text-[11.5px] leading-snug text-(--ink-4);

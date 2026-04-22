@@ -5,9 +5,10 @@
  * when typing directly in this field.
  */
 
-import { useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
 import { useFormatRegistration, useFormatScope } from "./FormatScope.tsx";
 import { toggleSelection } from "../utils/richText.tsx";
+import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
 
 interface RichTextAreaProps {
   label?: string;
@@ -36,6 +37,17 @@ export function RichTextArea({
   const ref = useRef<HTMLTextAreaElement>(null);
   const scope = useFormatScope();
   const registration = useFormatRegistration(ref, onChange);
+  const issues = useFieldIssues(fieldId);
+
+  /** Replace first occurrence of `actual` with `replacement` in the field value. */
+  const applySuggestion = useCallback(
+    (actual: string, replacement: string) => {
+      const idx = value.indexOf(actual);
+      if (idx === -1) return;
+      onChange(value.slice(0, idx) + replacement + value.slice(idx + actual.length));
+    },
+    [value, onChange],
+  );
 
   // Refresh the stored handler every render so the toolbar always uses
   // the latest onChange closure (React recreates it each render).
@@ -70,32 +82,37 @@ export function RichTextArea({
     });
   };
 
+  const hasIssues = issues.length > 0;
+
   return (
     <label className={label ? "cr-field" : "block"}>
       {label && <span className="cr-field-label">{label}</span>}
-      <textarea
-        ref={ref}
-        data-field-id={fieldId}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        onFocus={registration.onFocus}
-        onBlur={registration.onBlur}
-        placeholder={placeholder}
-        rows={rows}
-        spellCheck={true}
-        className={`cr-input font-[inherit] ${compact ? "cr-input--compact" : ""} ${
-          autoGrow ? "resize-none overflow-hidden" : "resize-y"
-        }`}
-        onKeyDown={(e) => {
-          if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
-            e.preventDefault();
-            applyInline("**");
-          } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "i") {
-            e.preventDefault();
-            applyInline("*");
-          }
-        }}
-      />
+      <div className="relative">
+        <textarea
+          ref={ref}
+          data-field-id={fieldId}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          onFocus={registration.onFocus}
+          onBlur={registration.onBlur}
+          placeholder={placeholder}
+          rows={rows}
+          spellCheck={true}
+          className={`cr-input font-[inherit] ${compact ? "cr-input--compact" : ""} ${
+            autoGrow ? "resize-none overflow-hidden" : "resize-y"
+          } ${hasIssues ? "cr-input--has-issues" : ""}`}
+          onKeyDown={(e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
+              e.preventDefault();
+              applyInline("**");
+            } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "i") {
+              e.preventDefault();
+              applyInline("*");
+            }
+          }}
+        />
+        <FieldIssuesBadge issues={issues} onApplySuggestion={applySuggestion} />
+      </div>
     </label>
   );
 }

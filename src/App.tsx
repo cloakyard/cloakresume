@@ -29,6 +29,7 @@ import { derivePalette } from "./utils/colors.ts";
 import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
+import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
 import { highlightField } from "./utils/highlightField.ts";
 import { downloadResumeFile, normalizeResumeData, readResumeFile } from "./utils/fileIO.ts";
 import { blankResume } from "./data/blankResume.ts";
@@ -163,6 +164,20 @@ export function App() {
     if (atsOpen) runGrammarScan();
   }, [atsOpen, runGrammarScan]);
 
+  /**
+   * Live in-field writing feedback. Once the Harper engine has been
+   * loaded (i.e. the user has opened the ATS review at least once), any
+   * resume edit schedules a debounced re-scan so the badges next to each
+   * prose field stay in sync with the latest text. Before the engine is
+   * ready we stay silent — the ~7 MB WASM payload is deferred to the
+   * first intentional scan.
+   */
+  useEffect(() => {
+    if (!grammarEngineReady) return;
+    const id = window.setTimeout(() => runGrammarScan(), 800);
+    return () => window.clearTimeout(id);
+  }, [resume, grammarEngineReady, runGrammarScan]);
+
   /** Switch the rail to the JD section when the user clicks "add JD" in the panel. */
   const focusJdEditor = useCallback(() => {
     setAtsOpen(false);
@@ -290,14 +305,16 @@ export function App() {
         activeSection={activeSection}
         onSectionChange={setActiveSection}
         panel={
-          <SectionPanel
-            active={activeSection}
-            resume={resume}
-            onChange={setResume}
-            jobDescription={jobDescription}
-            onJobDescriptionChange={setJobDescription}
-            onAnalyze={() => setAtsOpen(true)}
-          />
+          <FieldIssuesProvider report={grammarReport}>
+            <SectionPanel
+              active={activeSection}
+              resume={resume}
+              onChange={setResume}
+              jobDescription={jobDescription}
+              onJobDescriptionChange={setJobDescription}
+              onAnalyze={() => setAtsOpen(true)}
+            />
+          </FieldIssuesProvider>
         }
         preview={
           <Preview resume={resume} palette={palette} TemplateComponent={TemplateComponent} />

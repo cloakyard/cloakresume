@@ -6,7 +6,8 @@
  */
 
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
 
 interface SectionsBulkSignal {
   /** Monotonically increments on each bulk toggle; 0 means "no bulk action yet". */
@@ -40,19 +41,36 @@ export function TextField({
   hint,
   fieldId,
 }: TextFieldProps) {
+  const issues = useFieldIssues(fieldId);
+  const hasIssues = issues.length > 0 && !invalid;
+  const applySuggestion = useCallback(
+    (actual: string, replacement: string) => {
+      const idx = value.indexOf(actual);
+      if (idx === -1) return;
+      onChange(value.slice(0, idx) + replacement + value.slice(idx + actual.length));
+    },
+    [value, onChange],
+  );
   return (
     <label className="cr-field">
       <span className="cr-field-label">{label}</span>
-      <input
-        type={type}
-        data-field-id={fieldId}
-        value={value}
-        onChange={(e) => onChange(e.target.value)}
-        placeholder={placeholder}
-        aria-invalid={invalid || undefined}
-        spellCheck={type === "text"}
-        className={`cr-input${invalid ? " cr-input--invalid" : ""}`}
-      />
+      <div className="relative">
+        <input
+          type={type}
+          data-field-id={fieldId}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          placeholder={placeholder}
+          aria-invalid={invalid || undefined}
+          spellCheck={type === "text"}
+          className={`cr-input${invalid ? " cr-input--invalid" : ""}${hasIssues ? " cr-input--has-issues" : ""}`}
+        />
+        <FieldIssuesBadge
+          issues={hasIssues ? issues : []}
+          onApplySuggestion={applySuggestion}
+          className="top-1/2 -translate-y-1/2 right-2"
+        />
+      </div>
       {hint && (
         <span className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}`}>{hint}</span>
       )}
