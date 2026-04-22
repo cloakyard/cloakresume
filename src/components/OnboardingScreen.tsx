@@ -15,7 +15,6 @@ import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   EyeOff,
-  FileText,
   FolderOpen,
   ShieldCheck,
   Sparkles,
@@ -143,15 +142,13 @@ export function OnboardingScreen({ onStartBlank, onLoadSample, onLoadFile, onDis
           </button>
         )}
 
-        <div className="flex items-center gap-3.5 mb-6">
-          <span className="w-[42px] h-[42px] rounded-lg bg-[linear-gradient(135deg,#3b82f6_0%,#2563eb_60%,#1d4ed8_100%)] grid place-items-center text-white shadow-[inset_0_1px_0_rgba(255,255,255,0.25),0_1px_2px_rgba(37,99,235,0.35)] shrink-0">
-            <FileText className="w-5 h-5" strokeWidth={2.25} />
-          </span>
+        <div className="flex items-center gap-3 mb-6">
+          <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-11 h-11 shrink-0" />
           <div>
-            <div className="font-semibold text-(--ink-1) text-[15px] tracking-[-0.01em]">
-              CloakResume
+            <div className="font-semibold text-(--ink-1) text-[17px] tracking-[-0.015em] leading-none">
+              Cloak<span className="text-(--brand)">Resume</span>
             </div>
-            <div className="text-(--ink-4) text-[13px] mt-px">
+            <div className="text-(--ink-4) text-[13px] mt-1">
               The private, local-first résumé builder.
             </div>
           </div>
