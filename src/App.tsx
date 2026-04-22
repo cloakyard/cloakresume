@@ -28,6 +28,7 @@ import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
 import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
+import { useGrammarScan } from "./utils/grammar.ts";
 import { downloadResumeFile, normalizeResumeData, readResumeFile } from "./utils/fileIO.ts";
 import { blankResume } from "./data/blankResume.ts";
 
@@ -137,8 +138,27 @@ export function App() {
   /** Bind palette to CSS variables so editor chrome follows the theme. */
   useApplyTheme(palette);
 
-  /** ATS scoring depends on the resume body and the optional JD. */
-  const atsReport = useMemo(() => computeAts(resume, jobDescription), [resume, jobDescription]);
+  /**
+   * Grammar / spelling analysis runs in a Web Worker so the ~700 KB English
+   * dictionary doesn't land on the main thread. It's triggered lazily when
+   * the user opens the ATS review — no per-keystroke work.
+   */
+  const {
+    report: grammarReport,
+    scanning: grammarScanning,
+    scan: runGrammarScan,
+  } = useGrammarScan(resume);
+
+  /** ATS scoring depends on the resume body, the optional JD, and (once ready) the grammar report. */
+  const atsReport = useMemo(
+    () => computeAts(resume, jobDescription, grammarReport),
+    [resume, jobDescription, grammarReport],
+  );
+
+  /** Kick off a fresh grammar scan whenever the panel opens. */
+  useEffect(() => {
+    if (atsOpen) runGrammarScan();
+  }, [atsOpen, runGrammarScan]);
 
   /** Switch the rail to the JD section when the user clicks "add JD" in the panel. */
   const focusJdEditor = useCallback(() => {
@@ -262,6 +282,8 @@ export function App() {
         resume={resume}
         hasJobDescription={jobDescription.trim().length > 0}
         onOpenJdEditor={focusJdEditor}
+        grammarScanning={grammarScanning}
+        onRescan={runGrammarScan}
       />
 
       {showOnboarding && (

@@ -4,8 +4,8 @@
  * `issueIcon`) translate raw report strings into a friendlier label + icon.
  */
 
-import { AlertTriangle, BarChart3, CheckCircle2, ShieldCheck } from "lucide-react";
-import type { AtsReport } from "../../types.ts";
+import { AlertTriangle, BarChart3, CheckCircle2, PencilLine, ShieldCheck } from "lucide-react";
+import type { AtsReport, GrammarIssue, GrammarIssueKind } from "../../types.ts";
 
 type InsightIcon = "check" | "alert" | "chart" | "shield";
 type InsightTone = "ok" | "warn" | "err";
@@ -20,6 +20,7 @@ function winMeta(win: string): { title: string; icon: "check" | "shield" } {
   if (w.includes("optimal") || w.includes("word range"))
     return { title: "Optimal résumé length", icon: "check" };
   if (w.includes("keyword")) return { title: "Strong keyword match", icon: "check" };
+  if (w.includes("writing is clean")) return { title: "Clean writing", icon: "check" };
   if (w.includes("parse") || w.includes("ats"))
     return { title: "Parseable by ATS", icon: "shield" };
   return { title: win, icon: "check" };
@@ -42,6 +43,10 @@ function issueTitle(message: string): string {
   if (m.includes("body is on the short")) return "Résumé body is short";
   if (m.includes("body is long") || m.includes("runs a bit long")) return "Résumé body is long";
   if (m.includes("less than half") && m.includes("keyword")) return "Keyword coverage is low";
+  if (m.includes("spelling issue")) return "Possible spelling issues";
+  if (m.includes("repeated words")) return "Repeated words detected";
+  if (m.includes("passive-voice")) return "Passive voice in bullets";
+  if (m.includes("hard-to-scan")) return "Long, hard-to-scan sentences";
   return message;
 }
 
@@ -99,6 +104,85 @@ export function AtsInsightsPane({ report }: AtsInsightsPaneProps) {
       {items.map((it) => (
         <InsightCard key={it.key} tone={it.tone} icon={it.icon} title={it.title} body={it.body} />
       ))}
+      {report.grammar && report.grammar.issues.length > 0 && (
+        <WritingDetails issues={report.grammar.issues} />
+      )}
+    </div>
+  );
+}
+
+const KIND_LABEL: Record<GrammarIssueKind, string> = {
+  spelling: "Spelling",
+  repeated: "Repeated",
+  passive: "Passive",
+  readability: "Long sentence",
+};
+
+const KIND_TONE: Record<GrammarIssueKind, { bg: string; fg: string; border: string }> = {
+  spelling: { bg: "bg-(--danger-bg)", fg: "text-(--danger)", border: "border-(--danger-border)" },
+  repeated: { bg: "bg-(--warn-bg)", fg: "text-(--warn)", border: "border-(--warn-border)" },
+  passive: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
+  readability: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
+};
+
+/**
+ * Per-word writing details. Capped at 25 entries so a typo-heavy résumé
+ * doesn't turn the pane into a wall of cards — the aggregate counts in
+ * the Insights feed already convey scale.
+ */
+function WritingDetails({ issues }: { issues: GrammarIssue[] }) {
+  const capped = issues.slice(0, 25);
+  const overflow = issues.length - capped.length;
+  const counts = new Map<string, number>();
+  const keyed = capped.map((issue) => {
+    const base = `${issue.segmentId}-${issue.kind}-${issue.actual}`;
+    const n = (counts.get(base) ?? 0) + 1;
+    counts.set(base, n);
+    return { key: `${base}-${n}`, issue };
+  });
+  return (
+    <div className="mt-2 bg-(--surface) border border-(--line-soft) rounded-xl overflow-hidden">
+      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-(--line-soft) bg-(--surface-2)">
+        <PencilLine className="w-3.5 h-3.5 text-(--ink-4)" />
+        <span className="text-[12.5px] font-semibold text-(--ink-1)">Writing details</span>
+        <span className="ml-auto font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em]">
+          {issues.length} finding{issues.length === 1 ? "" : "s"}
+        </span>
+      </div>
+      <ul className="divide-y divide-(--line-soft)">
+        {keyed.map(({ key, issue }) => {
+          const tone = KIND_TONE[issue.kind];
+          const preview = issue.actual.length > 72 ? `${issue.actual.slice(0, 72)}…` : issue.actual;
+          return (
+            <li key={key} className="flex items-start gap-2.5 px-3 py-2.5">
+              <span
+                className={`shrink-0 inline-flex items-center h-5 px-1.5 rounded-md border font-mono text-[9.5px] font-semibold tracking-[0.04em] uppercase ${tone.bg} ${tone.fg} ${tone.border}`}
+              >
+                {KIND_LABEL[issue.kind]}
+              </span>
+              <div className="flex-1 min-w-0">
+                <div className="text-[12.5px] text-(--ink-1) leading-snug">
+                  <mark className="bg-(--warn-bg) text-(--ink-1) px-1 rounded">{preview}</mark>
+                  {issue.suggestions.length > 0 && (
+                    <span className="text-(--ink-3)">
+                      {" "}
+                      → {issue.suggestions.map((s) => `"${s}"`).join(", ")}
+                    </span>
+                  )}
+                </div>
+                <div className="text-[11px] text-(--ink-4) mt-0.5 truncate">
+                  {issue.segmentLabel}
+                </div>
+              </div>
+            </li>
+          );
+        })}
+      </ul>
+      {overflow > 0 && (
+        <div className="px-3 py-2 text-[11px] text-(--ink-5) text-center border-t border-(--line-soft) bg-(--surface-2)">
+          +{overflow} more — fix the ones above and re-scan.
+        </div>
+      )}
     </div>
   );
 }

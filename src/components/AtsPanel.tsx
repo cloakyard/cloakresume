@@ -25,6 +25,10 @@ interface AtsPanelProps {
   resume: ResumeData;
   hasJobDescription: boolean;
   onOpenJdEditor: () => void;
+  /** True while the grammar worker is still processing the current resume. */
+  grammarScanning: boolean;
+  /** Re-runs both the on-screen scan animation and a fresh grammar pass. */
+  onRescan: () => void;
 }
 
 type TabId = "overview" | "keywords" | "insights" | "parse";
@@ -44,20 +48,27 @@ export function AtsPanel({
   resume,
   hasJobDescription,
   onOpenJdEditor,
+  grammarScanning,
+  onRescan,
 }: AtsPanelProps) {
   const [tab, setTab] = useState<TabId>("overview");
-  const [scanning, setScanning] = useState(false);
+  const [minDelayPassed, setMinDelayPassed] = useState(false);
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
   const sheetRef = useRef<HTMLDivElement>(null);
 
+  // Keep the "Scanning locally…" hero visible for a brief minimum so the
+  // UI doesn't flash on fast scans, but always wait for grammar before
+  // showing the real scorecard so the Writing dimension is populated.
   useEffect(() => {
     if (!open) return;
-    setScanning(true);
+    setMinDelayPassed(false);
     setTab("overview");
-    const t = window.setTimeout(() => setScanning(false), 900);
+    const t = window.setTimeout(() => setMinDelayPassed(true), 900);
     return () => window.clearTimeout(t);
   }, [open]);
+
+  const scanning = !minDelayPassed || grammarScanning;
 
   useEffect(() => {
     if (!open) return;
@@ -222,8 +233,9 @@ export function AtsPanel({
                     type="button"
                     className="tb"
                     onClick={() => {
-                      setScanning(true);
-                      window.setTimeout(() => setScanning(false), 900);
+                      setMinDelayPassed(false);
+                      window.setTimeout(() => setMinDelayPassed(true), 900);
+                      onRescan();
                     }}
                     aria-label="Re-scan"
                   >

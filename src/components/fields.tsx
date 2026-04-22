@@ -46,6 +46,7 @@ export function TextField({
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         aria-invalid={invalid || undefined}
+        spellCheck={type === "text"}
         className={`cr-input${invalid ? " cr-input--invalid" : ""}`}
       />
       {hint && (
@@ -115,6 +116,7 @@ export function TextArea({ label, value, onChange, placeholder, rows = 5 }: Text
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
+        spellCheck={true}
         className="cr-input font-[inherit] resize-y"
       />
     </label>

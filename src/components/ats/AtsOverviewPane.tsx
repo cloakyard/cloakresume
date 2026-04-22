@@ -27,6 +27,7 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
   const projects = find("Projects");
   const length = find("Overall length");
   const keyword = find("Keyword match");
+  const writing = find("Writing quality");
 
   const contentEarned = (summary?.earned ?? 0) + (bullets?.earned ?? 0) + (length?.earned ?? 0);
   const contentMax = (summary?.max ?? 0) + (bullets?.max ?? 0) + (length?.max ?? 0);
@@ -39,6 +40,8 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
   const formatPct = pct(formatEarned, formatMax);
   const impactPct = pct(impact?.earned ?? 0, impact?.max ?? 0);
   const keywordPct = hasJd ? pct(keyword?.earned ?? 0, keyword?.max ?? 0) : 0;
+  const hasWriting = (writing?.max ?? 0) > 0;
+  const writingPct = hasWriting ? pct(writing?.earned ?? 0, writing?.max ?? 0) : 0;
 
   return [
     {
@@ -64,6 +67,12 @@ function buildDimensions(report: AtsReport, hasJd: boolean): Dimension[] {
       percent: impactPct,
       caption: impact?.note ?? "",
       tone: toneColor(impactPct),
+    },
+    {
+      label: "Writing quality",
+      percent: writingPct,
+      caption: writing?.note ?? "Writing scan hasn't run yet.",
+      tone: hasWriting ? toneColor(writingPct) : "var(--ink-4)",
     },
   ];
 }

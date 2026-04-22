@@ -157,4 +157,34 @@ export interface AtsReport {
   issues: AtsIssue[];
   wins: string[];
   keywords: { matched: string[]; missing: string[] };
+  /** Per-word / per-phrase grammar findings. Present once the worker has run. */
+  grammar?: GrammarReport;
+}
+
+/** One piece of prose sent to the grammar worker for analysis. */
+export interface GrammarSegment {
+  id: string;
+  /** Human-readable label shown in the Insights tab (e.g. "Senior Engineer · bullet 2"). */
+  label: string;
+  text: string;
+}
+
+export type GrammarIssueKind = "spelling" | "repeated" | "passive" | "readability";
+
+export interface GrammarIssue {
+  segmentId: string;
+  segmentLabel: string;
+  kind: GrammarIssueKind;
+  /** The offending word or phrase surfaced by retext. */
+  actual: string;
+  /** Suggested replacements (only meaningful for spelling & repeated-word issues). */
+  suggestions: string[];
+  /** Raw message from retext, used as a fallback when we can't craft a friendlier one. */
+  reason: string;
+}
+
+export interface GrammarReport {
+  issues: GrammarIssue[];
+  /** Total word count the worker inspected — used to scale severity in the ATS score. */
+  wordsChecked: number;
 }

@@ -78,6 +78,7 @@ export function RichTextArea({
         onBlur={registration.onBlur}
         placeholder={placeholder}
         rows={rows}
+        spellCheck={true}
         className={`cr-input font-[inherit] ${compact ? "cr-input--compact" : ""} ${
           autoGrow ? "resize-none overflow-hidden" : "resize-y"
         }`}

@@ -11,7 +11,7 @@
  * browser.
  */
 
-import type { AtsIssue, AtsReport, ResumeData } from "../types.ts";
+import type { AtsIssue, AtsReport, GrammarIssue, GrammarReport, ResumeData } from "../types.ts";
 
 const ACTION_VERBS = new Set([
   "architected",
@@ -343,7 +343,64 @@ function inspectAuthenticity(
   return { loremRatio, englishRatio, proseTokenCount: n, isPlaceholder, isLowEnglish };
 }
 
-export function computeAts(resume: ResumeData, jobDescription: string = ""): AtsReport {
+/**
+ * Build a headline issue + suggestion pair for the most impactful grammar
+ * problem of a given kind. Surfaces up to one issue per kind so the
+ * Insights feed stays actionable instead of drowning in a flat list.
+ */
+function summariseGrammar(report: GrammarReport): AtsIssue[] {
+  const out: AtsIssue[] = [];
+  const byKind = new Map<GrammarIssue["kind"], GrammarIssue[]>();
+  for (const issue of report.issues) {
+    const existing = byKind.get(issue.kind) ?? [];
+    existing.push(issue);
+    byKind.set(issue.kind, existing);
+  }
+  const spelling = byKind.get("spelling") ?? [];
+  if (spelling.length > 0) {
+    const sample = spelling
+      .slice(0, 3)
+      .map((i) => `"${i.actual}"`)
+      .join(", ");
+    out.push({
+      severity: spelling.length >= 3 ? "fail" : "warn",
+      message: `${spelling.length} possible spelling issue${spelling.length === 1 ? "" : "s"} detected.`,
+      suggestion: `Review ${sample}${spelling.length > 3 ? " and others" : ""} — open the Insights tab for fixes.`,
+    });
+  }
+  const repeated = byKind.get("repeated") ?? [];
+  if (repeated.length > 0) {
+    out.push({
+      severity: "warn",
+      message: `Repeated words found (${repeated.length}).`,
+      suggestion:
+        'Remove accidental duplicates like "the the" — they slip past most spellcheckers.',
+    });
+  }
+  const passive = byKind.get("passive") ?? [];
+  if (passive.length >= 3) {
+    out.push({
+      severity: "info",
+      message: `${passive.length} passive-voice phrases.`,
+      suggestion: 'Recruiters favour active verbs. Rewrite "was delivered" as "delivered".',
+    });
+  }
+  const readability = byKind.get("readability") ?? [];
+  if (readability.length >= 2) {
+    out.push({
+      severity: "info",
+      message: `${readability.length} hard-to-scan sentence${readability.length === 1 ? "" : "s"}.`,
+      suggestion: "Split long bullets into two — recruiters spend ~6 seconds per résumé.",
+    });
+  }
+  return out;
+}
+
+export function computeAts(
+  resume: ResumeData,
+  jobDescription: string = "",
+  grammar?: GrammarReport | null,
+): AtsReport {
   const issues: AtsIssue[] = [];
   const wins: string[] = [];
   const breakdown: AtsReport["breakdown"] = [];
@@ -604,6 +661,39 @@ export function computeAts(resume: ResumeData, jobDescription: string = ""): Ats
   const lengthEarned = Math.round(baseLengthEarned * contentMultiplier);
   breakdown.push({ category: "Overall length", earned: lengthEarned, max: 10, note: lengthNote });
 
+  // ── Writing quality (max 10 when grammar report available) ──────
+  // Scales by issue density so a long résumé with a few typos isn't
+  // penalised as harshly as a short summary riddled with errors.
+  if (grammar && grammar.wordsChecked >= 20) {
+    const issueCount = grammar.issues.length;
+    const per100 = (issueCount / grammar.wordsChecked) * 100;
+    let writingEarned = 10;
+    if (per100 >= 6) writingEarned = 0;
+    else if (per100 >= 4) writingEarned = 4;
+    else if (per100 >= 2) writingEarned = 7;
+    else if (per100 >= 1) writingEarned = 9;
+    breakdown.push({
+      category: "Writing quality",
+      earned: writingEarned,
+      max: 10,
+      note:
+        issueCount === 0
+          ? "No grammar or spelling issues detected."
+          : `${issueCount} issue${issueCount === 1 ? "" : "s"} across ${grammar.wordsChecked} words`,
+    });
+    for (const grammarIssue of summariseGrammar(grammar)) issues.push(grammarIssue);
+    if (issueCount === 0 && grammar.wordsChecked >= 100) {
+      wins.push("Writing is clean — no spelling, grammar, or passive-voice flags.");
+    }
+  } else {
+    breakdown.push({
+      category: "Writing quality",
+      earned: 0,
+      max: 0,
+      note: grammar ? "Add more prose to score writing quality." : "Writing scan hasn't run yet.",
+    });
+  }
+
   // ── Keyword match (max 20 when JD provided; 0 otherwise) ────────
   const matched: string[] = [];
   const missing: string[] = [];
@@ -673,6 +763,7 @@ export function computeAts(resume: ResumeData, jobDescription: string = ""): Ats
     issues,
     wins: finalWins,
     keywords: { matched, missing },
+    grammar: grammar ?? undefined,
   };
 }
 

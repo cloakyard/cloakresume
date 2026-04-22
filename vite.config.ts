@@ -58,6 +58,9 @@ export default defineConfig({
       },
     }),
   ],
+  // ES module worker output so the grammar worker can use top-level await
+  // (dictionary-en ships an ESM module that decodes its data at load time).
+  worker: { format: "es" },
   staged: {
     "*": "vp check --fix",
   },
