@@ -224,14 +224,7 @@ export function AtsPanel({
         ) : (
           <>
             <header className="flex flex-col gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
-              <div className="flex items-start gap-3 sm:gap-5">
-                <ScorePill label="ATS" score={report.atsScore} band={atsBand} />
-                <ScorePill
-                  label="Writing"
-                  score={report.writingScore}
-                  band={writingBand}
-                  muted={!report.writingReady}
-                />
+              <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:gap-5">
                 <div className="flex-1 min-w-0 flex flex-col gap-1">
                   <h1 className="text-[18px] font-bold tracking-[-0.025em] leading-[1.2] text-(--ink-1) m-0 sm:text-[22px] sm:mb-0.5 min-[900px]:text-[26px]">
                     Résumé scored{" "}
@@ -298,6 +291,13 @@ export function AtsPanel({
                     </button>
                   </div>
                 </div>
+                <ScoreDuo
+                  atsScore={report.atsScore}
+                  atsBand={atsBand}
+                  writingScore={report.writingScore}
+                  writingBand={writingBand}
+                  writingReady={report.writingReady}
+                />
               </div>
             </header>
 
@@ -367,7 +367,36 @@ export function AtsPanel({
   );
 }
 
-function ScorePill({
+type Band = { label: string; color: string; bg: string; border: string };
+
+/**
+ * Pair of score rings rendered as a single unified card. Combining them
+ * reads as one scorecard with two metrics rather than two floating widgets,
+ * and lets the rings share consistent padding + a hairline divider.
+ */
+function ScoreDuo({
+  atsScore,
+  atsBand,
+  writingScore,
+  writingBand,
+  writingReady,
+}: {
+  atsScore: number;
+  atsBand: Band;
+  writingScore: number;
+  writingBand: Band;
+  writingReady: boolean;
+}) {
+  return (
+    <div className="self-stretch w-full flex items-stretch rounded-2xl border border-(--line) bg-white shadow-(--sh-xs) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
+      <ScoreCell label="ATS" score={atsScore} band={atsBand} />
+      <div aria-hidden="true" className="w-px bg-(--line-soft)" />
+      <ScoreCell label="Writing" score={writingScore} band={writingBand} muted={!writingReady} />
+    </div>
+  );
+}
+
+function ScoreCell({
   label,
   score,
   band,
@@ -375,29 +404,21 @@ function ScorePill({
 }: {
   label: string;
   score: number;
-  band: { label: string; color: string; bg: string; border: string };
+  band: Band;
   muted?: boolean;
 }) {
+  const displayColor = muted ? "var(--ink-5)" : band.color;
   return (
-    <div
-      className={[
-        "shrink-0 flex flex-col items-center gap-1 p-2 rounded-xl border sm:p-3 sm:gap-1.5 min-[900px]:p-3.5",
-        muted ? "border-(--line) bg-(--surface-2)" : "border-(--line) bg-white shadow-(--sh-xs)",
-      ].join(" ")}
-    >
-      <span className="font-mono text-[9px] font-semibold text-(--ink-5) tracking-[0.09em] uppercase sm:text-[9.5px]">
+    <div className="flex-1 basis-0 flex flex-col items-center gap-1.5 px-3 py-3 sm:flex-none sm:min-w-[112px] sm:px-4 sm:py-3.5 sm:gap-2 min-[900px]:min-w-[120px] min-[900px]:py-4">
+      <span className="font-mono text-[9.5px] font-semibold text-(--ink-5) tracking-[0.1em] uppercase leading-none">
         {label}
       </span>
-      <AtsScoreRing
-        score={muted ? 0 : score}
-        color={muted ? "var(--ink-5)" : band.color}
-        size={58}
-      />
+      <AtsScoreRing score={muted ? 0 : score} color={displayColor} size={64} />
       <span
-        className="font-mono text-[8.5px] font-bold tracking-[0.07em] px-2 py-0.5 rounded-full border uppercase sm:text-[9.5px] sm:px-2.5"
+        className="font-mono text-[9px] font-bold tracking-[0.08em] px-2 py-0.5 rounded-full border uppercase leading-none sm:text-[9.5px] sm:px-2.5"
         style={
           muted
-            ? { color: "var(--ink-4)", background: "var(--surface)", borderColor: "var(--line)" }
+            ? { color: "var(--ink-4)", background: "var(--surface-2)", borderColor: "var(--line)" }
             : { color: band.color, background: band.bg, borderColor: band.border }
         }
       >
