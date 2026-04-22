@@ -128,28 +128,53 @@
 }
 
 /*
- * Soft-glow highlight applied when the user taps an insight to jump to
- * a specific field. Pulses once, then clears so the editor returns to
- * its baseline appearance. Timed to match the ~3.6 s duration added by
- * `highlightField()` in src/utils/highlightField.ts. Lives *outside*
- * `@theme` because Tailwind v4 only emits design tokens + animation
- * keyframes from that block — regular class selectors are dropped.
+ * Soft pulsating glow applied when the user taps an insight to jump to
+ * a specific field. Three decaying "breaths" over ~4 s: each peak flashes
+ * a soft brand-coloured ring, each valley eases it back toward the input
+ * without going fully transparent, and the final decay fades the last
+ * pulse out. Timed to match `GLOW_DURATION_MS` in
+ * src/utils/highlightField.ts. Lives *outside* `@theme` because
+ * Tailwind v4 only emits design tokens + animation keyframes from that
+ * block — regular class selectors are dropped.
  */
 @keyframes cr-field-glow {
   0% {
     box-shadow:
-      0 0 0 0 color-mix(in oklab, var(--brand) 60%, transparent),
-      0 0 0 0 color-mix(in oklab, var(--brand) 25%, transparent);
+      0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent),
+      0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent);
   }
-  12% {
+  /* Pulse 1 — strongest, draws the eye */
+  14% {
     box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--brand) 45%, transparent),
-      0 0 0 12px color-mix(in oklab, var(--brand) 18%, transparent);
+      0 0 0 3px color-mix(in oklab, var(--brand) 55%, transparent),
+      0 0 0 14px color-mix(in oklab, var(--brand) 22%, transparent);
   }
-  55% {
+  28% {
     box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--brand) 32%, transparent),
-      0 0 0 12px color-mix(in oklab, var(--brand) 12%, transparent);
+      0 0 0 1px color-mix(in oklab, var(--brand) 28%, transparent),
+      0 0 0 6px color-mix(in oklab, var(--brand) 10%, transparent);
+  }
+  /* Pulse 2 — slightly softer */
+  42% {
+    box-shadow:
+      0 0 0 3px color-mix(in oklab, var(--brand) 42%, transparent),
+      0 0 0 12px color-mix(in oklab, var(--brand) 17%, transparent);
+  }
+  56% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--brand) 22%, transparent),
+      0 0 0 5px color-mix(in oklab, var(--brand) 8%, transparent);
+  }
+  /* Pulse 3 — settles */
+  70% {
+    box-shadow:
+      0 0 0 2px color-mix(in oklab, var(--brand) 30%, transparent),
+      0 0 0 9px color-mix(in oklab, var(--brand) 12%, transparent);
+  }
+  85% {
+    box-shadow:
+      0 0 0 1px color-mix(in oklab, var(--brand) 14%, transparent),
+      0 0 0 4px color-mix(in oklab, var(--brand) 5%, transparent);
   }
   100% {
     box-shadow:
@@ -158,7 +183,7 @@
   }
 }
 .cr-field-glow {
-  animation: cr-field-glow 3.6s ease-out;
+  animation: cr-field-glow 4s cubic-bezier(0.4, 0, 0.2, 1);
   border-radius: 12px;
   scroll-margin: 120px;
   position: relative;
