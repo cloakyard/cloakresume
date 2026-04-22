@@ -38,8 +38,17 @@ export function SectionPanel({
       className="flex flex-col w-full h-full min-w-0 overflow-hidden bg-(--surface) print:hidden"
     >
       <header className="flex items-start gap-3 px-4 pt-4 pb-3.5 border-b border-(--line-soft) lg:px-5">
-        <span className="acc-icon w-10 h-10 rounded-md" aria-hidden="true">
-          <Icon className="w-4 h-4" strokeWidth={2} />
+        {/*
+         * Section-identity tile. Distinct from the rail's selected-item
+         * chip by shape and weight: rounded-xl, larger (44px), a deeper
+         * brand-100 fill with a brand-700 glyph and a subtle ring — a
+         * calmer "you are here" banner, not a loud badge.
+         */}
+        <span
+          aria-hidden="true"
+          className="grid place-items-center w-11 h-11 shrink-0 rounded-md bg-(--brand-100) text-(--brand-700) ring-1 ring-(--brand-200)"
+        >
+          <Icon className="w-5 h-5" strokeWidth={1.8} />
         </span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">

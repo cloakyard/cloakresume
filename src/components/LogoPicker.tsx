@@ -85,11 +85,11 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
         onClick={() => setOpen((v) => !v)}
         className="w-full flex items-center gap-2 px-3 py-2 text-sm border border-(--line) rounded-md bg-(--surface) hover:border-[#d6dadf] transition-colors"
       >
-        <span className="w-7 h-7 rounded-md bg-gradient-to-br from-(--brand-600) to-(--brand-700) flex items-center justify-center text-white shrink-0">
+        <span className="w-7 h-7 rounded-md bg-(--brand-100) ring-1 ring-(--brand-200) flex items-center justify-center text-(--brand-700) shrink-0">
           {selected ? (
             <selected.Icon className="w-4 h-4" />
           ) : (
-            <span className="text-[10px] font-bold">—</span>
+            <span className="text-[10px] font-bold text-(--ink-5)">—</span>
           )}
         </span>
         <span className="flex-1 text-left text-(--ink-2)">
