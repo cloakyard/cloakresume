@@ -41,7 +41,9 @@
 
 import {
   Children,
+  createContext,
   useCallback,
+  useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -49,6 +51,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "../utils/paperSize.ts";
+
+/**
+ * Paper size context — Preview / exporters provide the selected size so
+ * every PaginatedCanvas in the tree paginates against the matching
+ * dimensions without each template having to thread the prop manually.
+ */
+export const PaperSizeContext = createContext<PaperSize>(DEFAULT_PAPER_SIZE);
 
 type SidebarRenderer =
   | ReactNode
@@ -112,8 +122,6 @@ interface PaginatedCanvasProps {
 
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
-const A4_H_PX = 297 * PX_PER_MM;
-const A4_W_PX = 210 * PX_PER_MM;
 
 export function PaginatedCanvas({
   sidebar,
@@ -129,6 +137,11 @@ export function PaginatedCanvas({
   pageClassName,
   children,
 }: PaginatedCanvasProps) {
+  const paperSize = useContext(PaperSizeContext);
+  const { widthMm: pageWidthMm, heightMm: pageHeightMm } = PAPER_SIZES[paperSize];
+  const pageWidthPx = pageWidthMm * PX_PER_MM;
+  const pageHeightPx = pageHeightMm * PX_PER_MM;
+
   const blocks = useMemo(() => Children.toArray(children), [children]);
   const sidebarBlocks = useMemo(
     () => (sidebarAtoms ? Children.toArray(sidebarAtoms) : []),
@@ -143,11 +156,11 @@ export function PaginatedCanvas({
 
   const [topPadMm, xPadMm] = mainPaddingMm;
   const [sidebarTopPadMm, sidebarXPadMm] = sidebarPaddingMm;
-  const budgetPx = A4_H_PX - topPadMm * 2 * PX_PER_MM;
-  const sidebarBudgetPx = A4_H_PX - sidebarTopPadMm * 2 * PX_PER_MM;
+  const budgetPx = pageHeightPx - topPadMm * 2 * PX_PER_MM;
+  const sidebarBudgetPx = pageHeightPx - sidebarTopPadMm * 2 * PX_PER_MM;
   const mainWidthPx = sidebar
-    ? A4_W_PX - (sidebarWidthMm + xPadMm * 2) * PX_PER_MM
-    : A4_W_PX - xPadMm * 2 * PX_PER_MM;
+    ? pageWidthPx - (sidebarWidthMm + xPadMm * 2) * PX_PER_MM
+    : pageWidthPx - xPadMm * 2 * PX_PER_MM;
   const sidebarMeasureWidthPx =
     (sidebarContentWidthMm ?? Math.max(sidebarWidthMm - sidebarXPadMm * 2, 0)) * PX_PER_MM;
 
@@ -276,13 +289,14 @@ export function PaginatedCanvas({
   };
 
   // Strict page-height mode is active when the sidebar is paginated;
-  // each .resume-page is locked to 297mm with overflow hidden so a dense
-  // sidebar cannot stretch the page past A4. Otherwise we fall back to
-  // min-height so existing single-column templates render unchanged.
+  // each .resume-page is locked to the paper height with overflow hidden
+  // so a dense sidebar cannot stretch the page past its nominal size.
+  // Otherwise we fall back to min-height so existing single-column
+  // templates render unchanged.
   const strictPageHeight = sidebarBlocks.length > 0;
   const pageHeightStyle = strictPageHeight
-    ? ({ height: "297mm", overflow: "hidden" } as const)
-    : ({ minHeight: "297mm" } as const);
+    ? ({ height: `${pageHeightMm}mm`, overflow: "hidden" } as const)
+    : ({ minHeight: `${pageHeightMm}mm` } as const);
 
   return (
     <>

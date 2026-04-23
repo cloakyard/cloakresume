@@ -660,6 +660,11 @@
  * Print — isolate `.resume-root`, reset transforms, remove chrome.
  * ──────────────────────────────────────────────────────────────── */
 @media print {
+  /* Paper format for Cmd+P. The exported PDF sets this dynamically; for
+   * browser print we default to A4 and let the user override via the
+   * print dialog if they want Letter. The @page size directive cannot
+   * read CSS custom properties, so templates rendered at Letter may
+   * need the user to switch the print dialog to Letter. */
   @page {
     size: A4;
     margin: 0;
@@ -694,16 +699,16 @@
     gap: 0 !important;
     transform: none !important;
     margin: 0 !important;
-    width: 210mm !important;
-    min-width: 210mm !important;
+    width: var(--resume-page-w, 210mm) !important;
+    min-width: var(--resume-page-w, 210mm) !important;
     overflow: visible !important;
     background: #ffffff !important;
   }
 
   .resume-root .resume-page {
     display: block !important;
-    width: 210mm !important;
-    min-height: 297mm !important;
+    width: var(--resume-page-w, 210mm) !important;
+    min-height: var(--resume-page-h, 297mm) !important;
     box-shadow: none !important;
     margin: 0 !important;
     background: #ffffff !important;

@@ -12,8 +12,10 @@ import { useEffect, useRef, useState } from "react";
 import { TEMPLATE_LIST } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 import { PRESET_COLORS } from "../utils/colors.ts";
+import { type PaperSize } from "../utils/paperSize.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
+import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 import { TemplateModal } from "./TemplateModal.tsx";
 
 interface ToolbarCenterProps {
@@ -21,6 +23,8 @@ interface ToolbarCenterProps {
   onTemplateChange: (id: TemplateId) => void;
   primary: string;
   onPrimaryChange: (hex: string) => void;
+  paperSize: PaperSize;
+  onPaperSizeChange: (size: PaperSize) => void;
   onScanAts: () => void;
   /** Live resume data — rendered at small scale inside the template picker. */
   resume: ResumeData;
@@ -36,6 +40,8 @@ export function ToolbarCenter({
   onTemplateChange,
   primary,
   onPrimaryChange,
+  paperSize,
+  onPaperSizeChange,
   onScanAts,
   resume,
 }: ToolbarCenterProps) {
@@ -112,6 +118,8 @@ export function ToolbarCenter({
               </div>
             )}
           </div>
+
+          <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
         </>
       )}
 

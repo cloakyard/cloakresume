@@ -8,6 +8,7 @@
  */
 
 import {
+  FileText,
   FilePlus2,
   LayoutTemplate,
   MoreHorizontal,
@@ -17,14 +18,18 @@ import {
   Upload,
 } from "lucide-react";
 import { useRef, useState } from "react";
+import { type PaperSize } from "../utils/paperSize.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { BottomSheet } from "./BottomSheet.tsx";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
 import { GithubIcon } from "./GithubIcon.tsx";
+import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 
 interface ToolbarOverflowProps {
   primary: string;
   onPrimaryChange: (hex: string) => void;
+  paperSize: PaperSize;
+  onPaperSizeChange: (size: PaperSize) => void;
   onNewResume: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
@@ -33,6 +38,8 @@ interface ToolbarOverflowProps {
 export function ToolbarOverflow({
   primary,
   onPrimaryChange,
+  paperSize,
+  onPaperSizeChange,
   onNewResume,
   onSaveFile,
   onLoadFile,
@@ -103,6 +110,9 @@ export function ToolbarOverflow({
             }
             onClick={() => setColorOpen(true)}
           />
+          <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
+            <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} size="lg" />
+          </OverflowRow>
           <OverflowDivider />
           <OverflowItem
             icon={<FilePlus2 className="w-4 h-4" />}
@@ -198,4 +208,32 @@ function OverflowItem({
 
 function OverflowDivider() {
   return <hr className="my-2 mx-2 border-0 border-t border-(--ink-1)/8 h-0" />;
+}
+
+/**
+ * Non-button overflow row — same visual grid as OverflowItem but hosts
+ * interactive trailing content (e.g. a segmented toggle) without
+ * wrapping the whole row in a `<button>`.
+ */
+function OverflowRow({
+  icon,
+  label,
+  children,
+}: {
+  icon: React.ReactNode;
+  label: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center gap-3 w-full px-3 py-3 min-h-13 rounded-lg">
+      <span
+        aria-hidden="true"
+        className="grid place-items-center w-9 h-9 rounded-md shrink-0 bg-(--ink-1)/5 text-(--ink-2)"
+      >
+        {icon}
+      </span>
+      <span className="flex-1 min-w-0 text-[14.5px] font-medium text-(--ink-1)">{label}</span>
+      <span className="flex items-center shrink-0">{children}</span>
+    </div>
+  );
 }

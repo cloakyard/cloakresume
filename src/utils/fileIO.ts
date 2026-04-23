@@ -10,6 +10,7 @@
 
 import { blankResume } from "../data/blankResume.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
+import { resolvePaperSize, type PaperSize } from "./paperSize.ts";
 
 export interface ResumeSaveFile {
   /** Discriminator so we can evolve the schema later. */
@@ -18,6 +19,7 @@ export interface ResumeSaveFile {
   resume: ResumeData;
   templateId: TemplateId;
   primary: string;
+  paperSize: PaperSize;
   jobDescription: string;
 }
 
@@ -126,6 +128,7 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
     resume: normalizeResumeData(obj.resume),
     templateId: obj.templateId as TemplateId,
     primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#2563EB",
+    paperSize: resolvePaperSize(obj.paperSize),
     jobDescription: typeof obj.jobDescription === "string" ? obj.jobDescription : "",
   };
 }

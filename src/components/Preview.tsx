@@ -16,18 +16,21 @@
 import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
 import type { ComponentType } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { PaperSizeContext } from "./PaginatedCanvas.tsx";
 import type { TemplateProps } from "../templates/index.ts";
 import type { ResumeData } from "../types.ts";
 import { clamp, type PrimaryPalette } from "../utils/colors.ts";
+import { PAPER_SIZES, type PaperSize } from "../utils/paperSize.ts";
 
 interface PreviewProps {
   resume: ResumeData;
   palette: PrimaryPalette;
+  paperSize: PaperSize;
   TemplateComponent: ComponentType<TemplateProps>;
 }
 
-/** A4 width at 96 dpi, with 32px of horizontal breathing room. */
-const A4_PX = 794;
+/** 1mm in CSS pixels at 96dpi. */
+const PX_PER_MM = 96 / 25.4;
 const FIT_PADDING = 32;
 const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 1.5;
@@ -36,7 +39,7 @@ function clampZoom(z: number): number {
   return clamp(Number(z.toFixed(2)), MIN_ZOOM, MAX_ZOOM);
 }
 
-export function Preview({ resume, palette, TemplateComponent }: PreviewProps) {
+export function Preview({ resume, palette, paperSize, TemplateComponent }: PreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(0.75);
@@ -48,12 +51,18 @@ export function Preview({ resume, palette, TemplateComponent }: PreviewProps) {
   /** True until the user manually changes the zoom, then we stop auto-fitting. */
   const userOverrodeRef = useRef(false);
 
-  const computeFitZoom = useCallback((containerWidth: number): number => {
-    const available = Math.max(200, containerWidth - FIT_PADDING);
-    const raw = available / A4_PX;
-    // Desktop users get up to 100 % but never more; mobile clamps to MIN_ZOOM.
-    return clampZoom(Math.min(1, raw));
-  }, []);
+  const { widthMm: pageWidthMm, heightMm: pageHeightMm } = PAPER_SIZES[paperSize];
+  const pageWidthPx = pageWidthMm * PX_PER_MM;
+
+  const computeFitZoom = useCallback(
+    (containerWidth: number): number => {
+      const available = Math.max(200, containerWidth - FIT_PADDING);
+      const raw = available / pageWidthPx;
+      // Desktop users get up to 100 % but never more; mobile clamps to MIN_ZOOM.
+      return clampZoom(Math.min(1, raw));
+    },
+    [pageWidthPx],
+  );
 
   useEffect(() => {
     const el = containerRef.current;
@@ -104,12 +113,12 @@ export function Preview({ resume, palette, TemplateComponent }: PreviewProps) {
     >
       {/* Outer frame sizes the scroll box to the *scaled* page so the
           transform actually affects layout dimensions — otherwise the
-          layout box stays at 210 mm and forces horizontal scroll on
-          phones. Height tracks the measured inner height × zoom. */}
+          layout box stays at the paper width and forces horizontal scroll
+          on phones. Height tracks the measured inner height × zoom. */}
       <div
         className="mx-auto"
         style={{
-          width: `calc(210mm * ${zoom})`,
+          width: `calc(${pageWidthMm}mm * ${zoom})`,
           height: innerHeight > 0 ? `${innerHeight * zoom}px` : undefined,
         }}
       >
@@ -119,10 +128,16 @@ export function Preview({ resume, palette, TemplateComponent }: PreviewProps) {
           style={{
             transform: `scale(${zoom})`,
             transformOrigin: "top left",
-            width: "210mm",
+            width: `${pageWidthMm}mm`,
+            // Published as CSS vars so `.resume-page` + print styles can
+            // size themselves off the same source of truth.
+            ["--resume-page-w" as string]: `${pageWidthMm}mm`,
+            ["--resume-page-h" as string]: `${pageHeightMm}mm`,
           }}
         >
-          <TemplateComponent resume={resume} palette={palette} />
+          <PaperSizeContext.Provider value={paperSize}>
+            <TemplateComponent resume={resume} palette={palette} />
+          </PaperSizeContext.Provider>
         </div>
       </div>
 

@@ -20,12 +20,10 @@
 
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
+import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "./paperSize.ts";
 
-const A4_WIDTH_MM = 210;
-const A4_HEIGHT_MM = 297;
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
-const A4_HEIGHT_PX = A4_HEIGHT_MM * PX_PER_MM;
 /** 1pt in CSS pixels (1in = 72pt = 96px). */
 const PX_PER_PT = 96 / 72;
 
@@ -47,7 +45,12 @@ const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
  * Only external http/https/mailto/tel hrefs are emitted. javascript:
  * and in-document hash links are ignored.
  */
-function addLinkAnnotations(pdf: jsPDF, pageEl: HTMLElement): void {
+function addLinkAnnotations(
+  pdf: jsPDF,
+  pageEl: HTMLElement,
+  widthMm: number,
+  heightMm: number,
+): void {
   const pageRect = pageEl.getBoundingClientRect();
   const anchors = pageEl.querySelectorAll<HTMLAnchorElement>("a[href]");
   for (const a of anchors) {
@@ -60,9 +63,9 @@ function addLinkAnnotations(pdf: jsPDF, pageEl: HTMLElement): void {
     const yMm = (rect.top - pageRect.top) / PX_PER_MM;
     const wMm = rect.width / PX_PER_MM;
     const hMm = rect.height / PX_PER_MM;
-    // Skip anchors that lie outside the A4 page box (rare, but guards
+    // Skip anchors that lie outside the page box (rare, but guards
     // against accidental off-screen clones).
-    if (xMm > A4_WIDTH_MM + 2 || yMm > A4_HEIGHT_MM + 2 || xMm + wMm < -2 || yMm + hMm < -2) {
+    if (xMm > widthMm + 2 || yMm > heightMm + 2 || xMm + wMm < -2 || yMm + hMm < -2) {
       continue;
     }
     pdf.link(xMm, yMm, wMm, hMm, { url: href });
@@ -77,7 +80,12 @@ function addLinkAnnotations(pdf: jsPDF, pageEl: HTMLElement): void {
  * Coordinates are computed from `Range.getBoundingClientRect()` of each
  * text node, translated into mm relative to `pageEl`'s top-left.
  */
-function addInvisibleTextLayer(pdf: jsPDF, pageEl: HTMLElement): void {
+function addInvisibleTextLayer(
+  pdf: jsPDF,
+  pageEl: HTMLElement,
+  widthMm: number,
+  heightMm: number,
+): void {
   const pageRect = pageEl.getBoundingClientRect();
   const walker = document.createTreeWalker(pageEl, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
@@ -112,9 +120,9 @@ function addInvisibleTextLayer(pdf: jsPDF, pageEl: HTMLElement): void {
       if (rect.width > 0 && rect.height > 0) {
         const xMm = (rect.left - pageRect.left) / PX_PER_MM;
         const topMm = (rect.top - pageRect.top) / PX_PER_MM;
-        // Drop anything that lies outside the A4 page box — covers
+        // Drop anything that lies outside the page box — covers
         // hidden/off-screen bits the walker accepted.
-        if (xMm >= -2 && xMm <= A4_WIDTH_MM + 2 && topMm >= -2 && topMm <= A4_HEIGHT_MM + 2) {
+        if (xMm >= -2 && xMm <= widthMm + 2 && topMm >= -2 && topMm <= heightMm + 2) {
           const cs = window.getComputedStyle(parent);
           const fontSizePx = Number.parseFloat(cs.fontSize);
           const fontSizePt =
@@ -143,10 +151,18 @@ function addInvisibleTextLayer(pdf: jsPDF, pageEl: HTMLElement): void {
 }
 
 /**
- * Render `source` (a `.resume-root` element) into a multi-page A4 PDF
- * and trigger a download with the given filename.
+ * Render `source` (a `.resume-root` element) into a multi-page PDF
+ * sized to the selected paper (A4 or Letter) and trigger a download
+ * with the given filename.
  */
-export async function exportResumeToPdf(source: HTMLElement, filename: string): Promise<void> {
+export async function exportResumeToPdf(
+  source: HTMLElement,
+  filename: string,
+  paperSize: PaperSize = DEFAULT_PAPER_SIZE,
+): Promise<void> {
+  const { widthMm, heightMm, pdfFormat } = PAPER_SIZES[paperSize];
+  const pageHeightPx = heightMm * PX_PER_MM;
+
   const host = document.createElement("div");
   host.setAttribute("aria-hidden", "true");
   host.style.position = "fixed";
@@ -154,15 +170,20 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
   host.style.top = "0";
   host.style.pointerEvents = "none";
   host.style.background = "#ffffff";
-  host.style.width = `${A4_WIDTH_MM}mm`;
+  host.style.width = `${widthMm}mm`;
 
   const clone = source.cloneNode(true) as HTMLElement;
   // Drop the zoom transform, vertical padding, and inter-page gap so the
-  // clone renders each page at its true A4 size with no decorative chrome.
+  // clone renders each page at its true paper size with no decorative chrome.
   clone.style.transform = "none";
-  clone.style.width = `${A4_WIDTH_MM}mm`;
+  clone.style.width = `${widthMm}mm`;
   clone.style.padding = "0";
   clone.style.gap = "0";
+  // Republish paper dimensions so descendant styles (e.g. `.resume-page`)
+  // that read CSS vars match the export target even if the live preview
+  // was being rendered against the other size.
+  clone.style.setProperty("--resume-page-w", `${widthMm}mm`);
+  clone.style.setProperty("--resume-page-h", `${heightMm}mm`);
 
   // Any cloned <img> that came from an external URL needs `crossOrigin`
   // set BEFORE html2canvas reads it — otherwise the browser serves a
@@ -194,7 +215,7 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
 
     const pdf = new jsPDF({
       unit: "mm",
-      format: "a4",
+      format: pdfFormat,
       orientation: "portrait",
       compress: true,
     });
@@ -212,30 +233,30 @@ export async function exportResumeToPdf(source: HTMLElement, filename: string): 
         useCORS: true,
         allowTaint: true,
         logging: false,
-        // Lock the capture to the logical A4 page size so content that
-        // overflows (rare — templates pack into A4 pages already) doesn't
-        // stretch the PDF page. Height is clamped to 297mm.
+        // Lock the capture to the logical paper page size so content that
+        // overflows (rare — templates pack into pages already) doesn't
+        // stretch the PDF page. Height is clamped to the selected size.
         width: pageEl.offsetWidth,
-        height: Math.min(pageEl.offsetHeight, A4_HEIGHT_PX),
+        height: Math.min(pageEl.offsetHeight, pageHeightPx),
         windowWidth: pageEl.offsetWidth,
-        windowHeight: Math.min(pageEl.offsetHeight, A4_HEIGHT_PX),
+        windowHeight: Math.min(pageEl.offsetHeight, pageHeightPx),
       });
 
       // PNG at full quality — text (especially serif headings) stays crisp
       // where JPEG 0.95 would soften thin strokes. File size is larger but
       // resumes are short documents so the trade-off favours fidelity.
       const imgData = canvas.toDataURL("image/png");
-      if (i > 0) pdf.addPage("a4", "portrait");
-      pdf.addImage(imgData, "PNG", 0, 0, A4_WIDTH_MM, A4_HEIGHT_MM, undefined, "FAST");
+      if (i > 0) pdf.addPage(pdfFormat, "portrait");
+      pdf.addImage(imgData, "PNG", 0, 0, widthMm, heightMm, undefined, "FAST");
       // Add the invisible text layer AFTER the image. Visual stacking
       // doesn't matter since the text is rendered with mode 3 (invisible),
       // but keeping the call order deterministic makes the PDF content
       // stream predictable.
-      addInvisibleTextLayer(pdf, pageEl);
+      addInvisibleTextLayer(pdf, pageEl, widthMm, heightMm);
       // Emit PDF link annotations for every <a href> on the page so
       // email/website/linkedin/certification links stay clickable in the
       // exported document.
-      addLinkAnnotations(pdf, pageEl);
+      addLinkAnnotations(pdf, pageEl, widthMm, heightMm);
     }
 
     pdf.save(filename);

@@ -37,6 +37,7 @@ import {
   normalizeResumeData,
   readResumeFile,
 } from "./utils/fileIO.ts";
+import { DEFAULT_PAPER_SIZE, resolvePaperSize, type PaperSize } from "./utils/paperSize.ts";
 import { blankResume } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
@@ -55,6 +56,7 @@ interface Persisted {
   resume: ResumeData;
   templateId: TemplateId;
   primary: string;
+  paperSize: PaperSize;
   jobDescription: string;
   activeSection: SectionId;
 }
@@ -70,6 +72,7 @@ function loadPersisted(): InitialState {
     resume: blankResume,
     templateId: DEFAULT_TEMPLATE_ID,
     primary: DEFAULT_PRIMARY,
+    paperSize: DEFAULT_PAPER_SIZE,
     jobDescription: "",
     activeSection: "profile",
   };
@@ -86,6 +89,7 @@ function loadPersisted(): InitialState {
               typeof parsed.primary === "string" && parsed.primary
                 ? parsed.primary
                 : DEFAULT_PRIMARY,
+            paperSize: resolvePaperSize(parsed.paperSize),
             jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
             activeSection: (parsed.activeSection ?? "profile") as SectionId,
           },
@@ -104,6 +108,7 @@ export function App() {
   const [resume, setResume] = useState<ResumeData>(initial.persisted.resume);
   const [templateId, setTemplateId] = useState<TemplateId>(initial.persisted.templateId);
   const [primary, setPrimary] = useState<string>(initial.persisted.primary);
+  const [paperSize, setPaperSize] = useState<PaperSize>(initial.persisted.paperSize);
   const [jobDescription, setJobDescription] = useState<string>(initial.persisted.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.persisted.activeSection);
   const [atsOpen, setAtsOpen] = useState(false);
@@ -127,6 +132,7 @@ export function App() {
         resume,
         templateId,
         primary,
+        paperSize,
         jobDescription,
         activeSection,
       };
@@ -137,7 +143,7 @@ export function App() {
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [resume, templateId, primary, jobDescription, activeSection, showOnboarding]);
+  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showOnboarding]);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
@@ -224,15 +230,15 @@ export function App() {
       // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
       // in the client after the user actually asks for an export.
       const { exportResumeToPdf } = await import("./utils/pdfExport.ts");
-      await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"));
+      await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"), paperSize);
     } catch (err) {
       alert(`Couldn't generate the PDF. ${err instanceof Error ? err.message : "Unknown error."}`);
     }
-  }, [resume.profile.name]);
+  }, [resume.profile.name, paperSize]);
 
   const handleSaveFile = useCallback(() => {
-    downloadResumeFile({ resume, templateId, primary, jobDescription });
-  }, [resume, templateId, primary, jobDescription]);
+    downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
+  }, [resume, templateId, primary, paperSize, jobDescription]);
 
   const handleLoadFile = useCallback(async (file: File) => {
     try {
@@ -240,6 +246,7 @@ export function App() {
       setResume(payload.resume);
       setTemplateId(resolveTemplateId(payload.templateId));
       setPrimary(payload.primary);
+      setPaperSize(payload.paperSize);
       setJobDescription(payload.jobDescription);
       setShowOnboarding(false);
     } catch (err) {
@@ -285,6 +292,8 @@ export function App() {
             onTemplateChange={setTemplateId}
             primary={primary}
             onPrimaryChange={setPrimary}
+            paperSize={paperSize}
+            onPaperSizeChange={setPaperSize}
             onScanAts={() => setAtsOpen(true)}
             resume={resume}
           />
@@ -301,6 +310,8 @@ export function App() {
             <ToolbarOverflow
               primary={primary}
               onPrimaryChange={setPrimary}
+              paperSize={paperSize}
+              onPaperSizeChange={setPaperSize}
               onNewResume={handleNewResume}
               onSaveFile={handleSaveFile}
               onLoadFile={handleLoadFile}
@@ -322,7 +333,12 @@ export function App() {
           </FieldIssuesProvider>
         }
         preview={
-          <Preview resume={resume} palette={palette} TemplateComponent={TemplateComponent} />
+          <Preview
+            resume={resume}
+            palette={palette}
+            paperSize={paperSize}
+            TemplateComponent={TemplateComponent}
+          />
         }
       />
 
