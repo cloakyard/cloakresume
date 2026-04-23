@@ -28,15 +28,15 @@ CloakResume is a full-featured resume builder, all running 100% client-side:
 
 ### 🎨 Templates
 
-_Eleven hand-crafted layouts across five design families_
+_Fourteen hand-crafted layouts across five design families_
 
-| Category     | Templates                                                                                                                                                    |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                        |
-| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                        |
-| **Modern**   | **Modern Minimal** · clean single column. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager                           |
-| **Creative** | **Typographic** · Swiss-style numbered sections. **DuoTone** · bold split panel with a magazine feel. **Gradient Header** · coloured banner with personality |
-| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                               |
+| Category     | Templates                                                                                                                                                                                                                           |
+| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                                                               |
+| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                                                                                               |
+| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Spotlight** · dark sidebar with hero stats. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
+| **Creative** | **Typographic** · Swiss-style numbered sections. **DuoTone** · bold split panel with a magazine feel. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                        |
+| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                                                                      |
 
 Switch between any template with a single click — your content stays, only the layout changes.
 
@@ -44,22 +44,23 @@ Switch between any template with a single click — your content stays, only the
 
 _Edit every section with live inline previews_
 
-| Feature                  | Description                                                                                   |
-| ------------------------ | --------------------------------------------------------------------------------------------- |
-| **Profile & Headline**   | Name, role tagline, and rich-text summary with bold, italic, and inline link support          |
-| **Contact Links**        | Email, phone, location, website, LinkedIn, GitHub, Twitter, Medium — each with the right icon |
-| **Experience**           | Unlimited roles with company, location, dates, and rich-text bullets                          |
-| **Education**            | Degrees, schools, dates, and free-form detail fields (e.g., CGPA, honours)                    |
-| **Projects**             | Name, description, role, and tech-stack chips                                                 |
-| **Skills**               | Grouped into categories with optional Lucide icons per group                                  |
-| **Certifications**       | Issuer, name, and year — ordered as you like                                                  |
-| **Awards**               | Recognition with year and supporting detail                                                   |
-| **Languages**            | Name and proficiency level                                                                    |
-| **Interests & Tools**    | Free-form chip lists for quick personality and stack signals                                  |
-| **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)              |
-| **Reorder Sections**     | Drag sections to change the resume's narrative order                                          |
-| **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                |
-| **Inline Spellcheck**    | Native browser spelling underlines on every prose field — zero dependencies, zero network     |
+| Feature                  | Description                                                                                          |
+| ------------------------ | ---------------------------------------------------------------------------------------------------- |
+| **Profile & Headline**   | Name, role tagline, and rich-text summary with bold, italic, and inline link support                 |
+| **Contact Links**        | Email, phone, location, website, LinkedIn, GitHub, Twitter, Medium — each with the right icon        |
+| **Experience**           | Unlimited roles with company, location, dates, and rich-text bullets                                 |
+| **Education**            | Degrees, schools, dates, and free-form detail fields (e.g., CGPA, honours)                           |
+| **Projects**             | Name, description, role, and tech-stack chips                                                        |
+| **Skills**               | Grouped into categories with optional Lucide icons per group                                         |
+| **Certifications**       | Issuer, name, and year — ordered as you like                                                         |
+| **Awards**               | Recognition with year and supporting detail                                                          |
+| **Languages**            | Name and proficiency level                                                                           |
+| **Interests & Tools**    | Free-form chip lists for quick personality and stack signals                                         |
+| **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)                     |
+| **Custom Sections**      | Add your own sections with a custom heading and rich-text bullets (e.g., Volunteering, Publications) |
+| **Reorder Sections**     | Drag sections to change the resume's narrative order                                                 |
+| **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                       |
+| **Inline Spellcheck**    | Native browser spelling underlines on every prose field — zero dependencies, zero network            |
 
 ### 🧭 Résumé Review
 
