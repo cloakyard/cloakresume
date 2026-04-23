@@ -321,6 +321,30 @@ export function ClassicSidebar({ resume, palette }: Props) {
                 </div>
               </section>
             )}
+
+            {resume.custom
+              .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
+              .map((c) => (
+                <section className="cs-section" key={c.id}>
+                  <h2>{c.header}</h2>
+                  {c.bullets.length === 1 ? (
+                    <p className="cs-summary">
+                      <RichText value={c.bullets[0]} />
+                    </p>
+                  ) : (
+                    <div className="cs-job">
+                      <ul>
+                        {c.bullets.map((b, i) => (
+                          // oxlint-disable-next-line jsx/no-array-index-key
+                          <li key={`${c.id}-b-${i}`}>
+                            <RichText value={b} />
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                </section>
+              ))}
           </main>
         </div>
       </div>

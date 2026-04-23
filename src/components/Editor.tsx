@@ -19,6 +19,7 @@ import { AwardsSection } from "./editor/AwardsSection.tsx";
 import { LanguagesSection } from "./editor/LanguagesSection.tsx";
 import { InterestsSection } from "./editor/InterestsSection.tsx";
 import { StatsSection } from "./editor/StatsSection.tsx";
+import { CustomSection } from "./editor/CustomSection.tsx";
 import { JdSection } from "./editor/JdSection.tsx";
 
 interface EditorProps {
@@ -61,6 +62,8 @@ export function Editor({
       return <InterestsSection resume={resume} onChange={onChange} />;
     case "stats":
       return <StatsSection resume={resume} onChange={onChange} />;
+    case "custom":
+      return <CustomSection resume={resume} onChange={onChange} />;
     case "jd":
       return (
         <JdSection

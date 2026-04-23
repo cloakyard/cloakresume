@@ -294,6 +294,36 @@ export function CompactTimeline({ resume, palette }: Props) {
     );
   }
 
+  resume.custom
+    .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
+    .forEach((c) => {
+      atoms.push(
+        <div className="ct-h2" data-keep-with-next="true" key={`custom-h-${c.id}`}>
+          {c.header}
+        </div>,
+      );
+      if (c.bullets.length === 1) {
+        atoms.push(
+          <p className="ct-summary" key={`custom-p-${c.id}`}>
+            <RichText value={c.bullets[0]} />
+          </p>,
+        );
+      } else {
+        atoms.push(
+          <div className="ct-tl-item" key={`custom-${c.id}`} style={{ paddingBottom: 0 }}>
+            <ul>
+              {c.bullets.map((b, i) => (
+                // oxlint-disable-next-line jsx/no-array-index-key
+                <li key={`${c.id}-b-${i}`}>
+                  <RichText value={b} />
+                </li>
+              ))}
+            </ul>
+          </div>,
+        );
+      }
+    });
+
   return (
     <>
       <style>{css}</style>

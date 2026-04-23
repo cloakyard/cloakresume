@@ -81,6 +81,14 @@ export interface LanguageItem {
   level: string;
 }
 
+export interface CustomSection {
+  id: string;
+  /** Custom heading label the user provides (e.g. "Volunteering", "Publications"). */
+  header: string;
+  /** Free-form bullet list. A single bullet renders as a paragraph in templates. */
+  bullets: string[];
+}
+
 export interface ResumeData {
   /** Top-of-resume identity block. */
   profile: {
@@ -109,6 +117,8 @@ export interface ResumeData {
   quickStats: { id: string; value: string; label: string }[];
   /** Free-form fields rendered at the end (e.g. Visa status). */
   extras: { id: string; label: string; value: string }[];
+  /** User-defined sections with custom header + bullets (e.g. Volunteering, Publications). */
+  custom: CustomSection[];
 }
 
 export type TemplateId =

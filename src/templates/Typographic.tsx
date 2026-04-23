@@ -328,6 +328,38 @@ export function Typographic({ resume, palette }: Props) {
     );
   }
 
+  resume.custom
+    .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
+    .forEach((c) => {
+      const n = next();
+      atoms.push(
+        <section className="tg-section" key={`custom-${c.id}`}>
+          <div className="tg-marker">
+            <div className="tg-marker-num">{n}</div>
+            <div className="tg-marker-label">{c.header}</div>
+          </div>
+          <div className="tg-body">
+            {c.bullets.length === 1 ? (
+              <p className="tg-summary">
+                <RichText value={c.bullets[0]} />
+              </p>
+            ) : (
+              <div className="tg-job" style={{ display: "block" }}>
+                <ul>
+                  {c.bullets.map((b, i) => (
+                    // oxlint-disable-next-line jsx/no-array-index-key
+                    <li key={`${c.id}-b-${i}`}>
+                      <RichText value={b} />
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
+        </section>,
+      );
+    });
+
   return (
     <>
       <style>{css}</style>

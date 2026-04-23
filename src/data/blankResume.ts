@@ -23,4 +23,5 @@ export const blankResume: ResumeData = {
   tools: [],
   quickStats: [],
   extras: [],
+  custom: [],
 };

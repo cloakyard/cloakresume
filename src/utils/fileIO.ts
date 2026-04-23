@@ -55,6 +55,7 @@ export function normalizeResumeData(data: unknown): ResumeData {
     toolsLabel: typeof src.toolsLabel === "string" ? src.toolsLabel : undefined,
     quickStats: arr(src.quickStats, blankResume.quickStats),
     extras: arr(src.extras, blankResume.extras),
+    custom: arr(src.custom, blankResume.custom),
   };
 }
 

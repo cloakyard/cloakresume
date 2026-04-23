@@ -21,6 +21,7 @@ import {
   GraduationCap,
   Heart,
   HelpCircle,
+  Layers,
   type LucideIcon,
   Mail,
   Settings,
@@ -41,6 +42,7 @@ export type SectionId =
   | "languages"
   | "interests"
   | "stats"
+  | "custom"
   | "jd";
 
 export interface SectionMeta {
@@ -112,6 +114,12 @@ export const SECTIONS: SectionMeta[] = [
     label: "Quick stats",
     description: "Headline stats plus miscellaneous fields",
     icon: BarChart3,
+  },
+  {
+    id: "custom",
+    label: "Custom",
+    description: "Your own sections — volunteering, publications, anything personal",
+    icon: Layers,
   },
   {
     id: "jd",

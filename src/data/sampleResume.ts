@@ -225,4 +225,14 @@ export const sampleResume: ResumeData = {
     { id: "q6", value: "12+", label: "tempor incididunt repos" },
   ],
   extras: [{ id: "x1", label: "Lorem", value: "Ipsum dolor sit amet consectetur" }],
+  custom: [
+    {
+      id: "cu1",
+      header: "Volunteering",
+      bullets: [
+        "Lorem ipsum dolor sit amet — mentored consectetur adipiscing elit students across sed do eiusmod cohorts.",
+        "Organized quarterly lorem ipsum hackathons, bringing together dolor sit amet engineers from consectetur adipiscing partner teams.",
+      ],
+    },
+  ],
 };

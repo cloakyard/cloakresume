@@ -415,6 +415,39 @@ export function Spotlight({ resume, palette }: Props) {
     );
   }
 
+  resume.custom
+    .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
+    .forEach((c) => {
+      const n = next();
+      atoms.push(
+        <h2 className="sp-h2" data-keep-with-next="true" key={`custom-h-${c.id}`}>
+          <span className="sp-h2-num">{n}</span>
+          <span>{c.header}</span>
+          <span className="sp-h2-rule" />
+        </h2>,
+      );
+      if (c.bullets.length === 1) {
+        atoms.push(
+          <p className="sp-summary" key={`custom-p-${c.id}`} style={{ padding: 0, border: 0 }}>
+            <RichText value={c.bullets[0]} />
+          </p>,
+        );
+      } else {
+        atoms.push(
+          <div className="sp-job" key={`custom-${c.id}`} style={{ paddingLeft: 0 }}>
+            <ul>
+              {c.bullets.map((b, i) => (
+                // oxlint-disable-next-line jsx/no-array-index-key
+                <li key={`${c.id}-b-${i}`}>
+                  <RichText value={b} />
+                </li>
+              ))}
+            </ul>
+          </div>,
+        );
+      }
+    });
+
   return (
     <>
       <style>{css}</style>

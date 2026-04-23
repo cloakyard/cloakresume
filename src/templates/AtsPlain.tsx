@@ -270,6 +270,34 @@ export function AtsPlain({ resume }: Props) {
     });
   }
 
+  resume.custom
+    .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
+    .forEach((c) => {
+      atoms.push(
+        <h2 className="ats-h2" data-keep-with-next="true" key={`custom-h-${c.id}`}>
+          {c.header}
+        </h2>,
+      );
+      if (c.bullets.length === 1) {
+        atoms.push(
+          <p className="ats-p" key={`custom-p-${c.id}`}>
+            <RichText value={c.bullets[0]} />
+          </p>,
+        );
+      } else {
+        atoms.push(
+          <ul className="ats-ul" key={`custom-${c.id}`}>
+            {c.bullets.map((b, i) => (
+              // oxlint-disable-next-line jsx/no-array-index-key
+              <li key={`${c.id}-b-${i}`}>
+                <RichText value={b} />
+              </li>
+            ))}
+          </ul>,
+        );
+      }
+    });
+
   return (
     <>
       <style>{css}</style>
