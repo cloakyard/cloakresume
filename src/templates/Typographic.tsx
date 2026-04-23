@@ -148,11 +148,7 @@ export function Typographic({ resume, palette }: Props) {
       const isLast = index === last;
       const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
       atoms.push(
-        <section
-          className={className}
-          key={`exp-${job.id}`}
-          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
-        >
+        <section className={className} key={`exp-${job.id}`}>
           {isFirst ? (
             <div className="tg-marker">
               <div className="tg-marker-num">{num}</div>
@@ -218,11 +214,7 @@ export function Typographic({ resume, palette }: Props) {
       const isLast = index === last;
       const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
       atoms.push(
-        <section
-          className={className}
-          key={`proj-${p.id}`}
-          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
-        >
+        <section className={className} key={`proj-${p.id}`}>
           {isFirst ? (
             <div className="tg-marker">
               <div className="tg-marker-num">{num}</div>
@@ -258,11 +250,7 @@ export function Typographic({ resume, palette }: Props) {
       const isLast = index === last;
       const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
       atoms.push(
-        <section
-          className={className}
-          key={`edu-${ed.id}`}
-          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
-        >
+        <section className={className} key={`edu-${ed.id}`}>
           {isFirst ? (
             <div className="tg-marker">
               <div className="tg-marker-num">{num}</div>
