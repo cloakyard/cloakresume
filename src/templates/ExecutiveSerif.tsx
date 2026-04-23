@@ -15,7 +15,14 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -110,9 +117,8 @@ export function ExecutiveSerif({ resume, palette }: Props) {
           <div className="es-jobhead">
             <div className="es-jobtitle">{job.title}</div>
             <div className="es-jobmeta">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-              {job.location ? ` · ${job.location}` : ""}
+              {formatDateRange(job.start, job.end)}
+              {formatLocation(job.location, " · ")}
             </div>
           </div>
           <div className="es-jobco">{job.company}</div>
@@ -182,12 +188,11 @@ export function ExecutiveSerif({ resume, palette }: Props) {
             <div className="es-edutitle">{ed.degree}</div>
             <div className="es-eduschool">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
           </div>
           <div className="es-edumeta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
+            {formatDateRange(ed.start, ed.end)}
             {ed.detail ? ` · ${ed.detail}` : ""}
           </div>
         </div>,

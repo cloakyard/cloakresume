@@ -23,7 +23,13 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -111,10 +117,7 @@ export function AtsPlain({ resume }: Props) {
               <span className="ats-strong">{job.title}</span>
               {job.company ? `, ${job.company}` : ""}
             </span>
-            <span className="ats-italic">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </span>
+            <span className="ats-italic">{formatDateRange(job.start, job.end)}</span>
           </div>
           {job.location && <div className="ats-italic">{job.location}</div>}
           {job.bullets.length > 0 && (
@@ -174,12 +177,9 @@ export function AtsPlain({ resume }: Props) {
             <span>
               <span className="ats-strong">{ed.degree}</span>
               {ed.school ? `, ${ed.school}` : ""}
-              {ed.location ? ` – ${ed.location}` : ""}
+              {formatLocation(ed.location, " – ")}
             </span>
-            <span className="ats-italic">
-              {ed.start}
-              {ed.end ? ` – ${ed.end}` : ""}
-            </span>
+            <span className="ats-italic">{formatDateRange(ed.start, ed.end)}</span>
           </div>
           {ed.detail && <div className="ats-kv">{ed.detail}</div>}
         </div>,

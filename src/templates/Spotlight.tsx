@@ -22,6 +22,8 @@ import {
   certificationLink,
   contactIcon,
   extractInitials,
+  formatDateRange,
+  formatLocation,
   renderContactValue,
   splitSkills,
 } from "./shared.tsx";
@@ -287,10 +289,7 @@ export function Spotlight({ resume, palette }: Props) {
         <div className="sp-job" key={`exp-${job.id}`}>
           <div className="sp-jobhead">
             <div className="sp-jobtitle">{job.title}</div>
-            <div className="sp-jobdates">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </div>
+            <div className="sp-jobdates">{formatDateRange(job.start, job.end)}</div>
           </div>
           <div className="sp-jobco">
             {job.company}
@@ -364,14 +363,11 @@ export function Spotlight({ resume, palette }: Props) {
             <div className="sp-edu-title">{ed.degree}</div>
             <div className="sp-edu-school">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
             {ed.detail && <div className="sp-edu-detail">{ed.detail}</div>}
           </div>
-          <div className="sp-edu-meta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
-          </div>
+          <div className="sp-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
         </div>,
       );
     });

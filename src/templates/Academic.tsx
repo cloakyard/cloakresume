@@ -15,7 +15,14 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -107,14 +114,11 @@ export function Academic({ resume, palette }: Props) {
             <div className="ac-entry-title">{ed.degree}</div>
             <div className="ac-entry-sub">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
             {ed.detail && <div className="ac-body">{ed.detail}</div>}
           </div>
-          <div className="ac-entry-date">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
-          </div>
+          <div className="ac-entry-date">{formatDateRange(ed.start, ed.end)}</div>
         </div>,
       );
     });
@@ -133,7 +137,7 @@ export function Academic({ resume, palette }: Props) {
             <div className="ac-entry-title">{job.title}</div>
             <div className="ac-entry-sub">
               {job.company}
-              {job.location ? `, ${job.location}` : ""}
+              {formatLocation(job.location)}
             </div>
             <div className="ac-body">
               <ul>
@@ -146,10 +150,7 @@ export function Academic({ resume, palette }: Props) {
               </ul>
             </div>
           </div>
-          <div className="ac-entry-date">
-            {job.start}
-            {job.end ? ` – ${job.end}` : ""}
-          </div>
+          <div className="ac-entry-date">{formatDateRange(job.start, job.end)}</div>
         </div>,
       );
     });

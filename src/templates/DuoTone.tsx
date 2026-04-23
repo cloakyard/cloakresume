@@ -23,6 +23,8 @@ import {
   certificationLink,
   contactIcon,
   extractInitials,
+  formatDateRange,
+  formatLocation,
   renderContactValue,
   splitSkills,
 } from "./shared.tsx";
@@ -239,9 +241,8 @@ export function DuoTone({ resume, palette }: Props) {
           <div className="dt-jobhead">
             <div className="dt-jobtitle">{job.title}</div>
             <div className="dt-jobmeta">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-              {job.location ? ` · ${job.location}` : ""}
+              {formatDateRange(job.start, job.end)}
+              {formatLocation(job.location, " · ")}
             </div>
           </div>
           <div className="dt-jobco">{job.company}</div>
@@ -296,14 +297,11 @@ export function DuoTone({ resume, palette }: Props) {
             <div className="dt-edu-title">{ed.degree}</div>
             <div className="dt-edu-school">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
               {ed.detail ? ` · ${ed.detail}` : ""}
             </div>
           </div>
-          <div className="dt-edu-meta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
-          </div>
+          <div className="dt-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
         </div>,
       );
     });

@@ -27,7 +27,13 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -138,10 +144,7 @@ export function Typographic({ resume, palette }: Props) {
           {resume.experience.map((job) => (
             <div className="tg-job" key={job.id}>
               <div className="tg-job-meta">
-                <span className="yr">
-                  {job.start}
-                  {job.end ? ` – ${job.end}` : ""}
-                </span>
+                <span className="yr">{formatDateRange(job.start, job.end)}</span>
                 {job.location}
               </div>
               <div>
@@ -228,14 +231,11 @@ export function Typographic({ resume, palette }: Props) {
             <div className="tg-edu" key={ed.id}>
               <div className="tg-edu-head">
                 <div className="tg-edu-title">{ed.degree}</div>
-                <div className="tg-edu-meta">
-                  {ed.start}
-                  {ed.end ? ` – ${ed.end}` : ""}
-                </div>
+                <div className="tg-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
               </div>
               <div className="tg-edu-school">
                 {ed.school}
-                {ed.location ? `, ${ed.location}` : ""}
+                {formatLocation(ed.location)}
               </div>
               {ed.detail && <div className="tg-edu-detail">{ed.detail}</div>}
             </div>

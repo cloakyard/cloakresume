@@ -16,7 +16,13 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -97,14 +103,11 @@ export function Minimalist({ resume, palette }: Props) {
         <div className="ml-job" key={`exp-${job.id}`}>
           <div className="ml-jobhead">
             <div className="ml-jobtitle">{job.title}</div>
-            <div className="ml-jobmeta">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </div>
+            <div className="ml-jobmeta">{formatDateRange(job.start, job.end)}</div>
           </div>
           <div className="ml-jobco">
             {job.company}
-            {job.location ? `, ${job.location}` : ""}
+            {formatLocation(job.location)}
           </div>
           {job.bullets.length > 0 && (
             <ul>
@@ -172,14 +175,11 @@ export function Minimalist({ resume, palette }: Props) {
         <div className="ml-edu" key={`edu-${ed.id}`}>
           <div className="ml-edu-head">
             <div className="ml-edu-title">{ed.degree}</div>
-            <div className="ml-edu-meta">
-              {ed.start}
-              {ed.end ? ` – ${ed.end}` : ""}
-            </div>
+            <div className="ml-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
           </div>
           <div className="ml-edu-school">
             {ed.school}
-            {ed.location ? `, ${ed.location}` : ""}
+            {formatLocation(ed.location)}
             {ed.detail ? ` · ${ed.detail}` : ""}
           </div>
         </div>,

@@ -10,7 +10,14 @@
 
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
-import { certificationLink, contactIcon, renderContactValue } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 import { RichText } from "../utils/richText.tsx";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 
@@ -124,7 +131,7 @@ export function ClassicSidebar({ resume, palette }: Props) {
                         {GroupIcon && <GroupIcon className="cs-skill-icon" />}
                         <span>{group.label}</span>
                       </div>
-                      <div className="cs-skill-list">{group.items}</div>
+                      <div className="cs-skill-list">{splitSkills(group.items).join(", ")}</div>
                     </div>
                   );
                 })}
@@ -150,9 +157,8 @@ export function ClassicSidebar({ resume, palette }: Props) {
                     <div className="cs-jobhead">
                       <div className="cs-jobtitle">{job.title}</div>
                       <div className="cs-jobmeta">
-                        {job.start}
-                        {job.end ? ` – ${job.end}` : ""}
-                        {job.location ? ` · ${job.location}` : ""}
+                        {formatDateRange(job.start, job.end)}
+                        {formatLocation(job.location, " · ")}
                       </div>
                     </div>
                     <div className="cs-jobco">{job.company}</div>
@@ -177,12 +183,11 @@ export function ClassicSidebar({ resume, palette }: Props) {
                       <div className="cs-edutitle">{ed.degree}</div>
                       <div className="cs-eduschool">
                         {ed.school}
-                        {ed.location ? `, ${ed.location}` : ""}
+                        {formatLocation(ed.location)}
                       </div>
                     </div>
                     <div className="cs-edumeta">
-                      {ed.start}
-                      {ed.end ? ` – ${ed.end}` : ""}
+                      {formatDateRange(ed.start, ed.end)}
                       {ed.detail ? ` · ${ed.detail}` : ""}
                     </div>
                   </div>

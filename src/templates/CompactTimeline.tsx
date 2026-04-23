@@ -15,7 +15,14 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -120,13 +127,10 @@ export function CompactTimeline({ resume, palette }: Props) {
                   <div className="ct-role">{job.title}</div>
                   <div className="ct-co">
                     {job.company}
-                    {job.location ? ` · ${job.location}` : ""}
+                    {formatLocation(job.location, " · ")}
                   </div>
                 </div>
-                <div className="ct-dates">
-                  {job.start}
-                  {job.end ? ` – ${job.end}` : ""}
-                </div>
+                <div className="ct-dates">{formatDateRange(job.start, job.end)}</div>
               </div>
               {job.bullets.length > 0 && (
                 <ul>
@@ -196,8 +200,7 @@ export function CompactTimeline({ resume, palette }: Props) {
           <span className="ct-eduschool">{ed.school}</span>
           <span className="ct-edumeta">
             {" "}
-            · {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
+            · {formatDateRange(ed.start, ed.end)}
             {ed.detail ? ` · ${ed.detail}` : ""}
           </span>
         </div>,

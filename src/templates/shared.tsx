@@ -96,8 +96,9 @@ export function contactIcon(kind: ContactLink["kind"], size: number = 12) {
  *
  *   email → `mailto:<value>`  (only when the value looks like a real address)
  *   phone → `tel:+<digits>`   (digits/`+` only; dashes, spaces, parens dropped)
+ *   location → Google Maps search URL for the given place
  *   URL-ish kinds → `https://<value>` (adds the scheme when missing)
- *   location / malformed values → `null`
+ *   malformed values → `null`
  */
 export function contactHref(kind: ContactLink["kind"], value: string): string | null {
   const v = value.trim();
@@ -111,7 +112,7 @@ export function contactHref(kind: ContactLink["kind"], value: string): string | 
       return `tel:${digits}`;
     }
     case "location":
-      return null;
+      return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(v)}`;
     default:
       // website, linkedin, github, twitter, medium, other — all URL-ish.
       return normaliseHttpUrl(v);
@@ -149,6 +150,24 @@ export function certificationLink(c: Certification, content: ReactNode): ReactNo
       {content}
     </a>
   );
+}
+
+/**
+ * Format a start/end date pair as "start – end", or just "start" when
+ * no end date is set. Templates use this for roles, education, and
+ * projects so the separator stays consistent.
+ */
+export function formatDateRange(start: string, end?: string): string {
+  return end ? `${start} – ${end}` : start;
+}
+
+/**
+ * Format an optional location as a prefixed suffix (e.g. ", Berlin" or
+ * " · Berlin"). Returns an empty string when the location is blank so
+ * templates can concatenate it unconditionally.
+ */
+export function formatLocation(location: string | undefined, separator: string = ", "): string {
+  return location ? `${separator}${location}` : "";
 }
 
 /** Split a comma-separated skill list into trimmed items, ignoring blanks. */

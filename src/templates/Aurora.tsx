@@ -19,6 +19,8 @@ import {
   certificationLink,
   contactIcon,
   extractInitials,
+  formatDateRange,
+  formatLocation,
   renderContactValue,
   splitSkills,
 } from "./shared.tsx";
@@ -175,10 +177,7 @@ export function Aurora({ resume, palette }: Props) {
         <div className="au-job" key={`exp-${job.id}`}>
           <div className="au-jobhead">
             <div className="au-jobtitle">{job.title}</div>
-            <div className="au-jobchip">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </div>
+            <div className="au-jobchip">{formatDateRange(job.start, job.end)}</div>
           </div>
           <div className="au-jobco">
             {job.company}
@@ -274,14 +273,11 @@ export function Aurora({ resume, palette }: Props) {
             <div className="au-edu-title">{ed.degree}</div>
             <div className="au-edu-school">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
             {ed.detail && <div className="au-edu-detail">{ed.detail}</div>}
           </div>
-          <div className="au-edu-meta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
-          </div>
+          <div className="au-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
         </div>,
       );
     });

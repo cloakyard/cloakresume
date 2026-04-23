@@ -19,7 +19,13 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -112,10 +118,7 @@ export function AtsProfessional({ resume, palette }: Props) {
         <div className="atp-entry" key={`exp-${job.id}`}>
           <div className="atp-row">
             <span className="atp-role">{job.title}</span>
-            <span className="atp-dates">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </span>
+            <span className="atp-dates">{formatDateRange(job.start, job.end)}</span>
           </div>
           <div className="atp-row">
             <span className="atp-company">{job.company}</span>
@@ -175,15 +178,12 @@ export function AtsProfessional({ resume, palette }: Props) {
         <div className="atp-entry" key={`edu-${ed.id}`}>
           <div className="atp-row">
             <span className="atp-role">{ed.degree}</span>
-            <span className="atp-dates">
-              {ed.start}
-              {ed.end ? ` – ${ed.end}` : ""}
-            </span>
+            <span className="atp-dates">{formatDateRange(ed.start, ed.end)}</span>
           </div>
           <div className="atp-row">
             <span className="atp-company">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </span>
             {ed.detail && <span className="atp-location">{ed.detail}</span>}
           </div>

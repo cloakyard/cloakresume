@@ -22,6 +22,8 @@ import {
   certificationLink,
   contactIcon,
   extractInitials,
+  formatDateRange,
+  formatLocation,
   renderContactValue,
   splitSkills,
 } from "./shared.tsx";
@@ -180,10 +182,7 @@ export function Bauhaus({ resume, palette }: Props) {
         <div className="bh-job" key={`exp-${job.id}`}>
           <div className="bh-jobhead">
             <div className="bh-jobtitle">{job.title}</div>
-            <div className="bh-jobdates">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </div>
+            <div className="bh-jobdates">{formatDateRange(job.start, job.end)}</div>
           </div>
           <div className="bh-jobco">
             {job.company}
@@ -270,13 +269,10 @@ export function Bauhaus({ resume, palette }: Props) {
             <div className="bh-edu-title">{ed.degree}</div>
             <div className="bh-edu-school">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
           </div>
-          <div className="bh-edu-meta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
-          </div>
+          <div className="bh-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
           {ed.detail && <div className="bh-edu-detail">{ed.detail}</div>}
         </div>,
       );

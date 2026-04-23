@@ -14,7 +14,14 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -114,10 +121,7 @@ export function ModernMinimal({ resume, palette }: Props) {
           <div className="mm-jobmeta">
             <span className="co">{job.company}</span>
             {job.location}
-            <span className="dates">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </span>
+            <span className="dates">{formatDateRange(job.start, job.end)}</span>
           </div>
           <div>
             <div className="mm-jobtitle">{job.title}</div>
@@ -190,12 +194,11 @@ export function ModernMinimal({ resume, palette }: Props) {
             <div className="mm-edutitle">{ed.degree}</div>
             <div className="mm-eduschool">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
           </div>
           <div className="mm-edumeta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
+            {formatDateRange(ed.start, ed.end)}
             {ed.detail ? ` · ${ed.detail}` : ""}
           </div>
         </div>,

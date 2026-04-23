@@ -14,7 +14,15 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
-import { certificationLink, contactIcon, renderContactValue, splitSkills } from "./shared.tsx";
+import {
+  certificationLink,
+  contactIcon,
+  extractInitials,
+  formatDateRange,
+  formatLocation,
+  renderContactValue,
+  splitSkills,
+} from "./shared.tsx";
 
 interface Props {
   resume: ResumeData;
@@ -74,11 +82,7 @@ export function GradientHeader({ resume, palette }: Props) {
           <logo.Icon style={{ width: "10mm", height: "10mm", color: "white" }} />
         ) : (
           <span style={{ fontSize: "14pt", fontWeight: 700 }}>
-            {resume.profile.name
-              .split(" ")
-              .map((p) => p[0])
-              .slice(0, 2)
-              .join("")}
+            {extractInitials(resume.profile.name)}
           </span>
         )}
       </div>
@@ -120,10 +124,7 @@ export function GradientHeader({ resume, palette }: Props) {
           <div className="gh-jobmeta">
             <span className="co">{job.company}</span>
             {job.location}
-            <span className="dates">
-              {job.start}
-              {job.end ? ` – ${job.end}` : ""}
-            </span>
+            <span className="dates">{formatDateRange(job.start, job.end)}</span>
           </div>
           <div>
             <div className="gh-jobtitle">{job.title}</div>
@@ -214,12 +215,11 @@ export function GradientHeader({ resume, palette }: Props) {
             <div className="gh-edutitle">{ed.degree}</div>
             <div className="gh-eduschool">
               {ed.school}
-              {ed.location ? `, ${ed.location}` : ""}
+              {formatLocation(ed.location)}
             </div>
           </div>
           <div className="gh-edumeta">
-            {ed.start}
-            {ed.end ? ` – ${ed.end}` : ""}
+            {formatDateRange(ed.start, ed.end)}
             {ed.detail ? ` · ${ed.detail}` : ""}
           </div>
         </div>,
