@@ -18,7 +18,7 @@ import type { ComponentType } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { TemplateProps } from "../templates/index.ts";
 import type { ResumeData } from "../types.ts";
-import type { PrimaryPalette } from "../utils/colors.ts";
+import { clamp, type PrimaryPalette } from "../utils/colors.ts";
 
 interface PreviewProps {
   resume: ResumeData;
@@ -33,7 +33,7 @@ const MIN_ZOOM = 0.3;
 const MAX_ZOOM = 1.5;
 
 function clampZoom(z: number): number {
-  return Math.max(MIN_ZOOM, Math.min(MAX_ZOOM, Number(z.toFixed(2))));
+  return clamp(Number(z.toFixed(2)), MIN_ZOOM, MAX_ZOOM);
 }
 
 export function Preview({ resume, palette, TemplateComponent }: PreviewProps) {

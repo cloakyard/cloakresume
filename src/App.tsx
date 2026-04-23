@@ -31,7 +31,12 @@ import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
 import { highlightField } from "./utils/highlightField.ts";
-import { downloadResumeFile, normalizeResumeData, readResumeFile } from "./utils/fileIO.ts";
+import {
+  buildDownloadFilename,
+  downloadResumeFile,
+  normalizeResumeData,
+  readResumeFile,
+} from "./utils/fileIO.ts";
 import { blankResume } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
@@ -218,8 +223,8 @@ export function App() {
     try {
       // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
       // in the client after the user actually asks for an export.
-      const { buildPdfFilename, exportResumeToPdf } = await import("./utils/pdfExport.ts");
-      await exportResumeToPdf(root, buildPdfFilename(resume.profile.name));
+      const { exportResumeToPdf } = await import("./utils/pdfExport.ts");
+      await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"));
     } catch (err) {
       alert(`Couldn't generate the PDF. ${err instanceof Error ? err.message : "Unknown error."}`);
     }

@@ -69,6 +69,17 @@ export function safeFilename(input: string): string {
   return cleaned || "resume";
 }
 
+/**
+ * Build a date-stamped download filename like `jane-doe-2026-04-23.pdf`.
+ * Extension is passed without a leading dot and may contain dots itself
+ * (e.g. `cloakresume.json`).
+ */
+export function buildDownloadFilename(displayName: string, extension: string): string {
+  const name = safeFilename(displayName || "resume");
+  const date = new Date().toISOString().slice(0, 10);
+  return `${name}-${date}.${extension}`;
+}
+
 /** Trigger a download of the resume state as a JSON file. */
 export function downloadResumeFile(payload: Omit<ResumeSaveFile, "kind" | "savedAt">): void {
   const file: ResumeSaveFile = {
@@ -79,10 +90,8 @@ export function downloadResumeFile(payload: Omit<ResumeSaveFile, "kind" | "saved
   const blob = new Blob([JSON.stringify(file, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  const namePart = safeFilename(payload.resume.profile.name || "resume");
-  const datePart = new Date().toISOString().slice(0, 10);
   a.href = url;
-  a.download = `${namePart}-${datePart}.cloakresume.json`;
+  a.download = buildDownloadFilename(payload.resume.profile.name, "cloakresume.json");
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

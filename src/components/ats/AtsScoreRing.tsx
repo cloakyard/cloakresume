@@ -6,6 +6,8 @@
  * number and below the caption without either element hugging the arc.
  */
 
+import { clamp } from "../../utils/colors.ts";
+
 interface AtsScoreRingProps {
   score: number;
   color: string;
@@ -20,7 +22,7 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
   const gap = compact ? 3 : 5;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const clamped = Math.max(0, Math.min(100, score));
+  const clamped = clamp(score, 0, 100);
   const offset = c - (clamped / 100) * c;
   const glow = `color-mix(in srgb, ${color} 32%, transparent)`;
   return (

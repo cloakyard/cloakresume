@@ -29,7 +29,7 @@ function stripMarkdown(text: string): string {
  * fields are included — structured fields (names, employers, dates) would
  * produce pure noise.
  */
-export function buildGrammarSegments(resume: ResumeData) {
+function buildGrammarSegments(resume: ResumeData) {
   const out: Array<{ id: string; label: string; text: string }> = [];
   const summary = resume.profile.summary.trim();
   if (summary) {
