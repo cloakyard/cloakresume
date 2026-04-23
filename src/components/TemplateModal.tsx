@@ -3,8 +3,8 @@
  * top-docked modal on tablet+. Renders a grid of live template previews.
  */
 
-import { X } from "lucide-react";
-import { useCallback, useMemo, useRef } from "react";
+import { Search, X } from "lucide-react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import { sampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
@@ -47,15 +47,26 @@ export function TemplateModal({
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
   const sheetRef = useRef<HTMLDivElement>(null);
+  const [query, setQuery] = useState("");
 
-  const grouped = useMemo(
-    () =>
-      TEMPLATE_CATEGORIES.map((category) => ({
-        category,
-        templates: Object.values(TEMPLATES).filter((t) => t.category === category.id),
-      })).filter((g) => g.templates.length > 0),
-    [],
-  );
+  const grouped = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return TEMPLATE_CATEGORIES.map((category) => ({
+      category,
+      templates: Object.values(TEMPLATES).filter((t) => {
+        if (t.category !== category.id) return false;
+        if (!q) return true;
+        return (
+          t.name.toLowerCase().includes(q) ||
+          t.description.toLowerCase().includes(q) ||
+          t.level.toLowerCase().includes(q) ||
+          category.label.toLowerCase().includes(q)
+        );
+      }),
+    })).filter((g) => g.templates.length > 0);
+  }, [query]);
+
+  const hasResults = grouped.length > 0;
 
   const previewResume = useMemo(() => (isResumeEmpty(resume) ? sampleResume : resume), [resume]);
 
@@ -113,25 +124,59 @@ export function TemplateModal({
         >
           <span aria-hidden="true" className="w-11 h-1 rounded-full bg-(--ink-5)/40" />
         </div>
-        <div className="flex items-start gap-3 px-4 md:px-7 pt-2 sm:pt-5 md:pt-5.5 pb-3.5 border-b border-(--line-soft)/70">
-          <div className="flex-1">
-            <div className="text-base md:text-lg font-semibold tracking-[-0.01em] text-(--ink-1)">
-              Choose a template
+        <div className="flex flex-col gap-3 px-4 md:px-7 pt-2 sm:pt-5 md:pt-5.5 pb-3.5 border-b border-(--line-soft)/70">
+          <div className="flex items-start gap-3">
+            <div className="flex-1">
+              <div className="text-base md:text-lg font-semibold tracking-[-0.01em] text-(--ink-1)">
+                Choose a template
+              </div>
+              <div className="text-[13px] text-(--ink-4) mt-0.5">
+                Your content stays — only the layout changes
+              </div>
             </div>
-            <div className="text-[13px] text-(--ink-4) mt-0.5">
-              Your content stays — only the layout changes
-            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              className="w-10 h-10 rounded-md grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              aria-label="Close"
+            >
+              <X className="w-4 h-4" />
+            </button>
           </div>
-          <button
-            type="button"
-            onClick={onClose}
-            className="w-10 h-10 rounded-md grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
-            aria-label="Close"
-          >
-            <X className="w-4 h-4" />
-          </button>
+          <div className="relative">
+            <Search
+              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--ink-4) pointer-events-none"
+              aria-hidden="true"
+            />
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Search templates by name, style, or level…"
+              aria-label="Search templates"
+              className="w-full h-10 pl-9 pr-9 rounded-lg border border-(--line) bg-(--surface-2) text-[13px] text-(--ink-1) placeholder:text-(--ink-4) outline-none transition-colors duration-100 focus:border-(--brand) focus:bg-(--surface) focus:shadow-[0_0_0_3px_var(--brand-100)]"
+            />
+            {query && (
+              <button
+                type="button"
+                onClick={() => setQuery("")}
+                aria-label="Clear search"
+                className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              >
+                <X className="w-3.5 h-3.5" />
+              </button>
+            )}
+          </div>
         </div>
         <div className="overflow-y-auto px-4 md:px-7 py-4 md:py-5.5 cr-scroll">
+          {!hasResults && (
+            <div className="py-12 text-center">
+              <div className="text-sm font-medium text-(--ink-1)">No templates match “{query}”</div>
+              <div className="text-[13px] text-(--ink-4) mt-1">
+                Try a different name, style, or experience level
+              </div>
+            </div>
+          )}
           {grouped.map(({ category, templates }) => (
             <section key={category.id} className="mb-6 last:mb-0">
               <div className="flex items-baseline gap-3 mb-3 md:mb-3.5 pb-2 border-b border-(--line-soft)">
