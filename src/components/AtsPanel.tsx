@@ -117,7 +117,7 @@ export function AtsPanel({
 
   const atsBand = useMemo(() => scoreBand(report.atsScore), [report.atsScore]);
   const writingBand = useMemo(() => scoreBand(report.writingScore), [report.writingScore]);
-  const timestamp = useMemo(() => (open ? formatTimestamp(new Date()) : ""), [open]);
+  const timestamp = open ? formatTimestamp(new Date()) : "";
   // Match the "Top fixes" list below — every entry in report.issues is a
   // surfaced fix (any severity), so the header should count the same set.
   const issueCount = report.issues.length;

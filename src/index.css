@@ -656,13 +656,6 @@
   background: linear-gradient(180deg, #eef2f7 0%, #e8edf4 100%);
 }
 
-/* Keyword highlight reserved for a future hover-over on ATS keywords. */
-.keyword-highlight {
-  background: linear-gradient(180deg, transparent 60%, rgba(37, 99, 235, 0.22) 60%);
-  padding: 0 2px;
-  border-radius: 2px;
-}
-
 /* ────────────────────────────────────────────────────────────────
  * Print — isolate `.resume-root`, reset transforms, remove chrome.
  * ──────────────────────────────────────────────────────────────── */
