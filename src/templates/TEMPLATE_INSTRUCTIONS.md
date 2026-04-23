@@ -33,15 +33,24 @@ for f in src/templates/*.tsx; do
 done
 ```
 
-## 2. Pagination: sections can span pages, but never split mid-item
+## 2. Pagination: fill every page, split where needed
 
-Long CVs must flow across multiple A4 pages. The shared `PaginatedCanvas` does the work — call it from every new template. The rules it enforces:
+Long CVs must flow across multiple A4 pages. The shared `PaginatedCanvas` does the work — call it from every new template.
 
-- **Atoms are indivisible.** Each top-level JSX block you push into the `atoms` array is treated as one unit: either the whole atom fits on the current page, or it is moved whole to the next page.
-- **Per-item atoms for list sections** (Experience, Education, Projects, Custom). This lets a long experience section continue across pages at item boundaries — not mid-bullet.
-- **Single-atom grids** for sections rendered as 2-col / 3-col grids (Skills, Credentials, Tail/More). A grid cannot be split across atoms without tearing the layout; the whole grid moves to the next page if it doesn't fit.
+**Mandatory rule for every template: never leave a large white gap at the bottom of a page just because the next section, sub-section, or bullet won't fit whole.** Sections, sub-sections, and bullet points **can and must** be allowed to divide across page boundaries to keep pages densely packed. A page that is 70% full with empty space trailing into a gutter is a layout bug, not a design choice. Split the section and continue it on the next page.
+
+The rules `PaginatedCanvas` enforces:
+
+- **Pages must be filled.** The packer greedily fills each page to capacity. If an atom doesn't fit whole but the remaining space is meaningful (more than ~15–20mm), you must structure the template so the atom can be split — break long items into finer atoms (per-bullet, per-sub-section) so the packer has smaller units to place. Leaving a page visibly short is not acceptable.
+- **Split granularity.**
+  - **Sections** split at sub-section / item boundaries (e.g. Experience breaks between job entries).
+  - **Sub-sections** (a single job, a single project) split at bullet boundaries when the item is taller than the remaining page space.
+  - **Bullet points** themselves may wrap across pages when a single bullet is long enough that keeping it whole would leave a large gap. Prefer atom-level splits first; allow intra-bullet wrapping only when no finer split is available.
+- **Per-item atoms for list sections** (Experience, Education, Projects, Custom). Long sub-sections should be further decomposed into per-bullet atoms (or grouped bullet atoms sharing a `data-continuation` header) so the packer can continue the same job across pages at bullet boundaries rather than moving the whole entry.
+- **Single-atom grids** for sections rendered as 2-col / 3-col grids (Skills, Credentials, Tail/More) only when the grid reliably fits on one page. If a grid is tall enough that keeping it single-atom would leave a big gap on the previous page, split the grid into row-level atoms so it can flow across pages.
 - **Keep-with-next.** Any atom that is an isolated section header (an `<h2>` with no following item in the same atom) must carry `data-keep-with-next="true"`. The packer will evict it onto the next page alongside its first item so headers are never orphaned.
-- **`break-inside: avoid`** on items that must not split _within themselves_ (a single job entry, a project card). The packer handles page-level breaks; `break-inside` handles print engine breaks inside an atom that is itself taller than a page.
+- **Continuation headers.** When a section splits across pages, the continued portion on the next page must carry a subtle continuation marker (e.g. "Experience (continued)" or the company/role name repeated) so the reader never loses context.
+- **`break-inside: avoid`** only on atoms that genuinely must not split (a compact card, a header+first-line pair). Do **not** apply it blanket to every item — it is the primary cause of trapped white space. Reserve it for cases where splitting would produce a worse result than moving the atom whole.
 
 Do **not**:
 
