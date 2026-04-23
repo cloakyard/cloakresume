@@ -87,7 +87,6 @@ export function ToolbarCenter({
           >
             <LayoutTemplate className="w-4 h-4 text-(--ink-4)" />
             <span>{activeTemplate.name}</span>
-            <ChevronDown className="w-3.5 h-3.5 caret" />
           </button>
 
           <div className="relative" ref={colorRef}>
