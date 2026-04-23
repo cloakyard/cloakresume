@@ -37,7 +37,7 @@ export function FloatingSectionPill({ icon: Icon, label, onClick }: Props) {
     >
       <span
         aria-hidden="true"
-        className="grid place-items-center w-7 h-7 rounded-full shrink-0 bg-[rgba(37,99,235,0.22)] text-primary-300"
+        className="grid place-items-center w-7 h-7 rounded-full shrink-0 bg-primary-500 text-white"
       >
         <Icon className="w-4 h-4" strokeWidth={2.25} />
       </span>
