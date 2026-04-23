@@ -38,22 +38,24 @@ interface Props {
 
 export function AtsPlain({ resume }: Props) {
   const css = `
-    .ats-root { font-family: Arial, Helvetica, 'Liberation Sans', sans-serif; color: #000; font-size: 10.5pt; line-height: 1.45; }
-    .ats-name { font-size: 20pt; font-weight: 700; margin: 0; letter-spacing: 0.5px; color: #000; }
-    .ats-title { font-size: 11pt; margin: 1mm 0 2mm; color: #000; }
-    .ats-contact { font-size: 10pt; color: #000; margin-bottom: 4mm; }
+    .ats-root { font-family: Arial, Helvetica, 'Liberation Sans', sans-serif; color: #000; font-size: 10.5pt; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .ats-name { font-size: 20pt; font-weight: 700; margin: 0; letter-spacing: 0.5px; color: #000; overflow-wrap: break-word; }
+    .ats-title { font-size: 11pt; margin: 1mm 0 2mm; color: #000; overflow-wrap: break-word; }
+    .ats-contact { font-size: 10pt; color: #000; margin-bottom: 4mm; overflow-wrap: anywhere; word-break: break-word; }
     .ats-contact span + span::before { content: " | "; color: #000; }
     .ats-hr { border: 0; border-top: 1px solid #000; margin: 3mm 0 4mm; }
     .ats-h2 { font-size: 11.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #000; margin: 5mm 0 2mm; border-bottom: 1px solid #000; padding-bottom: 1mm; break-after: avoid; page-break-after: avoid; }
-    .ats-p { font-size: 10.5pt; color: #000; margin: 0 0 2mm; }
-    .ats-job, .ats-edu, .ats-proj, .ats-cert, .ats-award { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .ats-row { display: flex; justify-content: space-between; gap: 6mm; font-size: 10.5pt; }
-    .ats-strong { font-weight: 700; color: #000; }
-    .ats-italic { font-style: italic; color: #000; }
+    .ats-p { font-size: 10.5pt; color: #000; margin: 0 0 2mm; overflow-wrap: break-word; }
+    .ats-job, .ats-edu, .ats-proj, .ats-cert, .ats-award { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; overflow-wrap: break-word; }
+    .ats-row { display: flex; justify-content: space-between; gap: 6mm; font-size: 10.5pt; flex-wrap: wrap; }
+    .ats-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .ats-row > span:last-child { flex-shrink: 0; }
+    .ats-strong { font-weight: 700; color: #000; overflow-wrap: break-word; }
+    .ats-italic { font-style: italic; color: #000; overflow-wrap: break-word; }
     .ats-ul { margin: 1mm 0 0; padding-left: 5mm; list-style: disc; }
-    .ats-ul li { font-size: 10.5pt; margin: 0 0 1mm; color: #000; line-height: 1.45; }
-    .ats-kv { font-size: 10.5pt; margin-bottom: 1mm; color: #000; }
-    .ats-skill-row { font-size: 10.5pt; margin-bottom: 1.5mm; color: #000; }
+    .ats-ul li { font-size: 10.5pt; margin: 0 0 1mm; color: #000; line-height: 1.45; overflow-wrap: break-word; }
+    .ats-kv { font-size: 10.5pt; margin-bottom: 1mm; color: #000; overflow-wrap: break-word; }
+    .ats-skill-row { font-size: 10.5pt; margin-bottom: 1.5mm; color: #000; overflow-wrap: anywhere; word-break: break-word; }
     .ats-skill-row .ats-strong { margin-right: 1mm; }
   `;
 

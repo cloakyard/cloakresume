@@ -32,43 +32,49 @@ interface Props {
 export function GradientHeader({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .gh-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; }
+    .gh-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .gh-head { background: linear-gradient(135deg, ${palette.primary600} 0%, ${palette.primary900} 100%); color: ${palette.primaryText}; padding: 12mm 14mm; display: flex; align-items: center; gap: 8mm; margin: -8mm -14mm 6mm; }
+    .gh-head > div:last-child { min-width: 0; flex: 1 1 auto; }
     .gh-logo { width: 18mm; height: 18mm; border-radius: 4mm; background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.35); display: flex; align-items: center; justify-content: center; flex-shrink: 0; overflow: hidden; }
     .gh-photo { width: 18mm; height: 18mm; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.6); }
-    .gh-name { font-size: 20pt; font-weight: 700; letter-spacing: -0.3px; line-height: 1.05; margin: 0; }
-    .gh-title { font-size: 10.2pt; margin-top: 1.2mm; letter-spacing: 1px; text-transform: uppercase; opacity: 0.92; font-weight: 600; }
+    .gh-name { font-size: 20pt; font-weight: 700; letter-spacing: -0.3px; line-height: 1.05; margin: 0; overflow-wrap: break-word; }
+    .gh-title { font-size: 10.2pt; margin-top: 1.2mm; letter-spacing: 1px; text-transform: uppercase; opacity: 0.92; font-weight: 600; overflow-wrap: break-word; }
     .gh-contact { display: flex; flex-wrap: wrap; gap: 1.5mm 4mm; margin-top: 3mm; font-size: 8.6pt; opacity: 0.95; }
-    .gh-contact span { display: inline-flex; align-items: center; gap: 1.2mm; }
-    .gh-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.4px; color: ${palette.primary700}; font-weight: 700; margin: 5.5mm 0 2.5mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; }
-    .gh-h2::before { content: ""; width: 8mm; height: 3px; background: ${palette.primary600}; border-radius: 1.5px; }
-    .gh-summary { font-size: 9.4pt; line-height: 1.55; color: #1e293b; }
-    .gh-job { display: grid; grid-template-columns: 38mm 1fr; gap: 5mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
-    .gh-jobmeta { font-size: 8.4pt; color: #6b7280; }
-    .gh-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 0.5mm; }
+    .gh-contact span { display: inline-flex; align-items: center; gap: 1.2mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .gh-contact svg { flex-shrink: 0; }
+    .gh-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.4px; color: ${palette.primary700}; font-weight: 700; margin: 5.5mm 0 2.5mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; overflow-wrap: break-word; }
+    .gh-h2::before { content: ""; width: 8mm; height: 3px; background: ${palette.primary600}; border-radius: 1.5px; flex-shrink: 0; }
+    .gh-summary { font-size: 9.4pt; line-height: 1.55; color: #1e293b; overflow-wrap: break-word; }
+    .gh-job { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 5mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
+    .gh-job > div { min-width: 0; }
+    .gh-jobmeta { font-size: 8.4pt; color: #6b7280; overflow-wrap: break-word; }
+    .gh-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 0.5mm; overflow-wrap: break-word; }
     .gh-jobmeta .dates { display: block; margin-top: 0.5mm; }
-    .gh-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.2mm; }
+    .gh-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.2mm; overflow-wrap: break-word; }
     .gh-job ul { list-style: none; padding: 0; margin: 0; }
-    .gh-job li { font-size: 8.9pt; line-height: 1.45; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #27272a; }
+    .gh-job li { font-size: 8.9pt; line-height: 1.45; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
     .gh-job li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 2px; transform: rotate(45deg); }
     .gh-chips { display: flex; flex-wrap: wrap; gap: 1.5mm; }
-    .gh-chip { background: linear-gradient(135deg, ${palette.primary50}, ${palette.primary100}); border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.6mm 2.4mm; border-radius: 999px; font-size: 8pt; font-weight: 600; }
-    .gh-skill-row { display: grid; grid-template-columns: 38mm 1fr; gap: 5mm; margin-bottom: 1.4mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
-    .gh-skill-label { color: ${palette.primary700}; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; }
+    .gh-chip { background: linear-gradient(135deg, ${palette.primary50}, ${palette.primary100}); border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.6mm 2.4mm; border-radius: 999px; font-size: 8pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .gh-skill-row { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 5mm; margin-bottom: 1.4mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
+    .gh-skill-row > div { min-width: 0; }
+    .gh-skill-label { color: ${palette.primary700}; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
     .gh-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .gh-proj { border-left: 3px solid ${palette.primary600}; padding: 0 0 0 4mm; margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
-    .gh-projhead { display: flex; justify-content: space-between; align-items: baseline; }
-    .gh-projname { font-size: 9.6pt; font-weight: 700; color: #111827; }
-    .gh-projdesc { font-size: 8.8pt; color: #374151; margin-top: 0.8mm; line-height: 1.45; }
-    .gh-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .gh-edutitle { font-weight: 700; color: #111827; font-size: 9.3pt; }
-    .gh-eduschool { color: ${palette.primary700}; font-size: 8.8pt; }
-    .gh-edumeta { color: #6b7280; font-size: 8.4pt; font-style: italic; }
-    .gh-two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
-    .gh-cert { font-size: 8.6pt; margin-bottom: 1.5mm; }
-    .gh-cert strong { color: #111827; display: block; }
-    .gh-kv { font-size: 8.6pt; margin-bottom: 1.2mm; }
-    .gh-kv strong { color: #111827; }
+    .gh-projhead { display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 3mm; }
+    .gh-projname { font-size: 9.6pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: break-word; }
+    .gh-projdesc { font-size: 8.8pt; color: #374151; margin-top: 0.8mm; line-height: 1.45; overflow-wrap: break-word; }
+    .gh-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 1.5mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
+    .gh-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
+    .gh-edutitle { font-weight: 700; color: #111827; font-size: 9.3pt; overflow-wrap: break-word; }
+    .gh-eduschool { color: ${palette.primary700}; font-size: 8.8pt; overflow-wrap: break-word; }
+    .gh-edumeta { color: #6b7280; font-size: 8.4pt; font-style: italic; flex-shrink: 0; }
+    .gh-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6mm; }
+    .gh-two > div { min-width: 0; }
+    .gh-cert { font-size: 8.6pt; margin-bottom: 1.5mm; overflow-wrap: break-word; }
+    .gh-cert strong { color: #111827; display: block; overflow-wrap: break-word; }
+    .gh-kv { font-size: 8.6pt; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .gh-kv strong { color: #111827; overflow-wrap: break-word; }
   `;
 
   const atoms: React.ReactNode[] = [];

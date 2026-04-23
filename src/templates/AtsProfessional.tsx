@@ -34,28 +34,31 @@ interface Props {
 
 export function AtsProfessional({ resume, palette }: Props) {
   const css = `
-    .atp-root { font-family: 'Geist', 'Inter', 'Calibri', Arial, Helvetica, sans-serif; color: #111827; font-size: 10.5pt; line-height: 1.5; }
+    .atp-root { font-family: 'Geist', 'Inter', 'Calibri', Arial, Helvetica, sans-serif; color: #111827; font-size: 10.5pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .atp-header { margin-bottom: 3mm; }
-    .atp-name { font-size: 22pt; font-weight: 700; margin: 0; letter-spacing: -0.3px; color: #0b1220; line-height: 1.1; }
-    .atp-title { font-size: 11.5pt; font-weight: 500; color: ${palette.primary700}; margin-top: 1mm; letter-spacing: 0.2px; }
-    .atp-contact { font-size: 10pt; color: #374151; margin-top: 2.5mm; display: flex; flex-wrap: wrap; gap: 1mm 3mm; }
+    .atp-name { font-size: 22pt; font-weight: 700; margin: 0; letter-spacing: -0.3px; color: #0b1220; line-height: 1.1; overflow-wrap: break-word; }
+    .atp-title { font-size: 11.5pt; font-weight: 500; color: ${palette.primary700}; margin-top: 1mm; letter-spacing: 0.2px; overflow-wrap: break-word; }
+    .atp-contact { font-size: 10pt; color: #374151; margin-top: 2.5mm; display: flex; flex-wrap: wrap; gap: 1mm 3mm; overflow-wrap: anywhere; word-break: break-word; }
+    .atp-contact > span { max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
     .atp-contact .sep { color: #9ca3af; }
     .atp-rule { border: 0; border-top: 1.5px solid ${palette.primary600}; margin: 3mm 0 3mm; }
     .atp-h2 { font-size: 11pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: ${palette.primary700}; margin: 5.5mm 0 2mm; padding-bottom: 1mm; border-bottom: 1px solid ${palette.primary200}; break-after: avoid; page-break-after: avoid; }
-    .atp-p { font-size: 10.5pt; margin: 0 0 2mm; color: #1f2937; line-height: 1.5; }
+    .atp-p { font-size: 10.5pt; margin: 0 0 2mm; color: #1f2937; line-height: 1.5; overflow-wrap: break-word; }
     .atp-entry { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .atp-row { display: flex; justify-content: space-between; gap: 6mm; align-items: baseline; }
-    .atp-role { font-size: 11pt; font-weight: 600; color: #111827; }
-    .atp-company { font-size: 10.5pt; color: ${palette.primary700}; font-weight: 500; }
+    .atp-row { display: flex; justify-content: space-between; gap: 6mm; align-items: baseline; flex-wrap: wrap; }
+    .atp-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .atp-row > span:last-child { flex-shrink: 0; overflow-wrap: break-word; }
+    .atp-role { font-size: 11pt; font-weight: 600; color: #111827; overflow-wrap: break-word; }
+    .atp-company { font-size: 10.5pt; color: ${palette.primary700}; font-weight: 500; overflow-wrap: break-word; }
     .atp-dates { font-size: 9.8pt; color: #6b7280; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .atp-location { font-size: 9.8pt; color: #6b7280; }
+    .atp-location { font-size: 9.8pt; color: #6b7280; overflow-wrap: break-word; }
     .atp-ul { margin: 1.5mm 0 0; padding-left: 5mm; list-style: disc; }
-    .atp-ul li { font-size: 10.3pt; margin: 0 0 1mm; color: #1f2937; line-height: 1.45; padding-left: 1mm; }
+    .atp-ul li { font-size: 10.3pt; margin: 0 0 1mm; color: #1f2937; line-height: 1.45; padding-left: 1mm; overflow-wrap: break-word; }
     .atp-ul li::marker { color: ${palette.primary600}; }
-    .atp-skill-row { font-size: 10.3pt; margin-bottom: 1.5mm; color: #1f2937; }
-    .atp-skill-row strong { color: #111827; font-weight: 600; margin-right: 1mm; }
-    .atp-kv { font-size: 10.3pt; margin-bottom: 1mm; }
-    .atp-kv strong { color: #111827; font-weight: 600; }
+    .atp-skill-row { font-size: 10.3pt; margin-bottom: 1.5mm; color: #1f2937; overflow-wrap: anywhere; word-break: break-word; }
+    .atp-skill-row strong { color: #111827; font-weight: 600; margin-right: 1mm; overflow-wrap: break-word; }
+    .atp-kv { font-size: 10.3pt; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .atp-kv strong { color: #111827; font-weight: 600; overflow-wrap: break-word; }
     .atp-cert-year { color: #6b7280; font-style: italic; }
   `;
 

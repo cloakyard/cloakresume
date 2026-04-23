@@ -31,47 +31,50 @@ interface Props {
 export function ModernMinimal({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .mm-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.5pt; line-height: 1.45; }
+    .mm-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.5pt; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .mm-head { border-bottom: 3px solid ${palette.primary600}; padding-bottom: 4mm; margin-bottom: 6mm; display: flex; align-items: flex-start; gap: 5mm; }
-    .mm-head-body { flex: 1; }
+    .mm-head-body { flex: 1; min-width: 0; }
     .mm-logo { width: 16mm; height: 16mm; border-radius: 4mm; background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .mm-name { font-size: 22pt; font-weight: 700; color: #111827; letter-spacing: -0.3px; margin: 0; }
-    .mm-title { font-size: 11pt; color: ${palette.primary600}; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; margin-top: 1.2mm; }
+    .mm-name { font-size: 22pt; font-weight: 700; color: #111827; letter-spacing: -0.3px; margin: 0; overflow-wrap: break-word; }
+    .mm-title { font-size: 11pt; color: ${palette.primary600}; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; margin-top: 1.2mm; overflow-wrap: break-word; }
     .mm-contact { display: flex; flex-wrap: wrap; gap: 3mm 5mm; margin-top: 4mm; font-size: 8.6pt; color: #4b5563; }
-    .mm-contact span { display: inline-flex; align-items: center; gap: 1.2mm; }
-    .mm-contact svg { color: ${palette.primary600}; }
-    .mm-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.5px; color: ${palette.primary600}; font-weight: 700; margin: 5.5mm 0 3mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; }
+    .mm-contact span { display: inline-flex; align-items: center; gap: 1.2mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .mm-contact svg { color: ${palette.primary600}; flex-shrink: 0; }
+    .mm-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.5px; color: ${palette.primary600}; font-weight: 700; margin: 5.5mm 0 3mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; overflow-wrap: break-word; }
     .mm-h2::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
-    .mm-summary { font-size: 9.5pt; line-height: 1.55; color: #1e293b; }
-    .mm-grid { display: grid; grid-template-columns: 28mm 1fr; gap: 3mm 5mm; }
-    .mm-job { display: grid; grid-template-columns: 38mm 1fr; gap: 4mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
-    .mm-jobmeta { font-size: 8.5pt; color: #6b7280; }
-    .mm-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9.2pt; display: block; margin-bottom: 0.5mm; }
+    .mm-summary { font-size: 9.5pt; line-height: 1.55; color: #1e293b; overflow-wrap: break-word; }
+    .mm-grid { display: grid; grid-template-columns: 28mm minmax(0, 1fr); gap: 3mm 5mm; }
+    .mm-job { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 4mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
+    .mm-job > div { min-width: 0; }
+    .mm-jobmeta { font-size: 8.5pt; color: #6b7280; overflow-wrap: break-word; }
+    .mm-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9.2pt; display: block; margin-bottom: 0.5mm; overflow-wrap: break-word; }
     .mm-jobmeta .dates { display: block; margin-top: 0.5mm; }
-    .mm-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.5mm; }
+    .mm-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.5mm; overflow-wrap: break-word; }
     .mm-job ul { list-style: none; padding: 0; margin: 0; }
-    .mm-job li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; }
+    .mm-job li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
     .mm-job li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary600}; border-radius: 50%; }
-    .mm-skill-col { display: grid; grid-template-columns: 36mm 1fr; gap: 2mm 4mm; margin-bottom: 1.2mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
-    .mm-skill-label { color: #111827; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; }
+    .mm-skill-col { display: grid; grid-template-columns: 36mm minmax(0, 1fr); gap: 2mm 4mm; margin-bottom: 1.2mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
+    .mm-skill-label { color: #111827; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
     .mm-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
-    .mm-skill-list { color: #27272a; }
+    .mm-skill-list { color: #27272a; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
     .mm-proj { border-left: 2px solid ${palette.primary600}; padding: 0 0 0 4mm; margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
-    .mm-projhead { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
-    .mm-projname { font-size: 9.6pt; font-weight: 700; color: #111827; }
-    .mm-projdesc { font-size: 8.9pt; color: #374151; margin-top: 1mm; line-height: 1.45; }
-    .mm-projstack { font-size: 8.3pt; color: ${palette.primary700}; font-weight: 600; margin-top: 1mm; }
-    .mm-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .mm-edutitle { font-weight: 700; color: #111827; font-size: 9.4pt; }
-    .mm-eduschool { color: ${palette.primary700}; font-size: 8.8pt; }
-    .mm-edumeta { color: #6b7280; font-size: 8.6pt; }
-    .mm-three { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 4mm; }
-    .mm-cert { font-size: 8.8pt; margin-bottom: 1.5mm; }
-    .mm-cert strong { color: #111827; display: block; }
+    .mm-projhead { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
+    .mm-projname { font-size: 9.6pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: break-word; }
+    .mm-projdesc { font-size: 8.9pt; color: #374151; margin-top: 1mm; line-height: 1.45; overflow-wrap: break-word; }
+    .mm-projstack { font-size: 8.3pt; color: ${palette.primary700}; font-weight: 600; margin-top: 1mm; overflow-wrap: anywhere; }
+    .mm-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 1.5mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
+    .mm-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
+    .mm-edutitle { font-weight: 700; color: #111827; font-size: 9.4pt; overflow-wrap: break-word; }
+    .mm-eduschool { color: ${palette.primary700}; font-size: 8.8pt; overflow-wrap: break-word; }
+    .mm-edumeta { color: #6b7280; font-size: 8.6pt; flex-shrink: 0; }
+    .mm-three { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 4mm; }
+    .mm-three > div { min-width: 0; }
+    .mm-cert { font-size: 8.8pt; margin-bottom: 1.5mm; overflow-wrap: break-word; }
+    .mm-cert strong { color: #111827; display: block; overflow-wrap: break-word; }
     .mm-cert .year { color: #6b7280; font-style: italic; }
-    .mm-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.4mm 1.8mm; margin: 0.4mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; }
-    .mm-kv { font-size: 8.8pt; margin-bottom: 1.2mm; }
-    .mm-kv strong { color: #111827; }
+    .mm-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.4mm 1.8mm; margin: 0.4mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .mm-kv { font-size: 8.8pt; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .mm-kv strong { color: #111827; overflow-wrap: break-word; }
   `;
 
   const atoms: React.ReactNode[] = [];

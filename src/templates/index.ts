@@ -22,6 +22,8 @@ import { ExecutiveSerif } from "./ExecutiveSerif.tsx";
 import { GradientHeader } from "./GradientHeader.tsx";
 import { Minimalist } from "./Minimalist.tsx";
 import { ModernMinimal } from "./ModernMinimal.tsx";
+import { Monograph } from "./Monograph.tsx";
+import { Prism } from "./Prism.tsx";
 import { Typographic } from "./Typographic.tsx";
 
 export interface TemplateProps {
@@ -52,6 +54,16 @@ export const TEMPLATES: Record<
     category: "classic",
     badge: { label: "Leadership", tone: "brand" },
     component: ExecutiveSerif,
+  },
+  monograph: {
+    id: "monograph",
+    name: "Monograph",
+    description: "Editorial serif · Warm sidebar",
+    accent: "#44403C",
+    level: "Senior professionals · Consultants · Legal",
+    category: "classic",
+    badge: { label: "New", tone: "brand" },
+    component: Monograph,
   },
   "ats-professional": {
     id: "ats-professional",
@@ -92,6 +104,16 @@ export const TEMPLATES: Record<
     category: "modern",
     badge: { label: "New", tone: "brand" },
     component: Aurora,
+  },
+  prism: {
+    id: "prism",
+    name: "Prism",
+    description: "Solid accent sidebar · Crisp sans",
+    accent: "#0284C7",
+    level: "Product · Engineering · Data · 3–12 years",
+    category: "modern",
+    badge: { label: "New", tone: "brand" },
+    component: Prism,
   },
   minimalist: {
     id: "minimalist",

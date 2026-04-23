@@ -32,44 +32,46 @@ interface Props {
 export function ExecutiveSerif({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .es-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; }
+    .es-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .es-head { text-align: center; border-bottom: 1px solid ${palette.primary200}; padding-bottom: 5mm; margin-bottom: 6mm; }
-    .es-logo { width: 13mm; height: 13mm; border-radius: 50%; margin: 0 auto 3mm; border: 1.5px solid ${palette.primary600}; color: ${palette.primary600}; display: flex; align-items: center; justify-content: center; }
-    .es-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 26pt; font-weight: 700; letter-spacing: 0.5px; color: #111827; margin: 0; }
-    .es-title { font-size: 10pt; color: ${palette.primary700}; letter-spacing: 3px; text-transform: uppercase; margin-top: 2mm; font-weight: 600; }
+    .es-logo { width: 13mm; height: 13mm; border-radius: 50%; margin: 0 auto 3mm; border: 1.5px solid ${palette.primary600}; color: ${palette.primary600}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .es-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 26pt; font-weight: 700; letter-spacing: 0.5px; color: #111827; margin: 0; overflow-wrap: break-word; }
+    .es-title { font-size: 10pt; color: ${palette.primary700}; letter-spacing: 3px; text-transform: uppercase; margin-top: 2mm; font-weight: 600; overflow-wrap: break-word; }
     .es-contact { display: flex; justify-content: center; flex-wrap: wrap; gap: 2mm 5mm; margin-top: 3.5mm; font-size: 8.8pt; color: #4b5563; }
-    .es-contact span { display: inline-flex; align-items: center; gap: 1.2mm; }
-    .es-contact svg { color: ${palette.primary600}; }
+    .es-contact span { display: inline-flex; align-items: center; gap: 1.2mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .es-contact svg { color: ${palette.primary600}; flex-shrink: 0; }
     .es-h2 { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 14pt; font-weight: 700; color: #111827; text-align: center; margin: 5.5mm 0 4mm; position: relative; break-after: avoid; page-break-after: avoid; }
     .es-h2 span { background: #ffffff; padding: 0 4mm; position: relative; z-index: 1; }
     .es-h2::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: ${palette.primary200}; z-index: 0; }
-    .es-summary { font-size: 9.5pt; line-height: 1.65; text-align: justify; color: #1e293b; }
+    .es-summary { font-size: 9.5pt; line-height: 1.65; text-align: justify; color: #1e293b; hyphens: auto; overflow-wrap: break-word; }
     .es-job { margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
-    .es-jobhead { display: flex; justify-content: space-between; align-items: baseline; }
-    .es-jobtitle { font-size: 10.5pt; font-weight: 700; color: #111827; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; }
-    .es-jobmeta { font-size: 8.8pt; color: #6b7280; font-style: italic; }
-    .es-jobco { font-size: 9.5pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.5mm; }
+    .es-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
+    .es-jobtitle { font-size: 10.5pt; font-weight: 700; color: #111827; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .es-jobmeta { font-size: 8.8pt; color: #6b7280; font-style: italic; flex-shrink: 0; }
+    .es-jobco { font-size: 9.5pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.5mm; overflow-wrap: break-word; }
     .es-job ul { list-style: none; padding: 0; margin: 0; }
-    .es-job li { font-size: 9.3pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; }
+    .es-job li { font-size: 9.3pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; overflow-wrap: break-word; }
     .es-job li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
-    .es-skill-group { margin-bottom: 1.8mm; font-size: 9.2pt; display: grid; grid-template-columns: 42mm 1fr; gap: 3mm; page-break-inside: avoid; break-inside: avoid; }
-    .es-skill-label { color: ${palette.primary700}; font-weight: 700; font-variant: small-caps; letter-spacing: 0.5px; display: flex; align-items: center; gap: 1.8mm; }
+    .es-skill-group { margin-bottom: 1.8mm; font-size: 9.2pt; display: grid; grid-template-columns: 42mm minmax(0, 1fr); gap: 3mm; page-break-inside: avoid; break-inside: avoid; }
+    .es-skill-label { color: ${palette.primary700}; font-weight: 700; font-variant: small-caps; letter-spacing: 0.5px; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
     .es-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
-    .es-skill-list { color: #1e293b; }
-    .es-edu { display: flex; justify-content: space-between; margin-bottom: 1mm; align-items: baseline; page-break-inside: avoid; break-inside: avoid; }
-    .es-edutitle { font-weight: 700; color: #111827; font-size: 10pt; }
-    .es-eduschool { color: ${palette.primary700}; font-size: 9pt; }
-    .es-edumeta { color: #6b7280; font-size: 8.8pt; font-style: italic; }
-    .es-two { display: grid; grid-template-columns: 1fr 1fr; gap: 6mm; }
-    .es-item { font-size: 9pt; margin-bottom: 1.6mm; }
-    .es-item strong { color: #111827; }
+    .es-skill-list { color: #1e293b; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+    .es-edu { display: flex; justify-content: space-between; gap: 4mm; margin-bottom: 1mm; align-items: baseline; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
+    .es-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
+    .es-edutitle { font-weight: 700; color: #111827; font-size: 10pt; overflow-wrap: break-word; }
+    .es-eduschool { color: ${palette.primary700}; font-size: 9pt; overflow-wrap: break-word; }
+    .es-edumeta { color: #6b7280; font-size: 8.8pt; font-style: italic; flex-shrink: 0; }
+    .es-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6mm; }
+    .es-two > div { min-width: 0; }
+    .es-item { font-size: 9pt; margin-bottom: 1.6mm; overflow-wrap: break-word; }
+    .es-item strong { color: #111827; overflow-wrap: break-word; }
     .es-proj { margin-bottom: 3mm; padding-bottom: 2.5mm; border-bottom: 1px dashed #e5e7eb; page-break-inside: avoid; break-inside: avoid; }
     .es-proj:last-child { border-bottom: 0; }
-    .es-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.2pt; font-weight: 700; color: #111827; margin-bottom: 1mm; }
-    .es-projdesc { font-size: 9pt; color: #27272a; line-height: 1.5; margin-bottom: 1mm; }
-    .es-projrole { font-size: 8.8pt; color: #4b5563; font-style: italic; margin-bottom: 1mm; }
-    .es-projstack { font-size: 8.5pt; color: ${palette.primary700}; font-weight: 600; }
-    .es-pill { display: inline-block; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 2mm; margin: 0.3mm; border-radius: 3px; font-size: 8pt; font-weight: 600; background: ${palette.primary50}; }
+    .es-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.2pt; font-weight: 700; color: #111827; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .es-projdesc { font-size: 9pt; color: #27272a; line-height: 1.5; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .es-projrole { font-size: 8.8pt; color: #4b5563; font-style: italic; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .es-projstack { font-size: 8.5pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .es-pill { display: inline-block; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 2mm; margin: 0.3mm; border-radius: 3px; font-size: 8pt; font-weight: 600; background: ${palette.primary50}; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
   `;
 
   const atoms: React.ReactNode[] = [];

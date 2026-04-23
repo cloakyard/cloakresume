@@ -38,19 +38,19 @@ export function Bauhaus({ resume, palette }: Props) {
   const initials = extractInitials(resume.profile.name);
 
   const css = `
-    .bh-root { font-family: 'Geist', 'Inter', sans-serif; color: #111827; font-size: 9.4pt; line-height: 1.5; }
-    .bh-head { display: grid; grid-template-columns: 42mm 1fr 60mm; grid-template-rows: 18mm 22mm; gap: 0; margin: 0 0 6mm; border: 2px solid #0a0a0a; }
-    .bh-logo { background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; grid-row: 1 / span 2; border-right: 2px solid #0a0a0a; font-size: 22pt; font-weight: 900; letter-spacing: -1px; overflow: hidden; }
+    .bh-root { font-family: 'Geist', 'Inter', sans-serif; color: #111827; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .bh-head { display: grid; grid-template-columns: 42mm minmax(0, 1fr) 60mm; grid-template-rows: 18mm 22mm; gap: 0; margin: 0 0 6mm; border: 2px solid #0a0a0a; }
+    .bh-logo { background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; grid-row: 1 / span 2; border-right: 2px solid #0a0a0a; font-size: 22pt; font-weight: 900; letter-spacing: -1px; overflow: hidden; min-width: 0; }
     .bh-logo img { width: 100%; height: 100%; object-fit: cover; }
-    .bh-name-block { background: #0a0a0a; color: #ffffff; display: flex; align-items: center; padding: 0 6mm; grid-column: 2; grid-row: 1 / span 2; border-right: 2px solid #0a0a0a; }
-    .bh-name { font-size: 22pt; font-weight: 900; letter-spacing: -0.8px; line-height: 1; margin: 0; }
-    .bh-title-block { background: ${palette.primary50}; padding: 3mm 5mm; display: flex; align-items: center; border-bottom: 2px solid #0a0a0a; }
-    .bh-title { font-size: 9.6pt; font-weight: 800; text-transform: uppercase; letter-spacing: 2.2px; color: ${palette.primary900}; }
-    .bh-contact-block { padding: 3mm 5mm; display: flex; flex-direction: column; justify-content: center; gap: 1.2mm; font-size: 8pt; color: #1f2937; background: #ffffff; }
-    .bh-contact-block span { display: inline-flex; align-items: center; gap: 1.6mm; }
-    .bh-contact-block svg { color: ${palette.primary600}; flex-shrink: 0; }
+    .bh-name-block { background: #0a0a0a; color: #ffffff; display: flex; align-items: center; padding: 0 6mm; grid-column: 2; grid-row: 1 / span 2; border-right: 2px solid #0a0a0a; min-width: 0; }
+    .bh-name { font-size: 22pt; font-weight: 900; letter-spacing: -0.8px; line-height: 1; margin: 0; overflow-wrap: break-word; min-width: 0; }
+    .bh-title-block { background: ${palette.primary50}; padding: 3mm 5mm; display: flex; align-items: center; border-bottom: 2px solid #0a0a0a; min-width: 0; }
+    .bh-title { font-size: 9.6pt; font-weight: 800; text-transform: uppercase; letter-spacing: 2.2px; color: ${palette.primary900}; overflow-wrap: break-word; min-width: 0; }
+    .bh-contact-block { padding: 3mm 5mm; display: flex; flex-direction: column; justify-content: center; gap: 1.2mm; font-size: 8pt; color: #1f2937; background: #ffffff; min-width: 0; }
+    .bh-contact-block span { display: inline-flex; align-items: flex-start; gap: 1.6mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .bh-contact-block svg { color: ${palette.primary600}; flex-shrink: 0; margin-top: 0.5mm; }
 
-    .bh-h2 { display: flex; align-items: center; gap: 2.5mm; font-size: 10pt; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #0a0a0a; margin: 5mm 0 3mm; padding-bottom: 1.4mm; border-bottom: 2px solid #0a0a0a; break-after: avoid; page-break-after: avoid; }
+    .bh-h2 { display: flex; align-items: center; gap: 2.5mm; font-size: 10pt; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; color: #0a0a0a; margin: 5mm 0 3mm; padding-bottom: 1.4mm; border-bottom: 2px solid #0a0a0a; break-after: avoid; page-break-after: avoid; overflow-wrap: break-word; }
     .bh-shape { width: 4mm; height: 4mm; flex-shrink: 0; }
     .bh-shape.circle { background: ${palette.primary600}; border-radius: 50%; }
     .bh-shape.square { background: ${palette.primary700}; }
@@ -60,59 +60,61 @@ export function Bauhaus({ resume, palette }: Props) {
     .bh-shape.ring { width: 4mm; height: 4mm; border: 1.5px solid ${palette.primary700}; border-radius: 50%; background: transparent; }
     .bh-shape.halfdisc { width: 4mm; height: 4mm; background: ${palette.primary600}; border-top-left-radius: 4mm; border-top-right-radius: 4mm; }
 
-    .bh-summary { font-size: 10pt; line-height: 1.6; color: #1f2937; padding: 3mm 4mm; background: ${palette.primary50}; border-left: 4px solid ${palette.primary600}; }
+    .bh-summary { font-size: 10pt; line-height: 1.6; color: #1f2937; padding: 3mm 4mm; background: ${palette.primary50}; border-left: 4px solid ${palette.primary600}; overflow-wrap: break-word; }
 
     .bh-job { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .bh-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 1px solid #0a0a0a; padding-bottom: 0.8mm; margin-bottom: 1.4mm; }
-    .bh-jobtitle { font-size: 10.4pt; font-weight: 800; color: #0a0a0a; letter-spacing: -0.15px; }
-    .bh-jobdates { font-size: 8.4pt; font-weight: 700; color: #ffffff; background: #0a0a0a; padding: 0.6mm 2.2mm; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: 0.4px; }
-    .bh-jobco { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.6mm; }
+    .bh-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 1px solid #0a0a0a; padding-bottom: 0.8mm; margin-bottom: 1.4mm; flex-wrap: wrap; }
+    .bh-jobtitle { font-size: 10.4pt; font-weight: 800; color: #0a0a0a; letter-spacing: -0.15px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .bh-jobdates { font-size: 8.4pt; font-weight: 700; color: #ffffff; background: #0a0a0a; padding: 0.6mm 2.2mm; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: 0.4px; flex-shrink: 0; }
+    .bh-jobco { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1.6mm; overflow-wrap: break-word; }
     .bh-jobco .loc { color: #6b7280; font-weight: 500; text-transform: none; letter-spacing: 0; }
     .bh-job ul { list-style: none; padding: 0; margin: 0; }
-    .bh-job li { font-size: 9pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 0.8mm; color: #1f2937; }
+    .bh-job li { font-size: 9pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 0.8mm; color: #1f2937; overflow-wrap: break-word; }
     .bh-job li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 2.2mm; height: 2.2mm; background: ${palette.primary600}; }
 
-    .bh-skill { margin-bottom: 2.2mm; page-break-inside: avoid; break-inside: avoid; }
-    .bh-skill-label { font-size: 8.6pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px; color: #0a0a0a; margin-bottom: 0.6mm; display: flex; align-items: center; gap: 1.6mm; }
-    .bh-skill-label::before { content: ""; width: 2mm; height: 2mm; background: ${palette.primary600}; }
+    .bh-skill { margin-bottom: 2.2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
+    .bh-skill-label { font-size: 8.6pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px; color: #0a0a0a; margin-bottom: 0.6mm; display: flex; align-items: center; gap: 1.6mm; overflow-wrap: break-word; }
+    .bh-skill-label::before { content: ""; width: 2mm; height: 2mm; background: ${palette.primary600}; flex-shrink: 0; }
     .bh-skill-icon { width: 1em; height: 1em; color: ${palette.primary700}; flex-shrink: 0; }
-    .bh-skill-list { font-size: 8.8pt; color: #1f2937; line-height: 1.5; }
+    .bh-skill-list { font-size: 8.8pt; color: #1f2937; line-height: 1.5; overflow-wrap: anywhere; word-break: break-word; }
 
-    .bh-proj { border: 2px solid #0a0a0a; padding: 0; page-break-inside: avoid; break-inside: avoid; margin-bottom: 3mm; display: grid; grid-template-columns: 6mm 1fr; }
+    .bh-proj { border: 2px solid #0a0a0a; padding: 0; page-break-inside: avoid; break-inside: avoid; margin-bottom: 3mm; display: grid; grid-template-columns: 6mm minmax(0, 1fr); }
     .bh-proj-accent { background: ${palette.primary600}; }
-    .bh-proj-body { padding: 2.5mm 3mm; }
-    .bh-proj-name { font-size: 10pt; font-weight: 800; color: #0a0a0a; }
-    .bh-proj-role { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 0.3mm; }
-    .bh-proj-desc { font-size: 8.8pt; color: #374151; line-height: 1.5; margin-top: 1mm; }
-    .bh-proj-stack { font-size: 8pt; color: ${palette.primary900}; font-weight: 700; margin-top: 1.2mm; letter-spacing: 0.2px; }
+    .bh-proj-body { padding: 2.5mm 3mm; min-width: 0; }
+    .bh-proj-name { font-size: 10pt; font-weight: 800; color: #0a0a0a; overflow-wrap: break-word; }
+    .bh-proj-role { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .bh-proj-desc { font-size: 8.8pt; color: #374151; line-height: 1.5; margin-top: 1mm; overflow-wrap: break-word; }
+    .bh-proj-stack { font-size: 8pt; color: ${palette.primary900}; font-weight: 700; margin-top: 1.2mm; letter-spacing: 0.2px; overflow-wrap: anywhere; }
 
-    .bh-edu { display: grid; grid-template-columns: 1fr auto; gap: 2mm 4mm; padding-bottom: 1.6mm; margin-bottom: 1.6mm; border-bottom: 1px dashed #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
+    .bh-edu { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2mm 4mm; padding-bottom: 1.6mm; margin-bottom: 1.6mm; border-bottom: 1px dashed #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
     .bh-edu:last-child { border-bottom: 0; }
-    .bh-edu-title { font-size: 9.6pt; font-weight: 800; color: #0a0a0a; }
-    .bh-edu-school { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 700; }
+    .bh-edu > div:first-child { min-width: 0; }
+    .bh-edu-title { font-size: 9.6pt; font-weight: 800; color: #0a0a0a; overflow-wrap: break-word; }
+    .bh-edu-school { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 700; overflow-wrap: break-word; }
     .bh-edu-meta { font-size: 8.4pt; color: #0a0a0a; font-variant-numeric: tabular-nums; white-space: nowrap; font-weight: 700; }
-    .bh-edu-detail { font-size: 8.2pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; grid-column: 1 / -1; }
+    .bh-edu-detail { font-size: 8.2pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; grid-column: 1 / -1; overflow-wrap: break-word; }
 
-    .bh-item { font-size: 8.8pt; margin-bottom: 1.4mm; color: #1f2937; line-height: 1.45; padding-left: 4mm; position: relative; }
+    .bh-item { font-size: 8.8pt; margin-bottom: 1.4mm; color: #1f2937; line-height: 1.45; padding-left: 4mm; position: relative; overflow-wrap: break-word; }
     .bh-item::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2mm; height: 2mm; background: ${palette.primary700}; transform: rotate(45deg); }
-    .bh-item strong { color: #0a0a0a; font-weight: 800; }
+    .bh-item strong { color: #0a0a0a; font-weight: 800; overflow-wrap: break-word; }
     .bh-item .meta { color: ${palette.primary700}; font-weight: 700; }
 
-    .bh-two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+    .bh-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 5mm; }
+    .bh-two > div { min-width: 0; }
 
     .bh-chips { display: flex; flex-wrap: wrap; gap: 1.5mm; }
-    .bh-chip { background: #ffffff; border: 1.5px solid #0a0a0a; color: #0a0a0a; padding: 0.4mm 2.2mm; font-size: 7.8pt; font-weight: 700; letter-spacing: 0.1px; }
+    .bh-chip { background: #ffffff; border: 1.5px solid #0a0a0a; color: #0a0a0a; padding: 0.4mm 2.2mm; font-size: 7.8pt; font-weight: 700; letter-spacing: 0.1px; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .bh-chip.accent { background: ${palette.primary600}; color: ${palette.primaryText}; border-color: ${palette.primary600}; }
 
     .bh-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(28mm, 1fr)); gap: 0; border: 2px solid #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
-    .bh-stat { padding: 2.5mm 3mm; text-align: center; border-right: 2px solid #0a0a0a; }
+    .bh-stat { padding: 2.5mm 3mm; text-align: center; border-right: 2px solid #0a0a0a; min-width: 0; }
     .bh-stat:last-child { border-right: 0; }
     .bh-stat:nth-child(odd) { background: ${palette.primary50}; }
-    .bh-stat-value { font-size: 14pt; font-weight: 900; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; }
-    .bh-stat-label { font-size: 7.2pt; text-transform: uppercase; letter-spacing: 1.6px; color: #0a0a0a; font-weight: 800; margin-top: 1mm; }
+    .bh-stat-value { font-size: 14pt; font-weight: 900; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; overflow-wrap: break-word; }
+    .bh-stat-label { font-size: 7.2pt; text-transform: uppercase; letter-spacing: 1.6px; color: #0a0a0a; font-weight: 800; margin-top: 1mm; overflow-wrap: break-word; }
 
-    .bh-kv { font-size: 8.6pt; margin-bottom: 1mm; color: #1f2937; }
-    .bh-kv strong { color: #0a0a0a; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; }
+    .bh-kv { font-size: 8.6pt; margin-bottom: 1mm; color: #1f2937; overflow-wrap: break-word; }
+    .bh-kv strong { color: #0a0a0a; font-weight: 800; text-transform: uppercase; letter-spacing: 0.6px; overflow-wrap: break-word; }
   `;
 
   const atoms: React.ReactNode[] = [];

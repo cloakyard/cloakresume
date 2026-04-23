@@ -32,46 +32,50 @@ interface Props {
 export function CompactTimeline({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .ct-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.1pt; line-height: 1.4; }
+    .ct-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.1pt; line-height: 1.4; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .ct-head { border-bottom: 2px solid ${palette.primary600}; padding-bottom: 3mm; margin-bottom: 4mm; display: flex; align-items: center; gap: 4mm; }
-    .ct-head-body { flex: 1; }
+    .ct-head-body { flex: 1; min-width: 0; }
     .ct-logo { width: 14mm; height: 14mm; border-radius: 3mm; background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ct-name { font-size: 19pt; font-weight: 700; color: #111827; letter-spacing: -0.2px; line-height: 1.05; }
-    .ct-title { font-size: 9.5pt; color: ${palette.primary600}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1.5mm; }
-    .ct-contact { margin-top: 3mm; display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1mm 3mm; font-size: 8.2pt; color: #1e293b; }
-    .ct-contact span { display: inline-flex; align-items: center; gap: 1.2mm; word-break: break-word; }
-    .ct-contact svg { color: ${palette.primary600}; flex-shrink: 0; }
+    .ct-name { font-size: 19pt; font-weight: 700; color: #111827; letter-spacing: -0.2px; line-height: 1.05; overflow-wrap: break-word; }
+    .ct-title { font-size: 9.5pt; color: ${palette.primary600}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 1.5mm; overflow-wrap: break-word; }
+    .ct-contact { margin-top: 3mm; display: grid; grid-template-columns: repeat(auto-fit, minmax(52mm, 1fr)); gap: 1mm 3mm; font-size: 8.2pt; color: #1e293b; }
+    .ct-contact > span { display: inline-flex; align-items: flex-start; gap: 1.2mm; min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    .ct-contact > span > span { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
+    .ct-contact svg { color: ${palette.primary600}; flex-shrink: 0; margin-top: 0.5mm; }
     .ct-h2 { font-size: 9.2pt; text-transform: uppercase; letter-spacing: 1.3px; color: ${palette.primary700}; font-weight: 700; margin: 5mm 0 2mm; padding-bottom: 1mm; border-bottom: 1px solid ${palette.primary200}; break-after: avoid; page-break-after: avoid; }
-    .ct-summary { font-size: 8.8pt; line-height: 1.5; color: #1e293b; text-align: justify; }
+    .ct-summary { font-size: 8.8pt; line-height: 1.5; color: #1e293b; text-align: justify; hyphens: auto; overflow-wrap: break-word; }
     .ct-tl { position: relative; padding-left: 5mm; border-left: 1.5px solid ${palette.primary200}; }
     .ct-tl-item { position: relative; padding-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .ct-tl-item:last-child { padding-bottom: 0; }
     .ct-tl-item::before { content: ""; position: absolute; left: -6.4mm; top: 1.2mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 50%; border: 1.5px solid #ffffff; box-shadow: 0 0 0 1px ${palette.primary200}; }
-    .ct-tl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
-    .ct-role { font-size: 9.4pt; font-weight: 700; color: #111827; }
-    .ct-co { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; }
-    .ct-dates { font-size: 7.8pt; color: #6b7280; font-style: italic; font-variant-numeric: tabular-nums; white-space: nowrap; }
+    .ct-tl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
+    .ct-tl-head > div:first-child { min-width: 0; flex: 1 1 auto; }
+    .ct-role { font-size: 9.4pt; font-weight: 700; color: #111827; overflow-wrap: break-word; }
+    .ct-co { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: break-word; }
+    .ct-dates { font-size: 7.8pt; color: #6b7280; font-style: italic; font-variant-numeric: tabular-nums; white-space: nowrap; flex-shrink: 0; }
     .ct-tl-item ul { list-style: none; padding: 0; margin: 0.8mm 0 0; }
-    .ct-tl-item li { font-size: 8.5pt; line-height: 1.45; padding-left: 3mm; position: relative; margin-bottom: 0.5mm; color: #27272a; }
+    .ct-tl-item li { font-size: 8.5pt; line-height: 1.45; padding-left: 3mm; position: relative; margin-bottom: 0.5mm; color: #27272a; overflow-wrap: break-word; }
     .ct-tl-item li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
-    .ct-two { display: grid; grid-template-columns: 1fr 1fr; gap: 3mm 6mm; }
-    .ct-skill-group { margin-bottom: 1.4mm; font-size: 8.4pt; page-break-inside: avoid; break-inside: avoid; }
-    .ct-skill-label { color: #111827; font-weight: 700; }
-    .ct-skill-list { color: #27272a; line-height: 1.4; }
-    .ct-proj { border-left: 2px solid ${palette.primary600}; background: ${palette.primary50}; border-radius: 2px; padding: 1.6mm 2.4mm; margin-bottom: 2mm; page-break-inside: avoid; break-inside: avoid; }
-    .ct-projname { font-size: 8.8pt; font-weight: 700; color: #111827; margin-bottom: 0.6mm; }
-    .ct-projdesc { font-size: 7.9pt; color: #4b5563; line-height: 1.38; margin-bottom: 0.8mm; }
-    .ct-projstack { font-size: 7.4pt; color: ${palette.primary700}; font-weight: 600; }
-    .ct-edu { margin-bottom: 1.5mm; font-size: 8.6pt; page-break-inside: avoid; break-inside: avoid; }
-    .ct-edutitle { font-weight: 700; color: #111827; }
-    .ct-eduschool { color: ${palette.primary700}; font-weight: 600; }
+    .ct-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3mm 6mm; }
+    .ct-two > div { min-width: 0; }
+    .ct-skill-group { margin-bottom: 1.4mm; font-size: 8.4pt; min-width: 0; overflow-wrap: anywhere; word-break: break-word; page-break-inside: avoid; break-inside: avoid; }
+    .ct-skill-label { color: #111827; font-weight: 700; overflow-wrap: break-word; }
+    .ct-skill-list { color: #27272a; line-height: 1.4; overflow-wrap: anywhere; word-break: break-word; }
+    .ct-proj { border-left: 2px solid ${palette.primary600}; background: ${palette.primary50}; border-radius: 2px; padding: 1.6mm 2.4mm; margin-bottom: 2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
+    .ct-projname { font-size: 8.8pt; font-weight: 700; color: #111827; margin-bottom: 0.6mm; overflow-wrap: break-word; }
+    .ct-projdesc { font-size: 7.9pt; color: #4b5563; line-height: 1.38; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .ct-projstack { font-size: 7.4pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .ct-edu { margin-bottom: 1.5mm; font-size: 8.6pt; overflow-wrap: break-word; page-break-inside: avoid; break-inside: avoid; }
+    .ct-edutitle { font-weight: 700; color: #111827; overflow-wrap: break-word; }
+    .ct-eduschool { color: ${palette.primary700}; font-weight: 600; overflow-wrap: break-word; }
     .ct-edumeta { color: #6b7280; font-size: 8pt; font-style: italic; }
-    .ct-kv { font-size: 8.3pt; margin-bottom: 0.8mm; }
-    .ct-kv strong { color: #111827; }
-    .ct-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.5mm; margin: 0.3mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; }
-    .ct-lang { display: flex; justify-content: space-between; font-size: 8.2pt; margin-bottom: 0.6mm; }
-    .ct-lang .lvl { color: ${palette.primary600}; font-size: 7.6pt; }
-    .ct-proj-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2mm 3mm; }
+    .ct-kv { font-size: 8.3pt; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .ct-kv strong { color: #111827; overflow-wrap: break-word; }
+    .ct-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.5mm; margin: 0.3mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .ct-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 0.6mm; flex-wrap: wrap; }
+    .ct-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
+    .ct-lang .lvl { color: ${palette.primary600}; font-size: 7.6pt; flex-shrink: 0; }
+    .ct-proj-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2mm 3mm; }
   `;
 
   const atoms: React.ReactNode[] = [];

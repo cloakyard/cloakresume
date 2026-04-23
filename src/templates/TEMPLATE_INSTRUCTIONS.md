@@ -47,9 +47,16 @@ Do **not**:
 
 - Hardcode `.resume-page` divs for multi-page templates (this bypasses pagination and cuts off content when it overflows).
 - Wrap sidebar content in `overflow: hidden` + a `mask-image` fade. Fades hide content, which violates rule 1.
-- Let a sidebar grow past 297mm. The sidebar must either fit inside one A4 (cap it and keep content short) or be split across hardcoded pages the way `ClassicSidebar` does.
+- Use `min-height: 297mm` on the page grid. It lets a dense column push the page past A4. Each rendered page **must be exactly 297mm** so print and PDF output stay honest.
 
-**Sidebar pattern** — the only sidebar template we ship is `ClassicSidebar`, which splits its sidebar content across two hardcoded pages (page 1: contact + skills; page 2: credentials + languages + interests + tools + extras + quickStats). This works when the sections are predictable and bounded. We tried dynamic sidebar pagination (`Spotlight` / `DuoTone`); it proved fragile in practice — sidebar-first-page reserve estimates drifted with font changes, leaving inconsistent page heights. If you need a sidebar layout, prefer the ClassicSidebar split approach over dynamic pagination.
+**Sidebar pattern** — sidebar templates (`ClassicSidebar`, `Monograph`, `Prism`) pass **both** column contents to `PaginatedCanvas` as atom arrays:
+
+- Main content via `children` (as every template does).
+- Sidebar content via the `sidebarAtoms` prop. The first atom should be the identity block (photo/logo + name + title + rule) — the packer measures it directly so there is no fragile "reserve height" heuristic to drift with font or content changes.
+- The `sidebar` prop is a render function `(pageIndex, pageCount, atomsForPage) => ReactNode`. For page indices > 0 where `atomsForPage.length > 0`, render a continuation header (e.g. "Name — ctd.") before the atoms. When `atomsForPage` is empty, return `null` so the sidebar column stays empty on that page.
+- Supply `sidebarContentWidthMm` so measurement matches the rendered content width (`sidebarWidthMm − 2 × sidebarPaddingMm[1]`).
+
+When sidebar pagination is active, `PaginatedCanvas` locks every page to exactly `height: 297mm` with `overflow: hidden`. Total page count is `max(mainPages, sidebarPages)` — if one column needs more pages than the other, the shorter column renders empty on those pages. Nothing is hidden, no page grows past A4.
 
 ## 3. ATS parseability
 
@@ -68,8 +75,8 @@ When you choose a sidebar layout:
 
 - The **right (main) column owns the narrative**: summary, experience, projects, education, custom sections. These sections carry the hiring signal and need the width.
 - The **left (sidebar) column owns the identity + supporting facts**: photo/monogram, name, title, contact, skills, languages, tools, interests, extras, quick stats. Short, scannable, factual.
-- `ClassicSidebar` splits sidebar content across two hardcoded pages (page 1: contact + skills; page 2: credentials + languages + interests + tools + extras + quickStats). Use this pattern — content is bounded and predictable per page.
-- We explicitly do **not** ship a dynamically-paginated sidebar template: the per-page reserve estimates for the identity block drift with font and content changes, producing inconsistent page heights. If you need more than what fits in one A4 sidebar, split like ClassicSidebar rather than trying to measure and flow.
+- Pass sidebar content to `PaginatedCanvas` via `sidebarAtoms` (see §2). The identity block is atom[0]; sections follow. Split multi-item sections (skills, extras) into one atom per item so long lists pack tightly across pages rather than moving whole.
+- Heavier-weight sections that benefit from the wider main column go on the right; supporting facts and lists go on the left.
 
 ## 5. Typography
 
@@ -123,7 +130,7 @@ When you group two sections into one atom (e.g. `Credentials` containing both Ce
 7. Run `vp test` — no regressions in existing templates.
 8. Preview with the `sampleResume` in the template modal; also preview with a long resume (10+ experience items, 15+ skills, 10+ projects) to confirm pagination holds.
 9. Register the template in `src/templates/index.ts` with accurate category, level, and badge metadata.
-10. If you add a new sidebar template, follow the `ClassicSidebar` split-across-hardcoded-pages pattern. Do not attempt dynamic sidebar pagination.
+10. If you add a new sidebar template, pass sidebar content via `sidebarAtoms` (identity block as atom[0]) and supply `sidebarContentWidthMm`. `PaginatedCanvas` will paginate the sidebar column itself — each page stays at exactly 297mm with `overflow: hidden`.
 
 ## Why these rules exist
 

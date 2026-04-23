@@ -31,36 +31,36 @@ interface Props {
 
 export function Minimalist({ resume, palette }: Props) {
   const css = `
-    .ml-root { font-family: 'Geist', 'Inter', sans-serif; color: #1a1a1a; font-size: 9.8pt; line-height: 1.6; }
+    .ml-root { font-family: 'Geist', 'Inter', sans-serif; color: #1a1a1a; font-size: 9.8pt; line-height: 1.6; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .ml-head { margin-bottom: 8mm; }
-    .ml-name { font-size: 24pt; font-weight: 500; color: #0a0a0a; letter-spacing: -0.6px; margin: 0; line-height: 1.05; }
-    .ml-title { font-size: 10.5pt; color: #525252; margin-top: 2mm; font-weight: 400; letter-spacing: 0.2px; }
+    .ml-name { font-size: 24pt; font-weight: 500; color: #0a0a0a; letter-spacing: -0.6px; margin: 0; line-height: 1.05; overflow-wrap: break-word; }
+    .ml-title { font-size: 10.5pt; color: #525252; margin-top: 2mm; font-weight: 400; letter-spacing: 0.2px; overflow-wrap: break-word; }
     .ml-rule { height: 1px; background: ${palette.primary600}; width: 14mm; margin: 4mm 0 4mm; }
-    .ml-contact { font-size: 9pt; color: #525252; letter-spacing: 0.1px; }
+    .ml-contact { font-size: 9pt; color: #525252; letter-spacing: 0.1px; overflow-wrap: anywhere; word-break: break-word; }
     .ml-contact span + span::before { content: " · "; color: #a3a3a3; margin: 0 0.5mm; }
     .ml-h2 { font-size: 8.8pt; text-transform: uppercase; letter-spacing: 2.4px; color: #0a0a0a; font-weight: 600; margin: 6mm 0 3.5mm; break-after: avoid; page-break-after: avoid; }
     .ml-h2::before { content: "§"; color: ${palette.primary600}; font-weight: 400; margin-right: 2mm; letter-spacing: 0; }
-    .ml-summary { font-size: 10pt; line-height: 1.7; color: #262626; max-width: 168mm; }
+    .ml-summary { font-size: 10pt; line-height: 1.7; color: #262626; max-width: 168mm; hyphens: auto; overflow-wrap: break-word; }
     .ml-job { margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .ml-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.5mm; }
-    .ml-jobtitle { font-size: 10.4pt; font-weight: 600; color: #0a0a0a; }
-    .ml-jobmeta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .ml-jobco { font-size: 9.6pt; color: #525252; margin-bottom: 1.8mm; font-style: italic; }
+    .ml-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.5mm; flex-wrap: wrap; }
+    .ml-jobtitle { font-size: 10.4pt; font-weight: 600; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .ml-jobmeta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; flex-shrink: 0; }
+    .ml-jobco { font-size: 9.6pt; color: #525252; margin-bottom: 1.8mm; font-style: italic; overflow-wrap: break-word; }
     .ml-job ul { list-style: none; padding: 0; margin: 0; }
-    .ml-job li { font-size: 9.6pt; line-height: 1.55; padding-left: 4.5mm; position: relative; margin-bottom: 1mm; color: #262626; }
+    .ml-job li { font-size: 9.6pt; line-height: 1.55; padding-left: 4.5mm; position: relative; margin-bottom: 1mm; color: #262626; overflow-wrap: break-word; }
     .ml-job li::before { content: "—"; position: absolute; left: 0; color: #a3a3a3; }
-    .ml-skill { display: grid; grid-template-columns: 36mm 1fr; gap: 4mm; margin-bottom: 1.4mm; font-size: 9.6pt; page-break-inside: avoid; break-inside: avoid; }
-    .ml-skill-label { color: #0a0a0a; font-weight: 600; }
-    .ml-skill-list { color: #262626; }
+    .ml-skill { display: grid; grid-template-columns: 36mm minmax(0, 1fr); gap: 4mm; margin-bottom: 1.4mm; font-size: 9.6pt; page-break-inside: avoid; break-inside: avoid; }
+    .ml-skill-label { color: #0a0a0a; font-weight: 600; min-width: 0; overflow-wrap: break-word; }
+    .ml-skill-list { color: #262626; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
     .ml-edu, .ml-proj { margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
-    .ml-edu-head, .ml-proj-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; }
-    .ml-edu-title, .ml-proj-name { font-size: 10pt; font-weight: 600; color: #0a0a0a; }
-    .ml-edu-school { font-size: 9.4pt; color: #525252; font-style: italic; }
-    .ml-edu-meta, .ml-proj-meta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; white-space: nowrap; }
-    .ml-proj-desc { font-size: 9.4pt; color: #262626; margin-top: 0.8mm; line-height: 1.55; }
-    .ml-proj-stack { font-size: 8.8pt; color: #737373; margin-top: 0.8mm; font-style: italic; }
-    .ml-inline { font-size: 9.6pt; color: #262626; }
-    .ml-inline strong { color: #0a0a0a; font-weight: 600; }
+    .ml-edu-head, .ml-proj-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
+    .ml-edu-title, .ml-proj-name { font-size: 10pt; font-weight: 600; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .ml-edu-school { font-size: 9.4pt; color: #525252; font-style: italic; overflow-wrap: break-word; }
+    .ml-edu-meta, .ml-proj-meta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; flex-shrink: 0; overflow-wrap: break-word; }
+    .ml-proj-desc { font-size: 9.4pt; color: #262626; margin-top: 0.8mm; line-height: 1.55; overflow-wrap: break-word; }
+    .ml-proj-stack { font-size: 8.8pt; color: #737373; margin-top: 0.8mm; font-style: italic; overflow-wrap: anywhere; }
+    .ml-inline { font-size: 9.6pt; color: #262626; overflow-wrap: break-word; }
+    .ml-inline strong { color: #0a0a0a; font-weight: 600; overflow-wrap: break-word; }
     .ml-inline span + span::before { content: " · "; color: #a3a3a3; margin: 0 0.5mm; }
   `;
 
