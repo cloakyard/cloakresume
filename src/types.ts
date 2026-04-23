@@ -135,7 +135,8 @@ export type TemplateId =
   | "aurora"
   | "bauhaus"
   | "monograph"
-  | "prism";
+  | "prism"
+  | "horizon";
 
 /** Broad design family used to group templates in the picker. */
 export type TemplateCategory = "ats" | "classic" | "modern" | "creative" | "academic";

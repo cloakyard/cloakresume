@@ -20,6 +20,7 @@ import { ClassicSidebar } from "./ClassicSidebar.tsx";
 import { CompactTimeline } from "./CompactTimeline.tsx";
 import { ExecutiveSerif } from "./ExecutiveSerif.tsx";
 import { GradientHeader } from "./GradientHeader.tsx";
+import { Horizon } from "./Horizon.tsx";
 import { Minimalist } from "./Minimalist.tsx";
 import { ModernMinimal } from "./ModernMinimal.tsx";
 import { Monograph } from "./Monograph.tsx";
@@ -114,6 +115,16 @@ export const TEMPLATES: Record<
     category: "modern",
     badge: { label: "New", tone: "brand" },
     component: Prism,
+  },
+  horizon: {
+    id: "horizon",
+    name: "Horizon",
+    description: "Light sidebar · Pill headers · Timeline",
+    accent: "#14B8A6",
+    level: "Design · Product · Tech · 3–12 years",
+    category: "modern",
+    badge: { label: "New", tone: "brand" },
+    component: Horizon,
   },
   minimalist: {
     id: "minimalist",
