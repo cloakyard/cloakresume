@@ -28,15 +28,15 @@ CloakResume is a full-featured resume builder, all running 100% client-side:
 
 ### 🎨 Templates
 
-_Fourteen hand-crafted layouts across five design families_
+_Twelve hand-crafted layouts across five design families_
 
-| Category     | Templates                                                                                                                                                                                                                           |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                                                               |
-| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                                                                                               |
-| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Spotlight** · dark sidebar with hero stats. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
-| **Creative** | **Typographic** · Swiss-style numbered sections. **DuoTone** · bold split panel with a magazine feel. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                        |
-| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                                                                      |
+| Category     | Templates                                                                                                                                                                             |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                 |
+| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                                                 |
+| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
+| **Creative** | **Typographic** · Swiss-style numbered sections. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                               |
+| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                        |
 
 Switch between any template with a single click — your content stays, only the layout changes.
 

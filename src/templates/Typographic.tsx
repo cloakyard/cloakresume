@@ -13,14 +13,15 @@
  * additional A4 pages at clean section boundaries; section numbering
  * stays sequential across pages.
  *
- * PAGINATION EXCEPTION: unlike the other templates, each entire
- * section here is ONE pagination atom. The `.tg-section` element is a
- * `display: grid` with a fixed 32mm left column holding the numbered
- * marker (01, 02, …) coupled to its body on the right. Splitting into
- * per-item atoms would decouple the marker-rail from its content and
- * collapse the signature numbered layout — the defining aesthetic of
- * this template. Accept less-than-perfect page utilization here in
- * exchange for keeping the rail intact across the section.
+ * PAGINATION: list-style sections (Experience, Projects, Education,
+ * Custom) emit one atom per item. The first atom of each section uses
+ * `.tg-section` (rendering the numbered marker + top hairline), and
+ * subsequent items use `.tg-section-cont` (empty 32mm column + no top
+ * hairline) so they continue the signature grid without repeating the
+ * marker. This lets long sections flow tightly across A4 pages instead
+ * of pushing entire sections whole. Grid-body sections (Skills,
+ * Credentials, More) stay as a single atom because their internal
+ * multi-column grid can't be split across atoms.
  */
 
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
@@ -50,11 +51,15 @@ export function Typographic({ resume, palette }: Props) {
     .tg-handle strong { color: #0a0a0a; display: block; font-size: 9.4pt; font-weight: 700; margin-bottom: 0.5mm; letter-spacing: 0.3px; }
     .tg-contact { font-size: 9pt; color: #374151; }
     .tg-contact span { display: block; line-height: 1.45; }
-    .tg-section { display: grid; grid-template-columns: 32mm 1fr; gap: 6mm; margin-bottom: 7mm; page-break-inside: avoid; break-inside: avoid; }
+    .tg-section { display: grid; grid-template-columns: 32mm 1fr; gap: 6mm; margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .tg-section-cont { display: grid; grid-template-columns: 32mm 1fr; gap: 6mm; margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .tg-section-end { margin-bottom: 7mm; }
     .tg-marker { border-top: 1px solid #111827; padding-top: 2mm; }
     .tg-marker-num { font-size: 22pt; font-weight: 800; color: ${palette.primary600}; line-height: 0.9; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
     .tg-marker-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 2.4px; color: #111827; font-weight: 700; margin-top: 2mm; }
     .tg-body { border-top: 1px solid #111827; padding-top: 2.5mm; }
+    .tg-body-cont { padding-top: 0; }
+    .tg-body > *:last-child, .tg-body-cont > *:last-child { margin-bottom: 0; }
     .tg-summary { font-size: 10.4pt; line-height: 1.6; color: #111827; max-width: 148mm; font-weight: 400; letter-spacing: -0.1px; }
     .tg-job { display: grid; grid-template-columns: 32mm 1fr; gap: 4mm; margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
     .tg-job:last-child { margin-bottom: 0; }
@@ -76,9 +81,9 @@ export function Typographic({ resume, palette }: Props) {
     .tg-edu-school { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.5mm; }
     .tg-edu-detail { font-size: 9pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; }
     .tg-proj { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
-    .tg-proj-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 1px dotted #d1d5db; padding-bottom: 1mm; margin-bottom: 1.2mm; }
-    .tg-proj-name { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; }
-    .tg-proj-role { font-size: 8.8pt; color: #6b7280; font-style: italic; white-space: nowrap; }
+    .tg-proj-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4mm; align-items: baseline; border-bottom: 1px dotted #d1d5db; padding-bottom: 1mm; margin-bottom: 1.2mm; }
+    .tg-proj-name { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; min-width: 0; }
+    .tg-proj-role { font-size: 8.8pt; color: #6b7280; font-style: italic; text-align: right; max-width: 60mm; }
     .tg-proj-desc { font-size: 9.2pt; color: #1f2937; line-height: 1.5; margin-bottom: 0.8mm; }
     .tg-proj-stack { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; letter-spacing: 0.1px; }
     .tg-cert, .tg-award, .tg-lang { font-size: 9.2pt; margin-bottom: 1.4mm; color: #1f2937; }
@@ -118,7 +123,7 @@ export function Typographic({ resume, palette }: Props) {
   if (resume.profile.summary) {
     const num = next();
     atoms.push(
-      <section className="tg-section" key="about">
+      <section className="tg-section tg-section-end" key="about">
         <div className="tg-marker">
           <div className="tg-marker-num">{num}</div>
           <div className="tg-marker-label">About</div>
@@ -134,15 +139,27 @@ export function Typographic({ resume, palette }: Props) {
 
   if (resume.experience.length > 0) {
     const num = next();
-    atoms.push(
-      <section className="tg-section" key="exp">
-        <div className="tg-marker">
-          <div className="tg-marker-num">{num}</div>
-          <div className="tg-marker-label">Experience</div>
-        </div>
-        <div className="tg-body">
-          {resume.experience.map((job) => (
-            <div className="tg-job" key={job.id}>
+    const last = resume.experience.length - 1;
+    resume.experience.forEach((job, index) => {
+      const isFirst = index === 0;
+      const isLast = index === last;
+      const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
+      atoms.push(
+        <section
+          className={className}
+          key={`exp-${job.id}`}
+          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
+        >
+          {isFirst ? (
+            <div className="tg-marker">
+              <div className="tg-marker-num">{num}</div>
+              <div className="tg-marker-label">Experience</div>
+            </div>
+          ) : (
+            <div />
+          )}
+          <div className={isFirst ? "tg-body" : "tg-body-cont"}>
+            <div className="tg-job">
               <div className="tg-job-meta">
                 <span className="yr">{formatDateRange(job.start, job.end)}</span>
                 {job.location}
@@ -162,16 +179,16 @@ export function Typographic({ resume, palette }: Props) {
                 )}
               </div>
             </div>
-          ))}
-        </div>
-      </section>,
-    );
+          </div>
+        </section>,
+      );
+    });
   }
 
   if (resume.skills.length > 0) {
     const num = next();
     atoms.push(
-      <section className="tg-section" key="skills">
+      <section className="tg-section tg-section-end" key="skills">
         <div className="tg-marker">
           <div className="tg-marker-num">{num}</div>
           <div className="tg-marker-label">Skills</div>
@@ -192,15 +209,27 @@ export function Typographic({ resume, palette }: Props) {
 
   if (resume.projects.length > 0) {
     const num = next();
-    atoms.push(
-      <section className="tg-section" key="proj">
-        <div className="tg-marker">
-          <div className="tg-marker-num">{num}</div>
-          <div className="tg-marker-label">Projects</div>
-        </div>
-        <div className="tg-body">
-          {resume.projects.map((p) => (
-            <div className="tg-proj" key={p.id}>
+    const last = resume.projects.length - 1;
+    resume.projects.forEach((p, index) => {
+      const isFirst = index === 0;
+      const isLast = index === last;
+      const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
+      atoms.push(
+        <section
+          className={className}
+          key={`proj-${p.id}`}
+          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
+        >
+          {isFirst ? (
+            <div className="tg-marker">
+              <div className="tg-marker-num">{num}</div>
+              <div className="tg-marker-label">Projects</div>
+            </div>
+          ) : (
+            <div />
+          )}
+          <div className={isFirst ? "tg-body" : "tg-body-cont"}>
+            <div className="tg-proj">
               <div className="tg-proj-head">
                 <div className="tg-proj-name">{p.name}</div>
                 {p.role && <div className="tg-proj-role">{p.role}</div>}
@@ -212,23 +241,35 @@ export function Typographic({ resume, palette }: Props) {
               )}
               {p.stack.length > 0 && <div className="tg-proj-stack">{p.stack.join(" / ")}</div>}
             </div>
-          ))}
-        </div>
-      </section>,
-    );
+          </div>
+        </section>,
+      );
+    });
   }
 
   if (resume.education.length > 0) {
     const num = next();
-    atoms.push(
-      <section className="tg-section" key="edu">
-        <div className="tg-marker">
-          <div className="tg-marker-num">{num}</div>
-          <div className="tg-marker-label">Education</div>
-        </div>
-        <div className="tg-body">
-          {resume.education.map((ed) => (
-            <div className="tg-edu" key={ed.id}>
+    const last = resume.education.length - 1;
+    resume.education.forEach((ed, index) => {
+      const isFirst = index === 0;
+      const isLast = index === last;
+      const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
+      atoms.push(
+        <section
+          className={className}
+          key={`edu-${ed.id}`}
+          data-keep-with-next={isFirst && !isLast ? "true" : undefined}
+        >
+          {isFirst ? (
+            <div className="tg-marker">
+              <div className="tg-marker-num">{num}</div>
+              <div className="tg-marker-label">Education</div>
+            </div>
+          ) : (
+            <div />
+          )}
+          <div className={isFirst ? "tg-body" : "tg-body-cont"}>
+            <div className="tg-edu">
               <div className="tg-edu-head">
                 <div className="tg-edu-title">{ed.degree}</div>
                 <div className="tg-edu-meta">{formatDateRange(ed.start, ed.end)}</div>
@@ -239,16 +280,16 @@ export function Typographic({ resume, palette }: Props) {
               </div>
               {ed.detail && <div className="tg-edu-detail">{ed.detail}</div>}
             </div>
-          ))}
-        </div>
-      </section>,
-    );
+          </div>
+        </section>,
+      );
+    });
   }
 
   if (resume.certifications.length > 0 || resume.awards.length > 0) {
     const num = next();
     atoms.push(
-      <section className="tg-section" key="cred">
+      <section className="tg-section tg-section-end" key="cred">
         <div className="tg-marker">
           <div className="tg-marker-num">{num}</div>
           <div className="tg-marker-label">Credentials</div>
@@ -291,7 +332,7 @@ export function Typographic({ resume, palette }: Props) {
   ) {
     const num = next();
     atoms.push(
-      <section className="tg-section" key="more">
+      <section className="tg-section tg-section-end" key="more">
         <div className="tg-marker">
           <div className="tg-marker-num">{num}</div>
           <div className="tg-marker-label">More</div>
@@ -333,7 +374,7 @@ export function Typographic({ resume, palette }: Props) {
     .forEach((c) => {
       const n = next();
       atoms.push(
-        <section className="tg-section" key={`custom-${c.id}`}>
+        <section className="tg-section tg-section-end" key={`custom-${c.id}`}>
           <div className="tg-marker">
             <div className="tg-marker-num">{n}</div>
             <div className="tg-marker-label">{c.header}</div>

@@ -65,7 +65,7 @@ export function Aurora({ resume, palette }: Props) {
 
     .au-job { position: relative; padding: 0 0 3.5mm 7mm; margin-bottom: 2.5mm; page-break-inside: avoid; break-inside: avoid; }
     .au-job::before { content: ""; position: absolute; left: 0; top: 2.5mm; bottom: 0.5mm; width: 2px; background: linear-gradient(180deg, ${palette.primary400}, ${palette.primary200}); border-radius: 2px; }
-    .au-job::after { content: ""; position: absolute; left: -1.6mm; top: 1.8mm; width: 5mm; height: 5mm; background: #ffffff; border: 2px solid ${palette.primary600}; border-radius: 50%; box-shadow: 0 0 0 2mm ${palette.primary50}; }
+    .au-job::after { content: ""; position: absolute; left: calc(1px - 2.5mm); top: 1.8mm; width: 5mm; height: 5mm; background: #ffffff; border: 2px solid ${palette.primary600}; border-radius: 50%; box-shadow: 0 0 0 2mm ${palette.primary50}; }
     .au-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.8mm; }
     .au-jobtitle { font-size: 10.4pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.15px; }
     .au-jobchip { font-size: 8pt; color: ${palette.primary900}; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; padding: 0.4mm 2.4mm; border-radius: 999px; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; }

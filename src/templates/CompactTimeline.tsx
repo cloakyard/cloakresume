@@ -46,7 +46,7 @@ export function CompactTimeline({ resume, palette }: Props) {
     .ct-tl { position: relative; padding-left: 5mm; border-left: 1.5px solid ${palette.primary200}; }
     .ct-tl-item { position: relative; padding-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .ct-tl-item:last-child { padding-bottom: 0; }
-    .ct-tl-item::before { content: ""; position: absolute; left: -6.6mm; top: 1.2mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 50%; border: 1.5px solid #ffffff; box-shadow: 0 0 0 1px ${palette.primary200}; }
+    .ct-tl-item::before { content: ""; position: absolute; left: -6.4mm; top: 1.2mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 50%; border: 1.5px solid #ffffff; box-shadow: 0 0 0 1px ${palette.primary200}; }
     .ct-tl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; }
     .ct-role { font-size: 9.4pt; font-weight: 700; color: #111827; }
     .ct-co { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; }

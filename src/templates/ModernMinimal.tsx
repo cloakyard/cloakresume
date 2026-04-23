@@ -214,6 +214,7 @@ export function ModernMinimal({ resume, palette }: Props) {
     resume.awards.length > 0 ||
     resume.languages.length > 0 ||
     resume.interests.length > 0 ||
+    resume.tools.length > 0 ||
     resume.extras.length > 0
   ) {
     atoms.push(
@@ -244,6 +245,7 @@ export function ModernMinimal({ resume, palette }: Props) {
         )}
         {(resume.languages.length > 0 ||
           resume.interests.length > 0 ||
+          resume.tools.length > 0 ||
           resume.extras.length > 0) && (
           <div>
             {resume.languages.length > 0 && (
@@ -260,6 +262,17 @@ export function ModernMinimal({ resume, palette }: Props) {
               <div style={{ marginTop: "2.5mm" }}>
                 <h2 className="mm-h2">{resume.interestsLabel?.trim() || "Interests"}</h2>
                 {resume.interests.map((t, i) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <span className="mm-pill" key={i}>
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+            {resume.tools.length > 0 && (
+              <div style={{ marginTop: "2.5mm" }}>
+                <h2 className="mm-h2">{resume.toolsLabel?.trim() || "Tools"}</h2>
+                {resume.tools.map((t, i) => (
                   // oxlint-disable-next-line jsx/no-array-index-key
                   <span className="mm-pill" key={i}>
                     {t}

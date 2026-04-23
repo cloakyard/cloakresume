@@ -132,10 +132,8 @@ export type TemplateId =
   | "ats-professional"
   | "minimalist"
   | "typographic"
-  | "duotone"
   | "aurora"
-  | "bauhaus"
-  | "spotlight";
+  | "bauhaus";
 
 /** Broad design family used to group templates in the picker. */
 export type TemplateCategory = "ats" | "classic" | "modern" | "creative" | "academic";

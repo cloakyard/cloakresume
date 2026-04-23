@@ -238,7 +238,12 @@ export function ExecutiveSerif({ resume, palette }: Props) {
   }
 
   // Additional: 2-col grid layout — kept as a single atom.
-  if (resume.languages.length > 0 || resume.interests.length > 0 || resume.extras.length > 0) {
+  if (
+    resume.languages.length > 0 ||
+    resume.interests.length > 0 ||
+    resume.tools.length > 0 ||
+    resume.extras.length > 0
+  ) {
     atoms.push(
       <div key="add">
         <h2 className="es-h2">
@@ -265,6 +270,19 @@ export function ExecutiveSerif({ resume, palette }: Props) {
             </div>
           )}
         </div>
+        {resume.tools.length > 0 && (
+          <div style={{ marginTop: "2mm" }}>
+            <strong style={{ color: palette.primary700 }}>
+              {resume.toolsLabel?.trim() || "Tools"} ·{" "}
+            </strong>
+            {resume.tools.map((t, i) => (
+              // oxlint-disable-next-line jsx/no-array-index-key
+              <span className="es-pill" key={i}>
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
         {resume.extras.length > 0 && (
           <div style={{ marginTop: "2mm" }}>
             {resume.extras.map((x) => (
