@@ -49,9 +49,8 @@ export function ClassicSidebar({ resume, palette }: Props) {
     .cs-divider { height: 2px; background: ${palette.primary600}; width: 18mm; margin: 5mm auto 6mm; border-radius: 2px; }
     .cs-cont-name { font-size: 10.5pt; font-weight: 700; color: #111827; letter-spacing: 0.3px; padding-bottom: 2mm; border-bottom: 1px solid ${palette.primary200}; margin-bottom: 4mm; overflow-wrap: break-word; }
     .cs-cont-name small { display: block; font-size: 7.6pt; color: ${palette.primary600}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 1mm; }
-    .cs-h3 { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.1px; color: ${palette.primary600}; margin-bottom: 1.8mm; font-weight: 700; border-bottom: 1px solid ${palette.primary200}; padding-bottom: 1mm; }
-    .cs-sb-atom { margin-bottom: 4mm; min-width: 0; }
-    .cs-sb-atom:last-child { margin-bottom: 0; }
+    .cs-h3 { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.1px; color: ${palette.primary600}; margin-bottom: 2.8mm; font-weight: 700; border-bottom: 1px solid ${palette.primary200}; padding-bottom: 1.4mm; }
+    .cs-sb-atom { margin-bottom: 6mm; min-width: 0; }
     .cs-contact { display: flex; align-items: flex-start; gap: 2mm; margin-bottom: 1.4mm; font-size: 8.1pt; overflow-wrap: anywhere; word-break: break-word; }
     .cs-contact .i { color: ${palette.primary600}; display: inline-flex; width: 5mm; justify-content: center; flex-shrink: 0; margin-top: 0.5mm; }
     .cs-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }

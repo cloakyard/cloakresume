@@ -53,10 +53,9 @@ export function Prism({ resume, palette }: Props) {
     .pr-rule { height: 2px; background: ${palette.primary400}; width: 12mm; margin: 5mm 0 0; }
     .pr-cont-name { font-size: 11pt; font-weight: 800; color: #ffffff; letter-spacing: -0.2px; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid rgba(255,255,255,0.25); overflow-wrap: break-word; }
     .pr-cont-name small { display: block; font-size: 7.4pt; color: ${palette.primary200}; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; margin-top: 1mm; }
-    .pr-h3 { font-size: 8pt; text-transform: uppercase; letter-spacing: 2.2px; color: #ffffff; font-weight: 800; margin-bottom: 2mm; display: flex; align-items: center; gap: 2mm; }
+    .pr-h3 { font-size: 8pt; text-transform: uppercase; letter-spacing: 2.2px; color: #ffffff; font-weight: 800; margin-bottom: 2.8mm; display: flex; align-items: center; gap: 2mm; }
     .pr-h3::before { content: ""; width: 2mm; height: 2mm; background: ${palette.primary400}; border-radius: 50%; flex-shrink: 0; }
-    .pr-sb-atom { margin-bottom: 4.5mm; min-width: 0; }
-    .pr-sb-atom:last-child { margin-bottom: 0; }
+    .pr-sb-atom { margin-bottom: 6.5mm; min-width: 0; }
     .pr-contact { display: flex; align-items: flex-start; gap: 2mm; margin-bottom: 1.4mm; font-size: 8.2pt; color: #cbd5e1; overflow-wrap: anywhere; word-break: break-word; }
     .pr-contact .i { color: ${palette.primary200}; display: inline-flex; width: 5mm; justify-content: center; flex-shrink: 0; margin-top: 0.5mm; }
     .pr-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }

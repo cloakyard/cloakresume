@@ -49,9 +49,8 @@ export function Monograph({ resume, palette }: Props) {
     .mg-orn { height: 1px; background: ${palette.primary700}; width: 14mm; margin: 5mm auto 0; }
     .mg-cont-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 13pt; font-weight: 400; color: #1c1917; text-align: center; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid ${palette.primary300}; overflow-wrap: break-word; }
     .mg-cont-name small { display: block; font-family: 'Geist', 'Inter', sans-serif; font-size: 7.2pt; color: #57534e; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; margin-top: 1mm; }
-    .mg-h3 { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; font-style: italic; color: #1c1917; margin-bottom: 2mm; padding-bottom: 1mm; border-bottom: 1px solid ${palette.primary300}; }
-    .mg-sb-atom { margin-bottom: 4.5mm; min-width: 0; }
-    .mg-sb-atom:last-child { margin-bottom: 0; }
+    .mg-h3 { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; font-style: italic; color: #1c1917; margin-bottom: 3mm; padding-bottom: 1.4mm; border-bottom: 1px solid ${palette.primary300}; }
+    .mg-sb-atom { margin-bottom: 6.5mm; min-width: 0; }
     .mg-contact { display: flex; align-items: flex-start; gap: 2mm; margin-bottom: 1.4mm; font-size: 8.2pt; overflow-wrap: anywhere; word-break: break-word; }
     .mg-contact .i { color: ${palette.primary700}; display: inline-flex; width: 5mm; justify-content: center; flex-shrink: 0; margin-top: 0.5mm; }
     .mg-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
