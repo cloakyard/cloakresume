@@ -46,10 +46,10 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-photo { width: 30mm; height: 30mm; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 4mm; border: 1px solid ${palette.primary700}; }
     .mg-logo { width: 16mm; height: 16mm; border-radius: 50%; background: transparent; color: ${palette.primary700}; display: flex; align-items: center; justify-content: center; margin: 0 auto 3mm; border: 1px solid ${palette.primary700}; }
     .mg-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 21pt; font-weight: 400; color: #1c1917; line-height: 1.05; text-align: center; letter-spacing: 0.2px; margin: 0; overflow-wrap: break-word; }
-    .mg-role { font-size: 8.4pt; color: #57534e; font-weight: 500; margin-top: 2.4mm; letter-spacing: 2px; text-transform: uppercase; text-align: center; overflow-wrap: break-word; }
+    .mg-role { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.5pt; color: #57534e; font-weight: 400; font-style: italic; margin-top: 2.4mm; text-align: center; overflow-wrap: break-word; }
     .mg-orn { height: 1px; background: ${palette.primary700}; width: 14mm; margin: 5mm auto 0; }
     .mg-cont-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 13pt; font-weight: 400; color: #1c1917; text-align: center; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid ${palette.primary300}; overflow-wrap: break-word; }
-    .mg-cont-name small { display: block; font-family: 'Geist', 'Inter', sans-serif; font-size: 7.2pt; color: #57534e; font-weight: 500; letter-spacing: 1.6px; text-transform: uppercase; margin-top: 1mm; }
+    .mg-cont-name small { display: block; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 9pt; color: #57534e; font-weight: 400; font-style: italic; margin-top: 1mm; }
     .mg-h3 { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; font-style: italic; color: #1c1917; margin-bottom: 3mm; padding-bottom: 1.4mm; border-bottom: 1px solid ${palette.primary300}; }
     .mg-sb-atom { margin-bottom: 6.5mm; min-width: 0; }
     .mg-contact { display: flex; align-items: flex-start; gap: 2mm; margin-bottom: 1.4mm; font-size: 8.2pt; overflow-wrap: anywhere; word-break: break-word; }
@@ -57,7 +57,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
     .mg-skill-group { margin-bottom: 2.2mm; }
     .mg-skill-group:last-child { margin-bottom: 0; }
-    .mg-skill-label { font-size: 8.2pt; font-weight: 700; color: #1c1917; display: flex; align-items: center; gap: 1.5mm; margin-bottom: 0.4mm; font-variant: small-caps; letter-spacing: 0.4px; overflow-wrap: break-word; }
+    .mg-skill-label { font-size: 8.6pt; font-weight: 700; color: #1c1917; display: flex; align-items: center; gap: 1.5mm; margin-bottom: 0.6mm; overflow-wrap: break-word; }
     .mg-skill-icon { width: 1em; height: 1em; color: ${palette.primary700}; flex-shrink: 0; }
     .mg-skill-list { font-size: 8.2pt; color: #292524; line-height: 1.5; overflow-wrap: anywhere; word-break: break-word; }
     .mg-section-head { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 15pt; font-weight: 400; color: #1c1917; margin: 6mm 0 3mm; padding-bottom: 1.5mm; border-bottom: 1px solid ${palette.primary300}; break-after: avoid; page-break-after: avoid; }
@@ -98,7 +98,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-chip { background: #ffffff; border: 1px solid ${palette.primary300}; color: #1c1917; padding: 0.3mm 1.6mm; border-radius: 2px; font-size: 7.8pt; font-weight: 500; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .mg-extra { font-size: 8.3pt; margin-bottom: 1.5mm; line-height: 1.45; overflow-wrap: break-word; }
     .mg-extra:last-child { margin-bottom: 0; }
-    .mg-extra strong { color: #1c1917; display: block; font-weight: 700; font-size: 7.8pt; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.4mm; overflow-wrap: break-word; }
+    .mg-extra strong { color: #1c1917; display: block; font-weight: 700; font-size: 8.4pt; margin-bottom: 0.4mm; overflow-wrap: break-word; }
     .mg-stats p { line-height: 1.75; font-size: 8.3pt; margin: 0; overflow-wrap: break-word; }
     .mg-stats strong { color: #1c1917; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; }
   `;
