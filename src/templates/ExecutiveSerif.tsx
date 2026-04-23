@@ -10,6 +10,7 @@
  * additional A4 pages at clean section boundaries.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -29,7 +30,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function ExecutiveSerif({ resume, palette }: Props) {
+export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .es-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -336,4 +337,4 @@ export function ExecutiveSerif({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

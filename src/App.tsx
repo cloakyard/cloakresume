@@ -11,7 +11,7 @@
  * work. Nothing ever leaves the browser.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Layout } from "./components/Layout.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
@@ -19,7 +19,13 @@ import { ToolbarOverflow } from "./components/ToolbarOverflow.tsx";
 import { SectionPanel } from "./components/SectionPanel.tsx";
 import type { SectionId } from "./components/SectionRail.tsx";
 import { Preview } from "./components/Preview.tsx";
-import { AtsPanel } from "./components/AtsPanel.tsx";
+
+// Code-split the ATS review — the panel plus its four sub-panes and the
+// Harper grammar engine only need to land in the client the first time
+// the user actually opens the review.
+const AtsPanel = lazy(() =>
+  import("./components/AtsPanel.tsx").then((m) => ({ default: m.AtsPanel })),
+);
 import { OnboardingScreen } from "./components/OnboardingScreen.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
 import { sampleResume } from "./data/sampleResume.ts";
@@ -112,6 +118,13 @@ export function App() {
   const [jobDescription, setJobDescription] = useState<string>(initial.persisted.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.persisted.activeSection);
   const [atsOpen, setAtsOpen] = useState(false);
+  /** True once the user has opened the ATS review at least once — gates the
+   *  lazy AtsPanel chunk so it's not downloaded until actually needed. */
+  const [atsMounted, setAtsMounted] = useState(false);
+  const openAts = useCallback(() => {
+    setAtsMounted(true);
+    setAtsOpen(true);
+  }, []);
   const [showOnboarding, setShowOnboarding] = useState(initial.firstRun);
   /**
    * True on first-run; false when the user opens the welcome screen
@@ -294,7 +307,7 @@ export function App() {
             onPrimaryChange={setPrimary}
             paperSize={paperSize}
             onPaperSizeChange={setPaperSize}
-            onScanAts={() => setAtsOpen(true)}
+            onScanAts={openAts}
             resume={resume}
           />
         }
@@ -305,7 +318,7 @@ export function App() {
               onSaveFile={handleSaveFile}
               onLoadFile={handleLoadFile}
               onNewResume={handleNewResume}
-              onScanAts={() => setAtsOpen(true)}
+              onScanAts={openAts}
             />
             <ToolbarOverflow
               primary={primary}
@@ -328,7 +341,7 @@ export function App() {
               onChange={setResume}
               jobDescription={jobDescription}
               onJobDescriptionChange={setJobDescription}
-              onAnalyze={() => setAtsOpen(true)}
+              onAnalyze={openAts}
             />
           </FieldIssuesProvider>
         }
@@ -342,19 +355,23 @@ export function App() {
         }
       />
 
-      <AtsPanel
-        open={atsOpen}
-        onClose={() => setAtsOpen(false)}
-        report={atsReport}
-        resume={resume}
-        hasJobDescription={jobDescription.trim().length > 0}
-        onOpenJdEditor={focusJdEditor}
-        grammarScanning={grammarScanning}
-        engineReady={grammarEngineReady}
-        engineProgress={grammarEngineProgress}
-        onRescan={runGrammarScan}
-        onJumpToField={handleJumpToField}
-      />
+      {atsMounted && (
+        <Suspense fallback={null}>
+          <AtsPanel
+            open={atsOpen}
+            onClose={() => setAtsOpen(false)}
+            report={atsReport}
+            resume={resume}
+            hasJobDescription={jobDescription.trim().length > 0}
+            onOpenJdEditor={focusJdEditor}
+            grammarScanning={grammarScanning}
+            engineReady={grammarEngineReady}
+            engineProgress={grammarEngineProgress}
+            onRescan={runGrammarScan}
+            onJumpToField={handleJumpToField}
+          />
+        </Suspense>
+      )}
 
       {showOnboarding && (
         <OnboardingScreen

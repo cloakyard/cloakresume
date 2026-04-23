@@ -13,6 +13,7 @@
  * can never stretch past A4.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -37,7 +38,7 @@ const SIDEBAR_PAD_V = 14;
 const SIDEBAR_PAD_H = 7;
 const SIDEBAR_CONTENT_WIDTH_MM = SIDEBAR_WIDTH_MM - SIDEBAR_PAD_H * 2;
 
-export function Monograph({ resume, palette }: Props) {
+export const Monograph = memo(function Monograph({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .mg-root { font-family: 'Geist', 'Inter', sans-serif; color: #1c1917; font-size: 9.3pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -427,4 +428,4 @@ export function Monograph({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

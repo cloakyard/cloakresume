@@ -24,6 +24,7 @@
  * multi-column grid can't be split across atoms.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -41,7 +42,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function Typographic({ resume, palette }: Props) {
+export const Typographic = memo(function Typographic({ resume, palette }: Props) {
   const css = `
     .tg-root { font-family: 'Geist', 'Inter', sans-serif; color: #111827; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .tg-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6mm; border-bottom: 3px solid #111827; padding-bottom: 3mm; margin-bottom: 7mm; }
@@ -400,4 +401,4 @@ export function Typographic({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

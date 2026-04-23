@@ -15,6 +15,7 @@
  * A4 page auto-flows onto additional pages at clean section breaks.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -32,7 +33,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function AtsProfessional({ resume, palette }: Props) {
+export const AtsProfessional = memo(function AtsProfessional({ resume, palette }: Props) {
   const css = `
     .atp-root { font-family: 'Geist', 'Inter', 'Calibri', Arial, Helvetica, sans-serif; color: #111827; font-size: 10.5pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .atp-header { margin-bottom: 3mm; }
@@ -313,4 +314,4 @@ export function AtsProfessional({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

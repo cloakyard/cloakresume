@@ -13,6 +13,7 @@
  * section boundaries. The colour-blocked header appears on page 1 only.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -33,7 +34,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function Bauhaus({ resume, palette }: Props) {
+export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const initials = extractInitials(resume.profile.name);
 
@@ -419,4 +420,4 @@ export function Bauhaus({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

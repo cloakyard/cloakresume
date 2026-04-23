@@ -9,6 +9,7 @@
  * on page 1 only; subsequent pages continue with a clean body column.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -29,7 +30,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function GradientHeader({ resume, palette }: Props) {
+export const GradientHeader = memo(function GradientHeader({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .gh-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -362,4 +363,4 @@ export function GradientHeader({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

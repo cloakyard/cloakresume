@@ -10,6 +10,7 @@
  * multiple A4 pages at section boundaries.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -29,7 +30,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function Academic({ resume, palette }: Props) {
+export const Academic = memo(function Academic({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .ac-root { font-family: 'Lora', 'Times New Roman', serif; color: #1a1a1a; font-size: 10pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -311,4 +312,4 @@ export function Academic({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

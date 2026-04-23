@@ -19,6 +19,7 @@
  * a single page.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -36,7 +37,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function AtsPlain({ resume }: Props) {
+export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
   const css = `
     .ats-root { font-family: Arial, Helvetica, 'Liberation Sans', sans-serif; color: #000; font-size: 10.5pt; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .ats-name { font-size: 20pt; font-weight: 700; margin: 0; letter-spacing: 0.5px; color: #000; overflow-wrap: break-word; }
@@ -308,4 +309,4 @@ export function AtsPlain({ resume }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

@@ -12,6 +12,7 @@
  * across additional A4 pages at clean section breaks.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -29,7 +30,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function Minimalist({ resume, palette }: Props) {
+export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
   const css = `
     .ml-root { font-family: 'Geist', 'Inter', sans-serif; color: #1a1a1a; font-size: 9.8pt; line-height: 1.6; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
     .ml-head { margin-bottom: 8mm; }
@@ -307,4 +308,4 @@ export function Minimalist({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

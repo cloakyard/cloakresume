@@ -14,6 +14,7 @@
  * instead of moving whole to the next page.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -34,7 +35,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function Aurora({ resume, palette }: Props) {
+export const Aurora = memo(function Aurora({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const initials = extractInitials(resume.profile.name);
 
@@ -432,4 +433,4 @@ export function Aurora({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

@@ -14,6 +14,7 @@
  * leaders.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -39,7 +40,7 @@ const SIDEBAR_PAD_V = 14;
 const SIDEBAR_PAD_H = 8;
 const SIDEBAR_CONTENT_WIDTH_MM = SIDEBAR_WIDTH_MM - SIDEBAR_PAD_H * 2;
 
-export function Prism({ resume, palette }: Props) {
+export const Prism = memo(function Prism({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const initials = extractInitials(resume.profile.name);
   const css = `
@@ -431,4 +432,4 @@ export function Prism({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

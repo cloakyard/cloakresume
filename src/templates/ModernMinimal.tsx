@@ -9,6 +9,7 @@
  * additional A4 pages at clean section boundaries.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -28,7 +29,7 @@ interface Props {
   palette: PrimaryPalette;
 }
 
-export function ModernMinimal({ resume, palette }: Props) {
+export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .mm-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.5pt; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -336,4 +337,4 @@ export function ModernMinimal({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});

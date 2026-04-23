@@ -13,6 +13,7 @@
  * hidden and the page can never stretch past A4.
  */
 
+import { memo } from "react";
 import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
@@ -37,7 +38,7 @@ const SIDEBAR_PAD_V = 12;
 const SIDEBAR_PAD_H = 7;
 const SIDEBAR_CONTENT_WIDTH_MM = SIDEBAR_WIDTH_MM - SIDEBAR_PAD_H * 2;
 
-export function ClassicSidebar({ resume, palette }: Props) {
+export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
     .cs-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.2pt; line-height: 1.4; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
@@ -451,4 +452,4 @@ export function ClassicSidebar({ resume, palette }: Props) {
       </PaginatedCanvas>
     </>
   );
-}
+});
