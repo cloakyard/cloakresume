@@ -655,11 +655,14 @@
    * whole app picks up look-and-feel tweaks from one place.
    */
 
-  /* Page-wide dim used behind sheets and modals. */
+  /* Page-wide dim used behind sheets and modals.
+     Note: `-webkit-` prefix is emitted automatically by Lightning CSS
+     based on browserslist. Declaring it manually here causes Lightning
+     CSS to drop the unprefixed form as a "redundant duplicate", which
+     kills blur on Firefox and non-webkit Chromium builds. */
   .backdrop {
     background: rgba(15, 23, 42, 0.28);
     backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
   }
 
   /* Frosted-glass panel — the app's signature overlay surface.
@@ -670,7 +673,6 @@
   .surface-glass {
     background: rgba(255, 255, 255, 0.88);
     backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     border: 1px solid rgba(15, 23, 42, 0.06);
     box-shadow:
       0 24px 56px -14px rgba(15, 23, 42, 0.18),
@@ -690,7 +692,6 @@
     color: #fff;
     background: rgba(11, 18, 32, 0.72);
     backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
       0 18px 40px -10px rgba(15, 23, 42, 0.45),
@@ -709,7 +710,6 @@
     @apply rounded-xl p-3.5;
     background: rgba(248, 250, 252, 0.7);
     backdrop-filter: blur(24px) saturate(160%);
-    -webkit-backdrop-filter: blur(24px) saturate(160%);
     border: 1px solid rgba(15, 23, 42, 0.08);
     box-shadow:
       0 24px 56px -14px rgba(15, 23, 42, 0.18),
