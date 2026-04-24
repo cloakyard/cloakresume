@@ -16,6 +16,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AlertTriangle,
   ArrowRight,
+  Dices,
   EyeOff,
   FilePen,
   FileText,
@@ -26,6 +27,7 @@ import {
   ScanSearch,
   ShieldCheck,
   Sparkles,
+  SpellCheck,
   SquareDashed,
   Sun,
   UserRoundCheck,
@@ -336,7 +338,7 @@ export function OnboardingScreen({
                   : "Start a blank résumé from a clean template"
               }
             >
-              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+              <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
                 <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                   <SquareDashed className="w-5 h-5" />
                 </span>
@@ -346,24 +348,42 @@ export function OnboardingScreen({
                 <span className="text-[13px] leading-[1.5] text-(--ink-4)">
                   Begin with a clean template and make it yours.
                 </span>
+                <ArrowRight
+                  className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
+                  aria-hidden="true"
+                />
               </div>
             </GlowCard>
 
             <GlowCard
               onClick={onLoadSample}
               glow="rgba(124, 58, 237, 0.2)"
-              ariaLabel="Load the bundled sample résumé"
+              ariaLabel="Load a randomly-generated sample résumé — content is fictional"
             >
-              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-                <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#7c3aed_14%,transparent)] text-[#7c3aed] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                  <Sparkles className="w-5 h-5" />
-                </span>
+              <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#7c3aed_14%,transparent)] text-[#7c3aed] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:-rotate-6">
+                    <Sparkles className="w-5 h-5" />
+                  </span>
+                  <span
+                    className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-[color-mix(in_oklab,#7c3aed_12%,transparent)] text-[#7c3aed]"
+                    aria-hidden="true"
+                  >
+                    <Dices className="w-3 h-3" />
+                    Fictional
+                  </span>
+                </div>
                 <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
                   Load sample
                 </span>
                 <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                  See a fully populated résumé to explore the app.
+                  Fresh, randomly-generated content every time — names and details are fictional,
+                  not real people.
                 </span>
+                <ArrowRight
+                  className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#7c3aed]"
+                  aria-hidden="true"
+                />
               </div>
             </GlowCard>
 
@@ -372,7 +392,7 @@ export function OnboardingScreen({
               glow="rgba(5, 150, 105, 0.2)"
               ariaLabel="Load a saved résumé from a local file"
             >
-              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+              <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
                 <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#059669_14%,transparent)] text-[#059669] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                   <FolderOpen className="w-5 h-5" />
                 </span>
@@ -382,6 +402,10 @@ export function OnboardingScreen({
                 <span className="text-[13px] leading-[1.5] text-(--ink-4)">
                   Continue from a JSON file you previously saved.
                 </span>
+                <ArrowRight
+                  className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-ok"
+                  aria-hidden="true"
+                />
               </div>
             </GlowCard>
           </div>
@@ -415,7 +439,7 @@ export function OnboardingScreen({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-7 sm:gap-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-7 sm:gap-y-8">
           <FeatureItem
             icon={<UserRoundCheck className="w-5 h-5" />}
             iconBg="bg-[color-mix(in_oklab,#059669_14%,transparent)]"
@@ -450,6 +474,13 @@ export function OnboardingScreen({
             iconFg="text-[#db2777]"
             title="Real ATS analysis"
             description="Paste a job description and get actionable feedback on keywords, formatting, and match."
+          />
+          <FeatureItem
+            icon={<SpellCheck className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#6366f1_14%,transparent)]"
+            iconFg="text-[#6366f1]"
+            title="Spelling & grammar"
+            description="A built-in Harper-powered pass flags typos, clunky phrasing, and passive voice as you edit."
           />
           <FeatureItem
             icon={<Palette className="w-5 h-5" />}
