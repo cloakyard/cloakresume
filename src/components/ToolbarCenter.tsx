@@ -87,7 +87,7 @@ export function ToolbarCenter({
             aria-label={`Template: ${activeTemplate.name}`}
           >
             <LayoutTemplate className="w-4 h-4 text-(--ink-4)" />
-            <span className="hidden xl:inline">{activeTemplate.name}</span>
+            <span className="hidden 2xl:inline">{activeTemplate.name}</span>
           </button>
 
           <div className="relative" ref={colorRef}>
@@ -104,10 +104,10 @@ export function ToolbarCenter({
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ background: primary, border: "1px solid rgba(0,0,0,0.08)" }}
               />
-              <span className="hidden xl:inline">
+              <span className="hidden 2xl:inline">
                 <ColorName hex={primary} />
               </span>
-              <ChevronDown className="w-3.5 h-3.5 caret hidden xl:inline-block" />
+              <ChevronDown className="w-3.5 h-3.5 caret hidden 2xl:inline-block" />
             </button>
             {colorOpen && (
               <div

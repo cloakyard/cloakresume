@@ -103,11 +103,11 @@ export function ConfirmDialog({
           </div>
         </div>
 
-        <div className="px-6 py-4 bg-white/55 border-t border-(--brand)/10 flex items-center justify-end gap-2">
+        <div className="px-6 py-4 bg-(--surface-2)/55 border-t border-(--brand)/10 flex items-center justify-end gap-2">
           <button
             type="button"
             onClick={onCancel}
-            className="px-4 py-2 rounded-lg text-sm font-medium text-(--ink-2) bg-white border border-(--line) hover:border-(--ink-5) hover:bg-(--surface-2) transition-colors"
+            className="px-4 py-2 rounded-lg text-sm font-medium text-(--ink-2) bg-(--surface-raised) border border-(--line) hover:border-(--ink-5) hover:bg-(--surface-3) transition-colors"
           >
             {cancelLabel}
           </button>

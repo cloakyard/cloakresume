@@ -48,7 +48,7 @@ export function ToolbarActions({
             aria-label="Scan résumé for ATS and writing issues"
           >
             <ScanSearch className="w-4 h-4 text-(--ink-4)" />
-            <span className="hidden xl:inline">Scan résumé</span>
+            <span className="hidden 2xl:inline">Scan résumé</span>
           </button>
 
           <ToolbarDivider />
@@ -79,7 +79,7 @@ export function ToolbarActions({
               aria-label="Start a new blank resume"
             >
               <FilePlus2 className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden xl:inline">New</span>
+              <span className="hidden 2xl:inline">New</span>
             </button>
             <button
               type="button"
@@ -89,7 +89,7 @@ export function ToolbarActions({
               aria-label="Save resume data as JSON file"
             >
               <Save className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden xl:inline">Save</span>
+              <span className="hidden 2xl:inline">Save</span>
             </button>
             <button
               type="button"
@@ -99,7 +99,7 @@ export function ToolbarActions({
               aria-label="Load a previously saved resume file"
             >
               <Upload className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden xl:inline">Load</span>
+              <span className="hidden 2xl:inline">Load</span>
             </button>
           </div>
 
@@ -126,7 +126,7 @@ export function ToolbarActions({
         title="Export to PDF"
       >
         <Download className="w-4 h-4" />
-        {!isMobile && <span className="hidden xl:inline">Export PDF</span>}
+        {!isMobile && <span className="hidden 2xl:inline">Export PDF</span>}
       </button>
     </>
   );

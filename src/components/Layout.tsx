@@ -105,8 +105,8 @@ export function Layout({
 
         {!isMobile && (
           <>
-            <span aria-hidden="true" className="hidden xl:block w-px h-5 bg-(--line)" />
-            <div className="hidden xl:inline-flex items-center gap-2 text-[12.5px] font-medium text-(--ink-3) tracking-[0.01em] whitespace-nowrap">
+            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
+            <div className="hidden 2xl:inline-flex items-center gap-2 text-[12.5px] font-medium text-(--ink-3) tracking-[0.01em] whitespace-nowrap">
               <span>100% Private · Open Source</span>
             </div>
             <a
