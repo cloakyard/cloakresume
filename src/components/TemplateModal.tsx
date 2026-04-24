@@ -114,7 +114,7 @@ export function TemplateModal({
       />
       <div
         ref={sheetRef}
-        className="surface-glass relative flex flex-col w-full max-w-275 max-h-[92svh] overflow-hidden rounded-t-2xl sm:rounded-2xl"
+        className="surface-glass relative flex flex-col w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] overflow-hidden rounded-t-2xl sm:rounded-2xl"
         role="dialog"
         aria-modal="true"
         aria-label="Choose a template"

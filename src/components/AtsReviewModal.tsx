@@ -18,7 +18,7 @@ import { AtsOverviewPane } from "./ats/AtsOverviewPane.tsx";
 import { AtsParsePreview } from "./ats/AtsParsePreview.tsx";
 import { AtsScoreRing } from "./ats/AtsScoreRing.tsx";
 
-interface AtsPanelProps {
+interface AtsReviewModalProps {
   open: boolean;
   onClose: () => void;
   report: AtsReport;
@@ -47,7 +47,7 @@ function formatTimestamp(d: Date): string {
   return `${date} · ${time}`;
 }
 
-export function AtsPanel({
+export function AtsReviewModal({
   open,
   onClose,
   report,
@@ -59,7 +59,7 @@ export function AtsPanel({
   engineProgress,
   onRescan,
   onJumpToField,
-}: AtsPanelProps) {
+}: AtsReviewModalProps) {
   const [tab, setTab] = useState<TabId>("overview");
   const [minDelayPassed, setMinDelayPassed] = useState(false);
   const touchStartY = useRef<number | null>(null);

@@ -11,7 +11,8 @@
  * work. Nothing ever leaves the browser.
  */
 
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
@@ -23,8 +24,8 @@ import { Preview } from "./components/Preview.tsx";
 // Code-split the ATS review — the panel plus its four sub-panes and the
 // Harper grammar engine only need to land in the client the first time
 // the user actually opens the review.
-const AtsPanel = lazy(() =>
-  import("./components/AtsPanel.tsx").then((m) => ({ default: m.AtsPanel })),
+const AtsReviewModal = lazy(() =>
+  import("./components/AtsReviewModal.tsx").then((m) => ({ default: m.AtsReviewModal })),
 );
 import { OnboardingScreen } from "./components/OnboardingScreen.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
@@ -32,7 +33,7 @@ import { generateSampleResume } from "./data/sampleResume.ts";
 import { TEMPLATES } from "./templates/index.ts";
 import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
-import { useApplyTheme } from "./utils/theme.ts";
+import { useApplyTheme, useSystemDarkMode } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
@@ -65,8 +66,21 @@ interface Persisted {
   paperSize: PaperSize;
   jobDescription: string;
   activeSection: SectionId;
-  darkMode: boolean;
+  /**
+   * `null` = follow the OS `prefers-color-scheme` live; `boolean` = user has
+   * pinned a specific appearance that should ignore future OS changes. The
+   * override auto-clears when the user toggles to a state that already
+   * matches the OS, so returning to auto requires no dedicated control.
+   */
+  darkModeOverride: boolean | null;
 }
+
+/**
+ * Shape accepted by the loader. Includes the legacy `darkMode: boolean` key
+ * used by earlier versions so existing users keep their chosen appearance
+ * after the switch to the override model.
+ */
+type PersistedInput = Partial<Persisted> & { darkMode?: unknown };
 
 interface InitialState {
   persisted: Persisted;
@@ -74,13 +88,14 @@ interface InitialState {
   firstRun: boolean;
 }
 
-/**
- * Returns true if the OS/browser currently prefers dark mode.
- * Used as the seed value when the user has never toggled manually.
- */
-function prefersDarkOs(): boolean {
-  if (typeof window === "undefined" || !window.matchMedia) return false;
-  return window.matchMedia("(prefers-color-scheme: dark)").matches;
+function resolveDarkModeOverride(parsed: PersistedInput): boolean | null {
+  if (typeof parsed.darkModeOverride === "boolean" || parsed.darkModeOverride === null) {
+    return parsed.darkModeOverride;
+  }
+  // Legacy key — preserve the user's last explicit state as an override so
+  // the first load after upgrade doesn't silently flip their theme.
+  if (typeof parsed.darkMode === "boolean") return parsed.darkMode;
+  return null;
 }
 
 function loadPersisted(): InitialState {
@@ -91,12 +106,12 @@ function loadPersisted(): InitialState {
     paperSize: DEFAULT_PAPER_SIZE,
     jobDescription: "",
     activeSection: "profile",
-    darkMode: prefersDarkOs(),
+    darkModeOverride: null,
   };
   try {
     const raw = localStorage.getItem(LS_KEY);
     if (raw) {
-      const parsed = JSON.parse(raw) as Partial<Persisted>;
+      const parsed = JSON.parse(raw) as PersistedInput;
       if (parsed.resume && typeof parsed.resume === "object") {
         return {
           persisted: {
@@ -109,9 +124,7 @@ function loadPersisted(): InitialState {
             paperSize: resolvePaperSize(parsed.paperSize),
             jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
             activeSection: (parsed.activeSection ?? "profile") as SectionId,
-            // If the user has toggled before we honour their choice; otherwise
-            // fall back to whatever the OS prefers right now.
-            darkMode: typeof parsed.darkMode === "boolean" ? parsed.darkMode : prefersDarkOs(),
+            darkModeOverride: resolveDarkModeOverride(parsed),
           },
           firstRun: false,
         };
@@ -131,10 +144,19 @@ export function App() {
   const [paperSize, setPaperSize] = useState<PaperSize>(initial.persisted.paperSize);
   const [jobDescription, setJobDescription] = useState<string>(initial.persisted.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.persisted.activeSection);
-  const [darkMode, setDarkMode] = useState<boolean>(initial.persisted.darkMode);
+  const [darkModeOverride, setDarkModeOverride] = useState<boolean | null>(
+    initial.persisted.darkModeOverride,
+  );
+  /**
+   * Live OS `prefers-color-scheme` so the app can track mid-session changes
+   * (macOS auto-schedule flipping at sunset, user toggling system appearance)
+   * whenever `darkModeOverride` is null.
+   */
+  const systemDark = useSystemDarkMode();
+  const darkMode = darkModeOverride ?? systemDark;
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
-   *  lazy AtsPanel chunk so it's not downloaded until actually needed. */
+   *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
   const [atsMounted, setAtsMounted] = useState(false);
   const openAts = useCallback(() => {
     setAtsMounted(true);
@@ -170,7 +192,7 @@ export function App() {
         paperSize,
         jobDescription,
         activeSection,
-        darkMode,
+        darkModeOverride,
       };
       try {
         localStorage.setItem(LS_KEY, JSON.stringify(payload));
@@ -186,7 +208,7 @@ export function App() {
     paperSize,
     jobDescription,
     activeSection,
-    darkMode,
+    darkModeOverride,
     showOnboarding,
   ]);
 
@@ -199,7 +221,20 @@ export function App() {
     document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
   }, [darkMode]);
 
-  const toggleDarkMode = useCallback(() => setDarkMode((v) => !v), []);
+  /**
+   * Flip the visible appearance. If the resulting state matches the current
+   * OS preference we drop the override (null) so the app keeps tracking
+   * future system changes; otherwise we pin the override so an intentional
+   * choice survives later OS flips. Effect: toggling back to match the OS
+   * implicitly re-arms auto-sync without needing a separate control.
+   */
+  const toggleDarkMode = useCallback(() => {
+    setDarkModeOverride((curr) => {
+      const effective = curr ?? systemDark;
+      const next = !effective;
+      return next === systemDark ? null : next;
+    });
+  }, [systemDark]);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
@@ -237,10 +272,18 @@ export function App() {
    * resume edit schedules a debounced re-scan so the badges next to each
    * prose field stay in sync with the latest text. Before the engine is
    * ready we stay silent — the ~7 MB WASM payload is deferred to the
-   * first intentional scan.
+   * first intentional scan. We also skip the first engine-ready
+   * transition so the initial [atsOpen] scan isn't shadowed by a
+   * second scan firing ~800 ms later, which caused the "Scanning
+   * locally…" hero to briefly reappear after content first rendered.
    */
+  const sawEngineReadyRef = useRef(false);
   useEffect(() => {
     if (!grammarEngineReady) return;
+    if (!sawEngineReadyRef.current) {
+      sawEngineReadyRef.current = true;
+      return;
+    }
     const id = window.setTimeout(() => runGrammarScan(), 800);
     return () => window.clearTimeout(id);
   }, [resume, grammarEngineReady, runGrammarScan]);
@@ -403,21 +446,23 @@ export function App() {
       />
 
       {atsMounted && (
-        <Suspense fallback={null}>
-          <AtsPanel
-            open={atsOpen}
-            onClose={() => setAtsOpen(false)}
-            report={atsReport}
-            resume={resume}
-            hasJobDescription={jobDescription.trim().length > 0}
-            onOpenJdEditor={focusJdEditor}
-            grammarScanning={grammarScanning}
-            engineReady={grammarEngineReady}
-            engineProgress={grammarEngineProgress}
-            onRescan={runGrammarScan}
-            onJumpToField={handleJumpToField}
-          />
-        </Suspense>
+        <ErrorBoundary title="ATS review hit a snag">
+          <Suspense fallback={null}>
+            <AtsReviewModal
+              open={atsOpen}
+              onClose={() => setAtsOpen(false)}
+              report={atsReport}
+              resume={resume}
+              hasJobDescription={jobDescription.trim().length > 0}
+              onOpenJdEditor={focusJdEditor}
+              grammarScanning={grammarScanning}
+              engineReady={grammarEngineReady}
+              engineProgress={grammarEngineProgress}
+              onRescan={runGrammarScan}
+              onJumpToField={handleJumpToField}
+            />
+          </Suspense>
+        </ErrorBoundary>
       )}
 
       {showOnboarding && (
