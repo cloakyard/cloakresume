@@ -21,7 +21,7 @@ interface Props {
   onClose: () => void;
 }
 
-export function PrivacyPolicy({ open, onClose }: Props) {
+export function PrivacyPolicyModal({ open, onClose }: Props) {
   const panelRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
@@ -40,7 +40,7 @@ export function PrivacyPolicy({ open, onClose }: Props) {
     };
   }, [open, onClose]);
 
-  /* Swipe-down-to-dismiss on the handle — matches BottomSheet / AtsPanel.
+  /* Swipe-down-to-dismiss on the handle — matches BottomSheet / AtsReviewModal.
    * Threshold is 120px of downward travel, identical to the other sheets. */
   const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
@@ -73,7 +73,7 @@ export function PrivacyPolicy({ open, onClose }: Props) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop animate-[fade_0.2s_ease]"
+      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center sm:p-6 backdrop animate-[fade_0.2s_ease]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="privacy-policy-title"
@@ -87,7 +87,7 @@ export function PrivacyPolicy({ open, onClose }: Props) {
 
       <div
         ref={panelRef}
-        className="surface-glass relative w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[86vh] rounded-t-[22px] sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in"
+        className="surface-glass relative w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in"
       >
         {/* Drag handle — mobile only, swipe down to dismiss. */}
         <div

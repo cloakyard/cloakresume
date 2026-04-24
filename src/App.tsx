@@ -24,8 +24,8 @@ import { Preview } from "./components/Preview.tsx";
 // Code-split the ATS review — the panel plus its four sub-panes and the
 // Harper grammar engine only need to land in the client the first time
 // the user actually opens the review.
-const AtsPanel = lazy(() =>
-  import("./components/AtsPanel.tsx").then((m) => ({ default: m.AtsPanel })),
+const AtsReviewModal = lazy(() =>
+  import("./components/AtsReviewModal.tsx").then((m) => ({ default: m.AtsReviewModal })),
 );
 import { OnboardingScreen } from "./components/OnboardingScreen.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
@@ -135,7 +135,7 @@ export function App() {
   const [darkMode, setDarkMode] = useState<boolean>(initial.persisted.darkMode);
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
-   *  lazy AtsPanel chunk so it's not downloaded until actually needed. */
+   *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
   const [atsMounted, setAtsMounted] = useState(false);
   const openAts = useCallback(() => {
     setAtsMounted(true);
@@ -414,7 +414,7 @@ export function App() {
       {atsMounted && (
         <ErrorBoundary title="ATS review hit a snag">
           <Suspense fallback={null}>
-            <AtsPanel
+            <AtsReviewModal
               open={atsOpen}
               onClose={() => setAtsOpen(false)}
               report={atsReport}

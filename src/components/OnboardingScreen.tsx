@@ -36,7 +36,7 @@ import {
   UserRoundCheck,
   WifiOff,
 } from "lucide-react";
-import { PrivacyPolicy } from "./PrivacyPolicy";
+import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
 const CLOAKYARD_URL = "https://github.com/cloakyard";
@@ -655,7 +655,7 @@ export function OnboardingScreen({
         </div>
       </footer>
 
-      <PrivacyPolicy open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+      <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </div>
   );
 }

@@ -10,8 +10,8 @@
  * filed issue arrives with the stack already attached.
  */
 
-import { Component, type ErrorInfo, type ReactNode } from "react";
-import { AlertTriangle, Check, Copy, RefreshCw } from "lucide-react";
+import { AlertTriangle, Check, Copy, Home } from "lucide-react";
+import { Component, createRef, type ErrorInfo, type ReactNode } from "react";
 import { GithubIcon } from "./GithubIcon.tsx";
 
 const GITHUB_REPO = "sumitsahoo/cloakresume";
@@ -30,6 +30,7 @@ interface ErrorBoundaryState {
 
 export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
   state: ErrorBoundaryState = { error: null, componentStack: "", copied: false };
+  private homeRef = createRef<HTMLButtonElement>();
 
   static getDerivedStateFromError(error: Error): Partial<ErrorBoundaryState> {
     return { error };
@@ -40,9 +41,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     console.error("[CloakResume] Unhandled render error:", error, info);
   }
 
-  handleReload = () => {
+  componentDidUpdate(_: ErrorBoundaryProps, prev: ErrorBoundaryState) {
+    if (!prev.error && this.state.error) {
+      this.homeRef.current?.focus();
+    }
+  }
+
+  // Navigate to the app root rather than reloading the current URL — if the
+  // error was triggered by a query param (e.g. ?preview-error=1) or a route,
+  // a plain reload would just re-throw it.
+  handleGoHome = () => {
     this.setState({ error: null, componentStack: "", copied: false });
-    window.location.reload();
+    window.location.assign(`${window.location.origin}/`);
   };
 
   handleCopy = async () => {
@@ -74,34 +84,32 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     return (
       <div
-        className="fixed inset-0 z-[200] flex items-center justify-center p-4 animate-fade-in-up backdrop"
+        className="fixed inset-0 z-[200] flex items-end sm:items-center justify-center sm:p-6 animate-[fade_0.2s_ease] backdrop"
         role="alertdialog"
         aria-modal="true"
         aria-labelledby="cr-error-title"
       >
-        <div className="surface-glass relative w-full max-w-xl rounded-2xl overflow-hidden animate-scale-in flex flex-col max-h-[calc(100svh-32px)]">
-          <div className="p-6 pb-4 shrink-0">
-            <div className="flex items-start gap-4">
-              <span className="w-10 h-10 rounded-full flex items-center justify-center bg-(--danger-bg) text-(--danger) shrink-0">
-                <AlertTriangle className="w-5 h-5" />
-              </span>
-              <div className="flex-1 min-w-0">
-                <h2
-                  id="cr-error-title"
-                  className="text-base font-semibold text-(--ink-1) tracking-tight"
-                >
-                  {title}
-                </h2>
-                <p className="text-sm text-(--ink-3) mt-1.5 leading-relaxed">
-                  Your résumé data is still safe in this browser — we never uploaded it anywhere.
-                  Reload to keep editing, or send us the details below so we can fix the bug.
-                </p>
-              </div>
+        <div className="surface-glass relative w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in">
+          <div className="shrink-0 flex items-start gap-3 sm:gap-4 px-5 sm:px-7 pt-4 sm:pt-6 pb-4 border-b border-(--line-soft)">
+            <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--danger-bg) text-(--danger) shrink-0">
+              <AlertTriangle className="w-5 h-5" />
+            </span>
+            <div className="flex-1 min-w-0">
+              <h2
+                id="cr-error-title"
+                className="text-[17px] sm:text-[18px] font-semibold text-(--ink-1) tracking-[-0.01em] leading-tight"
+              >
+                {title}
+              </h2>
+              <p className="text-[12.5px] sm:text-[13px] text-(--ink-3) mt-1 leading-[1.5]">
+                Your résumé data is still safe in this browser — we never uploaded it anywhere.
+                Reload to keep editing, or send us the details below so we can fix the bug.
+              </p>
             </div>
           </div>
 
-          <div className="px-6 pb-4 flex-1 min-h-0 flex flex-col gap-2">
-            <div className="flex items-center justify-between gap-2">
+          <div className="cr-scroll overflow-y-auto px-5 sm:px-7 py-4 sm:py-5 flex-1 min-h-0 flex flex-col gap-2">
+            <div className="flex items-center justify-between gap-2 shrink-0">
               <span className="font-mono text-[10.5px] font-semibold tracking-[0.08em] uppercase text-(--ink-5)">
                 Error details
               </span>
@@ -126,13 +134,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
             </div>
             <pre
               id="cr-error-details"
-              className="m-0 flex-1 min-h-0 overflow-auto cr-scroll font-mono text-[11.5px] leading-[1.55] text-(--ink-2) bg-(--surface-2) border border-(--line) rounded-lg p-3 whitespace-pre-wrap break-words"
+              className="m-0 font-mono text-[11.5px] leading-[1.55] text-(--ink-2) bg-(--surface-2) border border-(--line) rounded-lg p-3 whitespace-pre-wrap break-words"
             >
               {details}
             </pre>
           </div>
 
-          <div className="px-6 py-4 bg-(--surface-2)/55 border-t border-(--brand)/10 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2 shrink-0">
+          <div className="shrink-0 px-5 sm:px-7 py-3 sm:py-4 bg-(--surface-2)/55 border-t border-(--brand)/10 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-2">
             <a
               href={issueUrl}
               target="_blank"
@@ -143,13 +151,13 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               Report on GitHub
             </a>
             <button
+              ref={this.homeRef}
               type="button"
-              onClick={this.handleReload}
+              onClick={this.handleGoHome}
               className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-(--brand) hover:bg-(--brand-hover) shadow-sm shadow-(--brand)/30 transition-colors"
-              autoFocus
             >
-              <RefreshCw className="w-4 h-4" />
-              Reload app
+              <Home className="w-4 h-4" />
+              Go to home
             </button>
           </div>
         </div>
