@@ -44,7 +44,7 @@ import {
   readResumeFile,
 } from "./utils/fileIO.ts";
 import { DEFAULT_PAPER_SIZE, resolvePaperSize, type PaperSize } from "./utils/paperSize.ts";
-import { blankResume } from "./data/blankResume.ts";
+import { blankResume, resumeHasContent } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
 const DEFAULT_TEMPLATE_ID: TemplateId = "classic-sidebar";
@@ -147,6 +147,13 @@ export function App() {
    * affordances are rendered — first-run must pick one of the tiles.
    */
   const [onboardingDismissable, setOnboardingDismissable] = useState(false);
+  /**
+   * True when the current résumé has any user-entered content — gates
+   * the "Resume editing" tile on the welcome screen so it only shows
+   * when there's something worth resuming.
+   */
+  const hasSavedWork = useMemo(() => resumeHasContent(resume), [resume]);
+  const canResumeEditing = onboardingDismissable && hasSavedWork;
   /** Confirmation prompt before clearing the current work via the "New" button. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
 
@@ -419,6 +426,7 @@ export function App() {
           onLoadSample={() => startWithResume(sampleResume)}
           onLoadFile={handleLoadFile}
           onDismiss={onboardingDismissable ? dismissOnboarding : undefined}
+          onResumeEditing={canResumeEditing ? dismissOnboarding : undefined}
           darkMode={darkMode}
           onToggleDarkMode={toggleDarkMode}
         />

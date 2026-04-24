@@ -15,6 +15,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   EyeOff,
+  FilePen,
   FileText,
   FolderOpen,
   Laptop,
@@ -140,8 +141,16 @@ interface Props {
   onStartBlank: () => void;
   onLoadSample: () => void;
   onLoadFile: (file: File) => void;
-  /** Optional close handler — enables X button and Escape to dismiss. */
+  /** Optional close handler — enables Escape to dismiss. */
   onDismiss?: () => void;
+  /**
+   * Optional "continue where you left off" handler. When provided, a
+   * primary "Resume editing" tile is rendered ahead of the other CTAs.
+   * Intended for the mid-session "New" flow, where existing work is
+   * still in localStorage and the user may want to back out of
+   * starting over.
+   */
+  onResumeEditing?: () => void;
   /** Optional dark-mode toggle — shown in the top nav when provided. */
   darkMode?: boolean;
   onToggleDarkMode?: () => void;
@@ -152,6 +161,7 @@ export function OnboardingScreen({
   onLoadSample,
   onLoadFile,
   onDismiss,
+  onResumeEditing,
   darkMode,
   onToggleDarkMode,
 }: Props) {
@@ -253,15 +263,49 @@ export function OnboardingScreen({
           locally — nothing is ever uploaded.
         </p>
 
-        {/* Primary CTA tiles */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-10 sm:mt-12 max-w-225 mx-auto animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
+        {/* Primary CTA tiles. When `onResumeEditing` is provided we render
+         * 4 tiles (Resume editing first, brand blue) in a 4-up grid at
+         * `lg`; otherwise the original 3-up grid. */}
+        <div
+          className={`grid grid-cols-1 gap-3 sm:gap-4 mt-10 sm:mt-12 mx-auto animate-[fade-in-up_0.6s_ease-out_0.2s_both] ${
+            onResumeEditing
+              ? "sm:grid-cols-2 lg:grid-cols-4 max-w-[1080px]"
+              : "sm:grid-cols-3 max-w-225"
+          }`}
+        >
+          {onResumeEditing && (
+            <GlowCard
+              onClick={onResumeEditing}
+              glow="rgba(37, 99, 235, 0.26)"
+              ariaLabel="Resume editing your current résumé"
+            >
+              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+                <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <FilePen className="w-5 h-5" />
+                </span>
+                <span className="inline-flex items-center gap-1.5 text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+                  Resume editing
+                  <span
+                    className="text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
+                    aria-hidden="true"
+                  >
+                    Saved
+                  </span>
+                </span>
+                <span className="text-[13px] leading-[1.5] text-(--ink-4)">
+                  Pick up where you left off — your work is already in this browser.
+                </span>
+              </div>
+            </GlowCard>
+          )}
+
           <GlowCard
             onClick={onStartBlank}
-            glow="rgba(37, 99, 235, 0.22)"
+            glow="rgba(100, 116, 139, 0.2)"
             ariaLabel="Start a blank résumé from a clean template"
           >
             <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-              <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+              <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                 <SquareDashed className="w-5 h-5" />
               </span>
               <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
