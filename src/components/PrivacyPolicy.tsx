@@ -8,7 +8,7 @@
  * `document.body` so it overlays the landing screen cleanly.
  */
 
-import { useEffect } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ShieldCheck, X } from "lucide-react";
 
@@ -22,6 +22,10 @@ interface Props {
 }
 
 export function PrivacyPolicy({ open, onClose }: Props) {
+  const panelRef = useRef<HTMLDivElement>(null);
+  const touchStartY = useRef<number | null>(null);
+  const dragDeltaRef = useRef(0);
+
   useEffect(() => {
     if (!open) return;
     const prevOverflow = document.body.style.overflow;
@@ -36,11 +40,40 @@ export function PrivacyPolicy({ open, onClose }: Props) {
     };
   }, [open, onClose]);
 
+  /* Swipe-down-to-dismiss on the handle — matches BottomSheet / AtsPanel.
+   * Threshold is 120px of downward travel, identical to the other sheets. */
+  const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+    dragDeltaRef.current = 0;
+  }, []);
+
+  const onHandleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (touchStartY.current == null) return;
+    const delta = e.touches[0].clientY - touchStartY.current;
+    if (delta > 0 && panelRef.current) {
+      dragDeltaRef.current = delta;
+      panelRef.current.style.transform = `translateY(${delta}px)`;
+      panelRef.current.style.transition = "none";
+    }
+  }, []);
+
+  const onHandleTouchEnd = useCallback(() => {
+    touchStartY.current = null;
+    if (!panelRef.current) return;
+    panelRef.current.style.transition = "";
+    if (dragDeltaRef.current > 120) {
+      onClose();
+    } else {
+      panelRef.current.style.transform = "";
+    }
+    dragDeltaRef.current = 0;
+  }, [onClose]);
+
   if (!open) return null;
 
   return createPortal(
     <div
-      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop animate-fade-in-up"
+      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center p-0 sm:p-4 backdrop animate-[fade_0.2s_ease]"
       role="dialog"
       aria-modal="true"
       aria-labelledby="privacy-policy-title"
@@ -52,9 +85,25 @@ export function PrivacyPolicy({ open, onClose }: Props) {
         className="absolute inset-0 bg-transparent border-0 cursor-default"
       />
 
-      <div className="surface-glass relative w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[86vh] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col animate-scale-in">
+      <div
+        ref={panelRef}
+        className="surface-glass relative w-full sm:max-w-2xl max-h-[92vh] sm:max-h-[86vh] rounded-t-[22px] sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in"
+      >
+        {/* Drag handle — mobile only, swipe down to dismiss. */}
+        <div
+          onTouchStart={onHandleTouchStart}
+          onTouchMove={onHandleTouchMove}
+          onTouchEnd={onHandleTouchEnd}
+          className="sm:hidden shrink-0 grid place-items-center pt-2.5 pb-1.5 cursor-grab touch-none"
+        >
+          <span
+            aria-hidden="true"
+            className="w-11 h-1 rounded-full bg-(--ink-5)/40 transition-colors duration-150 hover:bg-(--ink-5)/60"
+          />
+        </div>
+
         {/* Header */}
-        <div className="shrink-0 flex items-center gap-3 sm:gap-4 px-5 sm:px-7 pt-5 sm:pt-6 pb-4 border-b border-(--line-soft)">
+        <div className="shrink-0 flex items-center gap-3 sm:gap-4 px-5 sm:px-7 pt-3 sm:pt-6 pb-4 border-b border-(--line-soft)">
           <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) shrink-0">
             <ShieldCheck className="w-5 h-5" />
           </span>
@@ -163,17 +212,6 @@ export function PrivacyPolicy({ open, onClose }: Props) {
               </p>
             </Section>
           </div>
-        </div>
-
-        {/* Footer — single confirm button for mobile ergonomics */}
-        <div className="shrink-0 px-5 sm:px-7 py-3.5 border-t border-(--line-soft) bg-(--surface-2)/55 flex justify-end">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 rounded-lg text-[13px] font-semibold text-white bg-(--brand) hover:bg-(--brand-hover) transition-colors"
-          >
-            Got it
-          </button>
         </div>
       </div>
     </div>,

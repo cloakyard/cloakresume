@@ -15,6 +15,7 @@ import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AlertTriangle,
+  ArrowRight,
   EyeOff,
   FilePen,
   FileText,
@@ -264,105 +265,126 @@ export function OnboardingScreen({
           locally — nothing is ever uploaded.
         </p>
 
-        {/* Primary CTA tiles. When `onResumeEditing` is provided we render
-         * 4 tiles (Resume editing first, brand blue) in a 4-up grid at
-         * `lg`; otherwise the original 3-up grid. */}
-        <div
-          className={`grid grid-cols-1 gap-3 sm:gap-4 mt-10 sm:mt-12 mx-auto animate-[fade-in-up_0.6s_ease-out_0.2s_both] ${
-            onResumeEditing
-              ? "sm:grid-cols-2 lg:grid-cols-4 max-w-[1080px]"
-              : "sm:grid-cols-3 max-w-225"
-          }`}
-        >
+        {/* Primary CTAs.
+         *
+         * When `onResumeEditing` is provided we feature it as a wide
+         * horizontal card above the standard 3-tile row so the
+         * "continue where you left off" path is visually dominant
+         * without making the three fresh-start tiles look stretched.
+         * Otherwise just the 3-tile row renders. */}
+        <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
           {onResumeEditing && (
             <GlowCard
               onClick={onResumeEditing}
               glow="rgba(37, 99, 235, 0.26)"
               ariaLabel="Resume editing your current résumé"
             >
-              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-                <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                  <FilePen className="w-5 h-5" />
+              <div className="flex items-center gap-4 sm:gap-5 px-5 py-4.5 sm:px-6 sm:py-5">
+                <span className="shrink-0 w-12 h-12 sm:w-13 sm:h-13 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <FilePen className="w-5.5 h-5.5" />
                 </span>
-                <span className="inline-flex items-center gap-1.5 text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                  Resume editing
-                  <span
-                    className="text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
-                    aria-hidden="true"
-                  >
-                    Saved
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <span className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+                      Resume editing
+                    </span>
+                    <span
+                      className="text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
+                      aria-hidden="true"
+                    >
+                      Saved
+                    </span>
+                  </div>
+                  <span className="block text-[13px] sm:text-[13.5px] leading-[1.5] text-(--ink-4) mt-0.5">
+                    Pick up where you left off — your work is already in this browser.
                   </span>
-                </span>
-                <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                  Pick up where you left off — your work is already in this browser.
-                </span>
+                </div>
+                <ArrowRight
+                  className="shrink-0 w-4 h-4 text-(--ink-4) transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-(--brand)"
+                  aria-hidden="true"
+                />
               </div>
             </GlowCard>
           )}
 
-          <GlowCard
-            onClick={onStartBlank}
-            glow="rgba(100, 116, 139, 0.2)"
-            ariaLabel={
-              onResumeEditing
-                ? "Start a blank résumé — replaces the work saved in your browser"
-                : "Start a blank résumé from a clean template"
-            }
-          >
-            <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-              <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                <SquareDashed className="w-5 h-5" />
-              </span>
-              <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                Start blank
-              </span>
-              <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                Begin with a clean template and make it yours.
-              </span>
-              {onResumeEditing && (
-                <span className="inline-flex items-center gap-1.5 mt-1 text-[11.5px] leading-[1.45] text-warn font-medium">
-                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
-                  Erases the work saved in this browser.
+          {onResumeEditing && (
+            <div
+              role="note"
+              aria-label="The options below replace the work saved in your browser"
+              className="flex items-center gap-3 sm:gap-4 px-1 mt-1 sm:mt-2"
+            >
+              <span className="h-px flex-1 bg-(--line-soft)" aria-hidden="true" />
+              <span className="inline-flex items-center gap-2 shrink-0 text-[11px] font-semibold uppercase tracking-[0.14em] text-(--ink-5)">
+                <span>Or start over</span>
+                <span className="w-[3px] h-[3px] rounded-full bg-(--ink-6)" aria-hidden="true" />
+                <span className="inline-flex items-center gap-1 normal-case tracking-normal font-medium text-warn">
+                  <AlertTriangle className="w-3.5 h-3.5" aria-hidden="true" />
+                  replaces saved work
                 </span>
-              )}
+              </span>
+              <span className="h-px flex-1 bg-(--line-soft)" aria-hidden="true" />
             </div>
-          </GlowCard>
+          )}
 
-          <GlowCard
-            onClick={onLoadSample}
-            glow="rgba(124, 58, 237, 0.2)"
-            ariaLabel="Load the bundled sample résumé"
-          >
-            <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-              <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#7c3aed_14%,transparent)] text-[#7c3aed] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                <Sparkles className="w-5 h-5" />
-              </span>
-              <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                Load sample
-              </span>
-              <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                See a fully populated résumé to explore the app.
-              </span>
-            </div>
-          </GlowCard>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+            <GlowCard
+              onClick={onStartBlank}
+              glow="rgba(100, 116, 139, 0.2)"
+              ariaLabel={
+                onResumeEditing
+                  ? "Start a blank résumé — replaces the work saved in your browser"
+                  : "Start a blank résumé from a clean template"
+              }
+            >
+              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+                <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <SquareDashed className="w-5 h-5" />
+                </span>
+                <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+                  Start blank
+                </span>
+                <span className="text-[13px] leading-[1.5] text-(--ink-4)">
+                  Begin with a clean template and make it yours.
+                </span>
+              </div>
+            </GlowCard>
 
-          <GlowCard
-            onClick={() => fileRef.current?.click()}
-            glow="rgba(5, 150, 105, 0.2)"
-            ariaLabel="Load a saved résumé from a local file"
-          >
-            <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
-              <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#059669_14%,transparent)] text-[#059669] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                <FolderOpen className="w-5 h-5" />
-              </span>
-              <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                Load saved
-              </span>
-              <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                Continue from a JSON file you previously saved.
-              </span>
-            </div>
-          </GlowCard>
+            <GlowCard
+              onClick={onLoadSample}
+              glow="rgba(124, 58, 237, 0.2)"
+              ariaLabel="Load the bundled sample résumé"
+            >
+              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+                <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#7c3aed_14%,transparent)] text-[#7c3aed] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <Sparkles className="w-5 h-5" />
+                </span>
+                <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+                  Load sample
+                </span>
+                <span className="text-[13px] leading-[1.5] text-(--ink-4)">
+                  See a fully populated résumé to explore the app.
+                </span>
+              </div>
+            </GlowCard>
+
+            <GlowCard
+              onClick={() => fileRef.current?.click()}
+              glow="rgba(5, 150, 105, 0.2)"
+              ariaLabel="Load a saved résumé from a local file"
+            >
+              <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
+                <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#059669_14%,transparent)] text-[#059669] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <FolderOpen className="w-5 h-5" />
+                </span>
+                <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+                  Load saved
+                </span>
+                <span className="text-[13px] leading-[1.5] text-(--ink-4)">
+                  Continue from a JSON file you previously saved.
+                </span>
+              </div>
+            </GlowCard>
+          </div>
 
           <input
             ref={fileRef}
@@ -519,15 +541,6 @@ export function OnboardingScreen({
                 <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
                 Privacy
               </button>
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) no-underline transition-colors duration-150 font-medium"
-              >
-                <GithubMark className="w-3.5 h-3.5 text-(--ink-2)" />
-                Source code
-              </a>
               <a
                 href={CLOAKYARD_URL}
                 target="_blank"

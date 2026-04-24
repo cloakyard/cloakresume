@@ -1,24 +1,250 @@
+# ---------------------------------------------------------------------------
+# Dependencies
+# ---------------------------------------------------------------------------
+node_modules/
+jspm_packages/
+bower_components/
+web_modules/
+.pnp
+.pnp.*
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn/patches
+.pnpm-store/
+
+# ---------------------------------------------------------------------------
+# Build output
+# ---------------------------------------------------------------------------
+dist/
+dist-ssr/
+build/
+out/
+.output/
+.vite/
+.turbo/
+.rollup.cache/
+.rolldown-cache/
+.tsdown/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+.svelte-kit/
+.astro/
+.docusaurus/
+.vercel/
+.netlify/
+.firebase/
+.wrangler/
+.serverless/
+storybook-static/
+
+# ---------------------------------------------------------------------------
+# Vite+ / Vitest / test coverage
+# ---------------------------------------------------------------------------
+coverage/
+*.lcov
+.nyc_output/
+.vitest-cache/
+__snapshots__/*.snap.new
+test-results/
+playwright-report/
+playwright/.cache/
+cypress/videos/
+cypress/screenshots/
+cypress/downloads/
+
+# ---------------------------------------------------------------------------
 # Logs
-logs
+# ---------------------------------------------------------------------------
+logs/
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
+.pnpm-debug.log*
+report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-node_modules
-dist
-dist-ssr
+# ---------------------------------------------------------------------------
+# Environment & secrets
+# ---------------------------------------------------------------------------
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+secrets/
+.secrets/
+
+# ---------------------------------------------------------------------------
+# TypeScript / JS tooling
+# ---------------------------------------------------------------------------
+*.tsbuildinfo
+.eslintcache
+.stylelintcache
+.prettiercache
+.oxlint-cache/
 *.local
 
-# Editor directories and files
+# ---------------------------------------------------------------------------
+# Editor & IDE — VS Code
+# ---------------------------------------------------------------------------
 .vscode/*
 !.vscode/extensions.json
-.idea
-.DS_Store
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+.history/
+.ionide/
+
+# ---------------------------------------------------------------------------
+# Editor & IDE — JetBrains (WebStorm, IntelliJ, etc.)
+# ---------------------------------------------------------------------------
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+.idea_modules/
+
+# ---------------------------------------------------------------------------
+# Editor & IDE — Visual Studio
+# ---------------------------------------------------------------------------
+.vs/
 *.suo
+*.user
+*.userosscache
+*.sln.docstates
 *.ntvs*
 *.njsproj
 *.sln
+
+# ---------------------------------------------------------------------------
+# Editor & IDE — Sublime Text
+# ---------------------------------------------------------------------------
+*.sublime-project
+*.sublime-workspace
+
+# ---------------------------------------------------------------------------
+# Editor & IDE — Vim / Neovim / Emacs
+# ---------------------------------------------------------------------------
 *.sw?
+*.swp
+*.swo
+*.swn
+*~
+\#*\#
+.\#*
+Session.vim
+.netrwhist
+tags
+tags.lock
+tags.temp
+
+# ---------------------------------------------------------------------------
+# Editor & IDE — Zed, Helix, Atom, Eclipse, NetBeans
+# ---------------------------------------------------------------------------
+.zed/
+.helix/
+.atom/
+.project
+.classpath
+.settings/
+.c9/
+*.launch
+nbproject/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# ---------------------------------------------------------------------------
+# Operating system — macOS
+# ---------------------------------------------------------------------------
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100
+.Trashes
+.DocumentRevisions-V100
+.fseventsd
+.TemporaryItems
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+Icon?
+
+# ---------------------------------------------------------------------------
+# Operating system — Windows
+# ---------------------------------------------------------------------------
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.stackdump
+*.lnk
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+
+# ---------------------------------------------------------------------------
+# Operating system — Linux
+# ---------------------------------------------------------------------------
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# ---------------------------------------------------------------------------
+# Archives & binaries (usually accidental)
+# ---------------------------------------------------------------------------
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+*.tgz
+
+# ---------------------------------------------------------------------------
+# Claude Code / AI assistants
+# ---------------------------------------------------------------------------
+.claude/*.lock
+.claude/**/*.lock
+.claude/local/
+.claude/settings.local.json
+.aider*
+.cursor/
+.continue/
+
+# ---------------------------------------------------------------------------
+# Miscellaneous
+# ---------------------------------------------------------------------------
+*.pid
+*.seed
+*.pid.lock
+*.lock
+.grunt/
+.lock-wscript
+.node_repl_history
+*.tgz
+.yarn-integrity
