@@ -419,6 +419,8 @@ export function App() {
           onLoadSample={() => startWithResume(sampleResume)}
           onLoadFile={handleLoadFile}
           onDismiss={onboardingDismissable ? dismissOnboarding : undefined}
+          darkMode={darkMode}
+          onToggleDarkMode={toggleDarkMode}
         />
       )}
 
