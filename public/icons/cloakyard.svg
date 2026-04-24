@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="512" height="512" fill="none" role="img" aria-label="CloakYard">
+  <defs>
+    <linearGradient id="shieldC" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3B82F6"/>
+      <stop offset="100%" stop-color="#1D4ED8"/>
+    </linearGradient>
+  </defs>
+
+  <!-- SHIELD -->
+  <path d="M24 3 L41 10 V25 C41 36 33 42.5 24 45.5 C15 42.5 7 36 7 25 V10 L24 3Z"
+        fill="url(#shieldC)"/>
+
+  <!-- HANDLE with cutout (solid tab on top of lid) -->
+  <path d="M18.5 17.5 L18.5 15.5 Q18.5 12 24 12 Q29.5 12 29.5 15.5 L29.5 17.5
+           L27.3 17.5 L27.3 15.8 Q27.3 14.2 24 14.2 Q20.7 14.2 20.7 15.8 L20.7 17.5 Z"
+        fill="#FFFFFF" opacity="0.95"/>
+
+  <!-- LID -->
+  <path d="M12 17.5 Q12 17.5 12 17.5 L36 17.5 L36 24 L12 24 Z"
+        fill="#FFFFFF" opacity="0.95"/>
+  <path d="M12 17.5 L36 17.5 L36 19.5 L12 19.5 Z" fill="#FFFFFF" opacity="1"/>
+
+  <!-- BODY -->
+  <path d="M12 24 L36 24 L36 34 Q36 35.5 34.5 35.5 L13.5 35.5 Q12 35.5 12 34 Z"
+        fill="#FFFFFF" opacity="0.88"/>
+
+  <!-- Seam line -->
+  <rect x="12" y="23.6" width="24" height="0.8" fill="#1D4ED8" opacity="0.35"/>
+
+  <!-- Center clasp -->
+  <rect x="22" y="22.2" width="4" height="3.2" rx="0.6" fill="#1D4ED8" opacity="0.55"/>
+  <circle cx="24" cy="23.8" r="0.5" fill="#FFFFFF" opacity="0.9"/>
+
+  <!-- Body detail: a soft compartment line -->
+  <rect x="16" y="28" width="16" height="0.8" fill="#1D4ED8" opacity="0.18"/>
+</svg>

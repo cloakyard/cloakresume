@@ -28,8 +28,11 @@ import {
   UserRoundCheck,
   WifiOff,
 } from "lucide-react";
+import { PrivacyPolicy } from "./PrivacyPolicy";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
+const CLOAKYARD_URL = "https://github.com/cloakyard";
+const AUTHOR_URL = "https://github.com/sumitsahoo";
 
 /* ────────────────────────────────────────────────────────────────
  * Glow card — shared mechanic used by both the primary CTA tiles
@@ -153,6 +156,7 @@ export function OnboardingScreen({
   onToggleDarkMode,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
+  const [privacyOpen, setPrivacyOpen] = useState(false);
 
   useEffect(() => {
     if (!onDismiss) return;
@@ -249,29 +253,6 @@ export function OnboardingScreen({
           locally — nothing is ever uploaded.
         </p>
 
-        {/* Trust badges — inline row */}
-        <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 mt-6 text-xs text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.15s_both]">
-          <span className="inline-flex items-center gap-1.5 font-medium">
-            <UserRoundCheck className="w-3.5 h-3.5 text-[#059669]" aria-hidden="true" />
-            No sign-up
-          </span>
-          <span className="w-[3px] h-[3px] rounded-full bg-(--ink-6)" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 font-medium">
-            <EyeOff className="w-3.5 h-3.5 text-[#7c3aed]" aria-hidden="true" />
-            No tracking
-          </span>
-          <span className="w-[3px] h-[3px] rounded-full bg-(--ink-6)" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 font-medium">
-            <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
-            Local-first
-          </span>
-          <span className="w-[3px] h-[3px] rounded-full bg-(--ink-6)" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 font-medium">
-            <WifiOff className="w-3.5 h-3.5 text-(--ink-3)" aria-hidden="true" />
-            Works offline
-          </span>
-        </div>
-
         {/* Primary CTA tiles */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mt-10 sm:mt-12 max-w-225 mx-auto animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
           <GlowCard
@@ -357,25 +338,46 @@ export function OnboardingScreen({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-7 sm:gap-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-7 sm:gap-y-8">
+          <FeatureItem
+            icon={<UserRoundCheck className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#059669_14%,transparent)]"
+            iconFg="text-[#059669]"
+            title="No sign-up"
+            description="No accounts, no email, no passwords. Start building the moment the page loads."
+          />
+          <FeatureItem
+            icon={<EyeOff className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#7c3aed_14%,transparent)]"
+            iconFg="text-[#7c3aed]"
+            title="No tracking"
+            description="Zero analytics, zero telemetry, zero third-party scripts. You stay invisible."
+          />
           <FeatureItem
             icon={<ShieldCheck className="w-5 h-5" />}
             iconBg="bg-(--brand-50)"
             iconFg="text-(--brand)"
-            title="Zero servers"
-            description="Every keystroke stays in your browser. No accounts, no telemetry, no hidden uploads."
+            title="Local-first"
+            description="Every keystroke stays in your browser. Nothing is ever uploaded to any server."
+          />
+          <FeatureItem
+            icon={<WifiOff className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#ea580c_14%,transparent)]"
+            iconFg="text-[#ea580c]"
+            title="Works offline"
+            description="Installable as a PWA. Once loaded, build and export without a connection."
           />
           <FeatureItem
             icon={<ScanSearch className="w-5 h-5" />}
-            iconBg="bg-[color-mix(in_oklab,#7c3aed_14%,transparent)]"
-            iconFg="text-[#7c3aed]"
+            iconBg="bg-[color-mix(in_oklab,#db2777_14%,transparent)]"
+            iconFg="text-[#db2777]"
             title="Real ATS analysis"
             description="Paste a job description and get actionable feedback on keywords, formatting, and match."
           />
           <FeatureItem
             icon={<Palette className="w-5 h-5" />}
-            iconBg="bg-[color-mix(in_oklab,#059669_14%,transparent)]"
-            iconFg="text-[#059669]"
+            iconBg="bg-[color-mix(in_oklab,#0d9488_14%,transparent)]"
+            iconFg="text-[#0d9488]"
             title="Beautiful templates"
             description="Carefully crafted layouts that look great on screen, in print, and through every PDF reader."
           />
@@ -385,13 +387,6 @@ export function OnboardingScreen({
             iconFg="text-[#d97706]"
             title="Crisp PDF export"
             description="Pixel-perfect exports with proper typography, selectable text, and print-ready margins."
-          />
-          <FeatureItem
-            icon={<WifiOff className="w-5 h-5" />}
-            iconBg="bg-[color-mix(in_oklab,#ea580c_14%,transparent)]"
-            iconFg="text-[#ea580c]"
-            title="Works offline"
-            description="Installable as a PWA. Once loaded, you can build and export without a connection."
           />
           <FeatureItem
             icon={<Laptop className="w-5 h-5" />}
@@ -436,17 +431,108 @@ export function OnboardingScreen({
       </section>
 
       {/* ── Footer ───────────────────────────────────────────── */}
-      <footer className="relative border-t border-(--line-soft)">
-        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 py-5 flex items-center justify-center gap-2 text-[12.5px] text-(--ink-4)">
-          <span className="font-medium text-(--ink-3)">
-            Cloak<span className="text-(--brand)">Resume</span>
-          </span>
-          <span className="text-(--ink-6)" aria-hidden="true">
-            ·
-          </span>
-          <span className="font-mono tabular-nums tracking-tight">v{__APP_VERSION__}</span>
+      <footer className="relative border-t border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_55%,transparent)]">
+        <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-7 sm:pt-12 sm:pb-8">
+          {/* Top row: brand + links */}
+          <div className="flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-10">
+            <div className="flex items-start gap-3 min-w-0 sm:max-w-sm">
+              <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-9 h-9 shrink-0" />
+              <div className="min-w-0">
+                <div className="flex items-center gap-2 flex-wrap">
+                  <span className="font-semibold text-(--ink-1) tracking-[-0.01em]">
+                    Cloak<span className="text-(--brand)">Resume</span>
+                  </span>
+                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-mono tabular-nums tracking-tight text-(--ink-4) bg-(--surface-3)">
+                    v{__APP_VERSION__}
+                  </span>
+                </div>
+                <p className="text-[13px] text-(--ink-4) leading-[1.55] mt-1.5">
+                  The private, local-first résumé builder. Your data never leaves your browser.
+                </p>
+              </div>
+            </div>
+
+            <nav
+              aria-label="Footer"
+              className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:ml-auto text-[13px]"
+            >
+              <button
+                type="button"
+                onClick={() => setPrivacyOpen(true)}
+                className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) bg-transparent cursor-pointer transition-colors duration-150 font-medium"
+              >
+                <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
+                Privacy
+              </button>
+              <a
+                href={GITHUB_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) no-underline transition-colors duration-150 font-medium"
+              >
+                <GithubMark className="w-3.5 h-3.5 text-(--ink-2)" />
+                Source code
+              </a>
+              <a
+                href={CLOAKYARD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) no-underline transition-colors duration-150 font-medium"
+              >
+                <img
+                  src="/icons/cloakyard.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="w-4 h-4 shrink-0"
+                />
+                Cloakyard
+              </a>
+            </nav>
+          </div>
+
+          {/* Divider */}
+          <div className="h-px bg-(--line-soft) my-6 sm:my-7" />
+
+          {/* Bottom row: attribution + cloakyard pitch */}
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-[12.5px] text-(--ink-4)">
+            <div className="flex items-center gap-1.5">
+              <span>Built with care by</span>
+              <a
+                href={AUTHOR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-(--ink-2) hover:text-(--brand) no-underline font-medium transition-colors duration-150"
+              >
+                Sumit Sahoo
+              </a>
+              <span aria-hidden="true">·</span>
+              <span>
+                <span className="text-(--ink-5)">MIT</span> licensed
+              </span>
+            </div>
+            <div className="sm:ml-auto inline-flex items-center gap-1.5">
+              <span>Part of</span>
+              <a
+                href={CLOAKYARD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 text-(--ink-2) hover:text-(--brand) no-underline font-medium transition-colors duration-150"
+              >
+                <img
+                  src="/icons/cloakyard.svg"
+                  alt=""
+                  aria-hidden="true"
+                  className="w-3.5 h-3.5 shrink-0"
+                />
+                Cloakyard
+              </a>
+              <span className="text-(--ink-5)">— a collection of privacy-focused tools.</span>
+            </div>
+          </div>
         </div>
       </footer>
+
+      <PrivacyPolicy open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </div>
   );
 }
