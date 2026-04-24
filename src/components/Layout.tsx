@@ -138,7 +138,10 @@ export function Layout({
       )}
 
       {!isMobile && (
-        <main className="[grid-area:preview] relative flex flex-col overflow-hidden bg-[linear-gradient(180deg,#eef2f7_0%,#e8edf4_100%)]">
+        <main
+          className="[grid-area:preview] relative flex flex-col overflow-hidden"
+          style={{ background: "var(--preview-bg)" }}
+        >
           {preview}
         </main>
       )}

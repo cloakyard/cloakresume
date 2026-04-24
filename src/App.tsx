@@ -65,12 +65,22 @@ interface Persisted {
   paperSize: PaperSize;
   jobDescription: string;
   activeSection: SectionId;
+  darkMode: boolean;
 }
 
 interface InitialState {
   persisted: Persisted;
   /** True when storage had no valid data — triggers the onboarding screen. */
   firstRun: boolean;
+}
+
+/**
+ * Returns true if the OS/browser currently prefers dark mode.
+ * Used as the seed value when the user has never toggled manually.
+ */
+function prefersDarkOs(): boolean {
+  if (typeof window === "undefined" || !window.matchMedia) return false;
+  return window.matchMedia("(prefers-color-scheme: dark)").matches;
 }
 
 function loadPersisted(): InitialState {
@@ -81,6 +91,7 @@ function loadPersisted(): InitialState {
     paperSize: DEFAULT_PAPER_SIZE,
     jobDescription: "",
     activeSection: "profile",
+    darkMode: prefersDarkOs(),
   };
   try {
     const raw = localStorage.getItem(LS_KEY);
@@ -98,6 +109,9 @@ function loadPersisted(): InitialState {
             paperSize: resolvePaperSize(parsed.paperSize),
             jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
             activeSection: (parsed.activeSection ?? "profile") as SectionId,
+            // If the user has toggled before we honour their choice; otherwise
+            // fall back to whatever the OS prefers right now.
+            darkMode: typeof parsed.darkMode === "boolean" ? parsed.darkMode : prefersDarkOs(),
           },
           firstRun: false,
         };
@@ -117,6 +131,7 @@ export function App() {
   const [paperSize, setPaperSize] = useState<PaperSize>(initial.persisted.paperSize);
   const [jobDescription, setJobDescription] = useState<string>(initial.persisted.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.persisted.activeSection);
+  const [darkMode, setDarkMode] = useState<boolean>(initial.persisted.darkMode);
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
    *  lazy AtsPanel chunk so it's not downloaded until actually needed. */
@@ -148,6 +163,7 @@ export function App() {
         paperSize,
         jobDescription,
         activeSection,
+        darkMode,
       };
       try {
         localStorage.setItem(LS_KEY, JSON.stringify(payload));
@@ -156,7 +172,27 @@ export function App() {
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showOnboarding]);
+  }, [
+    resume,
+    templateId,
+    primary,
+    paperSize,
+    jobDescription,
+    activeSection,
+    darkMode,
+    showOnboarding,
+  ]);
+
+  /** Bind the dark-mode flag to <html data-theme="..."> so the CSS token
+   *  overrides in index.css take effect. We always write an explicit
+   *  "dark" or "light" value (rather than adding/removing the attribute)
+   *  so the user's choice overrides the OS `prefers-color-scheme` rule —
+   *  a dark-OS user who toggles to light gets light, and vice versa. */
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
+  }, [darkMode]);
+
+  const toggleDarkMode = useCallback(() => setDarkMode((v) => !v), []);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
@@ -319,6 +355,8 @@ export function App() {
               onLoadFile={handleLoadFile}
               onNewResume={handleNewResume}
               onScanAts={openAts}
+              darkMode={darkMode}
+              onToggleDarkMode={toggleDarkMode}
             />
             <ToolbarOverflow
               primary={primary}
@@ -328,6 +366,8 @@ export function App() {
               onNewResume={handleNewResume}
               onSaveFile={handleSaveFile}
               onLoadFile={handleLoadFile}
+              darkMode={darkMode}
+              onToggleDarkMode={toggleDarkMode}
             />
           </>
         }

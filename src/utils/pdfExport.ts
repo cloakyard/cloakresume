@@ -223,9 +223,12 @@ export async function exportResumeToPdf(
     for (let i = 0; i < pageEls.length; i++) {
       const pageEl = pageEls[i]!;
       // Strip box-shadow/border-radius on the clone page — those are preview
-      // decoration, not part of the printed document.
+      // decoration, not part of the printed document. Also clear any dark-mode
+      // dim filter so the export always looks the way the template was designed
+      // for paper, regardless of whether the user has the app in dark mode.
       pageEl.style.boxShadow = "none";
       pageEl.style.borderRadius = "0";
+      pageEl.style.filter = "none";
 
       const canvas = await html2canvas(pageEl, {
         scale: RENDER_SCALE,

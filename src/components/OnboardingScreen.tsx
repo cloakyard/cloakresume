@@ -114,10 +114,7 @@ export function OnboardingScreen({ onStartBlank, onLoadSample, onLoadFile, onDis
   return (
     <div
       className="fixed inset-0 grid place-items-center p-4 sm:p-6 md:p-10 z-150 overflow-auto"
-      style={{
-        background:
-          "radial-gradient(ellipse at 20% 0%, rgba(37, 99, 235, 0.08), transparent 55%), radial-gradient(ellipse at 80% 100%, rgba(37, 99, 235, 0.05), transparent 55%), linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%)",
-      }}
+      style={{ background: "var(--onboarding-bg)" }}
     >
       {onDismiss && (
         <button
