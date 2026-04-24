@@ -28,15 +28,15 @@ CloakResume is a full-featured resume builder, all running 100% client-side:
 
 ### 🎨 Templates
 
-_Twelve hand-crafted layouts across five design families_
+_Fifteen hand-crafted layouts across five design families_
 
-| Category     | Templates                                                                                                                                                                             |
-| ------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                 |
-| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles                                                                 |
-| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
-| **Creative** | **Typographic** · Swiss-style numbered sections. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                               |
-| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                        |
+| Category     | Templates                                                                                                                                                                                                                                                                                           |
+| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                                                                                                                               |
+| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles. **Monograph** · editorial serif with a warm sidebar                                                                                                                          |
+| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Prism** · solid accent sidebar with crisp sans. **Horizon** · light sidebar with pill headers and timeline. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
+| **Creative** | **Typographic** · Swiss-style numbered sections. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                                                                                                                                             |
+| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                                                                                                                                      |
 
 Switch between any template with a single click — your content stays, only the layout changes.
 
@@ -80,25 +80,27 @@ _Know how your resume will be parsed and read before you send it_
 
 _Make it yours without fighting the layout_
 
-| Feature                    | Description                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------- |
-| **Primary Colour**         | Pick any colour — the app derives a full palette (tints, borders, text) automatically |
-| **Live A4 Preview**        | Pixel-accurate page rendered at 210 × 297 mm with pagination across multiple pages    |
-| **Scaled Thumbnails**      | Template picker shows every layout with your actual content rendered to scale         |
-| **Section Rail & Pills**   | Jump between sections from a floating rail on desktop or a pill bar on mobile         |
-| **Bottom Sheet on Mobile** | Native-feeling drag-to-dismiss editor sheet for touch devices                         |
+| Feature                      | Description                                                                                                                           |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| **Primary Colour**           | Pick any colour — the app derives a full palette (tints, borders, text) automatically                                                 |
+| **Dark Mode**                | Follows your OS `prefers-color-scheme` and can be toggled manually. Resume pages stay paper-white (for print fidelity) but get dimmed |
+| **Live A4 / Letter Preview** | Pixel-accurate page rendered at 210 × 297 mm (or 216 × 279 mm for Letter) with pagination across multiple pages                       |
+| **Scaled Thumbnails**        | Template picker shows every layout with your actual content rendered to scale                                                         |
+| **Section Rail & Pills**     | Jump between sections from a floating rail on desktop or a pill bar on mobile                                                         |
+| **Bottom Sheet on Mobile**   | Native-feeling drag-to-dismiss editor sheet for touch devices                                                                         |
 
 ### 📤 Export & Persistence
 
 _Your resume is always within reach_
 
-| Feature                | Description                                                                       |
-| ---------------------- | --------------------------------------------------------------------------------- |
-| **Print to PDF**       | Browser-native print dialog produces a pixel-perfect PDF with correct page breaks |
-| **JSON Import/Export** | Download your resume as JSON, edit externally, or re-import later                 |
-| **Autosave**           | Every keystroke is saved to local storage — close the tab and come back anytime   |
-| **Start from Sample**  | Kick off with a fully-populated lorem-ipsum resume that showcases the layout      |
-| **Start Fresh**        | Or begin with a blank canvas — previews use sample data until you add your own    |
+| Feature                | Description                                                                                                       |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
+| **Export PDF**         | One-click export to a selectable, ATS-parseable PDF at A4 or US Letter — every link stays clickable in the output |
+| **Print to PDF**       | Browser-native print dialog also produces a pixel-perfect PDF with correct page breaks as a fallback              |
+| **JSON Import/Export** | Save your resume as JSON, edit externally, or re-import later — your single source of truth                       |
+| **Autosave**           | Every keystroke is saved to local storage — close the tab and come back anytime                                   |
+| **Start from Sample**  | Kick off with a fully-populated lorem-ipsum resume that showcases the layout                                      |
+| **Start Fresh**        | Or begin with a blank canvas — previews use sample data until you add your own                                    |
 
 ---
 
@@ -116,16 +118,17 @@ _Your resume is always within reach_
 
 ## 🛠️ Tech Stack
 
-| Category      | Technology                                                                                                             |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------- |
-| Framework     | [React 19](https://react.dev/)                                                                                         |
-| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                             |
-| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                         |
-| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                        |
-| Icons         | [Lucide React](https://lucide.dev/)                                                                                    |
-| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)          |
-| Writing Check | [Harper](https://writewithharper.com/) — a Rust grammar checker compiled to WebAssembly, running in a dedicated worker |
-| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                  |
+| Category      | Technology                                                                                                                                                                   |
+| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Framework     | [React 19](https://react.dev/)                                                                                                                                               |
+| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                                                   |
+| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                                                                               |
+| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                                                                              |
+| Icons         | [Lucide React](https://lucide.dev/)                                                                                                                                          |
+| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)                                                                |
+| Writing Check | [Harper](https://writewithharper.com/) — a Rust grammar checker compiled to WebAssembly, running in a dedicated worker                                                       |
+| PDF Export    | [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) + [jsPDF](https://github.com/parallax/jsPDF) — raster fidelity plus an invisible text layer for ATS parsers |
+| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                                                                        |
 
 ---
 
@@ -199,7 +202,8 @@ CloakResume is a single-page React app that keeps every resume entirely in memor
 - **Scaled previews** — the template picker renders each layout at full width with a CSS transform scale, using your actual resume content (or sample content when the resume is empty).
 - **ATS scoring** — [src/utils/ats.ts](src/utils/ats.ts) inspects the resume shape, checks for missing sections, and matches keywords against a pasted job description — entirely client-side.
 - **Writing quality** — the review modal shows a second score alongside ATS, powered by [Harper](https://writewithharper.com/) ([src/utils/grammar.ts](src/utils/grammar.ts)). Harper is a Rust grammar engine compiled to WebAssembly, running in a dedicated worker (spawned by `WorkerLinter`). On the first scan, we fetch the ~7 MB WASM with a streaming reader so the UI can show byte-level download progress, then feed Harper a blob URL so the worker can bootstrap without a second round-trip. Subsequent scans reuse the cached linter — zero network, zero re-init.
-- **PDF export** — there is no PDF library bundled. The app styles a print stylesheet and defers to the browser's native print-to-PDF, which yields a pixel-accurate, selectable, ATS-parseable PDF.
+- **PDF export** — [src/utils/pdfExport.ts](src/utils/pdfExport.ts) renders each resume page through [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) for pixel fidelity, then uses [jsPDF](https://github.com/parallax/jsPDF) to assemble a multi-page document. A second pass walks the DOM and writes every text node back onto the page as _invisible_ PDF text (rendering mode 3) — so the raster stays crisp while ATS parsers, screen readers, and `pdftotext` still get a clean text stream in reading order. Every `<a href>` is emitted as a real PDF link annotation so contact URLs stay clickable. The ~200 kB html2canvas + jsPDF bundle is code-split and only lands in the client when you first click **Export PDF**.
+- **Dark mode** — the chrome follows your OS `prefers-color-scheme` out of the box (via a `@media` query on every theme token) and can be toggled manually via the sun/moon button in the header. The resume pages themselves stay paper-white regardless, so the exported PDF always looks the way it was designed for paper; only a subtle `filter: brightness()` dims them against the dark canvas, and print/export strip the filter automatically.
 
 All operations happen in-memory. The strict Content Security Policy in [index.html](index.html) blocks any outbound network requests for user content — it is architecturally impossible for your resume to leave your device.
 
