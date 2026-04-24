@@ -143,13 +143,59 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
 
   if (resume.experience.length > 0) {
     const num = next();
-    const last = resume.experience.length - 1;
-    resume.experience.forEach((job, index) => {
-      const isFirst = index === 0;
-      const isLast = index === last;
-      const className = `${isFirst ? "tg-section" : "tg-section-cont"}${isLast ? " tg-section-end" : ""}`;
+    type AtomSpec = { key: string; keepWithNext: boolean; content: React.ReactNode };
+    const specs: AtomSpec[] = [];
+    resume.experience.forEach((job) => {
+      const headContent = (
+        <div className="tg-job" key={`exp-${job.id}-head-inner`}>
+          <div className="tg-job-meta">
+            <span className="yr">{formatDateRange(job.start, job.end)}</span>
+            {job.location}
+          </div>
+          <div>
+            <div className="tg-job-title">{job.title}</div>
+            <div className="tg-job-co">{job.company}</div>
+          </div>
+        </div>
+      );
+      if (job.bullets.length === 0) {
+        specs.push({ key: `exp-${job.id}`, keepWithNext: false, content: headContent });
+        return;
+      }
+      specs.push({ key: `exp-${job.id}-head`, keepWithNext: true, content: headContent });
+      job.bullets.forEach((b, i) => {
+        const chainNext = i === 0 && job.bullets.length > 1;
+        specs.push({
+          key: `exp-${job.id}-b-${i}`,
+          keepWithNext: chainNext,
+          content: (
+            <div className="tg-job" style={{ display: "block" }}>
+              <ul>
+                <li>
+                  <RichText value={b} />
+                </li>
+              </ul>
+            </div>
+          ),
+        });
+      });
+    });
+    specs.forEach((spec, specIdx) => {
+      const isFirst = specIdx === 0;
+      const isLast = specIdx === specs.length - 1;
+      const sectionCls = [
+        isFirst ? "tg-section" : "tg-section-cont",
+        isLast ? "tg-section-end" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      const bodyCls = isFirst ? "tg-body" : "tg-body-cont";
       atoms.push(
-        <section className={className} key={`exp-${job.id}`}>
+        <section
+          key={spec.key}
+          className={sectionCls}
+          data-keep-with-next={spec.keepWithNext ? "true" : undefined}
+        >
           {isFirst ? (
             <div className="tg-marker">
               <div className="tg-marker-num">{num}</div>
@@ -158,28 +204,7 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
           ) : (
             <div />
           )}
-          <div className={isFirst ? "tg-body" : "tg-body-cont"}>
-            <div className="tg-job">
-              <div className="tg-job-meta">
-                <span className="yr">{formatDateRange(job.start, job.end)}</span>
-                {job.location}
-              </div>
-              <div>
-                <div className="tg-job-title">{job.title}</div>
-                <div className="tg-job-co">{job.company}</div>
-                {job.bullets.length > 0 && (
-                  <ul>
-                    {job.bullets.map((b, i) => (
-                      // oxlint-disable-next-line jsx/no-array-index-key
-                      <li key={`${job.id}-b-${i}`}>
-                        <RichText value={b} />
-                      </li>
-                    ))}
-                  </ul>
-                )}
-              </div>
-            </div>
-          </div>
+          <div className={bodyCls}>{spec.content}</div>
         </section>,
       );
     });
@@ -365,32 +390,62 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
     .filter((c) => c.header.trim() && c.bullets.some((b) => b.trim()))
     .forEach((c) => {
       const n = next();
-      atoms.push(
-        <section className="tg-section tg-section-end" key={`custom-${c.id}`}>
-          <div className="tg-marker">
-            <div className="tg-marker-num">{n}</div>
-            <div className="tg-marker-label">{c.header}</div>
-          </div>
-          <div className="tg-body">
-            {c.bullets.length === 1 ? (
+      if (c.bullets.length === 1) {
+        atoms.push(
+          <section className="tg-section tg-section-end" key={`custom-${c.id}`}>
+            <div className="tg-marker">
+              <div className="tg-marker-num">{n}</div>
+              <div className="tg-marker-label">{c.header}</div>
+            </div>
+            <div className="tg-body">
               <p className="tg-summary">
                 <RichText value={c.bullets[0]} />
               </p>
+            </div>
+          </section>,
+        );
+        return;
+      }
+      // Multi-bullet custom section: one atom per bullet. The first atom
+      // carries the marker, the rest are continuations. The last atom
+      // gets `tg-section-end` for the section's bottom margin.
+      c.bullets.forEach((b, i) => {
+        const isFirst = i === 0;
+        const isLast = i === c.bullets.length - 1;
+        const sectionCls = [
+          isFirst ? "tg-section" : "tg-section-cont",
+          isLast ? "tg-section-end" : "",
+        ]
+          .filter(Boolean)
+          .join(" ");
+        const chainNext = isFirst && c.bullets.length > 1;
+        atoms.push(
+          <section
+            // oxlint-disable-next-line jsx/no-array-index-key
+            key={`custom-${c.id}-b-${i}`}
+            className={sectionCls}
+            data-keep-with-next={chainNext ? "true" : undefined}
+          >
+            {isFirst ? (
+              <div className="tg-marker">
+                <div className="tg-marker-num">{n}</div>
+                <div className="tg-marker-label">{c.header}</div>
+              </div>
             ) : (
+              <div />
+            )}
+            <div className={isFirst ? "tg-body" : "tg-body-cont"}>
               <div className="tg-job" style={{ display: "block" }}>
                 <ul>
-                  {c.bullets.map((b, i) => (
-                    // oxlint-disable-next-line jsx/no-array-index-key
-                    <li key={`${c.id}-b-${i}`}>
-                      <RichText value={b} />
-                    </li>
-                  ))}
+                  <li>
+                    <RichText value={b} />
+                  </li>
                 </ul>
               </div>
-            )}
-          </div>
-        </section>,
-      );
+            </div>
+          </section>,
+        );
+      });
     });
 
   return (

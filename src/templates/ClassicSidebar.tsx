@@ -19,6 +19,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -66,6 +67,7 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
     .cs-summary { font-size: 9pt; line-height: 1.55; color: #1e293b; text-align: justify; hyphens: auto; overflow-wrap: break-word; }
     .cs-summary-atom { margin-bottom: 4mm; }
     .cs-job { margin-bottom: 2.8mm; page-break-inside: avoid; break-inside: avoid; }
+    .cs-job-head { margin-bottom: 0; }
     .cs-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
     .cs-jobtitle { font-size: 9.6pt; font-weight: 700; color: #27272a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .cs-jobmeta { font-size: 8.2pt; color: #6b7280; font-style: italic; flex-shrink: 0; font-variant-numeric: tabular-nums; }
@@ -73,6 +75,11 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
     .cs-job ul { list-style: none; padding: 0; margin: 0; }
     .cs-job li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: break-word; }
     .cs-job li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .cs-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .cs-ul-bullet li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .cs-ul-bullet li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .cs-ul-bullet-first { margin-top: 0; }
+    .cs-ul-bullet-last { margin-bottom: 2.8mm; }
     .cs-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .cs-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
     .cs-edutitle { font-size: 9.4pt; font-weight: 700; color: #27272a; overflow-wrap: break-word; }
@@ -299,8 +306,8 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
       </h2>,
     );
     resume.experience.forEach((job) => {
-      mainAtoms.push(
-        <div className="cs-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="cs-job cs-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="cs-jobhead">
             <div className="cs-jobtitle">{job.title}</div>
             <div className="cs-jobmeta">
@@ -309,15 +316,44 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
             </div>
           </div>
           <div className="cs-jobco">{job.company}</div>
-          <ul>
-            {job.bullets.map((b, i) => (
-              <li key={`${job.id}-bullet-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        mainAtoms.push(
+          <div className="cs-job" key={`exp-${job.id}`}>
+            <div className="cs-jobhead">
+              <div className="cs-jobtitle">{job.title}</div>
+              <div className="cs-jobmeta">
+                {formatDateRange(job.start, job.end)}
+                {formatLocation(job.location, " · ")}
+              </div>
+            </div>
+            <div className="cs-jobco">{job.company}</div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(mainAtoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "cs-ul-bullet",
+            i === 0 ? "cs-ul-bullet-first" : "",
+            i === total - 1 ? "cs-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -398,18 +434,26 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
           </p>,
         );
       } else {
-        mainAtoms.push(
-          <div className="cs-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(mainAtoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "cs-ul-bullet",
+              i === 0 ? "cs-ul-bullet-first" : "",
+              i === total - 1 ? "cs-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

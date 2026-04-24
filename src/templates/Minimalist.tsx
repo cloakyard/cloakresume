@@ -17,6 +17,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   formatDateRange,
@@ -43,6 +44,7 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
     .ml-h2::before { content: "§"; color: ${palette.primary600}; font-weight: 400; margin-right: 2mm; letter-spacing: 0; }
     .ml-summary { font-size: 10pt; line-height: 1.7; color: #262626; max-width: 168mm; hyphens: auto; overflow-wrap: break-word; }
     .ml-job { margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .ml-job-head { margin-bottom: 0; }
     .ml-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.5mm; flex-wrap: wrap; }
     .ml-jobtitle { font-size: 10.4pt; font-weight: 600; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .ml-jobmeta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; flex-shrink: 0; }
@@ -50,6 +52,11 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
     .ml-job ul { list-style: none; padding: 0; margin: 0; }
     .ml-job li { font-size: 9.6pt; line-height: 1.55; padding-left: 4.5mm; position: relative; margin-bottom: 1mm; color: #262626; overflow-wrap: break-word; }
     .ml-job li::before { content: "—"; position: absolute; left: 0; color: #a3a3a3; }
+    .ml-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .ml-ul-bullet li { font-size: 9.6pt; line-height: 1.55; padding-left: 4.5mm; position: relative; margin-bottom: 1mm; color: #262626; overflow-wrap: break-word; }
+    .ml-ul-bullet li::before { content: "—"; position: absolute; left: 0; color: #a3a3a3; }
+    .ml-ul-bullet-first { margin-top: 0; }
+    .ml-ul-bullet-last { margin-bottom: 4.5mm; }
     .ml-skill { display: grid; grid-template-columns: 36mm minmax(0, 1fr); gap: 4mm; margin-bottom: 1.4mm; font-size: 9.6pt; page-break-inside: avoid; break-inside: avoid; }
     .ml-skill-label { color: #0a0a0a; font-weight: 600; min-width: 0; overflow-wrap: break-word; }
     .ml-skill-list { color: #262626; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
@@ -100,8 +107,8 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="ml-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="ml-job ml-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="ml-jobhead">
             <div className="ml-jobtitle">{job.title}</div>
             <div className="ml-jobmeta">{formatDateRange(job.start, job.end)}</div>
@@ -110,18 +117,44 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
             {job.company}
             {formatLocation(job.location)}
           </div>
-          {job.bullets.length > 0 && (
-            <ul>
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="ml-job" key={`exp-${job.id}`}>
+            <div className="ml-jobhead">
+              <div className="ml-jobtitle">{job.title}</div>
+              <div className="ml-jobmeta">{formatDateRange(job.start, job.end)}</div>
+            </div>
+            <div className="ml-jobco">
+              {job.company}
+              {formatLocation(job.location)}
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "ml-ul-bullet",
+            i === 0 ? "ml-ul-bullet-first" : "",
+            i === total - 1 ? "ml-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -285,18 +318,26 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="ml-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "ml-ul-bullet",
+              i === 0 ? "ml-ul-bullet-first" : "",
+              i === total - 1 ? "ml-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

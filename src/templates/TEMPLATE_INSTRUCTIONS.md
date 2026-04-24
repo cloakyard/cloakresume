@@ -46,11 +46,80 @@ The rules `PaginatedCanvas` enforces:
   - **Sections** split at sub-section / item boundaries (e.g. Experience breaks between job entries).
   - **Sub-sections** (a single job, a single project) split at bullet boundaries when the item is taller than the remaining page space.
   - **Bullet points** themselves may wrap across pages when a single bullet is long enough that keeping it whole would leave a large gap. Prefer atom-level splits first; allow intra-bullet wrapping only when no finer split is available.
-- **Per-item atoms for list sections** (Experience, Education, Projects, Custom). Long sub-sections should be further decomposed into per-bullet atoms (or grouped bullet atoms sharing a `data-continuation` header) so the packer can continue the same job across pages at bullet boundaries rather than moving the whole entry.
+- **Per-bullet atoms for bullet-heavy list sections (Experience, Custom).** Use the shared `pushSplitItem` helper in `paginationAtoms.tsx` so every template splits identically: head atom + one atom per bullet, with `data-keep-with-next` wired on the head and the first bullet so the head never orphans at the bottom of a page. See **§2a The `pushSplitItem` pattern** below.
 - **Single-atom grids** for sections rendered as 2-col / 3-col grids (Skills, Credentials, Tail/More) only when the grid reliably fits on one page. If a grid is tall enough that keeping it single-atom would leave a big gap on the previous page, split the grid into row-level atoms so it can flow across pages.
 - **Keep-with-next.** Any atom that is an isolated section header (an `<h2>` with no following item in the same atom) must carry `data-keep-with-next="true"`. The packer will evict it onto the next page alongside its first item so headers are never orphaned.
 - **Continuation headers.** When a section splits across pages, the continued portion on the next page must carry a subtle continuation marker (e.g. "Experience (continued)" or the company/role name repeated) so the reader never loses context.
 - **`break-inside: avoid`** only on atoms that genuinely must not split (a compact card, a header+first-line pair). Do **not** apply it blanket to every item — it is the primary cause of trapped white space. Reserve it for cases where splitting would produce a worse result than moving the atom whole.
+
+## 2a. The `pushSplitItem` pattern
+
+Bullet-heavy items (Experience jobs, multi-bullet Custom sections) are the primary source of the "section shifted without continuing content" bug: one item contains title/company/dates + all bullets as a single atom, so when 3 of 5 bullets would fit on the current page, the whole atom moves to the next page and leaves empty space behind.
+
+`pushSplitItem` from [`paginationAtoms.tsx`](./paginationAtoms.tsx) solves this generically. It emits a head atom followed by one atom per bullet, wires the keep-with-next chain, and templates supply their own renderers so layout/styling stays template-local.
+
+```tsx
+import { pushSplitItem } from "./paginationAtoms.tsx";
+
+// Experience: one job → 1 head atom + N bullet atoms.
+resume.experience.forEach((job) => {
+  const head = (
+    <div className="{prefix}-job {prefix}-job-head" key={`exp-${job.id}-head-inner`}>
+      {/* title + company + dates + location — WITHOUT the ul */}
+    </div>
+  );
+  if (job.bullets.length === 0) {
+    // No bullets: emit as a single atom, not via pushSplitItem.
+    atoms.push(
+      <div className="{prefix}-job" key={`exp-${job.id}`}>
+        {/* head */}
+      </div>,
+    );
+    return;
+  }
+  pushSplitItem(atoms, {
+    keyPrefix: `exp-${job.id}`,
+    renderHead: () => head,
+    bullets: job.bullets,
+    renderBullet: (bullet, i, total) => {
+      const cls = [
+        "{prefix}-ul-bullet",
+        i === 0 ? "{prefix}-ul-bullet-first" : "",
+        i === total - 1 ? "{prefix}-ul-bullet-last" : "",
+      ]
+        .filter(Boolean)
+        .join(" ");
+      return (
+        <ul className={cls}>
+          <li>
+            <RichText value={bullet} />
+          </li>
+        </ul>
+      );
+    },
+  });
+});
+```
+
+Custom sections with >1 bullet follow the same pattern, with `renderHead` omitted (the section header above is its own keep-with-next atom).
+
+**Required CSS classes** (adapt prefix / colours / glyphs to your template):
+
+- `.{prefix}-job-head { margin-bottom: 0; }` — head atom has no bottom margin; the first bullet atom follows directly.
+- `.{prefix}-ul-bullet { margin: 0; padding-left: <same as original ul>; list-style: <same>; }`
+- `.{prefix}-ul-bullet li { ... mirror original `.{prefix}-job li`exactly, including any`::before` custom-bullet glyph ... }` — if your job list uses `list-style: none` + a custom glyph, copy the glyph selector to the new bullet wrapper.
+- `.{prefix}-ul-bullet-first { margin-top: <small gap>; }` — tiny top gap before the first bullet so it doesn't hug the head row.
+- `.{prefix}-ul-bullet-last { margin-bottom: <original `.{prefix}-job` margin-bottom>; }` — restores between-item spacing after the last bullet.
+
+**Two-column templates:** push to `mainAtoms` (the main-column array), not `sidebarAtoms`. Sidebar sections (skills, languages, tools, certifications, awards) are already per-item and don't need splitting.
+
+**Grid-based item rows** (Academic's `.ac-entry`, ModernMinimal's `.mm-job` — 2-col grid with date on one side and content on the other): wrap each bullet atom in the same grid with an empty cell for the non-content column so bullets stay aligned under the title. See `Academic.tsx` for the concrete form.
+
+**Timeline-rail items** (Horizon's `.hz-job::before`, CompactTimeline's `.ct-job::before`): either (a) draw the rail on each bullet atom so it visually continues, or (b) keep the rail on the head atom only and accept that bullets sit below without a rail. Pick whichever reads better for the template; comment the choice in the CSS.
+
+### Why this matters
+
+Before `pushSplitItem`, every template built its own atom loop. Long items moved whole; the packer couldn't split them. After: the packer can break between any two bullets, pages pack fully, and the head + first bullet never separate.
 
 Do **not**:
 

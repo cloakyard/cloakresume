@@ -20,6 +20,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   formatDateRange,
@@ -46,6 +47,8 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
     .atp-h2 { font-size: 11pt; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; color: ${palette.primary700}; margin: 5.5mm 0 2mm; padding-bottom: 1mm; border-bottom: 1px solid ${palette.primary200}; break-after: avoid; page-break-after: avoid; }
     .atp-p { font-size: 10.5pt; margin: 0 0 2mm; color: #1f2937; line-height: 1.5; overflow-wrap: break-word; }
     .atp-entry { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .atp-entry-head { margin-bottom: 0; }
+    .atp-entry-end { margin-bottom: 3.5mm; }
     .atp-row { display: flex; justify-content: space-between; gap: 6mm; align-items: baseline; flex-wrap: wrap; }
     .atp-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .atp-row > span:last-child { flex-shrink: 0; overflow-wrap: break-word; }
@@ -56,6 +59,11 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
     .atp-ul { margin: 1.5mm 0 0; padding-left: 5mm; list-style: disc; }
     .atp-ul li { font-size: 10.3pt; margin: 0 0 1mm; color: #1f2937; line-height: 1.45; padding-left: 1mm; overflow-wrap: break-word; }
     .atp-ul li::marker { color: ${palette.primary600}; }
+    .atp-ul-bullet { margin: 0; padding-left: 5mm; list-style: disc; }
+    .atp-ul-bullet li { font-size: 10.3pt; margin: 0 0 1mm; color: #1f2937; line-height: 1.45; padding-left: 1mm; overflow-wrap: break-word; }
+    .atp-ul-bullet li::marker { color: ${palette.primary600}; }
+    .atp-ul-bullet-first { margin-top: 1.5mm; }
+    .atp-ul-bullet-last { margin-bottom: 3.5mm; }
     .atp-skill-row { font-size: 10.3pt; margin-bottom: 1.5mm; color: #1f2937; overflow-wrap: anywhere; word-break: break-word; }
     .atp-skill-row strong { color: #111827; font-weight: 600; margin-right: 1mm; overflow-wrap: break-word; }
     .atp-kv { font-size: 10.3pt; margin-bottom: 1mm; overflow-wrap: break-word; }
@@ -118,28 +126,53 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="atp-entry" key={`exp-${job.id}`}>
-          <div className="atp-row">
-            <span className="atp-role">{job.title}</span>
-            <span className="atp-dates">{formatDateRange(job.start, job.end)}</span>
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="atp-entry" key={`exp-${job.id}`}>
+            <div className="atp-row">
+              <span className="atp-role">{job.title}</span>
+              <span className="atp-dates">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            <div className="atp-row">
+              <span className="atp-company">{job.company}</span>
+              <span className="atp-location">{job.location}</span>
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => (
+          <div className="atp-entry atp-entry-head">
+            <div className="atp-row">
+              <span className="atp-role">{job.title}</span>
+              <span className="atp-dates">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            <div className="atp-row">
+              <span className="atp-company">{job.company}</span>
+              <span className="atp-location">{job.location}</span>
+            </div>
           </div>
-          <div className="atp-row">
-            <span className="atp-company">{job.company}</span>
-            <span className="atp-location">{job.location}</span>
-          </div>
-          {job.bullets.length > 0 && (
-            <ul className="atp-ul">
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-bullet-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
+        ),
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "atp-ul-bullet",
+            i === 0 ? "atp-ul-bullet-first" : "",
+            i === total - 1 ? "atp-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
             </ul>
-          )}
-        </div>,
-      );
+          );
+        },
+      });
     });
   }
 
@@ -293,16 +326,26 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
           </p>,
         );
       } else {
-        atoms.push(
-          <ul className="atp-ul" key={`custom-${c.id}`}>
-            {c.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${c.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>,
-        );
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "atp-ul-bullet",
+              i === 0 ? "atp-ul-bullet-first" : "",
+              i === total - 1 ? "atp-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
+                </li>
+              </ul>
+            );
+          },
+        });
       }
     });
 

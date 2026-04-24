@@ -15,6 +15,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -47,6 +48,9 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
     .mm-grid { display: grid; grid-template-columns: 28mm minmax(0, 1fr); gap: 3mm 5mm; }
     .mm-job { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 4mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
     .mm-job > div { min-width: 0; }
+    .mm-job-head { margin-bottom: 0; }
+    .mm-job-bullet { margin-bottom: 0; }
+    .mm-job-bullet-last { margin-bottom: 4mm; }
     .mm-jobmeta { font-size: 8.5pt; color: #6b7280; overflow-wrap: break-word; }
     .mm-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9.2pt; display: block; margin-bottom: 0.5mm; overflow-wrap: break-word; }
     .mm-jobmeta .dates { display: block; margin-top: 0.5mm; }
@@ -54,6 +58,9 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
     .mm-job ul { list-style: none; padding: 0; margin: 0; }
     .mm-job li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
     .mm-job li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary600}; border-radius: 50%; }
+    .mm-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .mm-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
+    .mm-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary600}; border-radius: 50%; }
     .mm-skill-col { display: grid; grid-template-columns: 36mm minmax(0, 1fr); gap: 2mm 4mm; margin-bottom: 1.2mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
     .mm-skill-label { color: #111827; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
     .mm-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
@@ -120,26 +127,54 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="mm-job" key={`exp-${job.id}`}>
-          <div className="mm-jobmeta">
-            <span className="co">{job.company}</span>
-            {job.location}
-            <span className="dates">{formatDateRange(job.start, job.end)}</span>
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="mm-job" key={`exp-${job.id}`}>
+            <div className="mm-jobmeta">
+              <span className="co">{job.company}</span>
+              {job.location}
+              <span className="dates">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            <div>
+              <div className="mm-jobtitle">{job.title}</div>
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => (
+          <div className="mm-job mm-job-head">
+            <div className="mm-jobmeta">
+              <span className="co">{job.company}</span>
+              {job.location}
+              <span className="dates">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            <div>
+              <div className="mm-jobtitle">{job.title}</div>
+            </div>
           </div>
-          <div>
-            <div className="mm-jobtitle">{job.title}</div>
-            <ul>
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>,
-      );
+        ),
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = ["mm-job", "mm-job-bullet", i === total - 1 ? "mm-job-bullet-last" : ""]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <div className={cls}>
+              <div />
+              <div>
+                <ul className="mm-ul-bullet">
+                  <li>
+                    <RichText value={bullet} />
+                  </li>
+                </ul>
+              </div>
+            </div>
+          );
+        },
+      });
     });
   }
 
@@ -314,18 +349,17 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="mm-job" key={`custom-${c.id}`} style={{ display: "block" }}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet) => (
+            <ul className="mm-ul-bullet">
+              <li>
+                <RichText value={bullet} />
+              </li>
             </ul>
-          </div>,
-        );
+          ),
+        });
       }
     });
 

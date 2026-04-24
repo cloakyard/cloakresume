@@ -16,6 +16,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -46,6 +47,7 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
     .es-h2::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: ${palette.primary200}; z-index: 0; }
     .es-summary { font-size: 9.5pt; line-height: 1.65; text-align: justify; color: #1e293b; hyphens: auto; overflow-wrap: break-word; }
     .es-job { margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
+    .es-job-head { margin-bottom: 0; }
     .es-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
     .es-jobtitle { font-size: 10.5pt; font-weight: 700; color: #111827; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .es-jobmeta { font-size: 8.8pt; color: #6b7280; font-style: italic; flex-shrink: 0; }
@@ -53,6 +55,11 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
     .es-job ul { list-style: none; padding: 0; margin: 0; }
     .es-job li { font-size: 9.3pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; overflow-wrap: break-word; }
     .es-job li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .es-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .es-ul-bullet li { font-size: 9.3pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .es-ul-bullet li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .es-ul-bullet-first { margin-top: 0; }
+    .es-ul-bullet-last { margin-bottom: 4mm; }
     .es-skill-group { margin-bottom: 1.8mm; font-size: 9.2pt; display: grid; grid-template-columns: 42mm minmax(0, 1fr); gap: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .es-skill-label { color: ${palette.primary700}; font-weight: 700; font-variant: small-caps; letter-spacing: 0.5px; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
     .es-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
@@ -115,8 +122,8 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="es-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="es-job es-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="es-jobhead">
             <div className="es-jobtitle">{job.title}</div>
             <div className="es-jobmeta">
@@ -125,16 +132,44 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
             </div>
           </div>
           <div className="es-jobco">{job.company}</div>
-          <ul>
-            {job.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${job.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="es-job" key={`exp-${job.id}`}>
+            <div className="es-jobhead">
+              <div className="es-jobtitle">{job.title}</div>
+              <div className="es-jobmeta">
+                {formatDateRange(job.start, job.end)}
+                {formatLocation(job.location, " · ")}
+              </div>
+            </div>
+            <div className="es-jobco">{job.company}</div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "es-ul-bullet",
+            i === 0 ? "es-ul-bullet-first" : "",
+            i === total - 1 ? "es-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -314,18 +349,26 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="es-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "es-ul-bullet",
+              i === 0 ? "es-ul-bullet-first" : "",
+              i === total - 1 ? "es-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

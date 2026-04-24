@@ -19,6 +19,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -64,6 +65,7 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
     .bh-summary { font-size: 10pt; line-height: 1.6; color: #1f2937; padding: 3mm 4mm; background: ${palette.primary50}; border-left: 4px solid ${palette.primary600}; overflow-wrap: break-word; }
 
     .bh-job { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .bh-job-head { margin-bottom: 0; }
     .bh-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; border-bottom: 1px solid #0a0a0a; padding-bottom: 0.8mm; margin-bottom: 1.4mm; flex-wrap: wrap; }
     .bh-jobtitle { font-size: 10.4pt; font-weight: 800; color: #0a0a0a; letter-spacing: -0.15px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .bh-jobdates { font-size: 8.4pt; font-weight: 700; color: #ffffff; background: #0a0a0a; padding: 0.6mm 2.2mm; font-variant-numeric: tabular-nums; white-space: nowrap; letter-spacing: 0.4px; flex-shrink: 0; }
@@ -72,6 +74,11 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
     .bh-job ul { list-style: none; padding: 0; margin: 0; }
     .bh-job li { font-size: 9pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 0.8mm; color: #1f2937; overflow-wrap: break-word; }
     .bh-job li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 2.2mm; height: 2.2mm; background: ${palette.primary600}; }
+    .bh-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .bh-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 0.8mm; color: #1f2937; overflow-wrap: break-word; }
+    .bh-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 2.2mm; height: 2.2mm; background: ${palette.primary600}; }
+    .bh-ul-bullet-first { margin-top: 0; }
+    .bh-ul-bullet-last { margin-bottom: 3.5mm; }
 
     .bh-skill { margin-bottom: 2.2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
     .bh-skill-label { font-size: 8.6pt; font-weight: 800; text-transform: uppercase; letter-spacing: 1.4px; color: #0a0a0a; margin-bottom: 0.6mm; display: flex; align-items: center; gap: 1.6mm; overflow-wrap: break-word; }
@@ -181,8 +188,8 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="bh-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="bh-job bh-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="bh-jobhead">
             <div className="bh-jobtitle">{job.title}</div>
             <div className="bh-jobdates">{formatDateRange(job.start, job.end)}</div>
@@ -191,18 +198,44 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
             {job.company}
             {job.location ? <span className="loc"> · {job.location}</span> : null}
           </div>
-          {job.bullets.length > 0 && (
-            <ul>
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="bh-job" key={`exp-${job.id}`}>
+            <div className="bh-jobhead">
+              <div className="bh-jobtitle">{job.title}</div>
+              <div className="bh-jobdates">{formatDateRange(job.start, job.end)}</div>
+            </div>
+            <div className="bh-jobco">
+              {job.company}
+              {job.location ? <span className="loc"> · {job.location}</span> : null}
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "bh-ul-bullet",
+            i === 0 ? "bh-ul-bullet-first" : "",
+            i === total - 1 ? "bh-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -397,18 +430,26 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
           </div>,
         );
       } else {
-        atoms.push(
-          <div className="bh-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "bh-ul-bullet",
+              i === 0 ? "bh-ul-bullet-first" : "",
+              i === total - 1 ? "bh-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

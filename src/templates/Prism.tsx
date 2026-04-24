@@ -20,6 +20,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -91,6 +92,7 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     .pr-summary { font-size: 9.6pt; line-height: 1.6; color: #1e293b; overflow-wrap: break-word; }
     .pr-summary-atom { margin-bottom: 5mm; }
     .pr-job { margin-bottom: 3.8mm; page-break-inside: avoid; break-inside: avoid; }
+    .pr-job-head { margin-bottom: 0; }
     .pr-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.4mm; flex-wrap: wrap; }
     .pr-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .pr-jobdates { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
@@ -99,6 +101,11 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     .pr-job ul { list-style: none; padding: 0; margin: 0; }
     .pr-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: break-word; }
     .pr-job li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary500}; border-radius: 50%; }
+    .pr-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .pr-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: break-word; }
+    .pr-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary500}; border-radius: 50%; }
+    .pr-ul-bullet-first { margin-top: 0; }
+    .pr-ul-bullet-last { margin-bottom: 3.8mm; }
     .pr-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; padding-bottom: 1.8mm; border-bottom: 1px solid #e2e8f0; }
     .pr-edu:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
     .pr-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
@@ -295,8 +302,8 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      mainAtoms.push(
-        <div className="pr-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="pr-job pr-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="pr-jobhead">
             <div className="pr-jobtitle">{job.title}</div>
             <div className="pr-jobdates">{formatDateRange(job.start, job.end)}</div>
@@ -305,16 +312,44 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
             {job.company}
             {job.location ? <span className="loc"> · {job.location}</span> : null}
           </div>
-          <ul>
-            {job.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${job.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        mainAtoms.push(
+          <div className="pr-job" key={`exp-${job.id}`}>
+            <div className="pr-jobhead">
+              <div className="pr-jobtitle">{job.title}</div>
+              <div className="pr-jobdates">{formatDateRange(job.start, job.end)}</div>
+            </div>
+            <div className="pr-jobco">
+              {job.company}
+              {job.location ? <span className="loc"> · {job.location}</span> : null}
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(mainAtoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "pr-ul-bullet",
+            i === 0 ? "pr-ul-bullet-first" : "",
+            i === total - 1 ? "pr-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -378,18 +413,26 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        mainAtoms.push(
-          <div className="pr-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(mainAtoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "pr-ul-bullet",
+              i === 0 ? "pr-ul-bullet-first" : "",
+              i === total - 1 ? "pr-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

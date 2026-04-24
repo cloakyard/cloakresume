@@ -24,6 +24,7 @@ import { PaginatedCanvas } from "../components/PaginatedCanvas.tsx";
 import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   formatDateRange,
@@ -48,6 +49,11 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
     .ats-h2 { font-size: 11.5pt; font-weight: 700; text-transform: uppercase; letter-spacing: 0.6px; color: #000; margin: 5mm 0 2mm; border-bottom: 1px solid #000; padding-bottom: 1mm; break-after: avoid; page-break-after: avoid; }
     .ats-p { font-size: 10.5pt; color: #000; margin: 0 0 2mm; overflow-wrap: break-word; }
     .ats-job, .ats-edu, .ats-proj, .ats-cert, .ats-award { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; overflow-wrap: break-word; }
+    .ats-job-head { margin-bottom: 0; }
+    .ats-ul-bullet { margin: 0; padding-left: 5mm; list-style: disc; }
+    .ats-ul-bullet li { font-size: 10.5pt; margin: 0 0 1mm; color: #000; line-height: 1.45; overflow-wrap: break-word; }
+    .ats-ul-bullet-first { margin-top: 1mm; }
+    .ats-ul-bullet-last { margin-bottom: 3.5mm; }
     .ats-row { display: flex; justify-content: space-between; gap: 6mm; font-size: 10.5pt; flex-wrap: wrap; }
     .ats-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .ats-row > span:last-child { flex-shrink: 0; }
@@ -113,8 +119,8 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="ats-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="ats-job ats-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="ats-row">
             <span>
               <span className="ats-strong">{job.title}</span>
@@ -123,18 +129,44 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
             <span className="ats-italic">{formatDateRange(job.start, job.end)}</span>
           </div>
           {job.location && <div className="ats-italic">{job.location}</div>}
-          {job.bullets.length > 0 && (
-            <ul className="ats-ul">
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-bullet-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="ats-job" key={`exp-${job.id}`}>
+            <div className="ats-row">
+              <span>
+                <span className="ats-strong">{job.title}</span>
+                {job.company ? `, ${job.company}` : ""}
+              </span>
+              <span className="ats-italic">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            {job.location && <div className="ats-italic">{job.location}</div>}
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "ats-ul-bullet",
+            i === 0 ? "ats-ul-bullet-first" : "",
+            i === total - 1 ? "ats-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -288,16 +320,26 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
           </p>,
         );
       } else {
-        atoms.push(
-          <ul className="ats-ul" key={`custom-${c.id}`}>
-            {c.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${c.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>,
-        );
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "ats-ul-bullet",
+              i === 0 ? "ats-ul-bullet-first" : "",
+              i === total - 1 ? "ats-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
+                </li>
+              </ul>
+            );
+          },
+        });
       }
     });
 

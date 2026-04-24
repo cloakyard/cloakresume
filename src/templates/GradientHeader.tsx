@@ -15,6 +15,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -48,6 +49,7 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
     .gh-summary { font-size: 9.4pt; line-height: 1.55; color: #1e293b; overflow-wrap: break-word; }
     .gh-job { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 5mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
     .gh-job > div { min-width: 0; }
+    .gh-job-head { margin-bottom: 0; }
     .gh-jobmeta { font-size: 8.4pt; color: #6b7280; overflow-wrap: break-word; }
     .gh-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9pt; display: block; margin-bottom: 0.5mm; overflow-wrap: break-word; }
     .gh-jobmeta .dates { display: block; margin-top: 0.5mm; }
@@ -55,6 +57,18 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
     .gh-job ul { list-style: none; padding: 0; margin: 0; }
     .gh-job li { font-size: 8.9pt; line-height: 1.45; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
     .gh-job li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 2px; transform: rotate(45deg); }
+    /* Per-bullet atoms: mirror the job grid so bullets stay aligned under
+       the content column even when split across pages. Empty left cell
+       preserves the 38mm meta column. */
+    .gh-ul-row { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 5mm; margin: 0; }
+    .gh-ul-row > ul { list-style: none; padding: 0; margin: 0; grid-column: 2; min-width: 0; }
+    .gh-ul-row li { font-size: 8.9pt; line-height: 1.45; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
+    .gh-ul-row li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 2px; transform: rotate(45deg); }
+    .gh-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .gh-ul-bullet li { font-size: 8.9pt; line-height: 1.45; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
+    .gh-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 2px; transform: rotate(45deg); }
+    .gh-ul-bullet-first { margin-top: 0; }
+    .gh-ul-bullet-last { margin-bottom: 4mm; }
     .gh-chips { display: flex; flex-wrap: wrap; gap: 1.5mm; }
     .gh-chip { background: linear-gradient(135deg, ${palette.primary50}, ${palette.primary100}); border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.6mm 2.4mm; border-radius: 999px; font-size: 8pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .gh-skill-row { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 5mm; margin-bottom: 1.4mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
@@ -126,8 +140,8 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="gh-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="gh-job gh-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="gh-jobmeta">
             <span className="co">{job.company}</span>
             {job.location}
@@ -135,17 +149,41 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
           </div>
           <div>
             <div className="gh-jobtitle">{job.title}</div>
-            <ul>
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={i}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
           </div>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="gh-job" key={`exp-${job.id}`}>
+            <div className="gh-jobmeta">
+              <span className="co">{job.company}</span>
+              {job.location}
+              <span className="dates">{formatDateRange(job.start, job.end)}</span>
+            </div>
+            <div>
+              <div className="gh-jobtitle">{job.title}</div>
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const bottomMargin = i === total - 1 ? "4mm" : "0";
+          return (
+            <div className="gh-ul-row" style={{ marginBottom: bottomMargin }}>
+              <ul>
+                <li>
+                  <RichText value={bullet} />
+                </li>
+              </ul>
+            </div>
+          );
+        },
+      });
     });
   }
 
@@ -340,18 +378,26 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="gh-job" key={`custom-${c.id}`} style={{ display: "block" }}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "gh-ul-bullet",
+              i === 0 ? "gh-ul-bullet-first" : "",
+              i === total - 1 ? "gh-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

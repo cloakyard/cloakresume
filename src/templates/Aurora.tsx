@@ -20,6 +20,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -68,6 +69,9 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-job::after { content: ""; position: absolute; left: -1.2mm; top: 1.8mm; width: 3mm; height: 3mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-job.au-plain { padding-left: 0; }
     .au-job.au-plain::before, .au-job.au-plain::after { content: none; }
+    /* Per-bullet split: head atom keeps rail+dot; bullet atoms mirror left padding, no rail pseudo, to avoid disconnected segments across pages. */
+    .au-job-head { margin-bottom: 0; padding-bottom: 0; }
+    .au-job-head::before { bottom: 0; }
     .au-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.6mm; flex-wrap: wrap; }
     .au-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.15px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .au-jobdates { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0; }
@@ -76,6 +80,15 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-job ul { list-style: none; padding: 0; margin: 0; }
     .au-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
     .au-job li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
+    .au-job-bullet { position: relative; padding: 0 0 0 6mm; margin: 0; list-style: none; }
+    .au-job-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-job-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
+    .au-job-bullet-last { margin-bottom: 2.2mm; }
+    .au-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .au-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
+    .au-ul-bullet-first { margin-top: 0; }
+    .au-ul-bullet-last { margin-bottom: 2.2mm; }
 
     .au-skills { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5mm 4mm; margin-bottom: 2.5mm; }
     .au-skills:last-child { margin-bottom: 0; }
@@ -178,8 +191,8 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="au-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="au-job au-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="au-jobhead">
             <div className="au-jobtitle">{job.title}</div>
             <div className="au-jobdates">{formatDateRange(job.start, job.end)}</div>
@@ -188,18 +201,40 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
             {job.company}
             {job.location ? <span className="loc"> · {job.location}</span> : null}
           </div>
-          {job.bullets.length > 0 && (
-            <ul>
-              {job.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${job.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="au-job" key={`exp-${job.id}`}>
+            <div className="au-jobhead">
+              <div className="au-jobtitle">{job.title}</div>
+              <div className="au-jobdates">{formatDateRange(job.start, job.end)}</div>
+            </div>
+            <div className="au-jobco">
+              {job.company}
+              {job.location ? <span className="loc"> · {job.location}</span> : null}
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = ["au-job-bullet", i === total - 1 ? "au-job-bullet-last" : ""]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -410,18 +445,26 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="au-job au-plain" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "au-ul-bullet",
+              i === 0 ? "au-ul-bullet-first" : "",
+              i === total - 1 ? "au-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

@@ -16,6 +16,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -49,6 +50,10 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
     .ac-summary { font-size: 10pt; line-height: 1.6; text-align: justify; color: #1a1a1a; hyphens: auto; overflow-wrap: break-word; }
     .ac-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4mm; margin-bottom: 2.5mm; align-items: baseline; page-break-inside: avoid; break-inside: avoid; }
     .ac-entry > div:first-child { min-width: 0; }
+    .ac-entry-head { margin-bottom: 0; }
+    .ac-entry-bullet { margin-bottom: 0; }
+    .ac-entry-bullet-last { margin-bottom: 2.5mm; }
+    .ac-entry-bullet .ac-body { margin-top: 0; }
     .ac-entry-title { font-weight: 700; color: #0f172a; overflow-wrap: break-word; }
     .ac-entry-sub { font-style: italic; color: ${palette.primary700}; font-size: 9.2pt; overflow-wrap: break-word; }
     .ac-entry-date { font-size: 9pt; color: #4b5563; white-space: nowrap; font-variant-numeric: tabular-nums; }
@@ -105,29 +110,6 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
     );
   }
 
-  if (resume.education.length > 0) {
-    atoms.push(
-      <h2 className="ac-h2" data-keep-with-next="true" key="edu-h">
-        Education
-      </h2>,
-    );
-    resume.education.forEach((ed) => {
-      atoms.push(
-        <div className="ac-entry" key={`edu-${ed.id}`}>
-          <div>
-            <div className="ac-entry-title">{ed.degree}</div>
-            <div className="ac-entry-sub">
-              {ed.school}
-              {formatLocation(ed.location)}
-            </div>
-            {ed.detail && <div className="ac-body">{ed.detail}</div>}
-          </div>
-          <div className="ac-entry-date">{formatDateRange(ed.start, ed.end)}</div>
-        </div>,
-      );
-    });
-  }
-
   if (resume.experience.length > 0) {
     atoms.push(
       <h2 className="ac-h2" data-keep-with-next="true" key="exp-h">
@@ -135,28 +117,56 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      atoms.push(
-        <div className="ac-entry" key={`exp-${job.id}`} style={{ marginBottom: "3mm" }}>
-          <div>
-            <div className="ac-entry-title">{job.title}</div>
-            <div className="ac-entry-sub">
-              {job.company}
-              {formatLocation(job.location)}
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="ac-entry" key={`exp-${job.id}`} style={{ marginBottom: "3mm" }}>
+            <div>
+              <div className="ac-entry-title">{job.title}</div>
+              <div className="ac-entry-sub">
+                {job.company}
+                {formatLocation(job.location)}
+              </div>
             </div>
-            <div className="ac-body">
-              <ul>
-                {job.bullets.map((b, i) => (
-                  // oxlint-disable-next-line jsx/no-array-index-key
-                  <li key={`${job.id}-b-${i}`}>
-                    <RichText value={b} />
-                  </li>
-                ))}
-              </ul>
+            <div className="ac-entry-date">{formatDateRange(job.start, job.end)}</div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => (
+          <div className="ac-entry ac-entry-head">
+            <div>
+              <div className="ac-entry-title">{job.title}</div>
+              <div className="ac-entry-sub">
+                {job.company}
+                {formatLocation(job.location)}
+              </div>
             </div>
+            <div className="ac-entry-date">{formatDateRange(job.start, job.end)}</div>
           </div>
-          <div className="ac-entry-date">{formatDateRange(job.start, job.end)}</div>
-        </div>,
-      );
+        ),
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = ["ac-entry", "ac-entry-bullet", i === total - 1 ? "ac-entry-bullet-last" : ""]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <div className={cls}>
+              <div>
+                <div className="ac-body">
+                  <ul>
+                    <li>
+                      <RichText value={bullet} />
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div />
+            </div>
+          );
+        },
+      });
     });
   }
 
@@ -289,18 +299,33 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="ac-body" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
-                </li>
-              ))}
-            </ul>
-          </div>,
-        );
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "ac-entry",
+              "ac-entry-bullet",
+              i === total - 1 ? "ac-entry-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <div className={cls}>
+                <div>
+                  <div className="ac-body">
+                    <ul>
+                      <li>
+                        <RichText value={bullet} />
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div />
+              </div>
+            );
+          },
+        });
       }
     });
 

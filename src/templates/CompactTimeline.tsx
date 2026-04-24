@@ -16,6 +16,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -57,6 +58,21 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
     .ct-tl-item ul { list-style: none; padding: 0; margin: 0.8mm 0 0; }
     .ct-tl-item li { font-size: 8.5pt; line-height: 1.45; padding-left: 3mm; position: relative; margin-bottom: 0.5mm; color: #27272a; overflow-wrap: break-word; }
     .ct-tl-item li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    /* Per-bullet split: each atom carries its own border-left rail so segments abut into a continuous rail across page breaks. Anchor dot on head only. */
+    .ct-tl-atom { position: relative; padding-left: 5mm; border-left: 1.5px solid ${palette.primary200}; margin: 0; }
+    .ct-tl-atom-head { padding-top: 0; padding-bottom: 0; }
+    .ct-tl-atom-head::before { content: ""; position: absolute; left: -1.4mm; top: 1.2mm; width: 2.4mm; height: 2.4mm; background: ${palette.primary600}; border-radius: 50%; border: 1.5px solid #ffffff; box-shadow: 0 0 0 1px ${palette.primary200}; }
+    .ct-tl-atom-bullet { padding-top: 0.4mm; padding-bottom: 0; }
+    .ct-tl-atom-bullet-first { padding-top: 0.8mm; }
+    .ct-tl-atom-bullet-last { padding-bottom: 3mm; }
+    .ct-tl-atom-bullet ul { list-style: none; padding: 0; margin: 0; }
+    .ct-tl-atom-bullet li { font-size: 8.5pt; line-height: 1.45; padding-left: 3mm; position: relative; margin-bottom: 0.5mm; color: #27272a; overflow-wrap: break-word; }
+    .ct-tl-atom-bullet li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .ct-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .ct-ul-bullet li { font-size: 8.5pt; line-height: 1.45; padding-left: 3mm; position: relative; margin-bottom: 0.5mm; color: #27272a; overflow-wrap: break-word; }
+    .ct-ul-bullet li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .ct-ul-bullet-first { margin-top: 0; }
+    .ct-ul-bullet-last { margin-bottom: 3mm; }
     .ct-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3mm 6mm; }
     .ct-two > div { min-width: 0; }
     .ct-skill-group { margin-bottom: 1.4mm; font-size: 8.4pt; min-width: 0; overflow-wrap: anywhere; word-break: break-word; page-break-inside: avoid; break-inside: avoid; }
@@ -114,44 +130,74 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
     );
   }
 
-  // Experience: kept as a SINGLE atom — the `.ct-tl` wrapper is the
-  // continuous vertical timeline rail (`border-left: 1.5px solid …`).
-  // Splitting jobs into separate atoms would break the rail into
-  // disconnected segments, defeating the signature design of this
-  // template. Accept less ideal page utilization for Experience in
-  // exchange for the uninterrupted rail.
+  // Experience: per-bullet pagination. Each job becomes a head atom +
+  // one atom per bullet. Each atom carries its own left rail so the
+  // visual timeline stays continuous while bullets can split across
+  // page boundaries at bullet granularity. The anchor dot renders on
+  // the head atom only (at the start of each job).
   if (resume.experience.length > 0) {
     atoms.push(
-      <div key="exp">
-        <div className="ct-h2">Experience</div>
-        <div className="ct-tl">
-          {resume.experience.map((job) => (
-            <div className="ct-tl-item" key={job.id}>
-              <div className="ct-tl-head">
-                <div>
-                  <div className="ct-role">{job.title}</div>
-                  <div className="ct-co">
-                    {job.company}
-                    {formatLocation(job.location, " · ")}
-                  </div>
-                </div>
-                <div className="ct-dates">{formatDateRange(job.start, job.end)}</div>
-              </div>
-              {job.bullets.length > 0 && (
-                <ul>
-                  {job.bullets.map((b, i) => (
-                    // oxlint-disable-next-line jsx/no-array-index-key
-                    <li key={`${job.id}-b-${i}`}>
-                      <RichText value={b} />
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </div>
-          ))}
-        </div>
-      </div>,
+      <h2 className="ct-h2" data-keep-with-next="true" key="exp-h">
+        Experience
+      </h2>,
     );
+    resume.experience.forEach((job) => {
+      const head = (
+        <div className="ct-tl-atom ct-tl-atom-head" key={`exp-${job.id}-head-inner`}>
+          <div className="ct-tl-head">
+            <div>
+              <div className="ct-role">{job.title}</div>
+              <div className="ct-co">
+                {job.company}
+                {formatLocation(job.location, " · ")}
+              </div>
+            </div>
+            <div className="ct-dates">{formatDateRange(job.start, job.end)}</div>
+          </div>
+        </div>
+      );
+      if (job.bullets.length === 0) {
+        atoms.push(
+          <div className="ct-tl-atom ct-tl-atom-head ct-tl-atom-bullet-last" key={`exp-${job.id}`}>
+            <div className="ct-tl-head">
+              <div>
+                <div className="ct-role">{job.title}</div>
+                <div className="ct-co">
+                  {job.company}
+                  {formatLocation(job.location, " · ")}
+                </div>
+              </div>
+              <div className="ct-dates">{formatDateRange(job.start, job.end)}</div>
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(atoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "ct-tl-atom",
+            "ct-tl-atom-bullet",
+            i === 0 ? "ct-tl-atom-bullet-first" : "",
+            i === total - 1 ? "ct-tl-atom-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <div className={cls}>
+              <ul>
+                <li>
+                  <RichText value={bullet} />
+                </li>
+              </ul>
+            </div>
+          );
+        },
+      });
+    });
   }
 
   // Skills: 2-col grid — single atom preserves layout.
@@ -317,18 +363,26 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
           </p>,
         );
       } else {
-        atoms.push(
-          <div className="ct-tl-item" key={`custom-${c.id}`} style={{ paddingBottom: 0 }}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(atoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "ct-ul-bullet",
+              i === 0 ? "ct-ul-bullet-first" : "",
+              i === total - 1 ? "ct-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

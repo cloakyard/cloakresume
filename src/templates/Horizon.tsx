@@ -21,6 +21,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -98,6 +99,8 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-job::before { content: ""; position: absolute; left: 1.2mm; top: 3.2mm; bottom: 0.4mm; width: 1px; background: ${palette.primary200}; }
     .hz-job::after { content: ""; position: absolute; left: 0; top: 1.6mm; width: 2.6mm; height: 2.6mm; background: ${palette.primary600}; border-radius: 50%; border: 2px solid ${SIDEBAR_BG}; box-shadow: 0 0 0 1px ${palette.primary600}; }
     .hz-job:last-child::before { display: none; }
+    .hz-job-head { margin-bottom: 0; }
+    .hz-job-head::before { bottom: 0; }
     .hz-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
     .hz-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .hz-jobdates { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
@@ -106,6 +109,13 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-job ul { list-style: none; padding: 0; margin: 0; }
     .hz-job li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
     .hz-job li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 2mm; height: 1px; background: ${palette.primary600}; }
+    .hz-ul-bullet { list-style: none; padding: 0 0 0 5mm; margin: 0; position: relative; }
+    .hz-ul-bullet::before { content: ""; position: absolute; left: 1.2mm; top: 0; bottom: 0; width: 1px; background: ${palette.primary200}; }
+    .hz-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .hz-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 2mm; height: 1px; background: ${palette.primary600}; }
+    .hz-ul-bullet-first { margin-top: 0; }
+    .hz-ul-bullet-last { margin-bottom: 2.8mm; }
+    .hz-ul-bullet-last::before { bottom: 0.4mm; }
     .hz-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.6mm; gap: 4mm; flex-wrap: wrap; padding-bottom: 1.6mm; border-bottom: 1px solid ${palette.primary100}; page-break-inside: avoid; break-inside: avoid; }
     .hz-edu:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
     .hz-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
@@ -302,8 +312,8 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      mainAtoms.push(
-        <div className="hz-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="hz-job hz-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="hz-jobhead">
             <div className="hz-jobtitle">{job.title}</div>
             <div className="hz-jobdates">{formatDateRange(job.start, job.end)}</div>
@@ -312,16 +322,44 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
             {job.company}
             {job.location ? <span className="loc"> · {job.location}</span> : null}
           </div>
-          <ul>
-            {job.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${job.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        mainAtoms.push(
+          <div className="hz-job" key={`exp-${job.id}`}>
+            <div className="hz-jobhead">
+              <div className="hz-jobtitle">{job.title}</div>
+              <div className="hz-jobdates">{formatDateRange(job.start, job.end)}</div>
+            </div>
+            <div className="hz-jobco">
+              {job.company}
+              {job.location ? <span className="loc"> · {job.location}</span> : null}
+            </div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(mainAtoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "hz-ul-bullet",
+            i === 0 ? "hz-ul-bullet-first" : "",
+            i === total - 1 ? "hz-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -385,18 +423,26 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        mainAtoms.push(
-          <div className="hz-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(mainAtoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "hz-ul-bullet",
+              i === 0 ? "hz-ul-bullet-first" : "",
+              i === total - 1 ? "hz-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 

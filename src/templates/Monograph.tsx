@@ -19,6 +19,7 @@ import type { ResumeData } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
 import { findLogoIcon } from "../utils/logoIcons.ts";
 import { RichText } from "../utils/richText.tsx";
+import { pushSplitItem } from "./paginationAtoms.tsx";
 import {
   certificationLink,
   contactIcon,
@@ -65,6 +66,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-summary { font-size: 9.5pt; line-height: 1.65; color: #292524; text-align: justify; hyphens: auto; overflow-wrap: break-word; }
     .mg-summary-atom { margin-bottom: 5mm; }
     .mg-job { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
+    .mg-job-head { margin-bottom: 0; }
     .mg-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
     .mg-jobtitle { font-size: 10pt; font-weight: 700; color: #1c1917; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .mg-jobmeta { font-size: 8.4pt; color: #78716c; font-style: italic; flex-shrink: 0; font-variant-numeric: tabular-nums; }
@@ -72,6 +74,11 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-job ul { list-style: none; padding: 0; margin: 0; }
     .mg-job li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: break-word; }
     .mg-job li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; font-weight: 700; }
+    .mg-ul-bullet { list-style: none; padding: 0; margin: 0; }
+    .mg-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: break-word; }
+    .mg-ul-bullet li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; font-weight: 700; }
+    .mg-ul-bullet-first { margin-top: 0; }
+    .mg-ul-bullet-last { margin-bottom: 3.5mm; }
     .mg-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .mg-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
     .mg-edutitle { font-size: 9.6pt; font-weight: 700; color: #1c1917; overflow-wrap: break-word; }
@@ -289,8 +296,8 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
       </h2>,
     );
     resume.experience.forEach((job) => {
-      mainAtoms.push(
-        <div className="mg-job" key={`exp-${job.id}`}>
+      const head = (
+        <div className="mg-job mg-job-head" key={`exp-${job.id}-head-inner`}>
           <div className="mg-jobhead">
             <div className="mg-jobtitle">{job.title}</div>
             <div className="mg-jobmeta">
@@ -299,16 +306,44 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
             </div>
           </div>
           <div className="mg-jobco">{job.company}</div>
-          <ul>
-            {job.bullets.map((b, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <li key={`${job.id}-b-${i}`}>
-                <RichText value={b} />
-              </li>
-            ))}
-          </ul>
-        </div>,
+        </div>
       );
+      if (job.bullets.length === 0) {
+        mainAtoms.push(
+          <div className="mg-job" key={`exp-${job.id}`}>
+            <div className="mg-jobhead">
+              <div className="mg-jobtitle">{job.title}</div>
+              <div className="mg-jobmeta">
+                {formatDateRange(job.start, job.end)}
+                {formatLocation(job.location, " · ")}
+              </div>
+            </div>
+            <div className="mg-jobco">{job.company}</div>
+          </div>,
+        );
+        return;
+      }
+      pushSplitItem(mainAtoms, {
+        keyPrefix: `exp-${job.id}`,
+        renderHead: () => head,
+        bullets: job.bullets,
+        renderBullet: (bullet, i, total) => {
+          const cls = [
+            "mg-ul-bullet",
+            i === 0 ? "mg-ul-bullet-first" : "",
+            i === total - 1 ? "mg-ul-bullet-last" : "",
+          ]
+            .filter(Boolean)
+            .join(" ");
+          return (
+            <ul className={cls}>
+              <li>
+                <RichText value={bullet} />
+              </li>
+            </ul>
+          );
+        },
+      });
     });
   }
 
@@ -374,18 +409,26 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
           </p>,
         );
       } else {
-        mainAtoms.push(
-          <div className="mg-job" key={`custom-${c.id}`}>
-            <ul>
-              {c.bullets.map((b, i) => (
-                // oxlint-disable-next-line jsx/no-array-index-key
-                <li key={`${c.id}-b-${i}`}>
-                  <RichText value={b} />
+        pushSplitItem(mainAtoms, {
+          keyPrefix: `custom-${c.id}`,
+          bullets: c.bullets,
+          renderBullet: (bullet, i, total) => {
+            const cls = [
+              "mg-ul-bullet",
+              i === 0 ? "mg-ul-bullet-first" : "",
+              i === total - 1 ? "mg-ul-bullet-last" : "",
+            ]
+              .filter(Boolean)
+              .join(" ");
+            return (
+              <ul className={cls}>
+                <li>
+                  <RichText value={bullet} />
                 </li>
-              ))}
-            </ul>
-          </div>,
-        );
+              </ul>
+            );
+          },
+        });
       }
     });
 
