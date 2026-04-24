@@ -21,9 +21,12 @@ import {
   FilePen,
   FileText,
   FolderOpen,
+  GitFork,
   Laptop,
+  MonitorSmartphone,
   Moon,
   Palette,
+  Rocket,
   ScanSearch,
   ShieldCheck,
   Sparkles,
@@ -331,7 +334,7 @@ export function OnboardingScreen({
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
             <GlowCard
               onClick={onStartBlank}
-              glow="rgba(100, 116, 139, 0.2)"
+              glow="rgba(14, 165, 233, 0.22)"
               ariaLabel={
                 onResumeEditing
                   ? "Start a blank résumé — replaces the work saved in your browser"
@@ -339,7 +342,7 @@ export function OnboardingScreen({
               }
             >
               <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#0ea5e9_14%,transparent)] text-[#0ea5e9] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                   <SquareDashed className="w-5 h-5" />
                 </span>
                 <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
@@ -349,7 +352,7 @@ export function OnboardingScreen({
                   Begin with a clean template and make it yours.
                 </span>
                 <ArrowRight
-                  className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
+                  className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#0ea5e9]"
                   aria-hidden="true"
                 />
               </div>
@@ -439,7 +442,7 @@ export function OnboardingScreen({
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-7 sm:gap-y-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-7 sm:gap-y-8">
           <FeatureItem
             icon={<UserRoundCheck className="w-5 h-5" />}
             iconBg="bg-[color-mix(in_oklab,#059669_14%,transparent)]"
@@ -456,8 +459,8 @@ export function OnboardingScreen({
           />
           <FeatureItem
             icon={<ShieldCheck className="w-5 h-5" />}
-            iconBg="bg-(--brand-50)"
-            iconFg="text-(--brand)"
+            iconBg="bg-[color-mix(in_oklab,#16a34a_14%,transparent)]"
+            iconFg="text-[#16a34a]"
             title="Local-first"
             description="Every keystroke stays in your browser. Nothing is ever uploaded to any server."
           />
@@ -466,7 +469,21 @@ export function OnboardingScreen({
             iconBg="bg-[color-mix(in_oklab,#ea580c_14%,transparent)]"
             iconFg="text-[#ea580c]"
             title="Works offline"
-            description="Installable as a PWA. Once loaded, build and export without a connection."
+            description="Once the app is cached, keep editing and exporting without a connection — flights, trains, anywhere."
+          />
+          <FeatureItem
+            icon={<Rocket className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#8b5cf6_14%,transparent)]"
+            iconFg="text-[#8b5cf6]"
+            title="Installable as a PWA"
+            description="Add CloakResume to your home screen for a full-screen, app-like experience that launches in one tap."
+          />
+          <FeatureItem
+            icon={<MonitorSmartphone className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#eab308_14%,transparent)]"
+            iconFg="text-[#eab308]"
+            title="Mobile, tablet & desktop"
+            description="Editor and live preview adapt fluidly across every screen size — draft on the go, polish at your desk."
           />
           <FeatureItem
             icon={<ScanSearch className="w-5 h-5" />}
@@ -502,6 +519,13 @@ export function OnboardingScreen({
             iconFg="text-[#0891b2]"
             title="Light & dark mode"
             description="Thoughtful theming that follows your system or respects your manual choice."
+          />
+          <FeatureItem
+            icon={<GitFork className="w-5 h-5" />}
+            iconBg="bg-[color-mix(in_oklab,#475569_14%,transparent)]"
+            iconFg="text-[#475569]"
+            title="Free & open source"
+            description="MIT-licensed and on GitHub. Fork it, self-host it, or audit every byte — nothing is hidden."
           />
         </div>
       </section>
