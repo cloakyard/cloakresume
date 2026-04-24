@@ -14,6 +14,7 @@
 import type { CSSProperties, ReactNode } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import {
+  AlertTriangle,
   EyeOff,
   FilePen,
   FileText,
@@ -302,7 +303,11 @@ export function OnboardingScreen({
           <GlowCard
             onClick={onStartBlank}
             glow="rgba(100, 116, 139, 0.2)"
-            ariaLabel="Start a blank résumé from a clean template"
+            ariaLabel={
+              onResumeEditing
+                ? "Start a blank résumé — replaces the work saved in your browser"
+                : "Start a blank résumé from a clean template"
+            }
           >
             <div className="px-5 py-6 sm:p-6 flex flex-col gap-2">
               <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--surface-3) text-(--ink-2) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
@@ -314,6 +319,12 @@ export function OnboardingScreen({
               <span className="text-[13px] leading-[1.5] text-(--ink-4)">
                 Begin with a clean template and make it yours.
               </span>
+              {onResumeEditing && (
+                <span className="inline-flex items-center gap-1.5 mt-1 text-[11.5px] leading-[1.45] text-warn font-medium">
+                  <AlertTriangle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  Erases the work saved in this browser.
+                </span>
+              )}
             </div>
           </GlowCard>
 
