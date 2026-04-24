@@ -28,7 +28,7 @@ const AtsPanel = lazy(() =>
 );
 import { OnboardingScreen } from "./components/OnboardingScreen.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
-import { sampleResume } from "./data/sampleResume.ts";
+import { generateSampleResume } from "./data/sampleResume.ts";
 import { TEMPLATES } from "./templates/index.ts";
 import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
@@ -423,7 +423,7 @@ export function App() {
       {showOnboarding && (
         <OnboardingScreen
           onStartBlank={() => startWithResume(blankResume)}
-          onLoadSample={() => startWithResume(sampleResume)}
+          onLoadSample={() => startWithResume(generateSampleResume())}
           onLoadFile={handleLoadFile}
           onDismiss={onboardingDismissable ? dismissOnboarding : undefined}
           onResumeEditing={canResumeEditing ? dismissOnboarding : undefined}

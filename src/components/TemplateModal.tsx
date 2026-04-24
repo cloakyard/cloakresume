@@ -5,7 +5,7 @@
 
 import { Search, X } from "lucide-react";
 import { useCallback, useMemo, useRef, useState } from "react";
-import { sampleResume } from "../data/sampleResume.ts";
+import { generateSampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 import { TemplatePreview } from "./TemplatePreview.tsx";
@@ -68,7 +68,10 @@ export function TemplateModal({
 
   const hasResults = grouped.length > 0;
 
-  const previewResume = useMemo(() => (isResumeEmpty(resume) ? sampleResume : resume), [resume]);
+  const previewResume = useMemo(
+    () => (isResumeEmpty(resume) ? generateSampleResume() : resume),
+    [resume],
+  );
 
   const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
