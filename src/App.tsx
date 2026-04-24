@@ -11,7 +11,8 @@
  * work. Nothing ever leaves the browser.
  */
 
-import { lazy, Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
@@ -237,10 +238,18 @@ export function App() {
    * resume edit schedules a debounced re-scan so the badges next to each
    * prose field stay in sync with the latest text. Before the engine is
    * ready we stay silent — the ~7 MB WASM payload is deferred to the
-   * first intentional scan.
+   * first intentional scan. We also skip the first engine-ready
+   * transition so the initial [atsOpen] scan isn't shadowed by a
+   * second scan firing ~800 ms later, which caused the "Scanning
+   * locally…" hero to briefly reappear after content first rendered.
    */
+  const sawEngineReadyRef = useRef(false);
   useEffect(() => {
     if (!grammarEngineReady) return;
+    if (!sawEngineReadyRef.current) {
+      sawEngineReadyRef.current = true;
+      return;
+    }
     const id = window.setTimeout(() => runGrammarScan(), 800);
     return () => window.clearTimeout(id);
   }, [resume, grammarEngineReady, runGrammarScan]);
@@ -403,21 +412,23 @@ export function App() {
       />
 
       {atsMounted && (
-        <Suspense fallback={null}>
-          <AtsPanel
-            open={atsOpen}
-            onClose={() => setAtsOpen(false)}
-            report={atsReport}
-            resume={resume}
-            hasJobDescription={jobDescription.trim().length > 0}
-            onOpenJdEditor={focusJdEditor}
-            grammarScanning={grammarScanning}
-            engineReady={grammarEngineReady}
-            engineProgress={grammarEngineProgress}
-            onRescan={runGrammarScan}
-            onJumpToField={handleJumpToField}
-          />
-        </Suspense>
+        <ErrorBoundary title="ATS review hit a snag">
+          <Suspense fallback={null}>
+            <AtsPanel
+              open={atsOpen}
+              onClose={() => setAtsOpen(false)}
+              report={atsReport}
+              resume={resume}
+              hasJobDescription={jobDescription.trim().length > 0}
+              onOpenJdEditor={focusJdEditor}
+              grammarScanning={grammarScanning}
+              engineReady={grammarEngineReady}
+              engineProgress={grammarEngineProgress}
+              onRescan={runGrammarScan}
+              onJumpToField={handleJumpToField}
+            />
+          </Suspense>
+        </ErrorBoundary>
       )}
 
       {showOnboarding && (

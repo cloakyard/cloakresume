@@ -1,4 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&family=Lora:wght@600;700&display=swap");
+/* Fonts are self-hosted via @fontsource so the CSP can stay on 'self' only —
+ * keeps the "nothing leaves the browser" promise and avoids the Google Fonts
+ * stylesheet being blocked by the CSP meta tag in index.html. */
+@import "@fontsource-variable/geist/index.css";
+@import "@fontsource-variable/geist-mono/index.css";
+@import "@fontsource/instrument-serif/400.css";
+@import "@fontsource/instrument-serif/400-italic.css";
+@import "@fontsource/lora/600.css";
+@import "@fontsource/lora/700.css";
 @import "tailwindcss";
 
 /* Class-based dark variant — toggled by `data-theme="dark"` on <html>.
