@@ -170,6 +170,29 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
     });
   }
 
+  if (resume.education.length > 0) {
+    atoms.push(
+      <h2 className="ac-h2" data-keep-with-next="true" key="edu-h">
+        Education
+      </h2>,
+    );
+    resume.education.forEach((ed) => {
+      atoms.push(
+        <div className="ac-entry" key={`edu-${ed.id}`}>
+          <div>
+            <div className="ac-entry-title">{ed.degree}</div>
+            <div className="ac-entry-sub">
+              {ed.school}
+              {formatLocation(ed.location)}
+            </div>
+            {ed.detail && <div className="ac-body">{ed.detail}</div>}
+          </div>
+          <div className="ac-entry-date">{formatDateRange(ed.start, ed.end)}</div>
+        </div>,
+      );
+    });
+  }
+
   if (resume.projects.length > 0) {
     atoms.push(
       <h2 className="ac-h2" data-keep-with-next="true" key="proj-h">
