@@ -48,7 +48,7 @@ export function ToolbarActions({
             aria-label="Scan résumé for ATS and writing issues"
           >
             <ScanSearch className="w-4 h-4 text-(--ink-4)" />
-            <span>Scan résumé</span>
+            <span className="hidden xl:inline">Scan résumé</span>
           </button>
 
           <ToolbarDivider />
@@ -76,27 +76,30 @@ export function ToolbarActions({
               onClick={onNewResume}
               className="tb ghost"
               title="Start a new blank resume"
+              aria-label="Start a new blank resume"
             >
               <FilePlus2 className="w-4 h-4 text-(--ink-4)" />
-              <span>New</span>
+              <span className="hidden xl:inline">New</span>
             </button>
             <button
               type="button"
               onClick={onSaveFile}
               className="tb ghost"
               title="Save resume data as JSON file"
+              aria-label="Save resume data as JSON file"
             >
               <Save className="w-4 h-4 text-(--ink-4)" />
-              <span>Save</span>
+              <span className="hidden xl:inline">Save</span>
             </button>
             <button
               type="button"
               onClick={() => loadInputRef.current?.click()}
               className="tb ghost"
               title="Load a previously saved resume file"
+              aria-label="Load a previously saved resume file"
             >
               <Upload className="w-4 h-4 text-(--ink-4)" />
-              <span>Load</span>
+              <span className="hidden xl:inline">Load</span>
             </button>
           </div>
 
@@ -123,7 +126,7 @@ export function ToolbarActions({
         title="Export to PDF"
       >
         <Download className="w-4 h-4" />
-        {!isMobile && <span>Export PDF</span>}
+        {!isMobile && <span className="hidden xl:inline">Export PDF</span>}
       </button>
     </>
   );

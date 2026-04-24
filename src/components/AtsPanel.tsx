@@ -307,7 +307,7 @@ export function AtsPanel({
             </header>
 
             <div
-              className="mx-3 my-2 flex items-stretch p-0.5 border border-(--line) bg-white/70 rounded-(--r-md) shrink-0 sm:mx-0 sm:my-0 sm:p-0 sm:border-0 sm:border-y sm:border-(--line) sm:rounded-none sm:bg-transparent sm:px-4 min-[900px]:px-9"
+              className="mx-3 my-2 flex items-stretch p-0.5 border border-(--line) bg-(--surface-raised)/70 rounded-(--r-md) shrink-0 sm:mx-0 sm:my-0 sm:p-0 sm:border-0 sm:border-y sm:border-(--line) sm:rounded-none sm:bg-transparent sm:px-4 min-[900px]:px-9"
               role="tablist"
               aria-label="ATS review sections"
             >
@@ -395,7 +395,7 @@ function ScoreDuo({
   writingReady: boolean;
 }) {
   return (
-    <div className="self-stretch w-full flex items-stretch rounded-2xl border border-(--line) bg-white shadow-(--sh-xs) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
+    <div className="self-stretch w-full flex items-stretch rounded-2xl border border-(--line) bg-(--surface-raised) shadow-(--sh-xs) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
       <ScoreCell label="ATS" score={atsScore} band={atsBand} />
       <div aria-hidden="true" className="w-px bg-(--line-soft)" />
       <ScoreCell label="Writing" score={writingScore} band={writingBand} muted={!writingReady} />

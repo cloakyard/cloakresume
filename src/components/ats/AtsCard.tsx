@@ -34,10 +34,10 @@ export function Card({
   /** Force white card chrome on mobile. Default = transparent on mobile, chrome at sm+. */
   boxed?: boolean;
 }) {
-  const mobileChrome = boxed ? "bg-white border border-(--line) rounded-xl p-3.5" : "";
+  const mobileChrome = boxed ? "bg-(--surface-raised) border border-(--line) rounded-xl p-3.5" : "";
   return (
     <section
-      className={`min-w-0 ${mobileChrome} sm:bg-white sm:border sm:border-(--line) sm:rounded-xl sm:shadow-(--sh-xs) sm:p-4 min-[900px]:p-5 ${className}`}
+      className={`min-w-0 ${mobileChrome} sm:bg-(--surface-raised) sm:border sm:border-(--line) sm:rounded-xl sm:shadow-(--sh-xs) sm:p-4 min-[900px]:p-5 ${className}`}
     >
       {children}
     </section>

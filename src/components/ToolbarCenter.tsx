@@ -84,9 +84,10 @@ export function ToolbarCenter({
             onClick={() => setTemplateOpen(true)}
             className="tb"
             aria-haspopup="dialog"
+            aria-label={`Template: ${activeTemplate.name}`}
           >
             <LayoutTemplate className="w-4 h-4 text-(--ink-4)" />
-            <span>{activeTemplate.name}</span>
+            <span className="hidden xl:inline">{activeTemplate.name}</span>
           </button>
 
           <div className="relative" ref={colorRef}>
@@ -96,16 +97,17 @@ export function ToolbarCenter({
               className="tb"
               aria-haspopup="dialog"
               aria-expanded={colorOpen}
+              aria-label="Primary colour"
             >
               <Palette className="w-4 h-4 text-(--ink-4)" />
               <span
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ background: primary, border: "1px solid rgba(0,0,0,0.08)" }}
               />
-              <span>
+              <span className="hidden xl:inline">
                 <ColorName hex={primary} />
               </span>
-              <ChevronDown className="w-3.5 h-3.5 caret" />
+              <ChevronDown className="w-3.5 h-3.5 caret hidden xl:inline-block" />
             </button>
             {colorOpen && (
               <div

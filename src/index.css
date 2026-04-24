@@ -226,6 +226,12 @@
   --surface-2: #f8fafc;
   --surface-3: #f1f5f9;
   --surface-panel: #fcfcfd;
+  /* "Raised" surface for cards that sit INSIDE a glass panel (ATS review,
+   * modal content). In light mode this is plain white — identical to
+   * --surface — so nothing visually changes. In dark mode it's nudged one
+   * step lighter than --surface so the card still reads as elevated
+   * against the frosted panel behind it. */
+  --surface-raised: #ffffff;
 
   --ok: #059669;
   --ok-bg: #ecfdf5;
@@ -340,6 +346,7 @@
     --surface-2: #0b1220;
     --surface-3: #1e293b;
     --surface-panel: #111827;
+    --surface-raised: #1e293b;
     --ok: #34d399;
     --ok-bg: rgba(5, 150, 105, 0.16);
     --ok-border: rgba(52, 211, 153, 0.32);
@@ -422,6 +429,7 @@
   --surface-2: #0b1220;
   --surface-3: #1e293b;
   --surface-panel: #111827;
+  --surface-raised: #1e293b;
   --ok: #34d399;
   --ok-bg: rgba(5, 150, 105, 0.16);
   --ok-border: rgba(52, 211, 153, 0.32);
