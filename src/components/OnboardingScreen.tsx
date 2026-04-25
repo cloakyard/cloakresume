@@ -192,33 +192,16 @@ export function OnboardingScreen({
       className="fixed inset-0 z-150 overflow-y-auto text-(--ink-1)"
       style={{ background: "var(--onboarding-bg)" }}
     >
-      {/* Decorative blobs — animated aurora behind the hero. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[min(100vh,900px)] overflow-hidden">
-        <div
-          className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full opacity-60 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, var(--brand) 35%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute -top-20 right-[-10%] w-[460px] h-[460px] rounded-full opacity-50 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, #7c3aed 30%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute top-[40%] left-[35%] w-[380px] h-[380px] rounded-full opacity-40 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, #059669 24%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-      </div>
+      {/* Aurora — morphing liquid-drop blobs. Six fixed divs each run
+          two uncorrelated loops (border-radius morph + transform drift)
+          so silhouettes feel organic. Colors come from the feature-icon
+          palette; mix-blend-mode is themed. See index.css. */}
+      <div aria-hidden="true" className="aurora-blob aurora-blob-1" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-2" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-3" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-4" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-5" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-6" />
 
       {/* ── Nav ──────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
