@@ -82,12 +82,6 @@ interface Persisted {
  */
 type PersistedInput = Partial<Persisted> & { darkMode?: unknown };
 
-interface InitialState {
-  persisted: Persisted;
-  /** True when storage had no valid data — triggers the onboarding screen. */
-  firstRun: boolean;
-}
-
 function resolveDarkModeOverride(parsed: PersistedInput): boolean | null {
   if (typeof parsed.darkModeOverride === "boolean" || parsed.darkModeOverride === null) {
     return parsed.darkModeOverride;
@@ -98,7 +92,7 @@ function resolveDarkModeOverride(parsed: PersistedInput): boolean | null {
   return null;
 }
 
-function loadPersisted(): InitialState {
+function loadPersisted(): Persisted {
   const defaults: Persisted = {
     resume: blankResume,
     templateId: DEFAULT_TEMPLATE_ID,
@@ -114,38 +108,33 @@ function loadPersisted(): InitialState {
       const parsed = JSON.parse(raw) as PersistedInput;
       if (parsed.resume && typeof parsed.resume === "object") {
         return {
-          persisted: {
-            resume: normalizeResumeData(parsed.resume),
-            templateId: resolveTemplateId(parsed.templateId),
-            primary:
-              typeof parsed.primary === "string" && parsed.primary
-                ? parsed.primary
-                : DEFAULT_PRIMARY,
-            paperSize: resolvePaperSize(parsed.paperSize),
-            jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
-            activeSection: (parsed.activeSection ?? "profile") as SectionId,
-            darkModeOverride: resolveDarkModeOverride(parsed),
-          },
-          firstRun: false,
+          resume: normalizeResumeData(parsed.resume),
+          templateId: resolveTemplateId(parsed.templateId),
+          primary:
+            typeof parsed.primary === "string" && parsed.primary ? parsed.primary : DEFAULT_PRIMARY,
+          paperSize: resolvePaperSize(parsed.paperSize),
+          jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
+          activeSection: (parsed.activeSection ?? "profile") as SectionId,
+          darkModeOverride: resolveDarkModeOverride(parsed),
         };
       }
     }
   } catch {
-    // Corrupted storage — fall through and show onboarding.
+    // Corrupted storage — fall through to defaults.
   }
-  return { persisted: defaults, firstRun: true };
+  return defaults;
 }
 
 export function App() {
   const initial = useMemo(() => loadPersisted(), []);
-  const [resume, setResume] = useState<ResumeData>(initial.persisted.resume);
-  const [templateId, setTemplateId] = useState<TemplateId>(initial.persisted.templateId);
-  const [primary, setPrimary] = useState<string>(initial.persisted.primary);
-  const [paperSize, setPaperSize] = useState<PaperSize>(initial.persisted.paperSize);
-  const [jobDescription, setJobDescription] = useState<string>(initial.persisted.jobDescription);
-  const [activeSection, setActiveSection] = useState<SectionId>(initial.persisted.activeSection);
+  const [resume, setResume] = useState<ResumeData>(initial.resume);
+  const [templateId, setTemplateId] = useState<TemplateId>(initial.templateId);
+  const [primary, setPrimary] = useState<string>(initial.primary);
+  const [paperSize, setPaperSize] = useState<PaperSize>(initial.paperSize);
+  const [jobDescription, setJobDescription] = useState<string>(initial.jobDescription);
+  const [activeSection, setActiveSection] = useState<SectionId>(initial.activeSection);
   const [darkModeOverride, setDarkModeOverride] = useState<boolean | null>(
-    initial.persisted.darkModeOverride,
+    initial.darkModeOverride,
   );
   /**
    * Live OS `prefers-color-scheme` so the app can track mid-session changes
@@ -162,20 +151,20 @@ export function App() {
     setAtsMounted(true);
     setAtsOpen(true);
   }, []);
-  const [showOnboarding, setShowOnboarding] = useState(initial.firstRun);
   /**
-   * True on first-run; false when the user opens the welcome screen
-   * from the "New" button. Controls whether the X / Escape / backdrop
-   * affordances are rendered — first-run must pick one of the tiles.
+   * Onboarding shows on every app load — users always land here first and
+   * pick "Resume editing" (when there's saved work) or one of the
+   * fresh-start tiles. Mid-session "New" flow re-opens it with the same UI.
    */
-  const [onboardingDismissable, setOnboardingDismissable] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   /**
    * True when the current résumé has any user-entered content — gates
    * the "Resume editing" tile on the welcome screen so it only shows
-   * when there's something worth resuming.
+   * when there's something worth resuming, and enables Escape/backdrop
+   * dismiss (since dismissing would otherwise drop the user into a blank
+   * editor with no clear way back).
    */
   const hasSavedWork = useMemo(() => resumeHasContent(resume), [resume]);
-  const canResumeEditing = onboardingDismissable && hasSavedWork;
   /** Confirmation prompt before clearing the current work via the "New" button. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
 
@@ -359,7 +348,6 @@ export function App() {
     setJobDescription("");
     setTemplateId(DEFAULT_TEMPLATE_ID);
     setShowOnboarding(false);
-    setOnboardingDismissable(false);
   }, []);
 
   /**
@@ -373,13 +361,11 @@ export function App() {
 
   const confirmNewResume = useCallback(() => {
     setNewConfirmOpen(false);
-    setOnboardingDismissable(true);
     setShowOnboarding(true);
   }, []);
 
   const dismissOnboarding = useCallback(() => {
     setShowOnboarding(false);
-    setOnboardingDismissable(false);
   }, []);
 
   return (
@@ -470,8 +456,8 @@ export function App() {
           onStartBlank={() => startWithResume(blankResume)}
           onLoadSample={() => startWithResume(generateSampleResume())}
           onLoadFile={handleLoadFile}
-          onDismiss={onboardingDismissable ? dismissOnboarding : undefined}
-          onResumeEditing={canResumeEditing ? dismissOnboarding : undefined}
+          onDismiss={hasSavedWork ? dismissOnboarding : undefined}
+          onResumeEditing={hasSavedWork ? dismissOnboarding : undefined}
           darkMode={darkMode}
           onToggleDarkMode={toggleDarkMode}
         />
