@@ -1,7 +1,9 @@
 /**
  * Aurora — six animated, blurred liquid-drop blobs that drift across the
- * viewport. Self-contained: drop it inside any positioned container and
- * it paints behind that container's children (z-index: -1).
+ * viewport. Self-contained: drop it inside any container — the blobs
+ * paint at z-index: 0 in the parent's stacking context, so any sibling
+ * content with explicit z-index >= 1 (or that comes after this in the
+ * tree, with no z) renders above them.
  *
  * Defaults match the CloakResume onboarding palette and a `multiply`
  * blend (good against a light background). Override via props for
@@ -190,7 +192,11 @@ const STYLESHEET = `
 .aurora-blob {
   position: fixed;
   pointer-events: none;
-  z-index: -1;
+  /* z-index: 0 (rather than -1) so the component works whether or not
+     the parent establishes a stacking context. Sibling content with
+     explicit z-index >= 1 paints above; siblings with no z paint above
+     by tree order (since the blobs render first in this component). */
+  z-index: 0;
   width: var(--w);
   height: var(--w);
   background: var(--bg);

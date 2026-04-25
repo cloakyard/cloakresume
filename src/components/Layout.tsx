@@ -109,14 +109,15 @@ export function Layout({
             <div className="hidden 2xl:inline-flex items-center gap-2 text-[12.5px] font-medium text-(--ink-3) tracking-[0.01em] whitespace-nowrap">
               <span>100% Private · Open Source</span>
             </div>
+            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
             <a
               href="https://github.com/cloakyard/cloakresume"
               target="_blank"
               rel="noopener noreferrer"
               aria-label="View source on GitHub"
-              className="w-8.5 h-8.5 grid place-items-center rounded-md text-(--ink-4) transition-colors duration-100 hover:bg-(--surface-3) hover:text-(--ink-1)"
+              className="grid place-items-center text-(--ink-4) transition-colors duration-100 hover:text-(--ink-1)"
             >
-              <GithubIcon className="w-4 h-4" />
+              <GithubIcon className="w-4.5 h-4.5" />
             </a>
           </>
         )}
