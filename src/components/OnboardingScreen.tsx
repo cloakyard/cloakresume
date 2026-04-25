@@ -192,33 +192,16 @@ export function OnboardingScreen({
       className="fixed inset-0 z-150 overflow-y-auto text-(--ink-1)"
       style={{ background: "var(--onboarding-bg)" }}
     >
-      {/* Decorative blobs — animated aurora behind the hero. */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-[min(100vh,900px)] overflow-hidden">
-        <div
-          className="absolute -top-40 -left-40 w-[520px] h-[520px] rounded-full opacity-60 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, var(--brand) 35%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute -top-20 right-[-10%] w-[460px] h-[460px] rounded-full opacity-50 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, #7c3aed 30%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-        <div
-          className="absolute top-[40%] left-[35%] w-[380px] h-[380px] rounded-full opacity-40 blur-3xl"
-          style={{
-            background:
-              "radial-gradient(circle, color-mix(in oklab, #059669 24%, transparent), transparent 70%)",
-          }}
-          aria-hidden="true"
-        />
-      </div>
+      {/* Aurora — morphing liquid-drop blobs. Six fixed divs each run
+          two uncorrelated loops (border-radius morph + transform drift)
+          so silhouettes feel organic. Colors come from the feature-icon
+          palette; mix-blend-mode is themed. See index.css. */}
+      <div aria-hidden="true" className="aurora-blob aurora-blob-1" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-2" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-3" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-4" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-5" />
+      <div aria-hidden="true" className="aurora-blob aurora-blob-6" />
 
       {/* ── Nav ──────────────────────────────────────────────── */}
       <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
@@ -586,7 +569,7 @@ export function OnboardingScreen({
 
             <nav
               aria-label="Footer"
-              className="flex flex-wrap items-center gap-x-5 gap-y-2 sm:ml-auto text-[13px]"
+              className="hidden sm:flex flex-wrap items-center gap-x-5 gap-y-2 sm:ml-auto text-[13px]"
             >
               <button
                 type="button"
@@ -594,22 +577,8 @@ export function OnboardingScreen({
                 className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) bg-transparent cursor-pointer transition-colors duration-150 font-medium"
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
-                Privacy
+                Privacy Policy
               </button>
-              <a
-                href={CLOAKYARD_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) no-underline transition-colors duration-150 font-medium"
-              >
-                <img
-                  src="/icons/cloakyard.svg"
-                  alt=""
-                  aria-hidden="true"
-                  className="w-4 h-4 shrink-0"
-                />
-                Cloakyard
-              </a>
             </nav>
           </div>
 
@@ -618,7 +587,7 @@ export function OnboardingScreen({
 
           {/* Bottom row: attribution + cloakyard pitch */}
           <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-[12.5px] text-(--ink-4)">
-            <div className="flex items-center gap-1.5">
+            <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
               <span>Built with care by</span>
               <a
                 href={AUTHOR_URL}
@@ -632,8 +601,18 @@ export function OnboardingScreen({
               <span>
                 <span className="text-(--ink-5)">MIT</span> licensed
               </span>
+              <span aria-hidden="true" className="sm:hidden">
+                ·
+              </span>
+              <button
+                type="button"
+                onClick={() => setPrivacyOpen(true)}
+                className="sm:hidden text-(--ink-2) hover:text-(--brand) bg-transparent cursor-pointer transition-colors duration-150 font-medium"
+              >
+                Privacy
+              </button>
             </div>
-            <div className="sm:ml-auto inline-flex items-center gap-1.5">
+            <div className="sm:ml-auto flex flex-wrap items-center gap-x-1.5 gap-y-1">
               <span>Part of</span>
               <a
                 href={CLOAKYARD_URL}
@@ -649,7 +628,9 @@ export function OnboardingScreen({
                 />
                 Cloakyard
               </a>
-              <span className="text-(--ink-5)">— a collection of privacy-focused tools.</span>
+              <span className="hidden sm:inline text-(--ink-5)">
+                — a collection of privacy-focused tools.
+              </span>
             </div>
           </div>
         </div>
