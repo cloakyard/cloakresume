@@ -215,28 +215,36 @@ export function OnboardingScreen({
               </div>
             </div>
 
-            <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
+            <div className="ml-auto flex items-center gap-2 sm:gap-3">
               {showDarkToggle && (
-                <button
-                  type="button"
-                  onClick={onToggleDarkMode}
-                  className="w-9 h-9 rounded-lg grid place-items-center text-(--ink-3) bg-transparent cursor-pointer transition-colors duration-150 hover:bg-(--surface-3) hover:text-(--ink-1)"
-                  title={darkToggleLabel}
-                  aria-label={darkToggleLabel}
-                  aria-pressed={darkMode}
-                >
-                  {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                </button>
+                <>
+                  <button
+                    type="button"
+                    onClick={onToggleDarkMode}
+                    className="w-9 h-9 rounded-lg grid place-items-center text-(--ink-3) bg-transparent cursor-pointer transition-colors duration-150 hover:bg-(--surface-3) hover:text-(--ink-1)"
+                    title={darkToggleLabel}
+                    aria-label={darkToggleLabel}
+                    aria-pressed={darkMode}
+                  >
+                    {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                  </button>
+                  <span aria-hidden="true" className="w-px h-5 bg-(--line)" />
+                </>
               )}
+              <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-(--ink-3) tracking-[0.01em] whitespace-nowrap">
+                <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
+                <span className="hidden sm:inline">100% Private · Open Source</span>
+                <span className="sm:hidden">Private</span>
+              </span>
+              <span aria-hidden="true" className="w-px h-5 bg-(--line)" />
               <a
                 href={GITHUB_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-2.5 sm:px-3 h-9 rounded-lg border border-(--line) bg-(--surface) text-(--ink-2) text-[13px] font-medium no-underline transition-[border-color,box-shadow,transform,background] duration-150 hover:border-(--ink-3) hover:bg-(--surface-2) hover:text-(--ink-1) hover:shadow-(--sh-sm) [&_svg]:text-(--ink-1)"
+                className="grid place-items-center text-(--ink-4) transition-colors duration-100 hover:text-(--ink-1)"
                 aria-label="View CloakResume on GitHub"
               >
-                <GithubMark className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">GitHub</span>
+                <GithubMark className="w-4.5 h-4.5" />
               </a>
             </div>
           </div>
