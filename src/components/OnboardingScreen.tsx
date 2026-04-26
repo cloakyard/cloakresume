@@ -185,32 +185,61 @@ export function OnboardingScreen({
     return () => window.removeEventListener("keydown", onKey);
   }, [onDismiss]);
 
+  /* The editor shell locks `body { overflow: hidden; height: 100% }` in
+   * index.css so its 3-column grid owns scrolling. That lock has to be
+   * lifted on the welcome screen — iOS Safari only collapses its URL
+   * bar when the *document* scrolls, never when an inner container
+   * does. Without the override, the bar stays at full height (~100px
+   * tall) and the AuroraBackground bottom-clip has nothing to align
+   * against. We restore the editor's lock on unmount. */
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+    const prev = {
+      htmlHeight: html.style.height,
+      htmlOverflow: html.style.overflow,
+      bodyHeight: body.style.height,
+      bodyOverflow: body.style.overflow,
+    };
+    html.style.height = "auto";
+    html.style.overflow = "visible";
+    body.style.height = "auto";
+    body.style.overflow = "visible";
+    return () => {
+      html.style.height = prev.htmlHeight;
+      html.style.overflow = prev.htmlOverflow;
+      body.style.height = prev.bodyHeight;
+      body.style.overflow = prev.bodyOverflow;
+    };
+  }, []);
+
   const showDarkToggle = typeof darkMode === "boolean" && !!onToggleDarkMode;
   const darkToggleLabel = darkMode ? "Switch to light mode" : "Switch to dark mode";
 
   return (
     <div
-      className="fixed inset-0 z-150 overflow-y-auto text-(--ink-1)"
+      className="relative z-150 flex flex-col min-h-svh text-(--ink-1)"
       style={{ background: "var(--onboarding-bg)" }}
     >
-      {/* Aurora backdrop — colors and blend mode are themed via the
-          surrounding `--aurora-blend` token (light: multiply, dark:
-          screen). The blobs sit at z-index: -1 within this fixed
-          wrapper, behind nav/sections/footer. */}
+      {/* Aurora backdrop — self-contained component. mix-blend-mode is
+          themed via the surrounding `--aurora-blend` token (light:
+          multiply, dark: screen) defined in index.css. On mobile, the
+          aurora-root self-clips above the iOS Safari URL-bar zone so
+          the bar samples the page background, not the blob colours. */}
       <AuroraBackground />
 
-      {/* Inner column stretches to at least the viewport so the footer
-          sticks to the bottom on tall screens — without it, iOS Safari
-          renders a strip of bare backdrop (and an aurora-tinted toolbar)
-          below the footer. `min-h-full` resolves against the fixed
-          wrapper's height. */}
-      <div className="relative flex flex-col min-h-full">
+      {/* Inner column wrapper kept for the historical layout — same
+          flex column the wrapper now provides directly. Retained as a
+          plain fragment-style wrapper so the inner content's
+          `relative` z-stacking against the absolutely-positioned
+          aurora is unchanged. */}
+      <div className="relative flex flex-col flex-1 min-h-0">
         {/* ── Nav ──────────────────────────────────────────────── */}
         <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
           <div className="max-w-[1180px] mx-auto flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-14 sm:h-16">
             <div className="flex items-center gap-2.5 min-w-0">
-              <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-8 h-8 shrink-0" />
-              <div className="font-semibold text-(--ink-1) text-[15px] sm:text-base tracking-[-0.015em] leading-none truncate">
+              <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-10 h-10 shrink-0" />
+              <div className="font-semibold text-(--ink-1) text-lg tracking-[-0.015em] leading-none truncate">
                 Cloak<span className="text-(--brand)">Resume</span>
               </div>
             </div>
@@ -557,13 +586,14 @@ export function OnboardingScreen({
 
         {/* ── Footer ───────────────────────────────────────────── */}
         {/* `mt-auto` pins the footer to the bottom of the viewport when
-          content is shorter than the screen, so iOS Safari doesn't show
-          a strip of bare backdrop (and tint its bottom toolbar with the
-          aurora blob underneath). The bg is bumped to ~92% opaque
-          (vs. the old 55%) so the orange aurora-blob-4 anchored at the
-          bottom-left can't bleed through into Safari's toolbar tint;
-          `safe-area-inset-bottom` extends the painted area into the
-          home-indicator zone. */}
+          content is shorter than the screen. Footer bg kept ~92% opaque
+          so it reads as a solid surface over the aurora when scrolled
+          into view. iOS Safari URL-bar tint sampling is handled inside
+          AuroraBackground itself: on mobile, the aurora-root is a fixed
+          clipping container that stops above the URL bar zone, so no
+          blob ever paints into Safari's sample area. The
+          `safe-area-inset-bottom` padding here still extends the
+          footer's painted area into the home-indicator zone. */}
         <footer
           className="relative mt-auto border-t border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] backdrop-blur-md"
           style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}

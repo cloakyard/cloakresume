@@ -370,68 +370,78 @@ export function App() {
 
   return (
     <>
-      <Layout
-        toolbarCenter={
-          <ToolbarCenter
-            templateId={templateId}
-            onTemplateChange={setTemplateId}
-            primary={primary}
-            onPrimaryChange={setPrimary}
-            paperSize={paperSize}
-            onPaperSizeChange={setPaperSize}
-            onScanAts={openAts}
-            resume={resume}
-          />
-        }
-        toolbarRight={
-          <>
-            <ToolbarActions
-              onExportPdf={handleExportPdf}
-              onSaveFile={handleSaveFile}
-              onLoadFile={handleLoadFile}
-              onNewResume={handleNewResume}
-              onScanAts={openAts}
-              darkMode={darkMode}
-              onToggleDarkMode={toggleDarkMode}
-            />
-            <ToolbarOverflow
+      {/* The editor and the welcome screen are mutually exclusive — only
+       * one is mounted at a time. Keeping both mounted (with the editor
+       * hidden behind a fixed overlay) was the previous approach, but
+       * the editor's `body { overflow: hidden }` lock prevents the
+       * document from scrolling, and iOS Safari only collapses its URL
+       * bar when the *document* scrolls. By unmounting the editor while
+       * onboarding is shown, OnboardingScreen can let the document
+       * scroll naturally and the URL bar collapses to its slim pill. */}
+      {!showOnboarding && (
+        <Layout
+          toolbarCenter={
+            <ToolbarCenter
+              templateId={templateId}
+              onTemplateChange={setTemplateId}
               primary={primary}
               onPrimaryChange={setPrimary}
               paperSize={paperSize}
               onPaperSizeChange={setPaperSize}
-              onNewResume={handleNewResume}
-              onSaveFile={handleSaveFile}
-              onLoadFile={handleLoadFile}
-              darkMode={darkMode}
-              onToggleDarkMode={toggleDarkMode}
-            />
-          </>
-        }
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-        panel={
-          <FieldIssuesProvider report={grammarReport}>
-            <SectionPanel
-              active={activeSection}
+              onScanAts={openAts}
               resume={resume}
-              onChange={setResume}
-              jobDescription={jobDescription}
-              onJobDescriptionChange={setJobDescription}
-              onAnalyze={openAts}
             />
-          </FieldIssuesProvider>
-        }
-        preview={
-          <Preview
-            resume={resume}
-            palette={palette}
-            paperSize={paperSize}
-            TemplateComponent={TemplateComponent}
-          />
-        }
-      />
+          }
+          toolbarRight={
+            <>
+              <ToolbarActions
+                onExportPdf={handleExportPdf}
+                onSaveFile={handleSaveFile}
+                onLoadFile={handleLoadFile}
+                onNewResume={handleNewResume}
+                onScanAts={openAts}
+                darkMode={darkMode}
+                onToggleDarkMode={toggleDarkMode}
+              />
+              <ToolbarOverflow
+                primary={primary}
+                onPrimaryChange={setPrimary}
+                paperSize={paperSize}
+                onPaperSizeChange={setPaperSize}
+                onNewResume={handleNewResume}
+                onSaveFile={handleSaveFile}
+                onLoadFile={handleLoadFile}
+                darkMode={darkMode}
+                onToggleDarkMode={toggleDarkMode}
+              />
+            </>
+          }
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          panel={
+            <FieldIssuesProvider report={grammarReport}>
+              <SectionPanel
+                active={activeSection}
+                resume={resume}
+                onChange={setResume}
+                jobDescription={jobDescription}
+                onJobDescriptionChange={setJobDescription}
+                onAnalyze={openAts}
+              />
+            </FieldIssuesProvider>
+          }
+          preview={
+            <Preview
+              resume={resume}
+              palette={palette}
+              paperSize={paperSize}
+              TemplateComponent={TemplateComponent}
+            />
+          }
+        />
+      )}
 
-      {atsMounted && (
+      {atsMounted && !showOnboarding && (
         <ErrorBoundary title="ATS review hit a snag">
           <Suspense fallback={null}>
             <AtsReviewModal
