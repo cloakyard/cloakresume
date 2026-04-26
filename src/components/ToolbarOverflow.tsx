@@ -11,12 +11,10 @@ import {
   FileText,
   FilePlus2,
   LayoutTemplate,
-  Moon,
   MoreHorizontal,
   Palette,
   Save,
   ScanSearch,
-  Sun,
   Upload,
 } from "lucide-react";
 import { useRef, useState } from "react";
@@ -35,8 +33,6 @@ interface ToolbarOverflowProps {
   onNewResume: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
-  darkMode: boolean;
-  onToggleDarkMode: () => void;
 }
 
 export function ToolbarOverflow({
@@ -47,8 +43,6 @@ export function ToolbarOverflow({
   onNewResume,
   onSaveFile,
   onLoadFile,
-  darkMode,
-  onToggleDarkMode,
 }: ToolbarOverflowProps) {
   const isMobile = useMediaQuery(BP.mobile);
   const [open, setOpen] = useState(false);
@@ -97,14 +91,6 @@ export function ToolbarOverflow({
             onClick={() => {
               setOpen(false);
               window.dispatchEvent(new Event("cr:scan-ats"));
-            }}
-          />
-          <OverflowItem
-            icon={darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            label={darkMode ? "Light mode" : "Dark mode"}
-            onClick={() => {
-              setOpen(false);
-              onToggleDarkMode();
             }}
           />
           <OverflowDivider />

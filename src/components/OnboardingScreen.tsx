@@ -24,7 +24,6 @@ import {
   GitFork,
   Laptop,
   MonitorSmartphone,
-  Moon,
   Palette,
   Rocket,
   ScanSearch,
@@ -32,7 +31,6 @@ import {
   Sparkles,
   SpellCheck,
   SquareDashed,
-  Sun,
   UserRoundCheck,
   WifiOff,
 } from "lucide-react";
@@ -159,9 +157,6 @@ interface Props {
    * starting over.
    */
   onResumeEditing?: () => void;
-  /** Optional dark-mode toggle — shown in the top nav when provided. */
-  darkMode?: boolean;
-  onToggleDarkMode?: () => void;
 }
 
 export function OnboardingScreen({
@@ -170,8 +165,6 @@ export function OnboardingScreen({
   onLoadFile,
   onDismiss,
   onResumeEditing,
-  darkMode,
-  onToggleDarkMode,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
@@ -213,9 +206,6 @@ export function OnboardingScreen({
     };
   }, []);
 
-  const showDarkToggle = typeof darkMode === "boolean" && !!onToggleDarkMode;
-  const darkToggleLabel = darkMode ? "Switch to light mode" : "Switch to dark mode";
-
   return (
     <div
       className="relative z-150 flex flex-col min-h-svh text-(--ink-1)"
@@ -245,21 +235,6 @@ export function OnboardingScreen({
             </div>
 
             <div className="ml-auto flex items-center gap-2 sm:gap-3">
-              {showDarkToggle && (
-                <>
-                  <button
-                    type="button"
-                    onClick={onToggleDarkMode}
-                    className="w-9 h-9 rounded-lg grid place-items-center text-(--ink-3) bg-transparent cursor-pointer transition-colors duration-150 hover:bg-(--surface-3) hover:text-(--ink-1)"
-                    title={darkToggleLabel}
-                    aria-label={darkToggleLabel}
-                    aria-pressed={darkMode}
-                  >
-                    {darkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-                  </button>
-                  <span aria-hidden="true" className="w-px h-5 bg-(--line)" />
-                </>
-              )}
               <span className="inline-flex items-center gap-1.5 text-[12.5px] font-medium text-(--ink-3) tracking-[0.01em] whitespace-nowrap">
                 <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
                 <span className="hidden sm:inline">100% Private · Open Source</span>

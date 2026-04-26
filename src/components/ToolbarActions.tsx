@@ -5,7 +5,7 @@
  * button — the remaining actions live in `ToolbarOverflow`.
  */
 
-import { Download, FilePlus2, Moon, Save, ScanSearch, Sun, Upload } from "lucide-react";
+import { Download, FilePlus2, Save, ScanSearch, Upload } from "lucide-react";
 import { useRef } from "react";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 
@@ -15,8 +15,6 @@ interface ToolbarActionsProps {
   onLoadFile: (file: File) => void;
   onNewResume: () => void;
   onScanAts: () => void;
-  darkMode: boolean;
-  onToggleDarkMode: () => void;
 }
 
 function ToolbarDivider() {
@@ -29,12 +27,9 @@ export function ToolbarActions({
   onLoadFile,
   onNewResume,
   onScanAts,
-  darkMode,
-  onToggleDarkMode,
 }: ToolbarActionsProps) {
   const loadInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useMediaQuery(BP.mobile);
-  const darkModeLabel = darkMode ? "Switch to light mode" : "Switch to dark mode";
 
   return (
     <>
@@ -49,23 +44,6 @@ export function ToolbarActions({
           >
             <ScanSearch className="w-4 h-4 text-(--ink-4)" />
             <span className="hidden 2xl:inline">Scan résumé</span>
-          </button>
-
-          <ToolbarDivider />
-
-          <button
-            type="button"
-            onClick={onToggleDarkMode}
-            className="tb ghost"
-            title={darkModeLabel}
-            aria-label={darkModeLabel}
-            aria-pressed={darkMode}
-          >
-            {darkMode ? (
-              <Sun className="w-4 h-4 text-(--ink-4)" />
-            ) : (
-              <Moon className="w-4 h-4 text-(--ink-4)" />
-            )}
           </button>
 
           <ToolbarDivider />
