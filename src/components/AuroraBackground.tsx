@@ -210,10 +210,36 @@ const STYLESHEET = `
     aurora-breathe var(--breathe-dur, 12s) ease-in-out infinite var(--breathe-delay, 0s);
 }
 /* Mobile budget: shrink the blur (the heaviest GPU op) and drop the
-   two smallest blobs that mostly add density rather than silhouette. */
+   two smallest blobs that mostly add density rather than silhouette.
+
+   Mobile bottom boundary: on phones the floating iOS Safari URL bar
+   samples the page color directly behind it. To keep blobs from being
+   sampled, the aurora-root becomes a fixed clipping container that
+   stops short of the URL-bar zone, and blobs switch to position:
+   absolute so they're clipped at the container's bottom edge. The
+   blobs still animate through their full keyframe range -- they just
+   get clipped where they would have crossed into the bar's sample
+   area. No overlay, no fade, no color shift in the visible region. */
 @media (max-width: 640px) {
   .aurora-blob { filter: blur(36px); }
   .aurora-blob-mobile-hide { display: none; }
+  .aurora-root {
+    position: fixed;
+    /* Bottom inset = approximate iOS Safari URL bar height + home
+       indicator safe area. Tuned to the bar's collapsed/expanded
+       range so blobs don't graze the sample zone in either state. */
+    inset: 0 0 calc(72px + env(safe-area-inset-bottom, 0px)) 0;
+    overflow: hidden;
+    pointer-events: none;
+    z-index: 0;
+  }
+  .aurora-blob {
+    /* Inside the fixed clipping container; percentages now resolve
+       against the container, not the viewport. The shift is small
+       (only the bottom inset is removed from the height) so the
+       composition stays visually equivalent to desktop. */
+    position: absolute;
+  }
 }
 @media (prefers-reduced-motion: reduce) {
   .aurora-blob { animation: none; }

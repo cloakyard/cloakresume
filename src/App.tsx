@@ -33,7 +33,7 @@ import { generateSampleResume } from "./data/sampleResume.ts";
 import { TEMPLATES } from "./templates/index.ts";
 import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
-import { useApplyTheme, useSystemDarkMode } from "./utils/theme.ts";
+import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
@@ -66,31 +66,9 @@ interface Persisted {
   paperSize: PaperSize;
   jobDescription: string;
   activeSection: SectionId;
-  /**
-   * `null` = follow the OS `prefers-color-scheme` live; `boolean` = user has
-   * pinned a specific appearance that should ignore future OS changes. The
-   * override auto-clears when the user toggles to a state that already
-   * matches the OS, so returning to auto requires no dedicated control.
-   */
-  darkModeOverride: boolean | null;
 }
 
-/**
- * Shape accepted by the loader. Includes the legacy `darkMode: boolean` key
- * used by earlier versions so existing users keep their chosen appearance
- * after the switch to the override model.
- */
-type PersistedInput = Partial<Persisted> & { darkMode?: unknown };
-
-function resolveDarkModeOverride(parsed: PersistedInput): boolean | null {
-  if (typeof parsed.darkModeOverride === "boolean" || parsed.darkModeOverride === null) {
-    return parsed.darkModeOverride;
-  }
-  // Legacy key — preserve the user's last explicit state as an override so
-  // the first load after upgrade doesn't silently flip their theme.
-  if (typeof parsed.darkMode === "boolean") return parsed.darkMode;
-  return null;
-}
+type PersistedInput = Partial<Persisted>;
 
 function loadPersisted(): Persisted {
   const defaults: Persisted = {
@@ -100,7 +78,6 @@ function loadPersisted(): Persisted {
     paperSize: DEFAULT_PAPER_SIZE,
     jobDescription: "",
     activeSection: "profile",
-    darkModeOverride: null,
   };
   try {
     const raw = localStorage.getItem(LS_KEY);
@@ -115,7 +92,6 @@ function loadPersisted(): Persisted {
           paperSize: resolvePaperSize(parsed.paperSize),
           jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
           activeSection: (parsed.activeSection ?? "profile") as SectionId,
-          darkModeOverride: resolveDarkModeOverride(parsed),
         };
       }
     }
@@ -133,16 +109,6 @@ export function App() {
   const [paperSize, setPaperSize] = useState<PaperSize>(initial.paperSize);
   const [jobDescription, setJobDescription] = useState<string>(initial.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.activeSection);
-  const [darkModeOverride, setDarkModeOverride] = useState<boolean | null>(
-    initial.darkModeOverride,
-  );
-  /**
-   * Live OS `prefers-color-scheme` so the app can track mid-session changes
-   * (macOS auto-schedule flipping at sunset, user toggling system appearance)
-   * whenever `darkModeOverride` is null.
-   */
-  const systemDark = useSystemDarkMode();
-  const darkMode = darkModeOverride ?? systemDark;
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
    *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
@@ -181,7 +147,6 @@ export function App() {
         paperSize,
         jobDescription,
         activeSection,
-        darkModeOverride,
       };
       try {
         localStorage.setItem(LS_KEY, JSON.stringify(payload));
@@ -190,40 +155,7 @@ export function App() {
       }
     });
     return () => cancelAnimationFrame(frame);
-  }, [
-    resume,
-    templateId,
-    primary,
-    paperSize,
-    jobDescription,
-    activeSection,
-    darkModeOverride,
-    showOnboarding,
-  ]);
-
-  /** Bind the dark-mode flag to <html data-theme="..."> so the CSS token
-   *  overrides in index.css take effect. We always write an explicit
-   *  "dark" or "light" value (rather than adding/removing the attribute)
-   *  so the user's choice overrides the OS `prefers-color-scheme` rule —
-   *  a dark-OS user who toggles to light gets light, and vice versa. */
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
-
-  /**
-   * Flip the visible appearance. If the resulting state matches the current
-   * OS preference we drop the override (null) so the app keeps tracking
-   * future system changes; otherwise we pin the override so an intentional
-   * choice survives later OS flips. Effect: toggling back to match the OS
-   * implicitly re-arms auto-sync without needing a separate control.
-   */
-  const toggleDarkMode = useCallback(() => {
-    setDarkModeOverride((curr) => {
-      const effective = curr ?? systemDark;
-      const next = !effective;
-      return next === systemDark ? null : next;
-    });
-  }, [systemDark]);
+  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showOnboarding]);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
@@ -370,68 +302,74 @@ export function App() {
 
   return (
     <>
-      <Layout
-        toolbarCenter={
-          <ToolbarCenter
-            templateId={templateId}
-            onTemplateChange={setTemplateId}
-            primary={primary}
-            onPrimaryChange={setPrimary}
-            paperSize={paperSize}
-            onPaperSizeChange={setPaperSize}
-            onScanAts={openAts}
-            resume={resume}
-          />
-        }
-        toolbarRight={
-          <>
-            <ToolbarActions
-              onExportPdf={handleExportPdf}
-              onSaveFile={handleSaveFile}
-              onLoadFile={handleLoadFile}
-              onNewResume={handleNewResume}
-              onScanAts={openAts}
-              darkMode={darkMode}
-              onToggleDarkMode={toggleDarkMode}
-            />
-            <ToolbarOverflow
+      {/* The editor and the welcome screen are mutually exclusive — only
+       * one is mounted at a time. Keeping both mounted (with the editor
+       * hidden behind a fixed overlay) was the previous approach, but
+       * the editor's `body { overflow: hidden }` lock prevents the
+       * document from scrolling, and iOS Safari only collapses its URL
+       * bar when the *document* scrolls. By unmounting the editor while
+       * onboarding is shown, OnboardingScreen can let the document
+       * scroll naturally and the URL bar collapses to its slim pill. */}
+      {!showOnboarding && (
+        <Layout
+          toolbarCenter={
+            <ToolbarCenter
+              templateId={templateId}
+              onTemplateChange={setTemplateId}
               primary={primary}
               onPrimaryChange={setPrimary}
               paperSize={paperSize}
               onPaperSizeChange={setPaperSize}
-              onNewResume={handleNewResume}
-              onSaveFile={handleSaveFile}
-              onLoadFile={handleLoadFile}
-              darkMode={darkMode}
-              onToggleDarkMode={toggleDarkMode}
-            />
-          </>
-        }
-        activeSection={activeSection}
-        onSectionChange={setActiveSection}
-        panel={
-          <FieldIssuesProvider report={grammarReport}>
-            <SectionPanel
-              active={activeSection}
+              onScanAts={openAts}
               resume={resume}
-              onChange={setResume}
-              jobDescription={jobDescription}
-              onJobDescriptionChange={setJobDescription}
-              onAnalyze={openAts}
             />
-          </FieldIssuesProvider>
-        }
-        preview={
-          <Preview
-            resume={resume}
-            palette={palette}
-            paperSize={paperSize}
-            TemplateComponent={TemplateComponent}
-          />
-        }
-      />
+          }
+          toolbarRight={
+            <>
+              <ToolbarActions
+                onExportPdf={handleExportPdf}
+                onSaveFile={handleSaveFile}
+                onLoadFile={handleLoadFile}
+                onNewResume={handleNewResume}
+                onScanAts={openAts}
+              />
+              <ToolbarOverflow
+                primary={primary}
+                onPrimaryChange={setPrimary}
+                paperSize={paperSize}
+                onPaperSizeChange={setPaperSize}
+                onNewResume={handleNewResume}
+                onSaveFile={handleSaveFile}
+                onLoadFile={handleLoadFile}
+              />
+            </>
+          }
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          panel={
+            <FieldIssuesProvider report={grammarReport}>
+              <SectionPanel
+                active={activeSection}
+                resume={resume}
+                onChange={setResume}
+                jobDescription={jobDescription}
+                onJobDescriptionChange={setJobDescription}
+                onAnalyze={openAts}
+              />
+            </FieldIssuesProvider>
+          }
+          preview={
+            <Preview
+              resume={resume}
+              palette={palette}
+              paperSize={paperSize}
+              TemplateComponent={TemplateComponent}
+            />
+          }
+        />
+      )}
 
-      {atsMounted && (
+      {atsMounted && !showOnboarding && (
         <ErrorBoundary title="ATS review hit a snag">
           <Suspense fallback={null}>
             <AtsReviewModal
@@ -458,8 +396,6 @@ export function App() {
           onLoadFile={handleLoadFile}
           onDismiss={hasSavedWork ? dismissOnboarding : undefined}
           onResumeEditing={hasSavedWork ? dismissOnboarding : undefined}
-          darkMode={darkMode}
-          onToggleDarkMode={toggleDarkMode}
         />
       )}
 

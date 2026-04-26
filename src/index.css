@@ -9,10 +9,11 @@
 @import "@fontsource/lora/700.css";
 @import "tailwindcss";
 
-/* Class-based dark variant — toggled by `data-theme="dark"` on <html>.
- * Enables occasional `dark:` utilities, though most of the app picks up
- * dark mode automatically via the token overrides below. */
-@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+/* System-driven dark variant — enables Tailwind `dark:` utilities to
+ * gate on `prefers-color-scheme: dark`. The app does not expose a
+ * manual toggle: the bulk of the chrome picks up dark mode through the
+ * token overrides further down (also keyed off the same media query). */
+@custom-variant dark (@media (prefers-color-scheme: dark));
 
 /* ────────────────────────────────────────────────────────────────
  * Design system — ocean-blue, privacy-first.
@@ -303,36 +304,26 @@
 }
 
 /* ────────────────────────────────────────────────────────────────
- * Dark mode — token overrides only. Chrome (toolbars, panels, inputs,
- * modals) picks up dark mode automatically because everything reads
- * from these tokens. The resume pages themselves stay white — a soft
- * brightness filter dims them against the darker canvas so they don't
- * glare, and print/export strips the filter so output looks printed.
+ * Dark mode — token overrides driven entirely by the OS
+ * `prefers-color-scheme: dark` media query. Chrome (toolbars, panels,
+ * inputs, modals) picks up dark mode automatically because everything
+ * reads from these tokens. The resume pages themselves stay white — a
+ * soft brightness filter dims them against the darker canvas so they
+ * don't glare, and print/export strips the filter so output looks
+ * printed.
  *
- * Dark mode activates in two ways:
- *   1. OS preference — `@media (prefers-color-scheme: dark)` unless
- *      the user has explicitly chosen light via `data-theme="light"`.
- *   2. Explicit user toggle — `<html data-theme="dark">`.
- *
- * Both scopes apply the same tokens via the shared `@layer` selector
- * list below. Keeping the tokens in one rule (instead of duplicating
- * into a @media block) means there is never drift between the two.
+ * No manual toggle is exposed: matching CloakPDF, the app follows the
+ * system appearance live. Removing the override removed an entire
+ * class of "sometimes the toggle works, sometimes it doesn't" bugs.
  * ──────────────────────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     color-scheme: dark;
   }
 }
-[data-theme="dark"] {
-  color-scheme: dark;
-}
 
-/* The full token/override block lives inside a `where()`-wrapped list
- * so specificity stays at (0,1,0) (same as plain `:root`) — source
- * order decides the tie, and these rules come AFTER the base :root
- * declarations so dark wins when it should. */
 @media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
+  :root {
     /* Tailwind @theme tokens — inverted ink ladder, deep slate surfaces. */
     --color-ink-0: #f8fafc;
     --color-ink-1: #f1f5f9;
@@ -427,95 +418,6 @@
     --lightness-thumb-bg: #0f172a;
     --lightness-thumb-border: #e2e8f0;
   }
-}
-/* Explicit user toggle — identical token overrides. Duplicated (not
- * combined with the @media block above) because CSS has no syntax to
- * combine a selector with a @media scope in a single rule. */
-[data-theme="dark"] {
-  --color-ink-0: #f8fafc;
-  --color-ink-1: #f1f5f9;
-  --color-ink-2: #e2e8f0;
-  --color-ink-3: #cbd5e1;
-  --color-ink-4: #94a3b8;
-  --color-ink-5: #64748b;
-  --color-ink-6: #475569;
-  --color-surface: #0f172a;
-  --color-surface-2: #0b1220;
-  --color-surface-3: #1e293b;
-  --color-surface-panel: #111827;
-  --color-page-bg: #0b1220;
-  --color-line: #1e293b;
-  --color-line-soft: #172033;
-  --color-line-hairline: #111827;
-  --color-border: #1e293b;
-  --color-text: #f1f5f9;
-  --color-text-muted: #94a3b8;
-  --color-ok: #34d399;
-  --color-ok-bg: rgba(5, 150, 105, 0.16);
-  --color-ok-border: rgba(52, 211, 153, 0.32);
-  --color-warn: #fbbf24;
-  --color-warn-bg: rgba(217, 119, 6, 0.16);
-  --color-warn-border: rgba(251, 191, 36, 0.32);
-  --color-danger: #f87171;
-  --color-danger-bg: rgba(220, 38, 38, 0.16);
-  --color-danger-border: rgba(248, 113, 113, 0.32);
-  --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-  --shadow-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
-  --ink-0: #f8fafc;
-  --ink-1: #f1f5f9;
-  --ink-2: #e2e8f0;
-  --ink-3: #cbd5e1;
-  --ink-4: #94a3b8;
-  --ink-5: #64748b;
-  --ink-6: #475569;
-  --line: #1e293b;
-  --line-soft: #172033;
-  --line-hairline: #111827;
-  --surface: #0f172a;
-  --surface-2: #0b1220;
-  --surface-3: #1e293b;
-  --surface-panel: #111827;
-  --surface-raised: #1e293b;
-  --ok: #34d399;
-  --ok-bg: rgba(5, 150, 105, 0.16);
-  --ok-border: rgba(52, 211, 153, 0.32);
-  --warn: #fbbf24;
-  --warn-bg: rgba(217, 119, 6, 0.16);
-  --warn-border: rgba(251, 191, 36, 0.32);
-  --danger: #f87171;
-  --danger-bg: rgba(220, 38, 38, 0.16);
-  --danger-border: rgba(248, 113, 113, 0.32);
-  --sh-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
-  --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-  --sh-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.3);
-  --sh-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-  --sh-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
-  --brand-50: color-mix(in oklab, var(--color-primary) 18%, transparent);
-  --brand-100: color-mix(in oklab, var(--color-primary) 26%, transparent);
-  --brand-200: color-mix(in oklab, var(--color-primary) 40%, transparent);
-  --brand-300: color-mix(in oklab, var(--color-primary) 55%, transparent);
-  --brand-700: var(--color-primary-300);
-  --preview-bg: linear-gradient(180deg, #0b1220 0%, #070b14 100%);
-  --onboarding-bg:
-    radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.18), transparent 55%),
-    radial-gradient(ellipse at 80% 100%, rgba(37, 99, 235, 0.1), transparent 55%),
-    linear-gradient(180deg, #0b1220 0%, #060912 100%);
-  --aurora-blend: screen;
-
-  /* Overlay surfaces — dark theme swaps. */
-  --glass-bg: rgba(15, 23, 42, 0.78);
-  --glass-bg-fallback: rgba(15, 23, 42, 0.96);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --popover-bg: rgba(11, 18, 32, 0.82);
-  --popover-bg-fallback: rgba(11, 18, 32, 0.96);
-  --popover-border: rgba(255, 255, 255, 0.08);
-  --overlay-shadow: 0 24px 56px -14px rgba(0, 0, 0, 0.6), 0 4px 14px -4px rgba(0, 0, 0, 0.35);
-  --backdrop-bg: rgba(0, 0, 0, 0.55);
-  --lightness-thumb-bg: #0f172a;
-  --lightness-thumb-border: #e2e8f0;
 }
 
 /* Component-level dark overrides used to live here as duplicated rule
@@ -672,15 +574,19 @@
   /* Dark frosted-glass surface — the complement to `.surface-glass`.
      Used by floating docks and pills that sit over the preview or editor
      (zoom dock, mobile section pill). Same blur recipe as the light
-     variant but with a deep-ink tint so it reads against bright content. */
+     variant but with a deep-ink tint so it reads against bright content.
+
+     Shadow stays tight (≤32px reach) because both consumers anchor near
+     the viewport bottom — a heavier shadow bleeds into the iOS Safari
+     URL-bar zone and reads as a "weird halo" against the page bg. */
   .surface-glass-dark {
     color: #fff;
     background: rgba(11, 18, 32, 0.72);
     backdrop-filter: blur(20px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 18px 40px -10px rgba(15, 23, 42, 0.7),
-      0 4px 10px rgba(15, 23, 42, 0.25);
+      0 8px 24px -8px rgba(15, 23, 42, 0.45),
+      0 2px 6px rgba(15, 23, 42, 0.18);
   }
   @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
     .surface-glass-dark {
@@ -946,8 +852,10 @@
  * look identical to light mode) but we dim it just enough that the bright
  * paper doesn't glare against the dark canvas. Print / PDF export strip
  * the filter so output looks exactly as designed. */
-[data-theme="dark"] .resume-root .resume-page {
-  filter: brightness(0.88) contrast(0.98);
+@media (prefers-color-scheme: dark) {
+  .resume-root .resume-page {
+    filter: brightness(0.88) contrast(0.98);
+  }
 }
 
 /* ────────────────────────────────────────────────────────────────

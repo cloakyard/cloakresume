@@ -24,7 +24,11 @@ export function FloatingSectionPill({ icon: Icon, label, onClick }: Props) {
       aria-label={`Change section — currently ${label}`}
       className={[
         "surface-glass-dark",
-        "absolute left-1/2 -translate-x-1/2 z-40 print:hidden",
+        // `fixed` (not `absolute`) so the pill stays pinned to the
+        // viewport on the mobile editor — the body area is now in
+        // document flow, not a fixed-height container, so an
+        // absolutely-positioned pill would scroll away with content.
+        "fixed left-1/2 -translate-x-1/2 z-40 print:hidden",
         "bottom-[calc(16px+env(safe-area-inset-bottom,0px))]",
         "inline-flex items-center gap-2.5 py-2 pl-2.5 pr-3.5 rounded-full",
         "max-w-[calc(100vw-32px)]",

@@ -35,15 +35,19 @@ export function SectionPanel({
   return (
     <section
       aria-label={`${meta.label} editor`}
-      className="flex flex-col w-full h-full min-w-0 overflow-hidden bg-(--surface) print:hidden"
+      className="flex flex-col w-full min-w-0 bg-(--surface) print:hidden lg:h-full lg:overflow-hidden"
     >
-      <header className="flex items-start gap-3 px-4 pt-4 pb-3.5 border-b border-(--line-soft) lg:px-5">
-        {/*
-         * Section-identity tile. Distinct from the rail's selected-item
-         * chip by shape and weight: rounded-xl, larger (44px), a deeper
-         * brand-100 fill with a brand-700 glyph and a subtle ring — a
-         * calmer "you are here" banner, not a loud badge.
-         */}
+      {/*
+       * Section-identity tile + label.
+       *
+       * On mobile the panel is part of the document scroll (no inner
+       * `overflow-y-auto` — see the body class below), so the header
+       * is `sticky top-14` to stay pinned just below the layout's
+       * 56px sticky app-header as the user scrolls through fields.
+       * On desktop the panel has its own internal scroll, so the
+       * header is plain static.
+       */}
+      <header className="sticky top-14 z-30 bg-(--surface) flex items-start gap-3 px-4 pt-4 pb-3.5 border-b border-(--line-soft) lg:static lg:top-auto lg:px-5">
         <span
           aria-hidden="true"
           className="grid place-items-center w-11 h-11 shrink-0 rounded-md bg-(--brand-100) text-(--brand-700) ring-1 ring-(--brand-200)"
@@ -64,7 +68,18 @@ export function SectionPanel({
           </div>
         </div>
       </header>
-      <div className="flex-1 overflow-y-auto px-3.5 pt-4 pb-32 cr-scroll lg:px-5 lg:pt-4.5 lg:pb-20">
+      {/*
+       * Editor body.
+       *
+       * Mobile: no `flex-1`/`overflow-y-auto` — the form renders at
+       * its natural height and the document scrolls. This is what
+       * lets iOS Safari collapse its URL bar (it only triggers on
+       * document scroll, not inner-container scroll).
+       *
+       * Desktop: `lg:flex-1 lg:overflow-y-auto` — the panel's own
+       * scroll inside the fixed app-shell grid, as before.
+       */}
+      <div className="px-3.5 pt-4 pb-32 cr-scroll lg:flex-1 lg:overflow-y-auto lg:px-5 lg:pt-4.5 lg:pb-20">
         <Editor
           active={active}
           resume={resume}
