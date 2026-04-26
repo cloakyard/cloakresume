@@ -10,6 +10,7 @@
  * rail drifting as sections are added or relabelled.
  */
 
+import { useState } from "react";
 import {
   Award,
   BadgeCheck,
@@ -20,15 +21,15 @@ import {
   Globe,
   GraduationCap,
   Heart,
-  HelpCircle,
   Layers,
   type LucideIcon,
   Mail,
-  Settings,
+  ShieldCheck,
   Sparkles,
   Target,
   User,
 } from "lucide-react";
+import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 
 export type SectionId =
   | "profile"
@@ -171,6 +172,8 @@ const railButtonActive = [
 ].join(" ");
 
 export function SectionRail({ active, onChange, variant = "rail" }: Props) {
+  const [privacyOpen, setPrivacyOpen] = useState(false);
+
   if (variant === "drawer") {
     return (
       <nav className="flex flex-col gap-1" aria-label="Resume sections">
@@ -257,20 +260,14 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
       <div className="w-6 h-px bg-(--line) my-2" />
       <button
         type="button"
+        onClick={() => setPrivacyOpen(true)}
         className={`${railButtonBase} ${railButtonInactive}`}
-        aria-label="Help"
-        title="Help"
+        aria-label="Privacy policy"
+        title="Privacy policy"
       >
-        <HelpCircle className="w-4 h-4" strokeWidth={2} />
+        <ShieldCheck className="w-4 h-4" strokeWidth={2} />
       </button>
-      <button
-        type="button"
-        className={`${railButtonBase} ${railButtonInactive}`}
-        aria-label="Settings"
-        title="Settings"
-      >
-        <Settings className="w-4 h-4" strokeWidth={2} />
-      </button>
+      <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
     </nav>
   );
 }

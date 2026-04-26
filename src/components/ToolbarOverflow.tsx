@@ -11,7 +11,7 @@ import {
   FileText,
   FilePlus2,
   LayoutTemplate,
-  MoreHorizontal,
+  Menu,
   Palette,
   Save,
   ScanSearch,
@@ -65,7 +65,7 @@ export function ToolbarOverflow({
         aria-label="More options"
         aria-haspopup="menu"
       >
-        <MoreHorizontal className="w-4 h-4" />
+        <Menu className="w-4 h-4" />
       </button>
 
       <input
