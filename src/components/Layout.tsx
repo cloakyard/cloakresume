@@ -69,17 +69,67 @@ export function Layout({
     }
   }, [isMobile]);
 
+  /* Mobile-only iOS Safari URL-bar fix.
+   *
+   * The editor's desktop shell is `h-[100svh] overflow-hidden grid`
+   * and the global `body { overflow: hidden; height: 100% }` lock
+   * from index.css is what makes that 3-column app shell work. On
+   * iPhone Safari, that same lock prevents the document from ever
+   * scrolling — and iOS only collapses its bottom URL bar when the
+   * *document* scrolls, not when an inner container does. Without
+   * this unlock the URL bar stays at full height for the entire
+   * editor session (the same "white bar" the welcome screen used to
+   * show before its own unlock effect).
+   *
+   * The mobile shell below is a `flex-col min-h-[100dvh]` page with
+   * a sticky header, rather than a fixed grid. With this combined
+   * with the unlock, the panel's natural content (which is almost
+   * always taller than a phone viewport) scrolls the document, iOS
+   * collapses the URL bar to its slim pill, and `100dvh` instantly
+   * resizes the layout to fill the now-larger viewport.
+   *
+   * Restored on unmount and when the viewport crosses back to
+   * desktop so the locked-shell behaviour is preserved everywhere
+   * else. Mirrors the OnboardingScreen pattern. */
+  useEffect(() => {
+    if (!isMobile) return;
+    const html = document.documentElement;
+    const body = document.body;
+    const prev = {
+      htmlHeight: html.style.height,
+      htmlOverflow: html.style.overflow,
+      bodyHeight: body.style.height,
+      bodyOverflow: body.style.overflow,
+    };
+    html.style.height = "auto";
+    html.style.overflow = "visible";
+    body.style.height = "auto";
+    body.style.overflow = "visible";
+    return () => {
+      html.style.height = prev.htmlHeight;
+      html.style.overflow = prev.htmlOverflow;
+      body.style.height = prev.bodyHeight;
+      body.style.overflow = prev.bodyOverflow;
+    };
+  }, [isMobile]);
+
   const activeMeta = SECTIONS.find((s) => s.id === activeSection) ?? SECTIONS[0];
 
-  // Mobile-first shell: single-column stack (header + body). `lg:` turns it
-  // into the desktop three-column grid with a persistent rail.
+  // Mobile shell is a normal-flow `flex-col` page with `min-h-[100dvh]`
+  // so the document scrolls naturally — required for iOS Safari URL-bar
+  // collapse (see unlock effect above). Desktop keeps the original
+  // fixed-height 3-column grid.
   const shellClass = isMobile
-    ? "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[56px_1fr] grid-cols-[1fr] [grid-template-areas:'header'_'body']"
+    ? "bg-(--surface-2) min-h-[100dvh] flex flex-col"
     : "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[56px_1fr] grid-cols-[56px_400px_1fr] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
 
   return (
     <div className={shellClass} data-mobile-view={mobileView}>
-      <header className="[grid-area:header] z-50 flex items-center gap-2 px-3 bg-(--surface) border-b border-(--line) print:hidden sm:gap-3 sm:px-4">
+      <header
+        className={`z-50 flex items-center gap-2 px-3 bg-(--surface) border-b border-(--line) print:hidden sm:gap-3 sm:px-4 ${
+          isMobile ? "sticky top-0 h-14 shrink-0" : "[grid-area:header]"
+        }`}
+      >
         <BrandLogo />
 
         {/* Flex spacer pushes the remaining groups to the right edge. */}
@@ -147,25 +197,25 @@ export function Layout({
         </main>
       )}
 
+      {/* Mobile body — natural flow so the document scrolls.
+       *
+       * Panel renders at its full natural height (its own scroll
+       * container is opted out on mobile via `lg:` classes inside
+       * SectionPanel), so the document grows with the form content
+       * and iOS Safari can collapse its URL bar on user scroll.
+       *
+       * Preview keeps its internal scroll for the canvas zoom/pan,
+       * so its wrapper gets an explicit `100dvh - 56px` height to
+       * match the visible body area. The page itself doesn't scroll
+       * in preview view, but URL-bar state is preserved across the
+       * panel/preview toggle so the slim pill stays once the user
+       * has scrolled the panel. */}
       {isMobile && (
-        <div
-          data-panel-root
-          className="[grid-area:body] relative min-w-0 min-h-0 overflow-hidden bg-(--surface-2)"
-        >
-          <div
-            className={`absolute inset-0 flex-col min-w-0 min-h-0 ${
-              mobileView === "panel" ? "flex" : "hidden"
-            }`}
-          >
-            {panel}
-          </div>
-          <div
-            className={`absolute inset-0 flex-col min-w-0 min-h-0 ${
-              mobileView === "preview" ? "flex" : "hidden"
-            }`}
-          >
-            {preview}
-          </div>
+        <div data-panel-root className="flex-1 flex flex-col min-w-0 bg-(--surface-2)">
+          {mobileView === "panel" && panel}
+          {mobileView === "preview" && (
+            <div className="flex flex-col min-w-0 min-h-0 h-[calc(100dvh-3.5rem)]">{preview}</div>
+          )}
 
           {mobileView === "panel" && (
             <FloatingSectionPill

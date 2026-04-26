@@ -574,15 +574,19 @@
   /* Dark frosted-glass surface — the complement to `.surface-glass`.
      Used by floating docks and pills that sit over the preview or editor
      (zoom dock, mobile section pill). Same blur recipe as the light
-     variant but with a deep-ink tint so it reads against bright content. */
+     variant but with a deep-ink tint so it reads against bright content.
+
+     Shadow stays tight (≤32px reach) because both consumers anchor near
+     the viewport bottom — a heavier shadow bleeds into the iOS Safari
+     URL-bar zone and reads as a "weird halo" against the page bg. */
   .surface-glass-dark {
     color: #fff;
     background: rgba(11, 18, 32, 0.72);
     backdrop-filter: blur(20px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 18px 40px -10px rgba(15, 23, 42, 0.7),
-      0 4px 10px rgba(15, 23, 42, 0.25);
+      0 8px 24px -8px rgba(15, 23, 42, 0.45),
+      0 2px 6px rgba(15, 23, 42, 0.18);
   }
   @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
     .surface-glass-dark {
