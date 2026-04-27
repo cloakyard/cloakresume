@@ -213,31 +213,48 @@ const STYLESHEET = `
    two smallest blobs that mostly add density rather than silhouette.
 
    Mobile bottom boundary: on phones the floating iOS Safari URL bar
-   samples the page color directly behind it. To keep blobs from being
-   sampled, the aurora-root becomes a fixed clipping container that
-   stops short of the URL-bar zone, and blobs switch to position:
-   absolute so they're clipped at the container's bottom edge. The
-   blobs still animate through their full keyframe range -- they just
-   get clipped where they would have crossed into the bar's sample
-   area. No overlay, no fade, no color shift in the visible region. */
+   samples the page color directly behind it. An earlier hard-clip
+   approach (bottom inset on the container) kept blobs out of the
+   sample zone, but left a visible blank stripe above the URL bar
+   whenever the bar collapsed -- the rest of the page carried the
+   aurora tint while that stripe showed only the bare page bg.
+
+   Instead, aurora-root spans the full viewport and a vertical alpha
+   mask fades the blobs to fully transparent across the URL-bar zone.
+   The result: blobs never paint into the bar's sample area, and the
+   transition is a soft gradient rather than a hard edge, so the eye
+   reads it as the aurora naturally fading at the screen's bottom
+   rather than as a missing strip. */
 @media (max-width: 640px) {
   .aurora-blob { filter: blur(36px); }
   .aurora-blob-mobile-hide { display: none; }
   .aurora-root {
     position: fixed;
-    /* Bottom inset = approximate iOS Safari URL bar height + home
-       indicator safe area. Tuned to the bar's collapsed/expanded
-       range so blobs don't graze the sample zone in either state. */
-    inset: 0 0 calc(72px + env(safe-area-inset-bottom, 0px)) 0;
+    inset: 0;
     overflow: hidden;
     pointer-events: none;
     z-index: 0;
+    /* Fade band: fully opaque above ~200px from the bottom, fully
+       transparent at ~72px + safe-area (top of the URL bar's sample
+       zone). The 128px-tall transition reads as a gentle aurora
+       fall-off; below it, blobs contribute nothing so the URL bar
+       samples only the page background. */
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(100% - 200px - env(safe-area-inset-bottom, 0px)),
+      transparent calc(100% - 72px - env(safe-area-inset-bottom, 0px))
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      black 0,
+      black calc(100% - 200px - env(safe-area-inset-bottom, 0px)),
+      transparent calc(100% - 72px - env(safe-area-inset-bottom, 0px))
+    );
   }
   .aurora-blob {
-    /* Inside the fixed clipping container; percentages now resolve
-       against the container, not the viewport. The shift is small
-       (only the bottom inset is removed from the height) so the
-       composition stays visually equivalent to desktop. */
+    /* Inside the fixed mask container; percentages now resolve
+       against the container (= viewport on mobile). */
     position: absolute;
   }
 }
