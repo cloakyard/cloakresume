@@ -564,9 +564,10 @@ export function OnboardingScreen({
           content is shorter than the screen. Footer bg kept ~92% opaque
           so it reads as a solid surface over the aurora when scrolled
           into view. iOS Safari URL-bar tint sampling is handled inside
-          AuroraBackground itself: on mobile, the aurora-root is a fixed
-          clipping container that stops above the URL bar zone, so no
-          blob ever paints into Safari's sample area. The
+          AuroraBackground itself: on mobile, the aurora-root applies a
+          vertical alpha-mask that fades the blobs to transparent across
+          the URL-bar zone, so no blob paints into Safari's sample area
+          and there's no hard edge above the bar. The
           `safe-area-inset-bottom` padding here still extends the
           footer's painted area into the home-indicator zone. */}
         <footer
