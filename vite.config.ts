@@ -29,7 +29,7 @@ export default defineConfig({
         short_name: "CloakResume",
         description:
           "Private, ATS-friendly resume builder that runs entirely in your browser. Pick a template, choose a colour, export to PDF. 100% private — nothing uploaded.",
-        theme_color: "#2563EB",
+        theme_color: "#059669",
         background_color: "#F0F4FA",
         display: "standalone",
         orientation: "portrait",

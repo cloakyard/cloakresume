@@ -36,7 +36,7 @@ export function FloatingSectionPill({ icon: Icon, label, onClick }: Props) {
         "appearance-none border-0 cursor-pointer",
         "transition-[transform,box-shadow] duration-100",
         "active:translate-x-[-50%] active:translate-y-px",
-        "focus-visible:outline-none focus-visible:[box-shadow:0_0_0_3px_rgba(37,99,235,0.45),0_18px_40px_-10px_rgba(15,23,42,0.45)]",
+        "focus-visible:outline-none focus-visible:[box-shadow:0_0_0_3px_rgba(5,150,105,0.45),0_18px_40px_-10px_rgba(15,23,42,0.45)]",
       ].join(" ")}
     >
       <span

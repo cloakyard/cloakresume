@@ -83,9 +83,9 @@ export function derivePalette(primary: string): PrimaryPalette {
 }
 
 export const PRESET_COLORS: { name: string; value: string }[] = [
+  { name: "Emerald", value: "#059669" },
   { name: "Ocean", value: "#2563EB" },
   { name: "Violet", value: "#7C3AED" },
-  { name: "Emerald", value: "#059669" },
   { name: "Rose", value: "#E11D48" },
   { name: "Amber", value: "#D97706" },
   { name: "Slate", value: "#334155" },

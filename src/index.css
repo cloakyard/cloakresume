@@ -23,18 +23,18 @@
  * working without rewrites.
  * ──────────────────────────────────────────────────────────────── */
 @theme {
-  /* Ocean-blue primary palette */
-  --color-primary-50: #eff6ff;
-  --color-primary-100: #dbeafe;
-  --color-primary-200: #bfdbfe;
-  --color-primary-300: #93c5fd;
-  --color-primary-400: #60a5fa;
-  --color-primary-500: #3b82f6;
-  --color-primary-600: #2563eb;
-  --color-primary-700: #1d4ed8;
-  --color-primary-800: #1e40af;
-  --color-primary-900: #1e3a8a;
-  --color-primary: #2563eb;
+  /* Emerald primary palette — privacy green that anchors the brand. */
+  --color-primary-50: #ecfdf5;
+  --color-primary-100: #d1fae5;
+  --color-primary-200: #a7f3d0;
+  --color-primary-300: #6ee7b7;
+  --color-primary-400: #34d399;
+  --color-primary-500: #10b981;
+  --color-primary-600: #059669;
+  --color-primary-700: #047857;
+  --color-primary-800: #065f46;
+  --color-primary-900: #064e3b;
+  --color-primary: #059669;
 
   /* Text (ink) scale */
   --color-ink-0: #050816;
@@ -80,7 +80,7 @@
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
   --shadow-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --shadow-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  --shadow-focus: 0 0 0 3px rgba(5, 150, 105, 0.18);
 
   /* Radii (aligned with Tailwind's rounded-* scale) */
   --radius-xs: 4px;
@@ -137,6 +137,21 @@
   @keyframes fade {
     from {
       opacity: 0;
+    }
+  }
+  /* Gentle "rotate your phone" pulse — a slow tilt + scale used by
+   * OrientationLock's icon tile so the affordance reads as kinetic
+   * without becoming distracting. */
+  @keyframes cr-rotate-hint {
+    0%,
+    100% {
+      transform: rotate(0deg) scale(1);
+    }
+    40% {
+      transform: rotate(-8deg) scale(1.04);
+    }
+    60% {
+      transform: rotate(8deg) scale(1.04);
     }
   }
 }
@@ -205,12 +220,10 @@
 }
 
 /*
- * Aurora — animated drifting blobs for the onboarding backdrop —
- * has been extracted into the self-contained `AuroraBackground`
- * component. Its CSS now lives next to the component (and is loaded
- * by it) so the effect can be lifted into other tools as a unit.
- * The `--aurora-blend` token is still defined below (light/dark) so
- * the same instance picks up the correct blend mode here.
+ * The onboarding hero now uses the self-contained `Grainient`
+ * component (a WebGL2 noise/gradient shader) for its animated
+ * backdrop. Its CSS lives next to the component and is loaded by it
+ * so the effect ships as a single unit per the CloakIMG pattern.
  */
 
 /*
@@ -219,15 +232,15 @@
  * every template or every use of `text-(--ink-3)` during the migration.
  */
 :root {
-  --brand: #2563eb;
-  --brand-hover: #1d4ed8;
-  --brand-active: #1e40af;
-  --brand-50: #eff6ff;
-  --brand-100: #dbeafe;
-  --brand-200: #bfdbfe;
-  --brand-300: #93c5fd;
-  --brand-600: #2563eb;
-  --brand-700: #1d4ed8;
+  --brand: #059669;
+  --brand-hover: #047857;
+  --brand-active: #065f46;
+  --brand-50: #ecfdf5;
+  --brand-100: #d1fae5;
+  --brand-200: #a7f3d0;
+  --brand-300: #6ee7b7;
+  --brand-600: #059669;
+  --brand-700: #047857;
 
   --ink-0: #050816;
   --ink-1: #0b1220;
@@ -266,7 +279,7 @@
   --sh-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --sh-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
   --sh-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --sh-focus: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  --sh-focus: 0 0 0 3px rgba(5, 150, 105, 0.18);
 
   --r-xs: 4px;
   --r-sm: 6px;
@@ -277,14 +290,14 @@
 
   /* Gradient backdrop for the preview pane. Swapped by dark mode. */
   --preview-bg: linear-gradient(180deg, #eef2f7 0%, #e8edf4 100%);
-  /* Onboarding screen backdrop — same gradient story, lighter accents. */
+  /* Onboarding screen backdrop — fallback gradient that fills the
+   * screen behind the WebGL Grainient (rendered on top with a fixed
+   * className). The radial accents seed brand presence even before
+   * the shader has compiled / when WebGL is unavailable. */
   --onboarding-bg:
-    radial-gradient(ellipse at 20% 0%, rgba(37, 99, 235, 0.08), transparent 55%),
-    radial-gradient(ellipse at 80% 100%, rgba(37, 99, 235, 0.05), transparent 55%),
+    radial-gradient(ellipse at 20% 0%, rgba(5, 150, 105, 0.08), transparent 55%),
+    radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.05), transparent 55%),
     linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%);
-  /* Blend mode for aurora-particle layers. Multiply tints a light bg
-   * with hue; flipped to screen in dark mode for a glow against dark. */
-  --aurora-blend: multiply;
 
   /* Overlay surfaces (glass panels, popovers, backdrops). The base
    * values live here; the dark blocks below swap them. The `*-fallback`
@@ -401,10 +414,9 @@
     /* Canvas gradients — dim surfaces behind the white resume pages. */
     --preview-bg: linear-gradient(180deg, #0b1220 0%, #070b14 100%);
     --onboarding-bg:
-      radial-gradient(ellipse at 20% 0%, rgba(59, 130, 246, 0.18), transparent 55%),
-      radial-gradient(ellipse at 80% 100%, rgba(37, 99, 235, 0.1), transparent 55%),
+      radial-gradient(ellipse at 20% 0%, rgba(16, 185, 129, 0.18), transparent 55%),
+      radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.1), transparent 55%),
       linear-gradient(180deg, #0b1220 0%, #060912 100%);
-    --aurora-blend: screen;
 
     /* Overlay surfaces — dark theme swaps. */
     --glass-bg: rgba(15, 23, 42, 0.78);
@@ -837,8 +849,8 @@
   border-bottom: 1px dotted currentColor;
 }
 .resume-root a.tpl-link:hover {
-  color: #2563eb;
-  border-bottom-color: #2563eb;
+  color: #059669;
+  border-bottom-color: #059669;
 }
 
 /* Preview scroller gets momentum scroll + the same gradient backing. */
