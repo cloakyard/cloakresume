@@ -69,6 +69,10 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
     .atp-kv { font-size: 10.3pt; margin-bottom: 1mm; overflow-wrap: break-word; }
     .atp-kv strong { color: #111827; font-weight: 600; overflow-wrap: break-word; }
     .atp-cert-year { color: #6b7280; font-style: italic; }
+    .atp-proj-label { font-size: 9.4pt; font-weight: 700; color: ${palette.primary600}; text-transform: uppercase; letter-spacing: 0.6px; margin: 1.4mm 0 0.6mm; }
+    .atp-proj-bullets { margin: 0 0 1mm; padding-left: 5mm; list-style: disc; }
+    .atp-proj-bullets li { font-size: 10.3pt; margin: 0 0 0.6mm; color: #1f2937; line-height: 1.45; padding-left: 1mm; overflow-wrap: break-word; }
+    .atp-proj-bullets li::marker { color: ${palette.primary600}; }
   `;
 
   const visibleContacts = resume.contact.filter((c) => c.value.trim());
@@ -187,12 +191,24 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
         <div className="atp-entry" key={`proj-${p.id}`}>
           <div className="atp-row">
             <span className="atp-role">{p.name}</span>
-            {p.role && <span className="atp-location">{p.role}</span>}
           </div>
           {p.description && (
-            <p className="atp-p">
-              <RichText value={p.description} />
-            </p>
+            <>
+              <div className="atp-proj-label">About Project</div>
+              <ul className="atp-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="atp-proj-label">Role</div>
+              <ul className="atp-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && (
             <div className="atp-kv">

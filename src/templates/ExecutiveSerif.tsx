@@ -75,10 +75,12 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
     .es-item strong { color: #111827; overflow-wrap: break-word; }
     .es-proj { margin-bottom: 3mm; padding-bottom: 2.5mm; border-bottom: 1px dashed #e5e7eb; page-break-inside: avoid; break-inside: avoid; }
     .es-proj:last-child { border-bottom: 0; }
-    .es-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.2pt; font-weight: 700; color: #111827; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .es-projdesc { font-size: 9pt; color: #27272a; line-height: 1.5; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .es-projrole { font-size: 8.8pt; color: #4b5563; font-style: italic; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .es-projstack { font-size: 8.5pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .es-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.6pt; font-weight: 700; color: #111827; margin-bottom: 1mm; overflow-wrap: break-word; }
+    .es-proj-label { font-family: 'Geist', 'Inter', sans-serif; font-size: 8pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1px; margin: 1.2mm 0 0.5mm; }
+    .es-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
+    .es-proj-bullets li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.6mm; color: #27272a; overflow-wrap: break-word; }
+    .es-proj-bullets li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .es-projstack { font-size: 8.5pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
     .es-pill { display: inline-block; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 2mm; margin: 0.3mm; border-radius: 3px; font-size: 8pt; font-weight: 600; background: ${palette.primary50}; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
   `;
 
@@ -203,10 +205,24 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
       atoms.push(
         <div className="es-proj" key={`proj-${p.id}`}>
           <div className="es-projname">{p.name}</div>
-          <div className="es-projdesc">
-            <RichText value={p.description} />
-          </div>
-          {p.role && <div className="es-projrole">{p.role}</div>}
+          {p.description && (
+            <>
+              <div className="es-proj-label">About Project</div>
+              <ul className="es-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="es-proj-label">Role</div>
+              <ul className="es-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
+          )}
           {p.stack.length > 0 && <div className="es-projstack">{p.stack.join(" · ")}</div>}
         </div>,
       );

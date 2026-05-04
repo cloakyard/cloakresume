@@ -235,13 +235,16 @@ export function OnboardingScreen({
         <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
           <div className="max-w-[1180px] mx-auto flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-14 sm:h-16">
             <div className="flex items-center gap-2.5 min-w-0">
+              {/* Use the circular favicon mark in chrome (not the
+                  full-bleed PWA logo) so the brand reads as a circular
+                  badge — matches the CloakPDF / CloakIMG header. */}
               <img
-                src="/icons/logo.svg"
+                src="/icons/favicon.svg"
                 alt=""
                 aria-hidden="true"
-                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0"
+                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 drop-shadow-sm"
               />
-              <div className="font-semibold text-(--ink-1) text-[17px] sm:text-[19px] tracking-[-0.025em] leading-none truncate">
+              <div className="font-semibold text-(--ink-1) text-[17px] sm:text-[19px] tracking-tight leading-none truncate">
                 Cloak<span className="text-(--brand)">Resume</span>
               </div>
             </div>
@@ -266,17 +269,90 @@ export function OnboardingScreen({
           </div>
         </nav>
 
-        {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:pt-24 pb-10 sm:pb-14">
-          <h1 className="text-center text-[34px] sm:text-[46px] md:text-[60px] lg:text-[68px] font-semibold text-(--ink-1) tracking-[-0.03em] leading-[1.05] m-0 max-w-[900px] mx-auto animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
-            Build a résumé that{" "}
-            <em className="font-serif italic font-normal text-(--brand)">stays yours</em>.
-          </h1>
+        {/* ── Hero ───────────────────────────────────────────────
+             Two-column layout on large screens: a left-aligned
+             headline + subtitle on the left, a stylised paper
+             "résumé page" mockup on the right. Below the breakpoint
+             both columns stack and the mockup is hidden — the CTA
+             tiles already carry the "what you'll do next" weight on
+             phones and the mockup adds visual padding that hurts
+             single-column rhythm.
 
-          <p className="text-center text-(--ink-3) text-[15px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[640px] mx-auto mt-5 sm:mt-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
-            Beautifully designed templates, real ATS analysis, and zero servers. Your data is stored
-            locally — nothing is ever uploaded.
-          </p>
+             The CTA cluster sits below the two-column hero (full
+             width) so the three-tile row keeps its airy proportions
+             and the "Resume editing" wide card has room to breathe. */}
+        <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:pt-24 pb-10 sm:pb-14">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-center">
+            <div className="text-center lg:text-left">
+              <h1 className="text-[34px] sm:text-[46px] md:text-[58px] lg:text-[60px] font-semibold text-(--ink-1) tracking-[-0.03em] leading-[1.05] m-0 max-w-[900px] mx-auto lg:mx-0 animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
+                Build a résumé that{" "}
+                <em className="font-serif italic font-normal text-(--brand)">stays yours</em>.
+              </h1>
+
+              <p className="text-(--ink-3) text-[15px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[640px] mx-auto lg:mx-0 mt-5 sm:mt-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+                Beautifully designed templates, real ATS analysis, and zero servers. Your data is
+                stored locally — nothing is ever uploaded.
+              </p>
+
+              {/* Primary hero CTA — small, left-aligned on desktop.
+                  Contextual: when there's saved work it picks up
+                  editing where the user left off; otherwise it
+                  starts a fresh blank résumé. Functionally
+                  duplicates one of the larger CTA tiles below, but
+                  giving the hero its own button (alongside the
+                  headline) lets visitors act without scrolling and
+                  matches the CloakIMG / CloakPDF landing rhythm. */}
+              <div className="mt-6 sm:mt-7 flex justify-center lg:justify-start animate-[fade-in-up_0.6s_ease-out_0.18s_both]">
+                <button
+                  type="button"
+                  onClick={onResumeEditing ?? onStartBlank}
+                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-(--brand) text-white text-[13.5px] font-semibold tracking-tight cursor-pointer border-0 shadow-(--sh-md) transition-[background-color,transform,box-shadow] duration-150 hover:bg-(--brand-hover) hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
+                >
+                  {onResumeEditing ? (
+                    <>
+                      <FilePen className="w-4 h-4" />
+                      Resume editing
+                    </>
+                  ) : (
+                    <>
+                      <ArrowRight className="w-4 h-4" />
+                      Get started
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Trust strip — three quiet pills under the CTA.
+                  Mirrors the CloakIMG hero so the privacy promise is
+                  visible without extra clicks; left-aligned on desktop
+                  to match the headline. */}
+              <div className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-4.5 gap-y-2 text-[12.5px] text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.22s_both]">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" /> 100% on-device
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <WifiOff className="w-3.5 h-3.5 text-(--brand)" /> Works offline
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ScanSearch className="w-3.5 h-3.5 text-(--brand)" /> ATS-ready
+                </span>
+              </div>
+            </div>
+
+            {/* Decorative résumé mockup — only on lg+. Pure
+                presentation; doesn't render real ResumeData (the live
+                preview lives inside the editor). The shapes mirror
+                the actual CloakResume layout (avatar + name +
+                headline; section dividers; bulleted body) so the
+                hero answers "what does the output look like?" at a
+                glance. */}
+            <div
+              aria-hidden="true"
+              className="hidden lg:block animate-[fade-in-up_0.6s_ease-out_0.2s_both]"
+            >
+              <ResumeMockup />
+            </div>
+          </div>
 
           {/* Primary CTAs.
            *
@@ -285,7 +361,7 @@ export function OnboardingScreen({
            * "continue where you left off" path is visually dominant
            * without making the three fresh-start tiles look stretched.
            * Otherwise just the 3-tile row renders. */}
-          <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
+          <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.25s_both]">
             {onResumeEditing && (
               <GlowCard
                 onClick={onResumeEditing}
@@ -701,5 +777,272 @@ function FooterStep({ n, title, description }: FooterStepProps) {
         <div className="text-[12.5px] leading-[1.55] text-(--ink-4)">{description}</div>
       </div>
     </li>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * ResumeMockup — A pure-CSS stylised "paper" résumé page used as
+ * decorative chrome in the onboarding hero. Mirrors the Classic
+ * Sidebar template (CloakResume's default): a tinted left rail
+ * carrying the identity block + contact/skills/languages, with a
+ * main column carrying summary + experience + projects.
+ *
+ * Sized to A4 aspect (210 × 297). Wrapped in an outer
+ * `overflow-visible` container so the rotated "ATS · 92" sticker
+ * can sit slightly outside the page edge without being clipped by
+ * the rounded corners of the inner page.
+ *
+ * Hidden below `lg:` because single-column phones don't need the
+ * visual padding.
+ * ──────────────────────────────────────────────────────────────── */
+function ResumeMockup() {
+  return (
+    <div className="relative mx-auto w-full max-w-[380px]">
+      {/* Inner page: A4 aspect, white surface, rounded + overflow
+          clipped so content can't bleed past the paper edge. The
+          rotation lives here so the ATS sticker (sibling, outside
+          this clipping container) tilts independently. */}
+      <div
+        role="presentation"
+        className="relative aspect-[210/297] rounded-md bg-white shadow-(--sh-xl) ring-1 ring-slate-900/5 overflow-hidden rotate-[1.5deg] transition-transform duration-300 hover:rotate-0"
+      >
+        {/* Top emerald band — quiet horizontal accent matching the
+            CloakResume templates that paint a brand-coloured header
+            strip across the page. */}
+        <div className="h-2 w-full bg-gradient-to-r from-(--color-primary-500) to-(--color-primary-700)" />
+
+        <div className="grid grid-cols-[34%_minmax(0,1fr)] h-[calc(100%-0.5rem)]">
+          {/* ── Sidebar (tinted brand-50 like the live template) ── */}
+          <div className="bg-(--brand-50) px-3 py-3.5 flex flex-col gap-3 min-w-0">
+            {/* Identity block */}
+            <div className="flex flex-col items-center gap-1.5 pb-1">
+              <div
+                className="w-12 h-12 rounded-full ring-2"
+                style={{
+                  background:
+                    "linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-500) 100%)",
+                  // ring colour can't read brand var directly via tw, so inline
+                  outlineColor: "var(--color-primary-600)",
+                }}
+              />
+              <div className="h-2 w-20 rounded bg-slate-800/80 mt-1" />
+              <div className="h-1.5 w-14 rounded bg-(--color-primary-600)/70" />
+              <div className="h-0.5 w-7 rounded-full bg-(--color-primary-600) mt-0.5" />
+            </div>
+
+            {/* Contact */}
+            <SidebarSection label="Contact">
+              <SidebarContactRow widthClass="w-full" />
+              <SidebarContactRow widthClass="w-5/6" />
+              <SidebarContactRow widthClass="w-3/4" />
+              <SidebarContactRow widthClass="w-2/3" />
+            </SidebarSection>
+
+            {/* Core Expertise (skill groups) */}
+            <SidebarSection label="Core Expertise">
+              <div className="h-1.5 w-2/3 rounded bg-slate-700/80" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-4/5 rounded bg-slate-200" />
+              <div className="h-1.5 w-1/2 rounded bg-slate-700/80 mt-1" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-3/4 rounded bg-slate-200" />
+              <div className="h-1.5 w-3/5 rounded bg-slate-700/80 mt-1" />
+              <div className="h-1 w-5/6 rounded bg-slate-200" />
+            </SidebarSection>
+
+            {/* Languages */}
+            <SidebarSection label="Languages">
+              <div className="flex justify-between items-center gap-1.5">
+                <div className="h-1 w-2/5 rounded bg-slate-300" />
+                <div className="h-1 w-1/4 rounded bg-(--color-primary-600)/60" />
+              </div>
+              <div className="flex justify-between items-center gap-1.5">
+                <div className="h-1 w-1/3 rounded bg-slate-300" />
+                <div className="h-1 w-1/4 rounded bg-(--color-primary-600)/60" />
+              </div>
+            </SidebarSection>
+
+            {/* Tools (chips) */}
+            <SidebarSection label="Tools">
+              <div className="flex flex-wrap gap-1">
+                <Chip width="w-7" />
+                <Chip width="w-9" />
+                <Chip width="w-6" />
+                <Chip width="w-8" />
+                <Chip width="w-7" />
+              </div>
+            </SidebarSection>
+          </div>
+
+          {/* ── Main column ────────────────────────────────────── */}
+          <div className="px-3.5 py-3.5 flex flex-col gap-3 min-w-0">
+            {/* Summary */}
+            <MainSection label="Summary">
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-11/12 rounded bg-slate-200" />
+              <div className="h-1 w-3/4 rounded bg-slate-200" />
+            </MainSection>
+
+            {/* Experience */}
+            <MainSection label="Experience">
+              <ExperienceItem
+                titleWidth="w-3/5"
+                metaWidth="w-1/4"
+                companyWidth="w-2/5"
+                bullets={3}
+              />
+              <ExperienceItem
+                titleWidth="w-2/5"
+                metaWidth="w-1/4"
+                companyWidth="w-1/3"
+                bullets={2}
+              />
+            </MainSection>
+
+            {/* Projects — single column with About Project / Role
+                mini-labels + bullets, mirroring the updated live
+                template. */}
+            <MainSection label="Projects">
+              <div className="flex flex-col gap-1.5">
+                <ProjectCard nameWidth="w-3/4" />
+                <ProjectCard nameWidth="w-2/3" />
+              </div>
+            </MainSection>
+          </div>
+        </div>
+      </div>
+
+      {/* ATS badge — sibling of the clipped page so the rotation
+          can hang off the corner without being cropped. Anchored
+          near the top-right of the page for the "passed your
+          parser" cue. */}
+      <div className="pointer-events-none absolute right-2 top-6 rotate-[8deg] inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white shadow-(--sh-md) ring-1 ring-(--brand-200) text-(--brand-700) text-[10px] font-semibold uppercase tracking-[0.08em]">
+        <span className="w-1.5 h-1.5 rounded-full bg-(--brand)" />
+        ATS · 92
+      </div>
+    </div>
+  );
+}
+
+/* Sidebar section: caps label with brand colour + brand-200
+   underline, matching `.cs-h3` in ClassicSidebar.tsx. */
+function SidebarSection({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1 min-w-0">
+      <div className="text-[7.5px] font-bold uppercase tracking-[0.12em] text-(--color-primary-600) pb-0.5 border-b border-(--brand-200)">
+        {label}
+      </div>
+      <div className="flex flex-col gap-1 mt-0.5">{children}</div>
+    </div>
+  );
+}
+
+function SidebarContactRow({ widthClass }: { widthClass: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-(--color-primary-600) shrink-0" />
+      <div className={`h-1 ${widthClass} rounded bg-slate-200`} />
+    </div>
+  );
+}
+
+function Chip({ width }: { width: string }) {
+  return (
+    <span
+      className={`h-2.5 ${width} rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200) inline-block`}
+    />
+  );
+}
+
+/* Main-column section head: dark caps title with a 2px underline
+   and a short brand-coloured accent at the lower-left, matching
+   `.cs-section-head` + `::after` in ClassicSidebar.tsx. */
+function MainSection({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5 min-w-0">
+      <div className="relative pb-1 border-b-2 border-slate-700">
+        <span className="block text-[8px] font-bold uppercase tracking-[0.13em] text-slate-700">
+          {label}
+        </span>
+        <span className="absolute left-0 -bottom-0.5 w-6 h-0.5 bg-(--color-primary-600)" />
+      </div>
+      <div className="flex flex-col gap-1 mt-0.5">{children}</div>
+    </div>
+  );
+}
+
+// Stable string keys for the (purely-decorative) bullet rows so React's
+// reconciler — and the no-array-index-key lint — both stay happy.
+const BULLET_KEYS = ["b0", "b1", "b2", "b3", "b4"] as const;
+
+function ExperienceItem({
+  titleWidth,
+  metaWidth,
+  companyWidth,
+  bullets,
+}: {
+  titleWidth: string;
+  metaWidth: string;
+  companyWidth: string;
+  bullets: number;
+}) {
+  return (
+    <div className="flex flex-col gap-1 mb-1.5 last:mb-0">
+      <div className="flex justify-between items-center gap-2">
+        <div className={`h-1.5 ${titleWidth} rounded bg-slate-800/80`} />
+        <div className={`h-1 ${metaWidth} rounded bg-slate-300`} />
+      </div>
+      <div className={`h-1 ${companyWidth} rounded bg-(--color-primary-600)/70`} />
+      {BULLET_KEYS.slice(0, bullets).map((key, i) => (
+        <div key={key} className="flex items-start gap-1 mt-0.5">
+          <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+            ▸
+          </span>
+          <div className="flex-1 flex flex-col gap-0.5">
+            <div className={`h-1 ${i === bullets - 1 ? "w-3/4" : "w-full"} rounded bg-slate-200`} />
+            {i === 0 && <div className="h-1 w-5/6 rounded bg-slate-200" />}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProjectCard({ nameWidth }: { nameWidth: string }) {
+  return (
+    <div className="rounded-sm bg-slate-50 border border-slate-200 border-l-2 border-l-(--color-primary-600) p-2 flex flex-col gap-1 min-w-0">
+      <div className={`h-1.5 ${nameWidth} rounded bg-slate-700/80`} />
+
+      {/* "About Project" mini-label + bullet */}
+      <div className="h-1 w-12 rounded bg-(--color-primary-600)/80 mt-0.5" />
+      <div className="flex items-start gap-1">
+        <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+          ▸
+        </span>
+        <div className="flex-1 flex flex-col gap-0.5">
+          <div className="h-1 w-full rounded bg-slate-200" />
+          <div className="h-1 w-4/5 rounded bg-slate-200" />
+        </div>
+      </div>
+
+      {/* "Role" mini-label + bullet */}
+      <div className="h-1 w-6 rounded bg-(--color-primary-600)/80 mt-0.5" />
+      <div className="flex items-start gap-1">
+        <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+          ▸
+        </span>
+        <div className="flex-1">
+          <div className="h-1 w-3/5 rounded bg-slate-200" />
+        </div>
+      </div>
+
+      {/* Stack chips */}
+      <div className="flex gap-0.5 mt-0.5">
+        <span className="h-1.5 w-4 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+        <span className="h-1.5 w-5 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+        <span className="h-1.5 w-3 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+      </div>
+    </div>
   );
 }

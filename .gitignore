@@ -1,64 +1,60 @@
-# ---------------------------------------------------------------------------
-# Dependencies
-# ---------------------------------------------------------------------------
+# ── Dependencies ────────────────────────────────────────────
 node_modules/
 jspm_packages/
 bower_components/
-web_modules/
 .pnp
-.pnp.*
+.pnp.js
+.pnp.cjs
+.pnp.loader.mjs
 .yarn/cache
 .yarn/unplugged
 .yarn/build-state.yml
 .yarn/install-state.gz
-.yarn/patches
 .pnpm-store/
 
-# ---------------------------------------------------------------------------
-# Build output
-# ---------------------------------------------------------------------------
+# ── Build output ────────────────────────────────────────────
 dist/
 dist-ssr/
 build/
 out/
-.output/
-.vite/
-.turbo/
-.rollup.cache/
-.rolldown-cache/
-.tsdown/
-.cache/
-.parcel-cache/
 .next/
 .nuxt/
 .svelte-kit/
-.astro/
-.docusaurus/
 .vercel/
 .netlify/
-.firebase/
-.wrangler/
-.serverless/
+.output/
+.turbo/
+.parcel-cache/
+.cache/
+.rollup.cache/
+.rspack/
+.swc/
 storybook-static/
 
-# ---------------------------------------------------------------------------
-# Vite+ / Vitest / test coverage
-# ---------------------------------------------------------------------------
+# ── Vite ────────────────────────────────────────────────────
+*.local
+vite.config.*.timestamp-*
+vitest.config.*.timestamp-*
+dev-dist/
+
+# ── TypeScript ──────────────────────────────────────────────
+*.tsbuildinfo
+.tscache/
+
+# ── Tests / coverage ────────────────────────────────────────
 coverage/
 *.lcov
 .nyc_output/
-.vitest-cache/
-__snapshots__/*.snap.new
-test-results/
-playwright-report/
-playwright/.cache/
-cypress/videos/
-cypress/screenshots/
-cypress/downloads/
+.vitest/
+__snapshots__/__diff_output__/
 
-# ---------------------------------------------------------------------------
-# Logs
-# ---------------------------------------------------------------------------
+# ── Linters / formatters cache ──────────────────────────────
+.eslintcache
+.stylelintcache
+.prettiercache
+.oxlintcache
+
+# ── Logs ────────────────────────────────────────────────────
 logs/
 *.log
 npm-debug.log*
@@ -66,117 +62,85 @@ yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
-.pnpm-debug.log*
-report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
-# ---------------------------------------------------------------------------
-# Environment & secrets
-# ---------------------------------------------------------------------------
+# ── Environment / secrets ───────────────────────────────────
 .env
 .env.*
 !.env.example
 !.env.sample
-!.env.template
 *.pem
 *.key
+*.cer
 *.crt
 *.p12
 *.pfx
-secrets/
-.secrets/
+.aws/
+.gcp/
 
-# ---------------------------------------------------------------------------
-# TypeScript / JS tooling
-# ---------------------------------------------------------------------------
-*.tsbuildinfo
-.eslintcache
-.stylelintcache
-.prettiercache
-.oxlint-cache/
-*.local
+# ── Backups / patches / archives ────────────────────────────
+*.bak
+*.orig
+*.rej
+*.tmp
+*.old
+*.tgz
+*.tar.gz
 
-# ---------------------------------------------------------------------------
-# Editor & IDE — VS Code
-# ---------------------------------------------------------------------------
+# ── Editors / IDEs ──────────────────────────────────────────
+
+# VS Code — keep shared workspace files, ignore user-local ones
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
-!.vscode/tasks.json
 !.vscode/launch.json
+!.vscode/tasks.json
 .history/
-.ionide/
 
-# ---------------------------------------------------------------------------
-# Editor & IDE — JetBrains (WebStorm, IntelliJ, etc.)
-# ---------------------------------------------------------------------------
+# JetBrains (WebStorm, IntelliJ, etc.)
 .idea/
 *.iml
-*.iws
 *.ipr
-out/
-.idea_modules/
+*.iws
 
-# ---------------------------------------------------------------------------
-# Editor & IDE — Visual Studio
-# ---------------------------------------------------------------------------
-.vs/
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-*.ntvs*
-*.njsproj
-*.sln
-
-# ---------------------------------------------------------------------------
-# Editor & IDE — Sublime Text
-# ---------------------------------------------------------------------------
-*.sublime-project
+# Sublime Text
 *.sublime-workspace
+*.sublime-project
 
-# ---------------------------------------------------------------------------
-# Editor & IDE — Vim / Neovim / Emacs
-# ---------------------------------------------------------------------------
+# Vim / Neovim
 *.sw?
 *.swp
 *.swo
-*.swn
+Session.vim
+.netrwhist
+
+# Emacs
 *~
 \#*\#
 .\#*
-Session.vim
-.netrwhist
-tags
-tags.lock
-tags.temp
 
-# ---------------------------------------------------------------------------
-# Editor & IDE — Zed, Helix, Atom, Eclipse, NetBeans
-# ---------------------------------------------------------------------------
+# Visual Studio
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+.vs/
+
+# Zed
 .zed/
-.helix/
-.atom/
-.project
-.classpath
-.settings/
-.c9/
-*.launch
-nbproject/
-nbbuild/
-nbdist/
-.nb-gradle/
 
-# ---------------------------------------------------------------------------
-# Operating system — macOS
-# ---------------------------------------------------------------------------
+# ── macOS ───────────────────────────────────────────────────
 .DS_Store
 .AppleDouble
 .LSOverride
-.Spotlight-V100
-.Trashes
+# Note: don't add `Icon?` here — `?` is a glob wildcard, and combined
+# with core.ignorecase=true (the default on macOS) it matches the
+# `icons/` directory and silently hides every asset inside.
+._*
 .DocumentRevisions-V100
 .fseventsd
+.Spotlight-V100
 .TemporaryItems
+.Trashes
 .VolumeIcon.icns
 .com.apple.timemachine.donotpresent
 .AppleDB
@@ -184,67 +148,32 @@ nbdist/
 Network Trash Folder
 Temporary Items
 .apdisk
-Icon?
 
-# ---------------------------------------------------------------------------
-# Operating system — Windows
-# ---------------------------------------------------------------------------
+# ── Windows ─────────────────────────────────────────────────
 Thumbs.db
 Thumbs.db:encryptable
 ehthumbs.db
 ehthumbs_vista.db
-Desktop.ini
+[Dd]esktop.ini
 $RECYCLE.BIN/
-*.stackdump
-*.lnk
 *.cab
 *.msi
 *.msix
 *.msm
 *.msp
+*.lnk
+*.stackdump
 
-# ---------------------------------------------------------------------------
-# Operating system — Linux
-# ---------------------------------------------------------------------------
-*~
-.fuse_hidden*
+# ── Linux ───────────────────────────────────────────────────
 .directory
 .Trash-*
 .nfs*
+.fuse_hidden*
 
-# ---------------------------------------------------------------------------
-# Archives & binaries (usually accidental)
-# ---------------------------------------------------------------------------
-*.7z
-*.dmg
-*.gz
-*.iso
-*.jar
-*.rar
-*.tar
-*.zip
-*.tgz
+# ── Claude Code / agent tooling ─────────────────────────────
+.claude/.DS_Store
+.claude/scheduled_tasks.lock
+.claude/worktrees/
 
-# ---------------------------------------------------------------------------
-# Claude Code / AI assistants
-# ---------------------------------------------------------------------------
-.claude/*.lock
-.claude/**/*.lock
-.claude/local/
-.claude/settings.local.json
-.aider*
-.cursor/
-.continue/
-
-# ---------------------------------------------------------------------------
-# Miscellaneous
-# ---------------------------------------------------------------------------
-*.pid
-*.seed
-*.pid.lock
-*.lock
-.grunt/
-.lock-wscript
-.node_repl_history
-*.tgz
-.yarn-integrity
+# ── Vite+ hook proxies (auto-generated) ─────────────────────
+.vite-hooks/_/

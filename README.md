@@ -1,6 +1,6 @@
 <div align="center">
 
-  <img src="public/icons/og-image.svg" alt="CloakResume — Private Resume Builder with ATS Score" width="800" />
+  <img src="public/icons/og-image.png" alt="CloakResume — Private Resume Builder with ATS Score" width="800" />
 
   <p>A fast, modern, and privacy-focused resume builder that runs entirely in your browser.<br>
   No uploads, no servers, no tracking — your resume never leaves your device.</p>

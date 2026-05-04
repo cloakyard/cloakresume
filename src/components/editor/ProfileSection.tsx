@@ -42,9 +42,14 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           <div
             className="w-20 h-20 rounded-full grid place-items-center text-white font-semibold text-xl shrink-0"
             style={{
+              // Avatar placeholder gradient is derived live from the
+              // current brand primary so a colour-picker change in the
+              // toolbar instantly recolours the placeholder to match.
+              // Uses --color-primary-300 → --color-primary-500 so the
+              // initials stay legible against the band on every theme.
               background: resume.profile.photoUrl
                 ? "transparent"
-                : "linear-gradient(135deg, #93C5FD 0%, #60A5FA 100%)",
+                : "linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-500) 100%)",
               border: "2px solid var(--line)",
               overflow: "hidden",
             }}

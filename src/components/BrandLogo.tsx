@@ -8,6 +8,21 @@ interface Props {
   compact?: boolean;
 }
 
+/**
+ * The header brand mark uses /icons/favicon.svg rather than logo.svg.
+ *
+ * - logo.svg is full-bleed (a rect background gradient) so PWA
+ *   launcher masks can crop it to circle / squircle without losing
+ *   the brand surface.
+ * - favicon.svg paints the same shield on a circular background, so
+ *   it reads as a circular badge in chrome — matching the CloakPDF /
+ *   CloakIMG header style.
+ *
+ * Using the favicon directly (rather than wrapping logo.svg in a
+ * `rounded-full overflow-hidden` div) keeps the asset tree explicit
+ * about which file means what and avoids the masked rect's gradient
+ * appearing washed against light header backdrops.
+ */
 export function BrandLogo({ compact = false }: Props) {
   return (
     <a
@@ -17,10 +32,10 @@ export function BrandLogo({ compact = false }: Props) {
       style={{ fontSize: compact ? 17 : 19 }}
     >
       <img
-        src="/icons/logo.svg"
+        src="/icons/favicon.svg"
         alt=""
         aria-hidden="true"
-        className={`shrink-0 ${compact ? "w-8 h-8" : "w-10 h-10"}`}
+        className={`shrink-0 drop-shadow-sm ${compact ? "w-8 h-8" : "w-10 h-10"}`}
       />
       <span className="leading-none">
         Cloak<span className="text-(--brand)">Resume</span>

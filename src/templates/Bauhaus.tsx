@@ -88,10 +88,12 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
 
     .bh-proj { border: 2px solid #0a0a0a; padding: 0; page-break-inside: avoid; break-inside: avoid; margin-bottom: 3mm; display: grid; grid-template-columns: 6mm minmax(0, 1fr); }
     .bh-proj-accent { background: ${palette.primary600}; }
-    .bh-proj-body { padding: 2.5mm 3mm; min-width: 0; }
+    .bh-proj-body { padding: 2.6mm 3mm; min-width: 0; }
     .bh-proj-name { font-size: 10pt; font-weight: 800; color: #0a0a0a; overflow-wrap: break-word; }
-    .bh-proj-role { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 0.3mm; overflow-wrap: break-word; }
-    .bh-proj-desc { font-size: 8.8pt; color: #374151; line-height: 1.5; margin-top: 1mm; overflow-wrap: break-word; }
+    .bh-proj-label { font-size: 8pt; font-weight: 800; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1.1px; margin: 1.2mm 0 0.5mm; }
+    .bh-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
+    .bh-proj-bullets li { font-size: 8.8pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 0.6mm; color: #1f2937; overflow-wrap: break-word; }
+    .bh-proj-bullets li::before { content: ""; position: absolute; left: 0; top: 1.7mm; width: 2.2mm; height: 2.2mm; background: ${palette.primary600}; }
     .bh-proj-stack { font-size: 8pt; color: ${palette.primary900}; font-weight: 700; margin-top: 1.2mm; letter-spacing: 0.2px; overflow-wrap: anywhere; }
 
     .bh-edu { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 2mm 4mm; padding-bottom: 1.6mm; margin-bottom: 1.6mm; border-bottom: 1px dashed #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
@@ -278,11 +280,23 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
           <div className="bh-proj-accent" />
           <div className="bh-proj-body">
             <div className="bh-proj-name">{p.name}</div>
-            {p.role && <div className="bh-proj-role">{p.role}</div>}
             {p.description && (
-              <div className="bh-proj-desc">
-                <RichText value={p.description} />
-              </div>
+              <>
+                <div className="bh-proj-label">About Project</div>
+                <ul className="bh-proj-bullets">
+                  <li>
+                    <RichText value={p.description} />
+                  </li>
+                </ul>
+              </>
+            )}
+            {p.role && (
+              <>
+                <div className="bh-proj-label">Role</div>
+                <ul className="bh-proj-bullets">
+                  <li>{p.role}</li>
+                </ul>
+              </>
             )}
             {p.stack.length > 0 && <div className="bh-proj-stack">{p.stack.join(" / ")}</div>}
           </div>

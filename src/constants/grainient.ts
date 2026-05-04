@@ -13,7 +13,7 @@
 
 export const GRAINIENT_LIGHT = {
   color1: "#f4faf6",
-  color2: "#87a89e",
+  color2: "#aecbc3",
   color3: "#ecfdf5",
 } as const;
 

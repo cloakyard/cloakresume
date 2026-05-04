@@ -88,8 +88,11 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
     .tg-proj-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4mm; align-items: baseline; border-bottom: 1px dotted #d1d5db; padding-bottom: 1mm; margin-bottom: 1.2mm; }
     .tg-proj-name { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; min-width: 0; overflow-wrap: break-word; }
     .tg-proj-role { font-size: 8.8pt; color: #6b7280; font-style: italic; text-align: right; max-width: 60mm; overflow-wrap: break-word; }
-    .tg-proj-desc { font-size: 9.2pt; color: #1f2937; line-height: 1.5; margin-bottom: 0.8mm; overflow-wrap: break-word; }
-    .tg-proj-stack { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; letter-spacing: 0.1px; overflow-wrap: anywhere; }
+    .tg-proj-label { font-size: 8.4pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 0.8mm 0 0.4mm; }
+    .tg-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
+    .tg-proj-bullets li { font-size: 9.2pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .tg-proj-bullets li::before { content: "›"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 800; font-size: 10pt; line-height: 1.3; }
+    .tg-proj-stack { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; letter-spacing: 0.1px; margin-top: 0.4mm; overflow-wrap: anywhere; }
     .tg-cert, .tg-award, .tg-lang { font-size: 9.2pt; margin-bottom: 1.4mm; color: #1f2937; overflow-wrap: break-word; }
     .tg-cert strong, .tg-award strong, .tg-lang strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
     .tg-cert .meta, .tg-award .meta, .tg-lang .meta { color: #6b7280; font-variant-numeric: tabular-nums; }
@@ -253,12 +256,24 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
             <div className="tg-proj">
               <div className="tg-proj-head">
                 <div className="tg-proj-name">{p.name}</div>
-                {p.role && <div className="tg-proj-role">{p.role}</div>}
               </div>
               {p.description && (
-                <div className="tg-proj-desc">
-                  <RichText value={p.description} />
-                </div>
+                <>
+                  <div className="tg-proj-label">About Project</div>
+                  <ul className="tg-proj-bullets">
+                    <li>
+                      <RichText value={p.description} />
+                    </li>
+                  </ul>
+                </>
+              )}
+              {p.role && (
+                <>
+                  <div className="tg-proj-label">Role</div>
+                  <ul className="tg-proj-bullets">
+                    <li>{p.role}</li>
+                  </ul>
+                </>
               )}
               {p.stack.length > 0 && <div className="tg-proj-stack">{p.stack.join(" / ")}</div>}
             </div>

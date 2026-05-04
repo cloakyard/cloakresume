@@ -86,10 +86,12 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-edumeta { font-size: 8.4pt; color: #78716c; font-style: italic; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
     .mg-proj { margin-bottom: 3mm; padding-bottom: 2.5mm; border-bottom: 1px dashed ${palette.primary200}; page-break-inside: avoid; break-inside: avoid; }
     .mg-proj:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
-    .mg-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; color: #1c1917; margin-bottom: 0.6mm; overflow-wrap: break-word; }
-    .mg-projrole { font-size: 8.4pt; color: #78716c; font-style: italic; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .mg-projdesc { font-size: 9pt; color: #292524; line-height: 1.5; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .mg-projstack { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .mg-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11.2pt; font-weight: 400; color: #1c1917; margin-bottom: 0.6mm; overflow-wrap: break-word; }
+    .mg-proj-label { font-family: 'Geist', 'Inter', sans-serif; font-size: 7.8pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1px; margin: 1mm 0 0.4mm; }
+    .mg-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
+    .mg-proj-bullets li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #292524; overflow-wrap: break-word; }
+    .mg-proj-bullets li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .mg-projstack { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.6mm; overflow-wrap: anywhere; }
     .mg-cert { font-size: 8.3pt; margin-bottom: 1.6mm; line-height: 1.4; overflow-wrap: break-word; }
     .mg-cert:last-child { margin-bottom: 0; }
     .mg-cert strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: break-word; }
@@ -382,11 +384,23 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
       mainAtoms.push(
         <div className="mg-proj" key={`proj-${p.id}`}>
           <div className="mg-projname">{p.name}</div>
-          {p.role && <div className="mg-projrole">{p.role}</div>}
           {p.description && (
-            <div className="mg-projdesc">
-              <RichText value={p.description} />
-            </div>
+            <>
+              <div className="mg-proj-label">About Project</div>
+              <ul className="mg-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="mg-proj-label">Role</div>
+              <ul className="mg-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && <div className="mg-projstack">{p.stack.join(" · ")}</div>}
         </div>,

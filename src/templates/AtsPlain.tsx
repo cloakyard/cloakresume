@@ -64,6 +64,9 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
     .ats-kv { font-size: 10.5pt; margin-bottom: 1mm; color: #000; overflow-wrap: break-word; }
     .ats-skill-row { font-size: 10.5pt; margin-bottom: 1.5mm; color: #000; overflow-wrap: anywhere; word-break: break-word; }
     .ats-skill-row .ats-strong { margin-right: 1mm; }
+    .ats-proj-label { font-size: 9.4pt; font-weight: 700; color: #000; text-transform: uppercase; letter-spacing: 0.6px; margin: 1.4mm 0 0.6mm; }
+    .ats-proj-bullets { margin: 0 0 1mm; padding-left: 5mm; list-style: disc; }
+    .ats-proj-bullets li { font-size: 10.3pt; margin: 0 0 0.6mm; color: #000; line-height: 1.45; overflow-wrap: break-word; }
   `;
 
   const visibleContacts = resume.contact.filter((c) => c.value.trim());
@@ -181,12 +184,24 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
         <div className="ats-proj" key={`proj-${p.id}`}>
           <div className="ats-row">
             <span className="ats-strong">{p.name}</span>
-            {p.role && <span className="ats-italic">{p.role}</span>}
           </div>
           {p.description && (
-            <p className="ats-p">
-              <RichText value={p.description} />
-            </p>
+            <>
+              <div className="ats-proj-label">About Project</div>
+              <ul className="ats-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="ats-proj-label">Role</div>
+              <ul className="ats-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && (
             <div className="ats-kv">
