@@ -18,8 +18,14 @@ export const GRAINIENT_LIGHT = {
 } as const;
 
 export const GRAINIENT_DARK = {
-  color1: "#0a3024",
-  color2: "#10b981",
+  // Toned-down brand anchor: the previous `#10b981` (emerald-500)
+  // read as a vivid neon ribbon against the near-black flanks. The
+  // muted forest tone here keeps the green identity legible while
+  // matching the desaturated character of GRAINIENT_LIGHT.color2,
+  // so the field feels like ambient atmosphere rather than a brand
+  // wall.
+  color1: "#0c241b",
+  color2: "#236a52",
   color3: "#03130d",
 } as const;
 
