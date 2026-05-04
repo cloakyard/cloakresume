@@ -22,7 +22,12 @@ export default defineConfig({
     react(),
     tailwindcss(),
     VitePWA({
-      registerType: "autoUpdate",
+      // `prompt` rather than `autoUpdate` so the user gets the
+      // chance to approve a service-worker rollover via the
+      // ReloadPrompt UI. Auto-updates have a habit of swapping the
+      // chunk graph mid-edit; the explicit prompt keeps the user in
+      // control, and the prompt itself self-checks every 10 minutes.
+      registerType: "prompt",
       includeAssets: ["icons/favicon.svg", "icons/favicon.ico", "icons/apple-touch-icon.png"],
       manifest: {
         name: "CloakResume",

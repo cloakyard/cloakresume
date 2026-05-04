@@ -25,11 +25,11 @@
     <use href="#shield" fill="white" fill-opacity="0.18"/>
     <use href="#shield" fill="none" stroke="white" stroke-opacity="0.55" stroke-width="3"/>
     <g clip-path="url(#shieldClip)">
-      <circle cx="58" cy="60" r="5" fill="white" fill-opacity="0.95"/>
-      <line x1="68" y1="57" x2="92" y2="57" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.95"/>
-      <line x1="68" y1="64" x2="84" y2="64" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.6"/>
-      <line x1="52" y1="80" x2="86" y2="80" stroke="white" stroke-width="6" stroke-linecap="round" stroke-opacity="0.55"/>
-      <line x1="52" y1="92" x2="74" y2="92" stroke="white" stroke-width="6" stroke-linecap="round" stroke-opacity="0.4"/>
+      <circle cx="58" cy="60" r="5" fill="white"/>
+      <line x1="68" y1="57" x2="92" y2="57" stroke="white" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="68" y1="64" x2="84" y2="64" stroke="white" stroke-width="3.5" stroke-linecap="round" stroke-opacity="0.85"/>
+      <line x1="52" y1="80" x2="86" y2="80" stroke="white" stroke-width="6" stroke-linecap="round" stroke-opacity="0.85"/>
+      <line x1="52" y1="92" x2="74" y2="92" stroke="white" stroke-width="6" stroke-linecap="round" stroke-opacity="0.65"/>
     </g>
   </g>
 </svg>

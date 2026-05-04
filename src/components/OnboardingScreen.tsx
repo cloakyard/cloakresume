@@ -356,46 +356,13 @@ export function OnboardingScreen({
 
           {/* Primary CTAs.
            *
-           * When `onResumeEditing` is provided we feature it as a wide
-           * horizontal card above the standard 3-tile row so the
-           * "continue where you left off" path is visually dominant
-           * without making the three fresh-start tiles look stretched.
-           * Otherwise just the 3-tile row renders. */}
+           * The wide "Resume editing" card that used to sit above
+           * the 3-tile row was removed once the hero gained its own
+           * Resume-editing button — keeping both was redundant. The
+           * "Or start over · replaces saved work" divider stays
+           * (still gated on `onResumeEditing`) so the user is
+           * warned that the tiles below overwrite their work. */}
           <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.25s_both]">
-            {onResumeEditing && (
-              <GlowCard
-                onClick={onResumeEditing}
-                glow="rgba(5, 150, 105, 0.26)"
-                ariaLabel="Resume editing your current résumé"
-              >
-                <div className="flex items-center gap-4 sm:gap-5 px-5 py-4.5 sm:px-6 sm:py-5">
-                  <span className="shrink-0 w-12 h-12 sm:w-13 sm:h-13 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                    <FilePen className="w-5.5 h-5.5" />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                        Resume editing
-                      </span>
-                      <span
-                        className="text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
-                        aria-hidden="true"
-                      >
-                        Saved
-                      </span>
-                    </div>
-                    <span className="block text-[13px] sm:text-[13.5px] leading-[1.5] text-(--ink-4) mt-0.5">
-                      Pick up where you left off — your work is already in this browser.
-                    </span>
-                  </div>
-                  <ArrowRight
-                    className="shrink-0 w-4 h-4 text-(--ink-4) transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-(--brand)"
-                    aria-hidden="true"
-                  />
-                </div>
-              </GlowCard>
-            )}
-
             {onResumeEditing && (
               <div
                 role="note"

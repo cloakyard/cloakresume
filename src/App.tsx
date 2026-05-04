@@ -15,6 +15,7 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
 import { OrientationLock } from "./components/OrientationLock.tsx";
+import { ReloadPrompt } from "./components/ReloadPrompt.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
 import { ToolbarOverflow } from "./components/ToolbarOverflow.tsx";
@@ -308,6 +309,13 @@ export function App() {
        * overlay on devices that reject the lock (iOS Safari, etc.).
        * Mounted at the very top so it outranks every modal / sheet. */}
       <OrientationLock />
+
+      {/* Service-worker lifecycle prompt — surfaces "Update
+       * available" when a new SW version lands and a brief "Ready
+       * offline" toast on first install. Owns the SW registration
+       * via `useRegisterSW` so registration and the UI that reacts
+       * to it stay co-located. */}
+      <ReloadPrompt />
 
       {/* The editor and the welcome screen are mutually exclusive — only
        * one is mounted at a time. Keeping both mounted (with the editor

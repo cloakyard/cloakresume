@@ -139,20 +139,29 @@
       opacity: 0;
     }
   }
-  /* Gentle "rotate your phone" pulse — a slow tilt + scale used by
-   * OrientationLock's icon tile so the affordance reads as kinetic
-   * without becoming distracting. */
-  @keyframes cr-rotate-hint {
-    0%,
-    100% {
-      transform: rotate(0deg) scale(1);
-    }
-    40% {
-      transform: rotate(-8deg) scale(1.04);
-    }
-    60% {
-      transform: rotate(8deg) scale(1.04);
-    }
+}
+
+/* "Rotate your phone" hint — a quarter-rotation hold-and-release
+ * loop that visually demonstrates the action the user needs to
+ * take. Matches the CloakIMG pattern: starts upright, rotates to
+ * -90° (the landscape they're currently in), holds there, then
+ * snaps back to upright (the orientation we want).
+ *
+ * Lives outside `@theme` because Tailwind v4 only emits keyframes
+ * from that block when they're paired with a matching `--animate-*`
+ * token. As a regular top-level rule it's always emitted into the
+ * stylesheet, so the inline `animation: cr-rotate-hint …` in
+ * OrientationLock actually finds the keyframes at runtime. */
+@keyframes cr-rotate-hint {
+  0%,
+  100% {
+    transform: rotate(0deg);
+  }
+  35% {
+    transform: rotate(-90deg);
+  }
+  70% {
+    transform: rotate(-90deg);
   }
 }
 
