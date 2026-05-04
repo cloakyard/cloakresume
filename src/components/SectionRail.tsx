@@ -201,7 +201,7 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
                   "grid place-items-center w-10 h-10 shrink-0 rounded-lg",
                   "transition-[background-color,color,box-shadow] duration-150",
                   isActive
-                    ? "bg-(--brand) text-white [box-shadow:0_4px_10px_-2px_rgba(37,99,235,0.35)]"
+                    ? "bg-(--brand) text-white [box-shadow:0_4px_10px_-2px_rgba(5,150,105,0.35)]"
                     : "bg-(--brand-50)/80 text-(--brand)",
                 ].join(" ")}
               >

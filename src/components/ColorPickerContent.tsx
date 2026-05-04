@@ -213,7 +213,7 @@ export function ColorPickerContent({ primary, onChange }: Props) {
               const v = e.target.value.trim();
               if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)) onChange(v);
             }}
-            placeholder="#2563EB"
+            placeholder="#059669"
             aria-label="Hex colour value"
             className="min-w-0 flex-1 px-3 h-10 text-sm font-mono rounded-md border border-(--line) bg-white/60 text-(--ink-1) placeholder:text-(--ink-5) transition-[border-color,box-shadow] duration-100 focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)"
           />

@@ -75,13 +75,18 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
     .ct-ul-bullet-last { margin-bottom: 3mm; }
     .ct-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 3mm 6mm; }
     .ct-two > div { min-width: 0; }
+    .ct-proj-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 0; }
     .ct-skill-group { margin-bottom: 1.4mm; font-size: 8.4pt; min-width: 0; overflow-wrap: anywhere; word-break: break-word; page-break-inside: avoid; break-inside: avoid; }
     .ct-skill-label { color: #111827; font-weight: 700; overflow-wrap: break-word; }
     .ct-skill-list { color: #27272a; line-height: 1.4; overflow-wrap: anywhere; word-break: break-word; }
-    .ct-proj { border-left: 2px solid ${palette.primary600}; background: ${palette.primary50}; border-radius: 2px; padding: 1.6mm 2.4mm; margin-bottom: 2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
-    .ct-projname { font-size: 8.8pt; font-weight: 700; color: #111827; margin-bottom: 0.6mm; overflow-wrap: break-word; }
-    .ct-projdesc { font-size: 7.9pt; color: #4b5563; line-height: 1.38; margin-bottom: 0.8mm; overflow-wrap: break-word; }
-    .ct-projstack { font-size: 7.4pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .ct-proj { border-left: 2px solid ${palette.primary600}; background: ${palette.primary50}; border-radius: 2px; padding: 2mm 3mm; margin-bottom: 2.2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
+    .ct-proj:last-child { margin-bottom: 0; }
+    .ct-projname { font-size: 9pt; font-weight: 700; color: #111827; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .ct-proj-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 0.7px; font-weight: 700; color: ${palette.primary700}; margin: 1mm 0 0.4mm; }
+    .ct-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .ct-proj-bullets li { font-size: 8pt; line-height: 1.4; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1e293b; overflow-wrap: break-word; }
+    .ct-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .ct-projstack { font-size: 7.4pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
     .ct-edu { margin-bottom: 1.5mm; font-size: 8.6pt; overflow-wrap: break-word; page-break-inside: avoid; break-inside: avoid; }
     .ct-edutitle { font-weight: 700; color: #111827; overflow-wrap: break-word; }
     .ct-eduschool { color: ${palette.primary700}; font-weight: 600; overflow-wrap: break-word; }
@@ -217,7 +222,7 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
     );
   }
 
-  // Projects: 2-col grid — single atom preserves layout.
+  // Projects: single column with labelled About Project / Role bullets.
   if (resume.projects.length > 0) {
     atoms.push(
       <div key="proj">
@@ -226,10 +231,24 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
           {resume.projects.map((p) => (
             <div className="ct-proj" key={p.id}>
               <div className="ct-projname">{p.name}</div>
-              <div className="ct-projdesc">
-                {p.description}
-                {p.role ? ` ${p.role}` : ""}
-              </div>
+              {p.description && (
+                <>
+                  <div className="ct-proj-label">About Project</div>
+                  <ul className="ct-proj-bullets">
+                    <li>
+                      <RichText value={p.description} />
+                    </li>
+                  </ul>
+                </>
+              )}
+              {p.role && (
+                <>
+                  <div className="ct-proj-label">Role</div>
+                  <ul className="ct-proj-bullets">
+                    <li>{p.role}</li>
+                  </ul>
+                </>
+              )}
               {p.stack.length > 0 && <div className="ct-projstack">{p.stack.join(" · ")}</div>}
             </div>
           ))}

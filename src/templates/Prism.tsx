@@ -115,10 +115,12 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     .pr-edu-detail { font-size: 8pt; color: #64748b; font-style: italic; margin-top: 0.3mm; overflow-wrap: break-word; }
     .pr-proj { margin-bottom: 3mm; padding: 2.4mm 3mm; background: ${palette.primary50}; border-left: 2.5px solid ${palette.primary600}; border-radius: 0 2mm 2mm 0; page-break-inside: avoid; break-inside: avoid; }
     .pr-proj:last-child { margin-bottom: 0; }
-    .pr-projname { font-size: 9.8pt; font-weight: 700; color: #0f172a; margin-bottom: 0.3mm; overflow-wrap: break-word; }
-    .pr-projrole { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .pr-projdesc { font-size: 8.8pt; color: #1e293b; line-height: 1.5; margin-bottom: 1mm; overflow-wrap: break-word; }
-    .pr-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .pr-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.3mm; overflow-wrap: break-word; }
+    .pr-proj-label { font-size: 7.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 1mm 0 0.4mm; }
+    .pr-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .pr-proj-bullets li { font-size: 8.8pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1e293b; overflow-wrap: break-word; }
+    .pr-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .pr-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
   `;
 
   // ───── Sidebar atoms ─────
@@ -386,11 +388,23 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
       mainAtoms.push(
         <div className="pr-proj" key={`proj-${p.id}`}>
           <div className="pr-projname">{p.name}</div>
-          {p.role && <div className="pr-projrole">{p.role}</div>}
           {p.description && (
-            <div className="pr-projdesc">
-              <RichText value={p.description} />
-            </div>
+            <>
+              <div className="pr-proj-label">About Project</div>
+              <ul className="pr-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="pr-proj-label">Role</div>
+              <ul className="pr-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && <div className="pr-projstack">{p.stack.join(" · ")}</div>}
         </div>,

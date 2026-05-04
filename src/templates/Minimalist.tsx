@@ -65,7 +65,10 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
     .ml-edu-title, .ml-proj-name { font-size: 10pt; font-weight: 600; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
     .ml-edu-school { font-size: 9.4pt; color: #525252; font-style: italic; overflow-wrap: break-word; }
     .ml-edu-meta, .ml-proj-meta { font-size: 9pt; color: #737373; font-variant-numeric: tabular-nums; flex-shrink: 0; overflow-wrap: break-word; }
-    .ml-proj-desc { font-size: 9.4pt; color: #262626; margin-top: 0.8mm; line-height: 1.55; overflow-wrap: break-word; }
+    .ml-proj-label { font-size: 8pt; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; color: #525252; margin: 1mm 0 0.4mm; }
+    .ml-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .ml-proj-bullets li { font-size: 9.4pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #262626; overflow-wrap: break-word; }
+    .ml-proj-bullets li::before { content: "—"; position: absolute; left: 0; color: #737373; }
     .ml-proj-stack { font-size: 8.8pt; color: #737373; margin-top: 0.8mm; font-style: italic; overflow-wrap: anywhere; }
     .ml-inline { font-size: 9.6pt; color: #262626; overflow-wrap: break-word; }
     .ml-inline strong { color: #0a0a0a; font-weight: 600; overflow-wrap: break-word; }
@@ -185,12 +188,24 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
         <div className="ml-proj" key={`proj-${p.id}`}>
           <div className="ml-proj-head">
             <div className="ml-proj-name">{p.name}</div>
-            {p.role && <div className="ml-proj-meta">{p.role}</div>}
           </div>
           {p.description && (
-            <div className="ml-proj-desc">
-              <RichText value={p.description} />
-            </div>
+            <>
+              <div className="ml-proj-label">About Project</div>
+              <ul className="ml-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="ml-proj-label">Role</div>
+              <ul className="ml-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && <div className="ml-proj-stack">{p.stack.join(" · ")}</div>}
         </div>,

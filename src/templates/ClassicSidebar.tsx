@@ -85,12 +85,13 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
     .cs-edutitle { font-size: 9.4pt; font-weight: 700; color: #27272a; overflow-wrap: break-word; }
     .cs-eduschool { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; overflow-wrap: break-word; }
     .cs-edumeta { font-size: 8.4pt; color: #6b7280; font-style: italic; flex-shrink: 0; text-align: right; }
-    .cs-proj-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.8mm; margin-bottom: 2.8mm; }
-    .cs-proj-grid:last-child { margin-bottom: 0; }
-    .cs-proj { border: 1px solid #e5e7eb; border-left: 3px solid ${palette.primary600}; border-radius: 3px; padding: 2mm 2.5mm; background: #fafbfc; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
-    .cs-projname { font-size: 8.8pt; font-weight: 700; color: #27272a; margin-bottom: 0.8mm; overflow-wrap: break-word; }
-    .cs-projdesc { font-size: 7.9pt; color: #4b5563; line-height: 1.4; margin-bottom: 1.2mm; overflow-wrap: break-word; }
-    .cs-projrole { font-size: 7.8pt; color: #27272a; line-height: 1.4; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .cs-proj { border: 1px solid #e5e7eb; border-left: 3px solid ${palette.primary600}; border-radius: 3px; padding: 2.4mm 3mm; background: #fafbfc; margin-bottom: 2.4mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
+    .cs-proj:last-child { margin-bottom: 0; }
+    .cs-projname { font-size: 9.2pt; font-weight: 700; color: #27272a; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .cs-proj-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary600}; margin: 1mm 0 0.6mm; }
+    .cs-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .cs-proj-bullets li { font-size: 8.4pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.6mm; color: #1e293b; overflow-wrap: break-word; }
+    .cs-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .cs-chips { display: flex; flex-wrap: wrap; gap: 1mm; }
     .cs-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.2mm 1.4mm; border-radius: 6px; font-size: 7.2pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .cs-cert { font-size: 8.2pt; margin-bottom: 1.6mm; overflow-wrap: break-word; }
@@ -388,35 +389,44 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
         Key Projects
       </h2>,
     );
-    // 2-col grid rendered as row-pair atoms so long project lists flow
-    // across pages at row boundaries instead of moving the whole grid.
-    const renderCard = (p: (typeof resume.projects)[number]) => (
-      <div className="cs-proj" key={p.id}>
-        <div className="cs-projname">{p.name}</div>
-        <div className="cs-projdesc">
-          <RichText value={p.description} />
-        </div>
-        {p.role && <div className="cs-projrole">{p.role}</div>}
-        {p.stack.length > 0 && (
-          <div className="cs-chips">
-            {p.stack.map((s, i) => (
-              // oxlint-disable-next-line jsx/no-array-index-key
-              <span className="cs-chip" key={i}>
-                {s}
-              </span>
-            ))}
-          </div>
-        )}
-      </div>
-    );
-    for (let i = 0; i < resume.projects.length; i += 2) {
-      const pair = resume.projects.slice(i, i + 2);
+    // Single-column projects so each entry has room for the
+    // labelled About Project / Role bullets without wrapping at
+    // 50% page width.
+    resume.projects.forEach((p) => {
       mainAtoms.push(
-        <div className="cs-proj-grid" key={`proj-row-${pair[0].id}`}>
-          {pair.map(renderCard)}
+        <div className="cs-proj" key={`proj-${p.id}`}>
+          <div className="cs-projname">{p.name}</div>
+          {p.description && (
+            <>
+              <div className="cs-proj-label">About Project</div>
+              <ul className="cs-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="cs-proj-label">Role</div>
+              <ul className="cs-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
+          )}
+          {p.stack.length > 0 && (
+            <div className="cs-chips" style={{ marginTop: "1.4mm" }}>
+              {p.stack.map((s, i) => (
+                // oxlint-disable-next-line jsx/no-array-index-key
+                <span className="cs-chip" key={i}>
+                  {s}
+                </span>
+              ))}
+            </div>
+          )}
         </div>,
       );
-    }
+    });
   }
 
   resume.custom

@@ -127,7 +127,7 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
     savedAt: typeof obj.savedAt === "string" ? obj.savedAt : new Date().toISOString(),
     resume: normalizeResumeData(obj.resume),
     templateId: obj.templateId as TemplateId,
-    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#2563EB",
+    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#059669",
     paperSize: resolvePaperSize(obj.paperSize),
     jobDescription: typeof obj.jobDescription === "string" ? obj.jobDescription : "",
   };

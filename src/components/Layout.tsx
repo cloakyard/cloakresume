@@ -121,16 +121,18 @@ export function Layout({
   // fixed-height 3-column grid.
   const shellClass = isMobile
     ? "bg-(--surface-2) min-h-[100dvh] flex flex-col"
-    : "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[56px_1fr] grid-cols-[56px_400px_1fr] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
+    : "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[64px_1fr] grid-cols-[56px_400px_1fr] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
 
   return (
     <div className={shellClass} data-mobile-view={mobileView}>
       <header
-        className={`z-50 flex items-center gap-2 px-3 bg-(--surface) border-b border-(--line) print:hidden sm:gap-3 sm:px-4 ${
-          isMobile ? "sticky top-0 h-14 shrink-0" : "[grid-area:header]"
+        className={`z-50 flex items-center gap-2 bg-(--surface) border-b border-(--line) print:hidden ${
+          isMobile
+            ? "sticky top-0 h-14 shrink-0 px-2.5 py-2.5 gap-2.5"
+            : "[grid-area:header] px-4 py-3 gap-3"
         }`}
       >
-        <BrandLogo />
+        <BrandLogo compact={isMobile} />
 
         {/* Flex spacer pushes the remaining groups to the right edge. */}
         <div className="flex-1" />

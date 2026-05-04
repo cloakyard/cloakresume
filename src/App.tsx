@@ -14,6 +14,8 @@
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
+import { OrientationLock } from "./components/OrientationLock.tsx";
+import { ReloadPrompt } from "./components/ReloadPrompt.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
 import { ToolbarOverflow } from "./components/ToolbarOverflow.tsx";
@@ -49,7 +51,7 @@ import { blankResume, resumeHasContent } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
 const DEFAULT_TEMPLATE_ID: TemplateId = "classic-sidebar";
-const DEFAULT_PRIMARY = "#2563EB";
+const DEFAULT_PRIMARY = "#059669";
 
 /** Accept only known template ids; fall back silently so a removed template can't crash the preview. */
 function resolveTemplateId(candidate: unknown): TemplateId {
@@ -302,6 +304,19 @@ export function App() {
 
   return (
     <>
+      {/* Phone-only portrait enforcement. Tries the JS lock for
+       * installed PWAs, then falls back to a "rotate your phone"
+       * overlay on devices that reject the lock (iOS Safari, etc.).
+       * Mounted at the very top so it outranks every modal / sheet. */}
+      <OrientationLock />
+
+      {/* Service-worker lifecycle prompt — surfaces "Update
+       * available" when a new SW version lands and a brief "Ready
+       * offline" toast on first install. Owns the SW registration
+       * via `useRegisterSW` so registration and the UI that reacts
+       * to it stay co-located. */}
+      <ReloadPrompt />
+
       {/* The editor and the welcome screen are mutually exclusive — only
        * one is mounted at a time. Keeping both mounted (with the editor
        * hidden behind a fixed overlay) was the previous approach, but

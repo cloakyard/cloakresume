@@ -4,7 +4,8 @@
  * Shown on first run (when there is no persisted resume in
  * localStorage) and also when the user clicks "New" in the toolbar to
  * start over. This is a full-screen experience — sticky nav, hero with
- * three primary CTA tiles, informational feature list, and a footer.
+ * primary CTA tiles, feature grid, "How it works" + Cloakyard family
+ * cards, and a slim attribution row.
  *
  * When `onDismiss` is supplied, Escape-to-close is wired up so the
  * mid-session "New" flow can bail out. No visible close button — the
@@ -16,6 +17,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import {
   AlertTriangle,
   ArrowRight,
+  ArrowUpRight,
   Dices,
   EyeOff,
   FilePen,
@@ -26,6 +28,7 @@ import {
   MonitorSmartphone,
   Palette,
   Rocket,
+  Scale,
   ScanSearch,
   ShieldCheck,
   Sparkles,
@@ -34,17 +37,22 @@ import {
   UserRoundCheck,
   WifiOff,
 } from "lucide-react";
-import { AuroraBackground } from "./AuroraBackground.tsx";
+import { GRAINIENT_DARK, GRAINIENT_LIGHT, GRAINIENT_MOTION } from "../constants/grainient.ts";
+import { usePrefersDark } from "../utils/usePrefersDark.ts";
+import { Grainient } from "./Grainient.tsx";
 import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
+const GITHUB_LICENSE_URL = "https://github.com/cloakyard/cloakresume/blob/main/LICENSE";
 const CLOAKYARD_URL = "https://github.com/cloakyard";
 const AUTHOR_URL = "https://github.com/sumitsahoo";
 
+declare const __APP_VERSION__: string;
+
 /* ────────────────────────────────────────────────────────────────
- * Glow card — shared mechanic used by both the primary CTA tiles
- * and the feature cards below. Renders a radial gradient that
- * follows the pointer (or touch point) for a premium hover feel.
+ * Glow card — shared mechanic used by the primary CTA tiles. Renders
+ * a radial gradient that follows the pointer (or touch point) for a
+ * premium hover feel.
  * ──────────────────────────────────────────────────────────────── */
 
 interface GlowCardProps {
@@ -168,6 +176,8 @@ export function OnboardingScreen({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
+  const isDark = usePrefersDark();
+  const palette = isDark ? GRAINIENT_DARK : GRAINIENT_LIGHT;
 
   useEffect(() => {
     if (!onDismiss) return;
@@ -183,8 +193,8 @@ export function OnboardingScreen({
    * lifted on the welcome screen — iOS Safari only collapses its URL
    * bar when the *document* scrolls, never when an inner container
    * does. Without the override, the bar stays at full height (~100px
-   * tall) and the AuroraBackground bottom-clip has nothing to align
-   * against. We restore the editor's lock on unmount. */
+   * tall) and the Grainient bottom-mask has nothing to align against.
+   * We restore the editor's lock on unmount. */
   useEffect(() => {
     const html = document.documentElement;
     const body = document.body;
@@ -211,25 +221,30 @@ export function OnboardingScreen({
       className="relative z-150 flex flex-col min-h-svh text-(--ink-1)"
       style={{ background: "var(--onboarding-bg)" }}
     >
-      {/* Aurora backdrop — self-contained component. mix-blend-mode is
-          themed via the surrounding `--aurora-blend` token (light:
-          multiply, dark: screen) defined in index.css. On mobile, the
-          aurora-root self-clips above the iOS Safari URL-bar zone so
-          the bar samples the page background, not the blob colours. */}
-      <AuroraBackground />
+      {/* Emerald-toned animated WebGL backdrop. Palette + motion live
+          in src/constants/grainient.ts so any future surface that wants
+          the same gradient (editor shell, marketing pages) can read
+          from one source. The .grainient-fixed class positions it as a
+          page backdrop: fixed inset-0, z-0, with the iOS URL-bar mask
+          on phones so the floating Safari bar samples the page bg, not
+          the shader output. */}
+      <Grainient className="grainient-fixed" {...GRAINIENT_MOTION} {...palette} />
 
-      {/* Inner column wrapper kept for the historical layout — same
-          flex column the wrapper now provides directly. Retained as a
-          plain fragment-style wrapper so the inner content's
-          `relative` z-stacking against the absolutely-positioned
-          aurora is unchanged. */}
       <div className="relative flex flex-col flex-1 min-h-0">
         {/* ── Nav ──────────────────────────────────────────────── */}
         <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
           <div className="max-w-[1180px] mx-auto flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-14 sm:h-16">
             <div className="flex items-center gap-2.5 min-w-0">
-              <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-10 h-10 shrink-0" />
-              <div className="font-semibold text-(--ink-1) text-lg tracking-[-0.015em] leading-none truncate">
+              {/* Use the circular favicon mark in chrome (not the
+                  full-bleed PWA logo) so the brand reads as a circular
+                  badge — matches the CloakPDF / CloakIMG header. */}
+              <img
+                src="/icons/favicon.svg"
+                alt=""
+                aria-hidden="true"
+                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 drop-shadow-sm"
+              />
+              <div className="font-semibold text-(--ink-1) text-[17px] sm:text-[19px] tracking-tight leading-none truncate">
                 Cloak<span className="text-(--brand)">Resume</span>
               </div>
             </div>
@@ -254,61 +269,100 @@ export function OnboardingScreen({
           </div>
         </nav>
 
-        {/* ── Hero ─────────────────────────────────────────────── */}
-        <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:pt-24 pb-10 sm:pb-14">
-          {/* Headline */}
-          <h1 className="text-center text-[34px] sm:text-[46px] md:text-[60px] lg:text-[68px] font-semibold text-(--ink-1) tracking-[-0.03em] leading-[1.05] m-0 max-w-[900px] mx-auto animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
-            Build a résumé that{" "}
-            <em className="font-serif italic font-normal text-(--brand)">stays yours</em>.
-          </h1>
+        {/* ── Hero ───────────────────────────────────────────────
+             Two-column layout on large screens: a left-aligned
+             headline + subtitle on the left, a stylised paper
+             "résumé page" mockup on the right. Below the breakpoint
+             both columns stack and the mockup is hidden — the CTA
+             tiles already carry the "what you'll do next" weight on
+             phones and the mockup adds visual padding that hurts
+             single-column rhythm.
 
-          <p className="text-center text-(--ink-3) text-[15px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[640px] mx-auto mt-5 sm:mt-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
-            Beautifully designed templates, real ATS analysis, and zero servers. Your data is stored
-            locally — nothing is ever uploaded.
-          </p>
+             The CTA cluster sits below the two-column hero (full
+             width) so the three-tile row keeps its airy proportions
+             and the "Resume editing" wide card has room to breathe. */}
+        <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:pt-24 pb-10 sm:pb-14">
+          <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-center">
+            <div className="text-center lg:text-left">
+              <h1 className="text-[34px] sm:text-[46px] md:text-[58px] lg:text-[60px] font-semibold text-(--ink-1) tracking-[-0.03em] leading-[1.05] m-0 max-w-[900px] mx-auto lg:mx-0 animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
+                Build a résumé that{" "}
+                <em className="font-serif italic font-normal text-(--brand)">stays yours</em>.
+              </h1>
+
+              <p className="text-(--ink-3) text-[15px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[640px] mx-auto lg:mx-0 mt-5 sm:mt-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+                Beautifully designed templates, real ATS analysis, and zero servers. Your data is
+                stored locally — nothing is ever uploaded.
+              </p>
+
+              {/* Primary hero CTA — small, left-aligned on desktop.
+                  Contextual: when there's saved work it picks up
+                  editing where the user left off; otherwise it
+                  starts a fresh blank résumé. Functionally
+                  duplicates one of the larger CTA tiles below, but
+                  giving the hero its own button (alongside the
+                  headline) lets visitors act without scrolling and
+                  matches the CloakIMG / CloakPDF landing rhythm. */}
+              <div className="mt-6 sm:mt-7 flex justify-center lg:justify-start animate-[fade-in-up_0.6s_ease-out_0.18s_both]">
+                <button
+                  type="button"
+                  onClick={onResumeEditing ?? onStartBlank}
+                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-(--brand) text-white text-[13.5px] font-semibold tracking-tight cursor-pointer border-0 shadow-(--sh-md) transition-[background-color,transform,box-shadow] duration-150 hover:bg-(--brand-hover) hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
+                >
+                  {onResumeEditing ? (
+                    <>
+                      <FilePen className="w-4 h-4" />
+                      Resume editing
+                    </>
+                  ) : (
+                    <>
+                      <ArrowRight className="w-4 h-4" />
+                      Get started
+                    </>
+                  )}
+                </button>
+              </div>
+
+              {/* Trust strip — three quiet pills under the CTA.
+                  Mirrors the CloakIMG hero so the privacy promise is
+                  visible without extra clicks; left-aligned on desktop
+                  to match the headline. */}
+              <div className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-4.5 gap-y-2 text-[12.5px] text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.22s_both]">
+                <span className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" /> 100% on-device
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <WifiOff className="w-3.5 h-3.5 text-(--brand)" /> Works offline
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <ScanSearch className="w-3.5 h-3.5 text-(--brand)" /> ATS-ready
+                </span>
+              </div>
+            </div>
+
+            {/* Decorative résumé mockup — only on lg+. Pure
+                presentation; doesn't render real ResumeData (the live
+                preview lives inside the editor). The shapes mirror
+                the actual CloakResume layout (avatar + name +
+                headline; section dividers; bulleted body) so the
+                hero answers "what does the output look like?" at a
+                glance. */}
+            <div
+              aria-hidden="true"
+              className="hidden lg:block animate-[fade-in-up_0.6s_ease-out_0.2s_both]"
+            >
+              <ResumeMockup />
+            </div>
+          </div>
 
           {/* Primary CTAs.
            *
-           * When `onResumeEditing` is provided we feature it as a wide
-           * horizontal card above the standard 3-tile row so the
-           * "continue where you left off" path is visually dominant
-           * without making the three fresh-start tiles look stretched.
-           * Otherwise just the 3-tile row renders. */}
-          <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.2s_both]">
-            {onResumeEditing && (
-              <GlowCard
-                onClick={onResumeEditing}
-                glow="rgba(37, 99, 235, 0.26)"
-                ariaLabel="Resume editing your current résumé"
-              >
-                <div className="flex items-center gap-4 sm:gap-5 px-5 py-4.5 sm:px-6 sm:py-5">
-                  <span className="shrink-0 w-12 h-12 sm:w-13 sm:h-13 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                    <FilePen className="w-5.5 h-5.5" />
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                        Resume editing
-                      </span>
-                      <span
-                        className="text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
-                        aria-hidden="true"
-                      >
-                        Saved
-                      </span>
-                    </div>
-                    <span className="block text-[13px] sm:text-[13.5px] leading-[1.5] text-(--ink-4) mt-0.5">
-                      Pick up where you left off — your work is already in this browser.
-                    </span>
-                  </div>
-                  <ArrowRight
-                    className="shrink-0 w-4 h-4 text-(--ink-4) transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-(--brand)"
-                    aria-hidden="true"
-                  />
-                </div>
-              </GlowCard>
-            )}
-
+           * The wide "Resume editing" card that used to sit above
+           * the 3-tile row was removed once the hero gained its own
+           * Resume-editing button — keeping both was redundant. The
+           * "Or start over · replaces saved work" divider stays
+           * (still gated on `onResumeEditing`) so the user is
+           * warned that the tiles below overwrite their work. */}
+          <div className="mt-10 sm:mt-12 max-w-225 mx-auto flex flex-col gap-3 sm:gap-4 animate-[fade-in-up_0.6s_ease-out_0.25s_both]">
             {onResumeEditing && (
               <div
                 role="note"
@@ -331,7 +385,7 @@ export function OnboardingScreen({
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
               <GlowCard
                 onClick={onStartBlank}
-                glow="rgba(14, 165, 233, 0.22)"
+                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel={
                   onResumeEditing
                     ? "Start a blank résumé — replaces the work saved in your browser"
@@ -339,7 +393,7 @@ export function OnboardingScreen({
                 }
               >
                 <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#0ea5e9_14%,transparent)] text-[#0ea5e9] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                     <SquareDashed className="w-5 h-5" />
                   </span>
                   <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
@@ -349,7 +403,7 @@ export function OnboardingScreen({
                     Begin with a clean template and make it yours.
                   </span>
                   <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#0ea5e9]"
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
                     aria-hidden="true"
                   />
                 </div>
@@ -357,16 +411,16 @@ export function OnboardingScreen({
 
               <GlowCard
                 onClick={onLoadSample}
-                glow="rgba(124, 58, 237, 0.2)"
+                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel="Load a randomly-generated sample résumé — content is fictional"
               >
                 <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
                   <div className="flex items-start justify-between gap-2">
-                    <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#7c3aed_14%,transparent)] text-[#7c3aed] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:-rotate-6">
+                    <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:-rotate-6">
                       <Sparkles className="w-5 h-5" />
                     </span>
                     <span
-                      className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-[color-mix(in_oklab,#7c3aed_12%,transparent)] text-[#7c3aed]"
+                      className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
                       aria-hidden="true"
                     >
                       <Dices className="w-3 h-3" />
@@ -381,7 +435,7 @@ export function OnboardingScreen({
                     not real people.
                   </span>
                   <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-[#7c3aed]"
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
                     aria-hidden="true"
                   />
                 </div>
@@ -389,11 +443,11 @@ export function OnboardingScreen({
 
               <GlowCard
                 onClick={() => fileRef.current?.click()}
-                glow="rgba(5, 150, 105, 0.2)"
+                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel="Load a saved résumé from a local file"
               >
                 <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-[color-mix(in_oklab,#059669_14%,transparent)] text-[#059669] mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
+                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
                     <FolderOpen className="w-5 h-5" />
                   </span>
                   <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
@@ -403,7 +457,7 @@ export function OnboardingScreen({
                     Continue from a JSON file you previously saved.
                   </span>
                   <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-ok"
+                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
                     aria-hidden="true"
                   />
                 </div>
@@ -439,225 +493,197 @@ export function OnboardingScreen({
             </p>
           </div>
 
+          {/* All feature icons share the brand-emerald tint so the grid
+              reads as one coherent system. The shape of each icon
+              carries the meaning; colour is the single brand voice. */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-7 sm:gap-y-8">
             <FeatureItem
               icon={<UserRoundCheck className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#059669_14%,transparent)]"
-              iconFg="text-[#059669]"
               title="No sign-up"
               description="No accounts, no email, no passwords. Start building the moment the page loads."
             />
             <FeatureItem
               icon={<EyeOff className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#7c3aed_14%,transparent)]"
-              iconFg="text-[#7c3aed]"
               title="No tracking"
               description="Zero analytics, zero telemetry, zero third-party scripts. You stay invisible."
             />
             <FeatureItem
               icon={<ShieldCheck className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#16a34a_14%,transparent)]"
-              iconFg="text-[#16a34a]"
               title="Local-first"
               description="Every keystroke stays in your browser. Nothing is ever uploaded to any server."
             />
             <FeatureItem
               icon={<WifiOff className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#ea580c_14%,transparent)]"
-              iconFg="text-[#ea580c]"
               title="Works offline"
               description="Once the app is cached, keep editing and exporting without a connection — flights, trains, anywhere."
             />
             <FeatureItem
               icon={<Rocket className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#8b5cf6_14%,transparent)]"
-              iconFg="text-[#8b5cf6]"
               title="Installable as a PWA"
               description="Add CloakResume to your home screen for a full-screen, app-like experience that launches in one tap."
             />
             <FeatureItem
               icon={<MonitorSmartphone className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#eab308_14%,transparent)]"
-              iconFg="text-[#eab308]"
               title="Mobile, tablet & desktop"
               description="Editor and live preview adapt fluidly across every screen size — draft on the go, polish at your desk."
             />
             <FeatureItem
               icon={<ScanSearch className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#db2777_14%,transparent)]"
-              iconFg="text-[#db2777]"
               title="Real ATS analysis"
               description="Paste a job description and get actionable feedback on keywords, formatting, and match."
             />
             <FeatureItem
               icon={<SpellCheck className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#6366f1_14%,transparent)]"
-              iconFg="text-[#6366f1]"
               title="Spelling & grammar"
               description="A built-in Harper-powered pass flags typos, clunky phrasing, and passive voice as you edit."
             />
             <FeatureItem
               icon={<Palette className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#0d9488_14%,transparent)]"
-              iconFg="text-[#0d9488]"
               title="Beautiful templates"
               description="Carefully crafted layouts that look great on screen, in print, and through every PDF reader."
             />
             <FeatureItem
               icon={<FileText className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#d97706_14%,transparent)]"
-              iconFg="text-[#d97706]"
               title="Crisp PDF export"
               description="Pixel-perfect exports with proper typography, selectable text, and print-ready margins."
             />
             <FeatureItem
               icon={<Laptop className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#0891b2_14%,transparent)]"
-              iconFg="text-[#0891b2]"
               title="Light & dark mode"
               description="Thoughtful theming that follows your system or respects your manual choice."
             />
             <FeatureItem
               icon={<GitFork className="w-5 h-5" />}
-              iconBg="bg-[color-mix(in_oklab,#475569_14%,transparent)]"
-              iconFg="text-[#475569]"
               title="Free & open source"
               description="MIT-licensed and on GitHub. Fork it, self-host it, or audit every byte — nothing is hidden."
             />
           </div>
         </section>
 
-        {/* ── How it works ─────────────────────────────────────── */}
-        <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pb-16 sm:pb-24">
-          <div className="border border-(--line) bg-(--surface) rounded-2xl shadow-(--sh-sm) px-5 py-8 sm:px-10 sm:py-12">
-            <div className="text-center mb-8 sm:mb-10">
-              <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-(--brand) mb-2.5">
-                How it works
-              </div>
-              <h2 className="text-[22px] sm:text-[28px] md:text-[32px] font-semibold text-(--ink-1) tracking-[-0.02em] leading-[1.2] m-0">
-                From blank page to hired, in three steps.
-              </h2>
-            </div>
-
-            <ol className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 list-none p-0 m-0">
-              <Step
-                n={1}
-                title="Fill in your details"
-                description="Work through each section with inline hints and autosave. Nothing leaves the browser."
-              />
-              <Step
-                n={2}
-                title="Scan against a job"
-                description="Paste a job description and let the ATS panel surface keywords, gaps, and wins."
-              />
-              <Step
-                n={3}
-                title="Export & apply"
-                description="Download a polished PDF or save a JSON to continue on another device — your choice."
-              />
-            </ol>
-          </div>
-        </section>
-
-        {/* ── Footer ───────────────────────────────────────────── */}
-        {/* `mt-auto` pins the footer to the bottom of the viewport when
-          content is shorter than the screen. Footer bg kept ~92% opaque
-          so it reads as a solid surface over the aurora when scrolled
-          into view. iOS Safari URL-bar tint sampling is handled inside
-          AuroraBackground itself: on mobile, the aurora-root applies a
-          vertical alpha-mask that fades the blobs to transparent across
-          the URL-bar zone, so no blob paints into Safari's sample area
-          and there's no hard edge above the bar. The
-          `safe-area-inset-bottom` padding here still extends the
-          footer's painted area into the home-indicator zone. */}
+        {/* ── Footer ───────────────────────────────────────────────
+             Two bento cards (How it works + Cloakyard family promo)
+             plus a slim attribution row underneath. Mirrors the
+             CloakIMG / CloakPDF Layout footer so the Cloakyard family
+             reads consistently across products. The corner glow on
+             each card is painted as a radial-gradient background-image
+             (not a blurred absolute child) — same iOS-Safari-friendly
+             trick the sister apps use to avoid `overflow-hidden +
+             rounded-2xl + backdrop-filter` clipping bugs. */}
         <footer
-          className="relative mt-auto border-t border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] backdrop-blur-md"
+          className="relative mt-auto"
           style={{ paddingBottom: "env(safe-area-inset-bottom, 0px)" }}
         >
-          <div className="max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-7 sm:pt-12 sm:pb-8">
-            {/* Top row: brand + links */}
-            <div className="flex flex-col sm:flex-row sm:items-start gap-6 sm:gap-10">
-              <div className="flex items-start gap-3 min-w-0 sm:max-w-sm">
-                <img src="/icons/logo.svg" alt="" aria-hidden="true" className="w-9 h-9 shrink-0" />
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="font-semibold text-(--ink-1) tracking-[-0.01em]">
-                      Cloak<span className="text-(--brand)">Resume</span>
-                    </span>
-                    <span className="inline-flex items-center px-1.5 py-0.5 rounded-md text-[11px] font-mono tabular-nums tracking-tight text-(--ink-4) bg-(--surface-3)">
-                      v{__APP_VERSION__}
-                    </span>
+          <div className="mx-auto max-w-[1100px] px-5 pt-6 pb-5 sm:px-8 sm:pt-8 sm:pb-7">
+            <div className="mb-5 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
+              {/* How it works card — emerald glow anchored top-right */}
+              <div
+                className="relative flex flex-col rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 backdrop-blur-md"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(280px 280px at 100% 0%, rgba(5, 150, 105, 0.18) 0%, rgba(5, 150, 105, 0.06) 38%, transparent 68%)",
+                }}
+              >
+                <div className="relative">
+                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-(--brand)">
+                    How it works
                   </div>
-                  <p className="text-[13px] text-(--ink-4) leading-[1.55] mt-1.5">
-                    The private, local-first résumé builder. Your data never leaves your browser.
-                  </p>
+                  <h3 className="mt-2 text-[17px] sm:text-[19px] font-semibold tracking-[-0.01em] text-(--ink-1)">
+                    From blank page to hired, in three steps.
+                  </h3>
                 </div>
+                <ol className="relative mt-4 flex flex-col gap-3 list-none p-0 m-0">
+                  <FooterStep
+                    n={1}
+                    title="Fill in your details"
+                    description="Work through each section with inline hints and autosave. Nothing leaves the browser."
+                  />
+                  <FooterStep
+                    n={2}
+                    title="Scan against a job"
+                    description="Paste a job description and let the ATS panel surface keywords, gaps, and wins."
+                  />
+                  <FooterStep
+                    n={3}
+                    title="Export & apply"
+                    description="Download a polished PDF or save a JSON to continue on another device — your choice."
+                  />
+                </ol>
               </div>
 
-              <nav
-                aria-label="Footer"
-                className="hidden sm:flex flex-wrap items-center gap-x-5 gap-y-2 sm:ml-auto text-[13px]"
+              {/* Cloakyard family promo card — emerald glow anchored bottom-left */}
+              <a
+                href={CLOAKYARD_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group relative flex flex-col justify-between rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 text-inherit no-underline backdrop-blur-md transition-colors hover:border-(--brand-300)"
+                style={{
+                  backgroundImage:
+                    "radial-gradient(280px 280px at 0% 100%, rgba(5, 150, 105, 0.14) 0%, rgba(5, 150, 105, 0.05) 38%, transparent 68%)",
+                }}
               >
-                <button
-                  type="button"
-                  onClick={() => setPrivacyOpen(true)}
-                  className="inline-flex items-center gap-1.5 text-(--ink-3) hover:text-(--ink-1) bg-transparent cursor-pointer transition-colors duration-150 font-medium"
-                >
-                  <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" aria-hidden="true" />
-                  Privacy Policy
-                </button>
-              </nav>
+                <div className="relative">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-center gap-2.5">
+                      <img
+                        src="/icons/cloakyard.svg"
+                        alt=""
+                        aria-hidden="true"
+                        className="h-7 w-7 drop-shadow-sm"
+                      />
+                      <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-(--ink-4)">
+                        Part of
+                      </span>
+                    </div>
+                    <span className="inline-flex shrink-0 items-center rounded-full border border-(--line-soft) bg-[color-mix(in_oklab,var(--ink-1)_4%,transparent)] px-2 py-px font-mono text-[10px] tabular-nums tracking-tight text-(--ink-4)">
+                      CloakResume v{__APP_VERSION__}
+                    </span>
+                  </div>
+                  <h4 className="mt-2.5 text-[17px] sm:text-[19px] font-semibold tracking-[-0.01em] text-(--ink-1)">
+                    Cloakyard
+                  </h4>
+                  <p className="mt-1 text-[12.5px] leading-[1.55] text-(--ink-4)">
+                    A family of privacy-focused tools that keep your data on your device.
+                  </p>
+                </div>
+                <span className="relative mt-3 inline-flex items-center gap-1 text-xs font-medium text-(--brand)">
+                  Explore
+                  <ArrowUpRight className="w-3 h-3 transition-transform duration-150 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </span>
+              </a>
             </div>
 
-            {/* Divider */}
-            <div className="h-px bg-(--line-soft) my-6 sm:my-7" />
-
-            {/* Bottom row: attribution + cloakyard pitch */}
-            <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4 text-[12.5px] text-(--ink-4)">
+            {/* Slim attribution row */}
+            <div className="flex flex-col gap-2 border-t border-(--line-soft) pt-4 text-[12.5px] text-(--ink-4) sm:flex-row sm:items-center sm:gap-4">
               <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                 <span>Built with care by</span>
                 <a
                   href={AUTHOR_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-(--ink-2) hover:text-(--brand) no-underline font-medium transition-colors duration-150"
+                  className="font-medium text-(--ink-2) no-underline transition-colors hover:text-(--brand)"
                 >
                   Sumit Sahoo
                 </a>
-                <span aria-hidden="true">·</span>
-                <span>
-                  <span className="text-(--ink-5)">MIT</span> licensed
-                </span>
-                <span aria-hidden="true" className="sm:hidden">
-                  ·
-                </span>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-1.5 gap-y-1 sm:ml-auto">
                 <button
                   type="button"
                   onClick={() => setPrivacyOpen(true)}
-                  className="sm:hidden text-(--ink-2) hover:text-(--brand) bg-transparent cursor-pointer transition-colors duration-150 font-medium"
+                  className="inline-flex cursor-pointer items-center gap-1 border-none bg-transparent p-0 font-[inherit] text-[12.5px] text-(--ink-4) transition-colors hover:text-(--brand)"
                 >
+                  <ShieldCheck className="w-3.5 h-3.5" />
                   Privacy
                 </button>
-              </div>
-              <div className="sm:ml-auto flex flex-wrap items-center gap-x-1.5 gap-y-1">
-                <span>Part of</span>
+                <span aria-hidden="true">·</span>
                 <a
-                  href={CLOAKYARD_URL}
+                  href={GITHUB_LICENSE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1 text-(--ink-2) hover:text-(--brand) no-underline font-medium transition-colors duration-150"
+                  className="inline-flex items-center gap-1 text-(--ink-4) no-underline transition-colors hover:text-(--brand)"
                 >
-                  <img
-                    src="/icons/cloakyard.svg"
-                    alt=""
-                    aria-hidden="true"
-                    className="w-3.5 h-3.5 shrink-0"
-                  />
-                  Cloakyard
+                  <Scale className="w-3.5 h-3.5" />
+                  <span>MIT licensed</span>
                 </a>
-                <span className="hidden sm:inline text-(--ink-5)">
-                  — a collection of privacy-focused tools.
-                </span>
               </div>
             </div>
           </div>
@@ -675,17 +701,15 @@ export function OnboardingScreen({
 
 interface FeatureItemProps {
   icon: ReactNode;
-  iconBg: string;
-  iconFg: string;
   title: string;
   description: string;
 }
 
-function FeatureItem({ icon, iconBg, iconFg, title, description }: FeatureItemProps) {
+function FeatureItem({ icon, title, description }: FeatureItemProps) {
   return (
     <div className="flex items-start gap-3.5">
       <span
-        className={`shrink-0 w-10 h-10 rounded-lg grid place-items-center ${iconBg} ${iconFg}`}
+        className="shrink-0 w-10 h-10 rounded-lg grid place-items-center bg-(--brand-50) text-(--brand)"
         aria-hidden="true"
       >
         {icon}
@@ -700,27 +724,292 @@ function FeatureItem({ icon, iconBg, iconFg, title, description }: FeatureItemPr
   );
 }
 
-interface StepProps {
+interface FooterStepProps {
   n: number;
   title: string;
   description: string;
 }
 
-function Step({ n, title, description }: StepProps) {
+function FooterStep({ n, title, description }: FooterStepProps) {
   return (
-    <li className="flex items-start gap-4">
+    <li className="flex items-start gap-3">
       <span
-        className="shrink-0 w-9 h-9 rounded-full grid place-items-center font-serif italic text-[17px] font-semibold text-(--brand) bg-(--brand-50) border border-(--brand-100)"
         aria-hidden="true"
+        className="inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-(--brand-100) bg-(--brand-50) text-xs font-semibold leading-none tabular-nums text-(--brand-700)"
       >
         {n}
       </span>
-      <div>
-        <div className="text-[15px] font-semibold text-(--ink-1) tracking-[-0.005em] mb-1">
-          {title}
-        </div>
-        <div className="text-[13.5px] leading-[1.55] text-(--ink-3)">{description}</div>
+      <div className="min-w-0">
+        <div className="text-[13px] font-semibold tracking-[-0.005em] text-(--ink-1)">{title}</div>
+        <div className="text-[12.5px] leading-[1.55] text-(--ink-4)">{description}</div>
       </div>
     </li>
+  );
+}
+
+/* ────────────────────────────────────────────────────────────────
+ * ResumeMockup — A pure-CSS stylised "paper" résumé page used as
+ * decorative chrome in the onboarding hero. Mirrors the Classic
+ * Sidebar template (CloakResume's default): a tinted left rail
+ * carrying the identity block + contact/skills/languages, with a
+ * main column carrying summary + experience + projects.
+ *
+ * Sized to A4 aspect (210 × 297). Wrapped in an outer
+ * `overflow-visible` container so the rotated "ATS · 92" sticker
+ * can sit slightly outside the page edge without being clipped by
+ * the rounded corners of the inner page.
+ *
+ * Hidden below `lg:` because single-column phones don't need the
+ * visual padding.
+ * ──────────────────────────────────────────────────────────────── */
+function ResumeMockup() {
+  return (
+    <div className="relative mx-auto w-full max-w-[380px]">
+      {/* Inner page: A4 aspect, white surface, rounded + overflow
+          clipped so content can't bleed past the paper edge. The
+          rotation lives here so the ATS sticker (sibling, outside
+          this clipping container) tilts independently. */}
+      <div
+        role="presentation"
+        className="relative aspect-[210/297] rounded-md bg-white shadow-(--sh-xl) ring-1 ring-slate-900/5 overflow-hidden rotate-[1.5deg] transition-transform duration-300 hover:rotate-0"
+      >
+        {/* Top emerald band — quiet horizontal accent matching the
+            CloakResume templates that paint a brand-coloured header
+            strip across the page. */}
+        <div className="h-2 w-full bg-gradient-to-r from-(--color-primary-500) to-(--color-primary-700)" />
+
+        <div className="grid grid-cols-[34%_minmax(0,1fr)] h-[calc(100%-0.5rem)]">
+          {/* ── Sidebar (tinted brand-50 like the live template) ── */}
+          <div className="bg-(--brand-50) px-3 py-3.5 flex flex-col gap-3 min-w-0">
+            {/* Identity block */}
+            <div className="flex flex-col items-center gap-1.5 pb-1">
+              <div
+                className="w-12 h-12 rounded-full ring-2"
+                style={{
+                  background:
+                    "linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-500) 100%)",
+                  // ring colour can't read brand var directly via tw, so inline
+                  outlineColor: "var(--color-primary-600)",
+                }}
+              />
+              <div className="h-2 w-20 rounded bg-slate-800/80 mt-1" />
+              <div className="h-1.5 w-14 rounded bg-(--color-primary-600)/70" />
+              <div className="h-0.5 w-7 rounded-full bg-(--color-primary-600) mt-0.5" />
+            </div>
+
+            {/* Contact */}
+            <SidebarSection label="Contact">
+              <SidebarContactRow widthClass="w-full" />
+              <SidebarContactRow widthClass="w-5/6" />
+              <SidebarContactRow widthClass="w-3/4" />
+              <SidebarContactRow widthClass="w-2/3" />
+            </SidebarSection>
+
+            {/* Core Expertise (skill groups) */}
+            <SidebarSection label="Core Expertise">
+              <div className="h-1.5 w-2/3 rounded bg-slate-700/80" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-4/5 rounded bg-slate-200" />
+              <div className="h-1.5 w-1/2 rounded bg-slate-700/80 mt-1" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-3/4 rounded bg-slate-200" />
+              <div className="h-1.5 w-3/5 rounded bg-slate-700/80 mt-1" />
+              <div className="h-1 w-5/6 rounded bg-slate-200" />
+            </SidebarSection>
+
+            {/* Languages */}
+            <SidebarSection label="Languages">
+              <div className="flex justify-between items-center gap-1.5">
+                <div className="h-1 w-2/5 rounded bg-slate-300" />
+                <div className="h-1 w-1/4 rounded bg-(--color-primary-600)/60" />
+              </div>
+              <div className="flex justify-between items-center gap-1.5">
+                <div className="h-1 w-1/3 rounded bg-slate-300" />
+                <div className="h-1 w-1/4 rounded bg-(--color-primary-600)/60" />
+              </div>
+            </SidebarSection>
+
+            {/* Tools (chips) */}
+            <SidebarSection label="Tools">
+              <div className="flex flex-wrap gap-1">
+                <Chip width="w-7" />
+                <Chip width="w-9" />
+                <Chip width="w-6" />
+                <Chip width="w-8" />
+                <Chip width="w-7" />
+              </div>
+            </SidebarSection>
+          </div>
+
+          {/* ── Main column ────────────────────────────────────── */}
+          <div className="px-3.5 py-3.5 flex flex-col gap-3 min-w-0">
+            {/* Summary */}
+            <MainSection label="Summary">
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-full rounded bg-slate-200" />
+              <div className="h-1 w-11/12 rounded bg-slate-200" />
+              <div className="h-1 w-3/4 rounded bg-slate-200" />
+            </MainSection>
+
+            {/* Experience */}
+            <MainSection label="Experience">
+              <ExperienceItem
+                titleWidth="w-3/5"
+                metaWidth="w-1/4"
+                companyWidth="w-2/5"
+                bullets={3}
+              />
+              <ExperienceItem
+                titleWidth="w-2/5"
+                metaWidth="w-1/4"
+                companyWidth="w-1/3"
+                bullets={2}
+              />
+            </MainSection>
+
+            {/* Projects — single column with About Project / Role
+                mini-labels + bullets, mirroring the updated live
+                template. */}
+            <MainSection label="Projects">
+              <div className="flex flex-col gap-1.5">
+                <ProjectCard nameWidth="w-3/4" />
+                <ProjectCard nameWidth="w-2/3" />
+              </div>
+            </MainSection>
+          </div>
+        </div>
+      </div>
+
+      {/* ATS badge — sibling of the clipped page so the rotation
+          can hang off the corner without being cropped. Anchored
+          near the top-right of the page for the "passed your
+          parser" cue. */}
+      <div className="pointer-events-none absolute right-2 top-6 rotate-[8deg] inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white shadow-(--sh-md) ring-1 ring-(--brand-200) text-(--brand-700) text-[10px] font-semibold uppercase tracking-[0.08em]">
+        <span className="w-1.5 h-1.5 rounded-full bg-(--brand)" />
+        ATS · 92
+      </div>
+    </div>
+  );
+}
+
+/* Sidebar section: caps label with brand colour + brand-200
+   underline, matching `.cs-h3` in ClassicSidebar.tsx. */
+function SidebarSection({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1 min-w-0">
+      <div className="text-[7.5px] font-bold uppercase tracking-[0.12em] text-(--color-primary-600) pb-0.5 border-b border-(--brand-200)">
+        {label}
+      </div>
+      <div className="flex flex-col gap-1 mt-0.5">{children}</div>
+    </div>
+  );
+}
+
+function SidebarContactRow({ widthClass }: { widthClass: string }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <div className="w-1.5 h-1.5 rounded-full bg-(--color-primary-600) shrink-0" />
+      <div className={`h-1 ${widthClass} rounded bg-slate-200`} />
+    </div>
+  );
+}
+
+function Chip({ width }: { width: string }) {
+  return (
+    <span
+      className={`h-2.5 ${width} rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200) inline-block`}
+    />
+  );
+}
+
+/* Main-column section head: dark caps title with a 2px underline
+   and a short brand-coloured accent at the lower-left, matching
+   `.cs-section-head` + `::after` in ClassicSidebar.tsx. */
+function MainSection({ label, children }: { label: string; children: ReactNode }) {
+  return (
+    <div className="flex flex-col gap-1.5 min-w-0">
+      <div className="relative pb-1 border-b-2 border-slate-700">
+        <span className="block text-[8px] font-bold uppercase tracking-[0.13em] text-slate-700">
+          {label}
+        </span>
+        <span className="absolute left-0 -bottom-0.5 w-6 h-0.5 bg-(--color-primary-600)" />
+      </div>
+      <div className="flex flex-col gap-1 mt-0.5">{children}</div>
+    </div>
+  );
+}
+
+// Stable string keys for the (purely-decorative) bullet rows so React's
+// reconciler — and the no-array-index-key lint — both stay happy.
+const BULLET_KEYS = ["b0", "b1", "b2", "b3", "b4"] as const;
+
+function ExperienceItem({
+  titleWidth,
+  metaWidth,
+  companyWidth,
+  bullets,
+}: {
+  titleWidth: string;
+  metaWidth: string;
+  companyWidth: string;
+  bullets: number;
+}) {
+  return (
+    <div className="flex flex-col gap-1 mb-1.5 last:mb-0">
+      <div className="flex justify-between items-center gap-2">
+        <div className={`h-1.5 ${titleWidth} rounded bg-slate-800/80`} />
+        <div className={`h-1 ${metaWidth} rounded bg-slate-300`} />
+      </div>
+      <div className={`h-1 ${companyWidth} rounded bg-(--color-primary-600)/70`} />
+      {BULLET_KEYS.slice(0, bullets).map((key, i) => (
+        <div key={key} className="flex items-start gap-1 mt-0.5">
+          <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+            ▸
+          </span>
+          <div className="flex-1 flex flex-col gap-0.5">
+            <div className={`h-1 ${i === bullets - 1 ? "w-3/4" : "w-full"} rounded bg-slate-200`} />
+            {i === 0 && <div className="h-1 w-5/6 rounded bg-slate-200" />}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function ProjectCard({ nameWidth }: { nameWidth: string }) {
+  return (
+    <div className="rounded-sm bg-slate-50 border border-slate-200 border-l-2 border-l-(--color-primary-600) p-2 flex flex-col gap-1 min-w-0">
+      <div className={`h-1.5 ${nameWidth} rounded bg-slate-700/80`} />
+
+      {/* "About Project" mini-label + bullet */}
+      <div className="h-1 w-12 rounded bg-(--color-primary-600)/80 mt-0.5" />
+      <div className="flex items-start gap-1">
+        <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+          ▸
+        </span>
+        <div className="flex-1 flex flex-col gap-0.5">
+          <div className="h-1 w-full rounded bg-slate-200" />
+          <div className="h-1 w-4/5 rounded bg-slate-200" />
+        </div>
+      </div>
+
+      {/* "Role" mini-label + bullet */}
+      <div className="h-1 w-6 rounded bg-(--color-primary-600)/80 mt-0.5" />
+      <div className="flex items-start gap-1">
+        <span className="text-(--color-primary-600) text-[7px] leading-none mt-0.5 font-bold">
+          ▸
+        </span>
+        <div className="flex-1">
+          <div className="h-1 w-3/5 rounded bg-slate-200" />
+        </div>
+      </div>
+
+      {/* Stack chips */}
+      <div className="flex gap-0.5 mt-0.5">
+        <span className="h-1.5 w-4 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+        <span className="h-1.5 w-5 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+        <span className="h-1.5 w-3 rounded-sm bg-(--color-primary-50) ring-1 ring-(--brand-200)" />
+      </div>
+    </div>
   );
 }

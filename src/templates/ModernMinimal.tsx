@@ -67,8 +67,11 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
     .mm-skill-list { color: #27272a; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
     .mm-proj { border-left: 2px solid ${palette.primary600}; padding: 0 0 0 4mm; margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .mm-projhead { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
-    .mm-projname { font-size: 9.6pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: break-word; }
-    .mm-projdesc { font-size: 8.9pt; color: #374151; margin-top: 1mm; line-height: 1.45; overflow-wrap: break-word; }
+    .mm-projname { font-size: 9.8pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: break-word; }
+    .mm-proj-label { font-size: 7.8pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary700}; margin: 1mm 0 0.4mm; }
+    .mm-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .mm-proj-bullets li { font-size: 8.9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #374151; overflow-wrap: break-word; }
+    .mm-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .mm-projstack { font-size: 8.3pt; color: ${palette.primary700}; font-weight: 600; margin-top: 1mm; overflow-wrap: anywhere; }
     .mm-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 1.5mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .mm-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
@@ -210,10 +213,24 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
           <div className="mm-projhead">
             <div className="mm-projname">{p.name}</div>
           </div>
-          <div className="mm-projdesc">
-            <RichText value={p.description} />
-            {p.role ? ` ${p.role}` : ""}
-          </div>
+          {p.description && (
+            <>
+              <div className="mm-proj-label">About Project</div>
+              <ul className="mm-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="mm-proj-label">Role</div>
+              <ul className="mm-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
+          )}
           {p.stack.length > 0 && <div className="mm-projstack">{p.stack.join(" · ")}</div>}
         </div>,
       );

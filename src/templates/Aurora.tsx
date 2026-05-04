@@ -98,12 +98,13 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-skill-chips { display: flex; flex-wrap: wrap; gap: 1mm; }
     .au-skill-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.3mm 1.6mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
 
-    .au-proj { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5mm; margin-bottom: 2.5mm; }
-    .au-proj:last-child { margin-bottom: 0; }
-    .au-proj-card { background: #ffffff; border: 1px solid #e5e7eb; border-left: 2.5px solid ${palette.primary600}; border-radius: 2mm; padding: 2.4mm 3mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
-    .au-proj-name { font-size: 9.6pt; font-weight: 700; color: #0a0a0a; overflow-wrap: break-word; }
-    .au-proj-role { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.4mm; overflow-wrap: break-word; }
-    .au-proj-desc { font-size: 8.7pt; color: #374151; line-height: 1.45; margin-top: 1.1mm; overflow-wrap: break-word; }
+    .au-proj-card { background: #ffffff; border: 1px solid #e5e7eb; border-left: 2.5px solid ${palette.primary600}; border-radius: 2mm; padding: 2.6mm 3.2mm; margin-bottom: 2.4mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
+    .au-proj-card:last-child { margin-bottom: 0; }
+    .au-proj-name { font-size: 9.8pt; font-weight: 700; color: #0a0a0a; overflow-wrap: break-word; }
+    .au-proj-label { font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary700}; margin: 1.2mm 0 0.5mm; }
+    .au-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .au-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-proj-bullets li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-proj-stack { display: flex; flex-wrap: wrap; gap: 1mm; margin-top: 1.3mm; }
     .au-proj-stackchip { background: ${palette.primary50}; color: ${palette.primary800}; padding: 0.2mm 1.4mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; border: 1px solid ${palette.primary200}; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
 
@@ -273,41 +274,49 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     }
   }
 
-  // Projects: 2-col grid — one atom per row-pair so long grids flow across pages.
+  // Projects: single-column so each card has full width for the
+  // labelled About Project / Role bullets without wrapping at 50%.
   if (resume.projects.length > 0) {
     atoms.push(
       <h2 className="au-h2" data-keep-with-next="true" key="proj-h">
         Projects
       </h2>,
     );
-    for (let i = 0; i < resume.projects.length; i += 2) {
-      const pair = resume.projects.slice(i, i + 2);
+    resume.projects.forEach((p) => {
       atoms.push(
-        <div className="au-proj" key={`proj-row-${pair[0].id}`}>
-          {pair.map((p) => (
-            <div className="au-proj-card" key={p.id}>
-              <div className="au-proj-name">{p.name}</div>
-              {p.role && <div className="au-proj-role">{p.role}</div>}
-              {p.description && (
-                <div className="au-proj-desc">
+        <div className="au-proj-card" key={`proj-${p.id}`}>
+          <div className="au-proj-name">{p.name}</div>
+          {p.description && (
+            <>
+              <div className="au-proj-label">About Project</div>
+              <ul className="au-proj-bullets">
+                <li>
                   <RichText value={p.description} />
-                </div>
-              )}
-              {p.stack.length > 0 && (
-                <div className="au-proj-stack">
-                  {p.stack.map((s, idx) => (
-                    // oxlint-disable-next-line jsx/no-array-index-key
-                    <span className="au-proj-stackchip" key={idx}>
-                      {s}
-                    </span>
-                  ))}
-                </div>
-              )}
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="au-proj-label">Role</div>
+              <ul className="au-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
+          )}
+          {p.stack.length > 0 && (
+            <div className="au-proj-stack">
+              {p.stack.map((s, idx) => (
+                // oxlint-disable-next-line jsx/no-array-index-key
+                <span className="au-proj-stackchip" key={idx}>
+                  {s}
+                </span>
+              ))}
             </div>
-          ))}
+          )}
         </div>,
       );
-    }
+    });
   }
 
   if (resume.education.length > 0) {

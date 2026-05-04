@@ -58,6 +58,10 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
     .ac-entry-sub { font-style: italic; color: ${palette.primary700}; font-size: 9.2pt; overflow-wrap: break-word; }
     .ac-entry-date { font-size: 9pt; color: #4b5563; white-space: nowrap; font-variant-numeric: tabular-nums; }
     .ac-body { font-size: 9.6pt; color: #1a1a1a; margin-top: 0.8mm; line-height: 1.55; overflow-wrap: break-word; }
+    .ac-proj-label { font-family: 'Lora', 'Times New Roman', serif; font-size: 8.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1.2px; margin: 1mm 0 0.4mm; }
+    .ac-proj-bullets { list-style: none; padding: 0; margin: 0 0 1mm; }
+    .ac-proj-bullets li { font-size: 9.6pt; line-height: 1.55; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1a1a1a; overflow-wrap: break-word; }
+    .ac-proj-bullets li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; }
     .ac-body ul { list-style: disc; padding-left: 5mm; margin: 1mm 0 0; }
     .ac-body li { margin-bottom: 0.8mm; overflow-wrap: break-word; }
     .ac-skill-row { display: grid; grid-template-columns: 40mm minmax(0, 1fr); gap: 5mm; margin-bottom: 1.2mm; font-size: 9.8pt; page-break-inside: avoid; break-inside: avoid; }
@@ -203,15 +207,29 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
       atoms.push(
         <div className="ac-proj-entry" key={`proj-${p.id}`}>
           <div className="ac-entry-title">{p.name}</div>
-          <div className="ac-body">
-            <RichText value={p.description} />
-            {p.role ? ` ${p.role}` : ""}
-            {p.stack.length > 0 && (
-              <div style={{ marginTop: "0.8mm", fontStyle: "italic", color: palette.primary700 }}>
-                {p.stack.join(" · ")}
-              </div>
-            )}
-          </div>
+          {p.description && (
+            <>
+              <div className="ac-proj-label">About Project</div>
+              <ul className="ac-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="ac-proj-label">Role</div>
+              <ul className="ac-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
+          )}
+          {p.stack.length > 0 && (
+            <div style={{ marginTop: "0.8mm", fontStyle: "italic", color: palette.primary700 }}>
+              {p.stack.join(" · ")}
+            </div>
+          )}
         </div>,
       );
     });

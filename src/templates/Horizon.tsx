@@ -126,10 +126,12 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-proj { margin-bottom: 2.4mm; padding: 2.2mm 3mm 2.2mm 3.8mm; background: #ffffff; border: 1px solid ${palette.primary100}; border-radius: 2.5mm; position: relative; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
     .hz-proj::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1.2mm; background: linear-gradient(to bottom, ${palette.primary400}, ${palette.primary600}); }
     .hz-proj:last-child { margin-bottom: 0; }
-    .hz-projname { font-size: 9.8pt; font-weight: 700; color: #0f172a; margin-bottom: 0.2mm; overflow-wrap: break-word; }
-    .hz-projrole { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 0.8mm; overflow-wrap: break-word; }
-    .hz-projdesc { font-size: 8.8pt; color: #1f2937; line-height: 1.45; margin-bottom: 0.8mm; overflow-wrap: break-word; }
-    .hz-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; overflow-wrap: anywhere; }
+    .hz-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.2mm; overflow-wrap: break-word; }
+    .hz-proj-label { font-size: 7.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 1mm 0 0.4mm; }
+    .hz-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
+    .hz-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .hz-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
+    .hz-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
   `;
 
   // ───── Sidebar atoms ─────
@@ -396,11 +398,23 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
       mainAtoms.push(
         <div className="hz-proj" key={`proj-${p.id}`}>
           <div className="hz-projname">{p.name}</div>
-          {p.role && <div className="hz-projrole">{p.role}</div>}
           {p.description && (
-            <div className="hz-projdesc">
-              <RichText value={p.description} />
-            </div>
+            <>
+              <div className="hz-proj-label">About Project</div>
+              <ul className="hz-proj-bullets">
+                <li>
+                  <RichText value={p.description} />
+                </li>
+              </ul>
+            </>
+          )}
+          {p.role && (
+            <>
+              <div className="hz-proj-label">Role</div>
+              <ul className="hz-proj-bullets">
+                <li>{p.role}</li>
+              </ul>
+            </>
           )}
           {p.stack.length > 0 && <div className="hz-projstack">{p.stack.join(" · ")}</div>}
         </div>,
