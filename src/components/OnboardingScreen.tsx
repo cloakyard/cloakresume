@@ -49,6 +49,48 @@ const AUTHOR_URL = "https://github.com/sumitsahoo";
 
 declare const __APP_VERSION__: string;
 
+/* Frozen brand palette, applied as inline CSS vars on the
+ * OnboardingScreen root so the entire landing page renders as
+ * CloakResume emerald regardless of the user's stored editor primary.
+ *
+ * The editor lets the user theme `--color-primary-*` to any colour
+ * (Ocean blue, Indigo, Rose, …) and persists that pick to localStorage.
+ * That's exactly right for the editor + preview — they should reflect
+ * the user's craft. But the landing page is brand identity, not a
+ * preview, and it has to read as CloakResume green every time.
+ *
+ * Two reasons every token is pinned, not just `--color-primary-*`:
+ *   1. The user can pick any primary in the editor, which writes
+ *      `--color-primary-*` onto :root.
+ *   2. In dark mode `--brand-*` are defined at :root as
+ *      `color-mix(in oklab, var(--color-primary) NN%, transparent)`.
+ *      Custom properties are substituted at the declaring element,
+ *      so a descendant override of `--color-primary` does NOT reach
+ *      back into those already-computed `--brand-*` values — they
+ *      have to be pinned explicitly. */
+const LANDING_BRAND_PALETTE: CSSProperties = {
+  "--color-primary-50": "#ecfdf5",
+  "--color-primary-100": "#d1fae5",
+  "--color-primary-200": "#a7f3d0",
+  "--color-primary-300": "#6ee7b7",
+  "--color-primary-400": "#34d399",
+  "--color-primary-500": "#10b981",
+  "--color-primary-600": "#047857",
+  "--color-primary-700": "#065f46",
+  "--color-primary-800": "#064e3b",
+  "--color-primary-900": "#022c22",
+  "--color-primary": "#047857",
+  "--brand": "#047857",
+  "--brand-hover": "#065f46",
+  "--brand-active": "#064e3b",
+  "--brand-50": "#ecfdf5",
+  "--brand-100": "#d1fae5",
+  "--brand-200": "#a7f3d0",
+  "--brand-300": "#6ee7b7",
+  "--brand-600": "#047857",
+  "--brand-700": "#065f46",
+} as CSSProperties;
+
 /* ────────────────────────────────────────────────────────────────
  * Glow card — shared mechanic used by the primary CTA tiles. Renders
  * a radial gradient that follows the pointer (or touch point) for a
@@ -219,7 +261,7 @@ export function OnboardingScreen({
   return (
     <div
       className="relative z-150 flex flex-col min-h-svh text-(--ink-1)"
-      style={{ background: "var(--onboarding-bg)" }}
+      style={{ background: "var(--onboarding-bg)", ...LANDING_BRAND_PALETTE }}
     >
       {/* Emerald-toned animated WebGL backdrop. Palette + motion live
           in src/constants/grainient.ts so any future surface that wants
@@ -306,16 +348,16 @@ export function OnboardingScreen({
                 <button
                   type="button"
                   onClick={onResumeEditing ?? onStartBlank}
-                  className="inline-flex items-center gap-1.5 h-10 px-4 rounded-lg bg-(--brand) text-white text-[13.5px] font-semibold tracking-tight cursor-pointer border-0 shadow-(--sh-md) transition-[background-color,transform,box-shadow] duration-150 hover:bg-(--brand-hover) hover:-translate-y-0.5 active:translate-y-0 focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
+                  className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-(--brand) text-white text-[15px] font-semibold tracking-tight cursor-pointer border-0 shadow-(--sh-cta) transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-(--brand-hover) hover:-translate-y-0.5 hover:shadow-(--sh-cta-hover) active:translate-y-0 active:shadow-(--sh-cta) focus-visible:outline-none focus-visible:shadow-[var(--sh-cta),var(--sh-focus)]"
                 >
                   {onResumeEditing ? (
                     <>
-                      <FilePen className="w-4 h-4" />
+                      <FilePen className="w-[18px] h-[18px]" />
                       Resume editing
                     </>
                   ) : (
                     <>
-                      <ArrowRight className="w-4 h-4" />
+                      <ArrowRight className="w-[18px] h-[18px]" />
                       Get started
                     </>
                   )}
@@ -577,7 +619,7 @@ export function OnboardingScreen({
             <div className="mb-5 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
               {/* How it works card — emerald glow anchored top-right */}
               <div
-                className="relative flex flex-col rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 backdrop-blur-md"
+                className="relative flex flex-col rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] p-5 backdrop-blur-md"
                 style={{
                   backgroundImage:
                     "radial-gradient(280px 280px at 100% 0%, rgba(5, 150, 105, 0.18) 0%, rgba(5, 150, 105, 0.06) 38%, transparent 68%)",
@@ -615,7 +657,7 @@ export function OnboardingScreen({
                 href={CLOAKYARD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col justify-between rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 text-inherit no-underline backdrop-blur-md transition-colors hover:border-(--brand-300)"
+                className="group relative flex flex-col justify-between rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] p-5 text-inherit no-underline backdrop-blur-md transition-colors hover:border-(--brand-300)"
                 style={{
                   backgroundImage:
                     "radial-gradient(280px 280px at 0% 100%, rgba(5, 150, 105, 0.14) 0%, rgba(5, 150, 105, 0.05) 38%, transparent 68%)",
@@ -764,6 +806,9 @@ function FooterStep({ n, title, description }: FooterStepProps) {
  * ──────────────────────────────────────────────────────────────── */
 function ResumeMockup() {
   return (
+    // Brand colours are pinned at the OnboardingScreen root via
+    // LANDING_BRAND_PALETTE — the cascade carries them down here, so
+    // the mockup needs no inline override of its own.
     <div className="relative mx-auto w-full max-w-[380px]">
       {/* Inner page: A4 aspect, white surface, rounded + overflow
           clipped so content can't bleed past the paper edge. The

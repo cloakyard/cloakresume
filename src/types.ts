@@ -55,7 +55,8 @@ export interface ProjectItem {
   id: string;
   name: string;
   description: string;
-  role?: string;
+  /** Role bullets — short statements about ownership / responsibilities. */
+  roles?: string[];
   stack: string[];
 }
 

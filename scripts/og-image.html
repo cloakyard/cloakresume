@@ -113,9 +113,9 @@
         aria-hidden="true"
       >
         <defs>
-          <!-- CloakResume brand mark gradient — emerald-500 → emerald-700
-               with --color-primary-600 (#059669) as the visual midpoint,
-               the app primary. Matches public/icons/logo.svg. -->
+          <!-- CloakResume brand mark gradient — emerald-500 → emerald-700.
+               --color-primary-700 (#047857) is --brand, the app primary.
+               Matches public/icons/logo.svg. -->
           <linearGradient id="markBg" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0" stop-color="#10b981" />
             <stop offset="1" stop-color="#047857" />
@@ -227,7 +227,7 @@
         <!-- Wordmark + tagline -->
         <g text-anchor="middle">
           <!-- prettier-ignore -->
-          <text x="600" y="218" font-size="56" font-weight="700" letter-spacing="-1.4" fill="#1e293b">Cloak<tspan fill="#059669">Resume</tspan></text>
+          <text x="600" y="218" font-size="56" font-weight="700" letter-spacing="-1.4" fill="#1e293b">Cloak<tspan fill="#047857">Resume</tspan></text>
           <text
             x="600"
             y="256"
@@ -249,23 +249,23 @@
             height="62"
             rx="14"
             fill="url(#card)"
-            stroke="rgba(5,150,105,0.20)"
+            stroke="rgba(4,120,87,0.20)"
             stroke-width="1"
           />
           <rect x="240" y="326" width="30" height="30" rx="8" fill="#ecfdf5" />
           <g
             transform="translate(243 329)"
-            stroke="#059669"
+            stroke="#047857"
             stroke-width="2"
             fill="none"
             stroke-linecap="round"
             stroke-linejoin="round"
           >
             <!-- Lucide `palette` -->
-            <circle cx="13.5" cy="6.5" r=".5" fill="#059669" />
-            <circle cx="17.5" cy="10.5" r=".5" fill="#059669" />
-            <circle cx="6.5" cy="12.5" r=".5" fill="#059669" />
-            <circle cx="8.5" cy="7.5" r=".5" fill="#059669" />
+            <circle cx="13.5" cy="6.5" r=".5" fill="#047857" />
+            <circle cx="17.5" cy="10.5" r=".5" fill="#047857" />
+            <circle cx="6.5" cy="12.5" r=".5" fill="#047857" />
+            <circle cx="8.5" cy="7.5" r=".5" fill="#047857" />
             <path
               d="M12 22a10 10 0 1 1 0-20c5 0 10 4 10 9.5a4.5 4.5 0 0 1-4.5 4.5H15a2 2 0 0 0-1 3.74A1.86 1.86 0 0 1 12 22z"
             />
@@ -287,13 +287,13 @@
             height="62"
             rx="14"
             fill="url(#card)"
-            stroke="rgba(5,150,105,0.20)"
+            stroke="rgba(4,120,87,0.20)"
             stroke-width="1"
           />
           <rect x="660" y="326" width="30" height="30" rx="8" fill="#ecfdf5" />
           <g
             transform="translate(663 329)"
-            stroke="#059669"
+            stroke="#047857"
             stroke-width="2"
             fill="none"
             stroke-linecap="round"
@@ -324,13 +324,13 @@
             height="62"
             rx="14"
             fill="url(#card)"
-            stroke="rgba(5,150,105,0.20)"
+            stroke="rgba(4,120,87,0.20)"
             stroke-width="1"
           />
           <rect x="240" y="404" width="30" height="30" rx="8" fill="#ecfdf5" />
           <g
             transform="translate(243 407)"
-            stroke="#059669"
+            stroke="#047857"
             stroke-width="2"
             fill="none"
             stroke-linecap="round"
@@ -355,13 +355,13 @@
             height="62"
             rx="14"
             fill="url(#card)"
-            stroke="rgba(5,150,105,0.20)"
+            stroke="rgba(4,120,87,0.20)"
             stroke-width="1"
           />
           <rect x="660" y="404" width="30" height="30" rx="8" fill="#ecfdf5" />
           <g
             transform="translate(663 407)"
-            stroke="#059669"
+            stroke="#047857"
             stroke-width="2"
             fill="none"
             stroke-linecap="round"
@@ -412,13 +412,13 @@
             rx="10"
             fill="#ffffff"
             fill-opacity="0.96"
-            stroke="#059669"
+            stroke="#047857"
             stroke-opacity="0.40"
             stroke-width="1"
           />
           <g
             transform="translate(24 10)"
-            stroke="#059669"
+            stroke="#047857"
             stroke-width="1.7"
             fill="none"
             stroke-linecap="round"
@@ -530,7 +530,7 @@ void main(){ vec4 o=vec4(0.0); mainImage(o,gl_FragCoord.xy); fragColor=o; }
 `;
 
       // Mirrors GRAINIENT_LIGHT (src/constants/grainient.ts).
-      const PALETTE = { color1: "#f4faf6", color2: "#6ee7b7", color3: "#ecfdf5" };
+      const PALETTE = { color1: "#f4faf6", color2: "#aecbc3", color3: "#ecfdf5" };
 
       // Mirrors Grainient.tsx defaults + GRAINIENT_MOTION overrides
       // (timeSpeed: 0.3, warpSpeed: 3, saturation: 1.0) — exactly what

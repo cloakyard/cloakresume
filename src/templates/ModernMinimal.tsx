@@ -223,11 +223,16 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
               </ul>
             </>
           )}
-          {p.role && (
+          {p.roles && p.roles.length > 0 && (
             <>
               <div className="mm-proj-label">Role</div>
               <ul className="mm-proj-bullets">
-                <li>{p.role}</li>
+                {p.roles.map((r, ri) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={ri}>
+                    <RichText value={r} />
+                  </li>
+                ))}
               </ul>
             </>
           )}

@@ -215,11 +215,16 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
               </ul>
             </>
           )}
-          {p.role && (
+          {p.roles && p.roles.length > 0 && (
             <>
               <div className="es-proj-label">Role</div>
               <ul className="es-proj-bullets">
-                <li>{p.role}</li>
+                {p.roles.map((r, ri) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={ri}>
+                    <RichText value={r} />
+                  </li>
+                ))}
               </ul>
             </>
           )}

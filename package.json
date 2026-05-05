@@ -8,7 +8,7 @@
     "build": "tsc && vp build",
     "preview": "vp preview",
     "prepare": "vp config",
-    "generate-icons": "pwa-assets-generator --preset minimal-2023 public/icons/logo.svg && mv public/icons/apple-touch-icon-180x180.png public/icons/apple-touch-icon.png"
+    "generate-icons": "pwa-assets-generator && mv public/icons/apple-touch-icon-180x180.png public/icons/apple-touch-icon.png"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.2.8",
@@ -18,11 +18,11 @@
     "harper.js": "^2.0.0",
     "html2canvas-pro": "^2.0.2",
     "jspdf": "^4.2.1",
-    "lucide-react": "^1.11.0",
+    "lucide-react": "^1.14.0",
     "ogl": "^1.0.11",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
-    "workbox-window": "^7.4.0"
+    "workbox-window": "^7.4.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.2.4",
@@ -34,9 +34,9 @@
     "puppeteer-core": "^24.42.0",
     "tailwindcss": "^4.2.4",
     "typescript": "~6.0.3",
-    "vite": "npm:@voidzero-dev/vite-plus-core@^0.1.19",
+    "vite": "npm:@voidzero-dev/vite-plus-core@^0.1.20",
     "vite-plugin-pwa": "^1.2.0",
-    "vite-plus": "^0.1.19"
+    "vite-plus": "^0.1.20"
   },
   "packageManager": "pnpm@10.33.0",
   "pnpm": {

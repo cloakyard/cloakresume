@@ -420,77 +420,110 @@ const SKILL_GROUP_POOL: ReadonlyArray<{ label: string; icon: string; items: read
 const PROJECT_POOL: ReadonlyArray<{
   name: string;
   description: string;
-  role: string;
+  roles: readonly string[];
   stack: readonly string[];
 }> = [
   {
     name: "LumenStream · Real-time Analytics Platform",
     description:
       "Horizontally-scalable ingest and query platform handling billions of events per day for marketing and product analytics. Built on Kafka, ClickHouse, and a thin Rust query gateway; supports sub-second dashboards and ad-hoc SQL across multi-tenant workspaces.",
-    role: "Tech lead — owned the query gateway, ingestion pipeline, and the operational runbooks used by the twelve-person platform team.",
+    roles: [
+      "Tech lead for the twelve-person platform team — owned roadmap, on-call rotation, and the quarterly capacity-planning reviews with finance.",
+      "Designed and shipped the Rust query gateway, including the cost-based planner and a per-tenant rate limiter that survived two 5× traffic spikes without degradation.",
+      "Authored the operational runbooks and post-incident review template that became the default starting point for every platform-team incident the following year.",
+    ],
     stack: ["Rust", "Kafka", "ClickHouse", "Kubernetes", "Grafana", "OpenTelemetry", "Helm"],
   },
   {
     name: "Signalforge · Incident Response Copilot",
     description:
       "Internal assistant that ingests alerts, recent deploys, and service-ownership data to suggest the most likely owner and the most likely root cause during live incidents. Integrated with PagerDuty, Slack, and the internal service catalog.",
-    role: "Architect — designed the retrieval layer, LLM prompting strategy, and the feedback loop used to iteratively improve suggestion quality.",
+    roles: [
+      "Architect — designed the retrieval layer, LLM prompting strategy, and the feedback loop used to iteratively improve suggestion quality across four product orgs.",
+      "Built the evaluation harness that replays historical incidents against new prompts, letting the team ship prompt changes with measurable confidence instead of vibes.",
+    ],
     stack: ["TypeScript", "LangChain", "Postgres", "pgvector", "Slack API", "Pulumi"],
   },
   {
     name: "Orbit · Internal Developer Platform",
     description:
       "Self-service platform that exposes a golden path for creating, deploying, and operating services. Ships with a CLI, a service catalog, a template registry, and opinionated defaults for CI, deploys, and observability.",
-    role: "Founding engineer — led platform API design, onboarding UX, and the adoption rollout that brought every product team onto the platform within nine months.",
+    roles: [
+      "Founding engineer — led platform API design, onboarding UX, and the adoption rollout that brought every product team onto the platform within nine months.",
+      "Drove the migration of legacy services off bespoke Terraform — replaced roughly forty thousand lines of copy-pasted HCL with a thin opinionated module library.",
+      "Ran weekly office hours and authored the platform's reference docs, lifting the typical bootstrap time for a new service from two weeks to under an afternoon.",
+    ],
     stack: ["Go", "React", "Next.js", "Backstage", "Kubernetes", "Terraform", "GitHub Actions"],
   },
   {
     name: "Riverbed · Streaming ETL Framework",
     description:
       "Declarative streaming-ETL framework on Flink that replaced a patchwork of Airflow DAGs and bespoke Kafka consumers. Configurable via YAML, with a TypeScript-based planner that generates the underlying job graphs at build time.",
-    role: "Lead engineer — built the planner, the runtime shims, and the integration with the internal schema registry.",
+    roles: [
+      "Lead engineer — built the planner, the runtime shims, and the integration with the internal schema registry.",
+      "Partnered with three data teams to migrate forty production pipelines onto Riverbed, halving the average time-to-production for new streaming jobs.",
+    ],
     stack: ["Flink", "Kafka", "TypeScript", "Avro", "Kubernetes", "Prometheus"],
   },
   {
     name: "Atlas · Multi-region Service Topology",
     description:
       "Cross-region service-mesh orchestration layer that handles topology-aware routing, regional failover drills, and latency-based traffic shaping across three AWS regions. Replaced a DIY solution that had accumulated years of undocumented behaviour.",
-    role: "Architect — owned the control plane, failover testing harness, and documentation that turned mesh ops into a self-serve experience.",
+    roles: [
+      "Architect — owned the control plane, failover testing harness, and documentation that turned mesh ops into a self-serve experience.",
+      "Designed the regional-failover game-day cadence that exposed three latent dependency cycles in the first quarter and led to two upstream Envoy patches.",
+    ],
     stack: ["Envoy", "Istio", "Go", "AWS", "Terraform", "CloudWatch"],
   },
   {
     name: "Northstar · ML Feature Store",
     description:
       "In-house feature store serving precomputed features across recommendation, search, and fraud-detection workloads with sub-millisecond online reads and consistent offline materialisation. Integrates with Spark, Flink, and the internal ML training stack.",
-    role: "Co-founder of the platform team — owned the online-serving path, consistency guarantees, and the SDK used by every ML engineer at the company.",
+    roles: [
+      "Co-founder of the platform team — owned the online-serving path, consistency guarantees, and the SDK used by every ML engineer at the company.",
+      "Designed the offline/online consistency contract and the validation tooling that surfaced training/serving skew before models reached production.",
+      "Mentored four engineers through their first production-ML rollout, codifying the patterns into an internal handbook adopted across two organisations.",
+    ],
     stack: ["Python", "Go", "Redis", "ClickHouse", "Spark", "Flink", "gRPC"],
   },
   {
     name: "Beacon · Edge Rendering Framework",
     description:
       "Production-ready edge-rendering framework on Cloudflare Workers that powers the marketing and documentation sites. Includes a typed routing DSL, per-request A/B testing primitives, and first-class streaming responses.",
-    role: "Tech lead — built the routing DSL, the streaming primitives, and the rollout tooling used by the growth engineering team.",
+    roles: [
+      "Tech lead — built the routing DSL, the streaming primitives, and the rollout tooling used by the growth engineering team.",
+      "Ran the migration off the legacy SSR cluster, deprecating six redundant services and cutting marketing-site time-to-first-byte by 41% globally.",
+    ],
     stack: ["TypeScript", "Cloudflare Workers", "React", "Vite", "Durable Objects"],
   },
   {
     name: "Quartz · Observability Backbone",
     description:
       "Unified logs, metrics, and traces platform that replaced three vendor systems. Built around OpenTelemetry, Tempo, Loki, and Mimir, with a custom query planner that federates searches across backends.",
-    role: "Architect — owned the federation layer, ingestion tuning, and the cost model that let the team turn this into a credible vendor alternative internally.",
+    roles: [
+      "Architect — owned the federation layer, ingestion tuning, and the cost model that let the team turn this into a credible vendor alternative internally.",
+      "Drove the migration off three commercial vendors, retiring roughly $1.4M/year in licensing while keeping query latency at parity for the top quartile of dashboards.",
+    ],
     stack: ["Go", "OpenTelemetry", "Tempo", "Loki", "Mimir", "Kubernetes", "Grafana"],
   },
   {
     name: "Pinecrest · Release Orchestrator",
     description:
       "Progressive-delivery controller coordinating canary, blue-green, and feature-flag rollouts across twenty production services. Wired into Datadog SLOs so unhealthy rollouts halt and revert automatically.",
-    role: "Lead engineer — designed the controller state machine, the SLO polling path, and the audit trail used during post-incident reviews.",
+    roles: [
+      "Lead engineer — designed the controller state machine, the SLO polling path, and the audit trail used during post-incident reviews.",
+      "Wrote the rollback playbook and SLO-budget integration that turned automatic reverts into a routine part of every release rather than a fire drill.",
+    ],
     stack: ["Go", "Argo Rollouts", "Flagger", "LaunchDarkly", "Datadog", "Kubernetes"],
   },
   {
     name: "Harbormaster · Service Catalog",
     description:
       "Ownership, documentation, and on-call metadata aggregator built on Backstage, feeding incident tooling, access control, and the internal developer portal. Surfaces service health, cost, and compliance posture in one place.",
-    role: "Tech lead — owned schema design, plugin surface, and integration with fifteen upstream data sources.",
+    roles: [
+      "Tech lead — owned schema design, plugin surface, and integration with fifteen upstream data sources.",
+      "Established the data-quality contract that auto-pages owners when ownership metadata drifts, eliminating an entire class of stale-on-call escalations.",
+    ],
     stack: ["TypeScript", "Backstage", "Postgres", "GraphQL", "Terraform"],
   },
 ];
@@ -871,7 +904,7 @@ export function generateSampleResume(): ResumeData {
     id: `p${i + 1}`,
     name: p.name,
     description: p.description,
-    role: p.role,
+    roles: p.roles.slice(),
     stack: p.stack.slice(),
   }));
 

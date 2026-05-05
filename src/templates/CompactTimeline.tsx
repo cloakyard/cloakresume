@@ -241,11 +241,16 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
                   </ul>
                 </>
               )}
-              {p.role && (
+              {p.roles && p.roles.length > 0 && (
                 <>
                   <div className="ct-proj-label">Role</div>
                   <ul className="ct-proj-bullets">
-                    <li>{p.role}</li>
+                    {p.roles.map((r, ri) => (
+                      // oxlint-disable-next-line jsx/no-array-index-key
+                      <li key={ri}>
+                        <RichText value={r} />
+                      </li>
+                    ))}
                   </ul>
                 </>
               )}

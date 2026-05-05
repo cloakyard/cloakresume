@@ -185,7 +185,7 @@ function flatten(resume: ResumeData): string {
     parts.push(ed.degree, ed.school, ed.location, ed.detail);
   }
   for (const p of resume.projects) {
-    parts.push(p.name, p.description, p.role ?? "", ...p.stack);
+    parts.push(p.name, p.description, ...(p.roles ?? []), ...p.stack);
   }
   for (const ct of resume.certifications) parts.push(ct.issuer, ct.name);
   for (const a of resume.awards) parts.push(a.title, a.detail);
@@ -199,7 +199,7 @@ function wordCount(resume: ResumeData): number {
   const text = [
     resume.profile.summary,
     ...resume.experience.flatMap((e) => e.bullets),
-    ...resume.projects.map((p) => `${p.description} ${p.role ?? ""}`),
+    ...resume.projects.map((p) => `${p.description} ${(p.roles ?? []).join(" ")}`),
   ].join(" ");
   return tokenize(text).length;
 }
@@ -475,7 +475,7 @@ export function computeAts(
   // Structural categories (contact, education presence) are exempt — missing
   // contacts shouldn't be masked by a lorem ipsum penalty, and vice-versa.
   const proseBullets = resume.experience.flatMap((e) => e.bullets);
-  const projectProse = resume.projects.map((p) => `${p.description} ${p.role ?? ""}`);
+  const projectProse = resume.projects.map((p) => `${p.description} ${(p.roles ?? []).join(" ")}`);
   const authenticity = inspectAuthenticity(resume.profile.summary, proseBullets, projectProse);
   if (authenticity.isPlaceholder) {
     issues.push({

@@ -398,11 +398,16 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
               </ul>
             </>
           )}
-          {p.role && (
+          {p.roles && p.roles.length > 0 && (
             <>
               <div className="pr-proj-label">Role</div>
               <ul className="pr-proj-bullets">
-                <li>{p.role}</li>
+                {p.roles.map((r, ri) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={ri}>
+                    <RichText value={r} />
+                  </li>
+                ))}
               </ul>
             </>
           )}
