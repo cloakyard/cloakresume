@@ -296,11 +296,16 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
               </ul>
             </>
           )}
-          {p.role && (
+          {p.roles && p.roles.length > 0 && (
             <>
               <div className="au-proj-label">Role</div>
               <ul className="au-proj-bullets">
-                <li>{p.role}</li>
+                {p.roles.map((r, ri) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={ri}>
+                    <RichText value={r} />
+                  </li>
+                ))}
               </ul>
             </>
           )}

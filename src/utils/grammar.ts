@@ -61,6 +61,15 @@ function buildGrammarSegments(resume: ResumeData) {
         text: stripMarkdown(desc),
       });
     }
+    (p.roles ?? []).forEach((r, ri) => {
+      const trimmed = r.trim();
+      if (!trimmed) return;
+      out.push({
+        id: `projects.${i}.roles.${ri}`,
+        label: `${projLabel} · role ${ri + 1}`,
+        text: stripMarkdown(trimmed),
+      });
+    });
   });
   resume.awards.forEach((a, i) => {
     const detail = a.detail.trim();

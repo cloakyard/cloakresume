@@ -290,11 +290,16 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
                 </ul>
               </>
             )}
-            {p.role && (
+            {p.roles && p.roles.length > 0 && (
               <>
                 <div className="bh-proj-label">Role</div>
                 <ul className="bh-proj-bullets">
-                  <li>{p.role}</li>
+                  {p.roles.map((r, ri) => (
+                    // oxlint-disable-next-line jsx/no-array-index-key
+                    <li key={ri}>
+                      <RichText value={r} />
+                    </li>
+                  ))}
                 </ul>
               </>
             )}

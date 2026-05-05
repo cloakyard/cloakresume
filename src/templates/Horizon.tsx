@@ -408,11 +408,16 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
               </ul>
             </>
           )}
-          {p.role && (
+          {p.roles && p.roles.length > 0 && (
             <>
               <div className="hz-proj-label">Role</div>
               <ul className="hz-proj-bullets">
-                <li>{p.role}</li>
+                {p.roles.map((r, ri) => (
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={ri}>
+                    <RichText value={r} />
+                  </li>
+                ))}
               </ul>
             </>
           )}

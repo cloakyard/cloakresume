@@ -9,8 +9,27 @@
  */
 
 import { blankResume } from "../data/blankResume.ts";
-import type { ResumeData, TemplateId } from "../types.ts";
+import type { ProjectItem, ResumeData, TemplateId } from "../types.ts";
 import { resolvePaperSize, type PaperSize } from "./paperSize.ts";
+
+/**
+ * Convert legacy `project.role: string` (pre-bullets) into `project.roles:
+ * string[]`. Save files and localStorage written before this change still
+ * carry the old shape, so we lift the single string into a one-item array
+ * and drop empties so the editor doesn't open on a blank bullet.
+ */
+function migrateProject(p: unknown): ProjectItem {
+  const project = (p ?? {}) as Partial<ProjectItem> & { role?: unknown };
+  if (Array.isArray(project.roles)) {
+    return project as ProjectItem;
+  }
+  if (typeof project.role === "string") {
+    const trimmed = project.role.trim();
+    const { role: _legacy, ...rest } = project as ProjectItem & { role?: string };
+    return { ...rest, roles: trimmed ? [project.role] : [] } as ProjectItem;
+  }
+  return { ...project, roles: [] } as ProjectItem;
+}
 
 export interface ResumeSaveFile {
   /** Discriminator so we can evolve the schema later. */
@@ -47,7 +66,7 @@ export function normalizeResumeData(data: unknown): ResumeData {
     skills: arr(src.skills, blankResume.skills),
     experience: arr(src.experience, blankResume.experience),
     education: arr(src.education, blankResume.education),
-    projects: arr(src.projects, blankResume.projects),
+    projects: arr<ProjectItem>(src.projects, blankResume.projects).map(migrateProject),
     certifications: arr(src.certifications, blankResume.certifications),
     awards: arr(src.awards, blankResume.awards),
     languages: arr(src.languages, blankResume.languages),

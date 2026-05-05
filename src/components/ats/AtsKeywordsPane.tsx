@@ -19,7 +19,8 @@ function flattenResume(resume: ResumeData): string {
   for (const ed of resume.education) {
     parts.push(ed.degree, ed.school, ed.location, ed.detail);
   }
-  for (const p of resume.projects) parts.push(p.name, p.description, p.role ?? "", ...p.stack);
+  for (const p of resume.projects)
+    parts.push(p.name, p.description, ...(p.roles ?? []), ...p.stack);
   for (const ct of resume.certifications) parts.push(ct.issuer, ct.name);
   for (const a of resume.awards) parts.push(a.title, a.detail);
   for (const l of resume.languages) parts.push(l.name, l.level);
