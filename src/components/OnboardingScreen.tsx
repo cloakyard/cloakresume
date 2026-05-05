@@ -385,7 +385,7 @@ export function OnboardingScreen({
       <div className="relative flex flex-col flex-1 min-h-0">
         {/* ── Nav ──────────────────────────────────────────────── */}
         <nav className="sticky top-0 z-20 backdrop-blur-md bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] border-b border-(--line-soft)">
-          <div className="max-w-[1180px] mx-auto flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-14 sm:h-16">
+          <div className="max-w-[1180px] mx-auto flex items-center gap-3 px-4 sm:px-6 lg:px-8 h-16 py-3">
             <div className="flex items-center gap-2.5 min-w-0">
               {/* Use the circular favicon mark in chrome (not the
                   full-bleed PWA logo) so the brand reads as a circular
@@ -394,9 +394,9 @@ export function OnboardingScreen({
                 src="/icons/favicon.svg"
                 alt=""
                 aria-hidden="true"
-                className="w-8 h-8 sm:w-10 sm:h-10 shrink-0 drop-shadow-sm"
+                className="w-10 h-10 shrink-0 drop-shadow-sm"
               />
-              <div className="font-semibold text-(--ink-1) text-[17px] sm:text-[19px] tracking-tight leading-none truncate">
+              <div className="font-semibold text-(--ink-1) text-[19px] tracking-tight leading-none truncate">
                 Cloak<span className="text-(--brand)">Resume</span>
               </div>
             </div>

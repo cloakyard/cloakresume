@@ -128,11 +128,11 @@ export function Layout({
       <header
         className={`z-50 flex items-center gap-2 bg-(--surface) border-b border-(--line) print:hidden ${
           isMobile
-            ? "sticky top-0 h-14 shrink-0 px-2.5 py-2.5 gap-2.5"
+            ? "sticky top-0 h-16 shrink-0 px-2.5 py-3 gap-2.5"
             : "[grid-area:header] px-4 py-3 gap-3"
         }`}
       >
-        <BrandLogo compact={isMobile} />
+        <BrandLogo />
 
         {/* Flex spacer pushes the remaining groups to the right edge. */}
         <div className="flex-1" />
@@ -207,7 +207,7 @@ export function Layout({
        * and iOS Safari can collapse its URL bar on user scroll.
        *
        * Preview keeps its internal scroll for the canvas zoom/pan,
-       * so its wrapper gets an explicit `100dvh - 56px` height to
+       * so its wrapper gets an explicit `100dvh - 64px` height to
        * match the visible body area. The page itself doesn't scroll
        * in preview view, but URL-bar state is preserved across the
        * panel/preview toggle so the slim pill stays once the user
@@ -216,7 +216,7 @@ export function Layout({
         <div data-panel-root className="flex-1 flex flex-col min-w-0 bg-(--surface-2)">
           {mobileView === "panel" && panel}
           {mobileView === "preview" && (
-            <div className="flex flex-col min-w-0 min-h-0 h-[calc(100dvh-3.5rem)]">{preview}</div>
+            <div className="flex flex-col min-w-0 min-h-0 h-[calc(100dvh-4rem)]">{preview}</div>
           )}
 
           {mobileView === "panel" && (
