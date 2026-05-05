@@ -38,8 +38,8 @@ export function ReloadPrompt() {
         window.clearInterval(updateIntervalRef.current);
       }
       updateIntervalRef.current = window.setInterval(async () => {
-        if (registration.installing || !navigator) return;
-        if ("connection" in navigator && !navigator.onLine) return;
+        if (registration.installing) return;
+        if (!navigator.onLine) return;
         try {
           const resp = await fetch(swUrl, { cache: "no-store" });
           if (resp.status === 200) await registration.update();
