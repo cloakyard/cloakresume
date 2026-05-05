@@ -148,7 +148,7 @@ export function TextArea({ label, value, onChange, placeholder, rows = 5 }: Text
 /**
  * `tone` is retained as a compatibility prop but the visual treatment
  * now comes from the unified design system — every section head uses
- * the ocean-blue accent so the editor reads as one calm list rather
+ * the brand emerald accent so the editor reads as one calm list rather
  * than a rainbow of tinted cards.
  */
 type Tone =

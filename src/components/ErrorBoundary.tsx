@@ -3,7 +3,7 @@
  * errors, exceptions inside ATS panes, etc.) that would otherwise
  * unmount the whole React tree and leave a white page.
  *
- * Design matches `ConfirmDialog`: glass surface, ocean-blue chrome, the
+ * Design matches `ConfirmDialog`: glass surface, brand-emerald chrome, the
  * danger palette tokens already used across the ATS insights. Offers
  * the raw error + stack in a copy-able block and a one-click "Report
  * on GitHub" button with title/body prefilled from the exception so a

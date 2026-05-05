@@ -51,7 +51,7 @@ import { blankResume, resumeHasContent } from "./data/blankResume.ts";
 
 const LS_KEY = "cloakresume:v1";
 const DEFAULT_TEMPLATE_ID: TemplateId = "classic-sidebar";
-const DEFAULT_PRIMARY = "#059669";
+const DEFAULT_PRIMARY = "#047857";
 
 /** Accept only known template ids; fall back silently so a removed template can't crash the preview. */
 function resolveTemplateId(candidate: unknown): TemplateId {

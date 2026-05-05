@@ -16,7 +16,7 @@
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
 /* ────────────────────────────────────────────────────────────────
- * Design system — ocean-blue, privacy-first.
+ * Design system — privacy-emerald, privacy-first.
  * All tokens live inside @theme so they're exposed to Tailwind as
  * `text-primary-600`, `bg-surface`, `rounded-lg`, etc. Legacy alias
  * vars in :root keep inline `style={{}}` props and template code
@@ -34,7 +34,7 @@
   --color-primary-700: #047857;
   --color-primary-800: #065f46;
   --color-primary-900: #064e3b;
-  --color-primary: #059669;
+  --color-primary: #047857;
 
   /* Text (ink) scale */
   --color-ink-0: #050816;
@@ -80,7 +80,7 @@
   --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
   --shadow-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --shadow-focus: 0 0 0 3px rgba(5, 150, 105, 0.18);
+  --shadow-focus: 0 0 0 3px rgba(4, 120, 87, 0.2);
 
   /* Radii (aligned with Tailwind's rounded-* scale) */
   --radius-xs: 4px;
@@ -241,15 +241,19 @@
  * every template or every use of `text-(--ink-3)` during the migration.
  */
 :root {
-  --brand: #059669;
-  --brand-hover: #047857;
-  --brand-active: #065f46;
+  /* Brand emerald — picked off the bottom stop of the logo gradient
+   * (`rgb(4,120,87)` / emerald-700). The previous `#059669` (emerald-600)
+   * was a touch too saturated against light surfaces; the deeper shade
+   * reads calmer and matches the wordmark's bottom stop. */
+  --brand: #047857;
+  --brand-hover: #065f46;
+  --brand-active: #064e3b;
   --brand-50: #ecfdf5;
   --brand-100: #d1fae5;
   --brand-200: #a7f3d0;
   --brand-300: #6ee7b7;
-  --brand-600: #059669;
-  --brand-700: #047857;
+  --brand-600: #047857;
+  --brand-700: #065f46;
 
   --ink-0: #050816;
   --ink-1: #0b1220;
@@ -288,7 +292,16 @@
   --sh-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
   --sh-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
   --sh-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --sh-focus: 0 0 0 3px rgba(5, 150, 105, 0.18);
+  --sh-focus: 0 0 0 3px rgba(4, 120, 87, 0.2);
+  /* Brand-tinted CTA halo — ties the primary button to the brand
+   * colour instead of sitting under a flat gray drop shadow. Mirrors
+   * CloakIMG's `--shadow-cta`, scaled up a touch for hero presence. */
+  --sh-cta:
+    0 8px 24px -6px color-mix(in oklab, var(--brand) 55%, transparent),
+    0 2px 6px -1px color-mix(in oklab, var(--brand) 35%, transparent);
+  --sh-cta-hover:
+    0 14px 32px -8px color-mix(in oklab, var(--brand) 65%, transparent),
+    0 4px 10px -2px color-mix(in oklab, var(--brand) 40%, transparent);
 
   --r-xs: 4px;
   --r-sm: 6px;
@@ -346,25 +359,29 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    /* Tailwind @theme tokens — inverted ink ladder, deep slate surfaces. */
-    --color-ink-0: #f8fafc;
-    --color-ink-1: #f1f5f9;
-    --color-ink-2: #e2e8f0;
-    --color-ink-3: #cbd5e1;
-    --color-ink-4: #94a3b8;
-    --color-ink-5: #64748b;
-    --color-ink-6: #475569;
-    --color-surface: #0f172a;
-    --color-surface-2: #0b1220;
-    --color-surface-3: #1e293b;
-    --color-surface-panel: #111827;
-    --color-page-bg: #0b1220;
-    --color-line: #1e293b;
-    --color-line-soft: #172033;
-    --color-line-hairline: #111827;
-    --color-border: #1e293b;
-    --color-text: #f1f5f9;
-    --color-text-muted: #94a3b8;
+    /* Tailwind @theme tokens — inverted ink ladder, neutral charcoal
+     * surfaces. Previously these used Tailwind slate (cool, blue-tinted),
+     * which gave cards / editor chrome a noticeable navy cast against the
+     * emerald brand. Swapped to the zinc family so the dark theme reads as
+     * warm-neutral charcoal — same brightness ladder, no blue undertone. */
+    --color-ink-0: #fafafa;
+    --color-ink-1: #f4f4f5;
+    --color-ink-2: #e4e4e7;
+    --color-ink-3: #d4d4d8;
+    --color-ink-4: #a1a1aa;
+    --color-ink-5: #71717a;
+    --color-ink-6: #52525b;
+    --color-surface: #18181b;
+    --color-surface-2: #09090b;
+    --color-surface-3: #27272a;
+    --color-surface-panel: #131316;
+    --color-page-bg: #09090b;
+    --color-line: #27272a;
+    --color-line-soft: #1f1f22;
+    --color-line-hairline: #131316;
+    --color-border: #27272a;
+    --color-text: #f4f4f5;
+    --color-text-muted: #a1a1aa;
     --color-ok: #34d399;
     --color-ok-bg: rgba(5, 150, 105, 0.16);
     --color-ok-border: rgba(52, 211, 153, 0.32);
@@ -381,21 +398,21 @@
     --shadow-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
 
     /* Legacy aliases — consumed by inline style={{}} props and templates. */
-    --ink-0: #f8fafc;
-    --ink-1: #f1f5f9;
-    --ink-2: #e2e8f0;
-    --ink-3: #cbd5e1;
-    --ink-4: #94a3b8;
-    --ink-5: #64748b;
-    --ink-6: #475569;
-    --line: #1e293b;
-    --line-soft: #172033;
-    --line-hairline: #111827;
-    --surface: #0f172a;
-    --surface-2: #0b1220;
-    --surface-3: #1e293b;
-    --surface-panel: #111827;
-    --surface-raised: #1e293b;
+    --ink-0: #fafafa;
+    --ink-1: #f4f4f5;
+    --ink-2: #e4e4e7;
+    --ink-3: #d4d4d8;
+    --ink-4: #a1a1aa;
+    --ink-5: #71717a;
+    --ink-6: #52525b;
+    --line: #27272a;
+    --line-soft: #1f1f22;
+    --line-hairline: #131316;
+    --surface: #18181b;
+    --surface-2: #09090b;
+    --surface-3: #27272a;
+    --surface-panel: #131316;
+    --surface-raised: #27272a;
     --ok: #34d399;
     --ok-bg: rgba(5, 150, 105, 0.16);
     --ok-border: rgba(52, 211, 153, 0.32);
@@ -410,6 +427,15 @@
     --sh-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.3);
     --sh-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
     --sh-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
+    /* Same idea in dark mode but pulled brighter: against a near-black
+     * canvas the brand-tinted halo reads as a soft glow rather than a
+     * shadow, which is what CloakIMG's hero feels like in dark mode. */
+    --sh-cta:
+      0 10px 28px -6px color-mix(in oklab, var(--brand) 70%, transparent),
+      0 2px 8px -1px color-mix(in oklab, var(--brand) 50%, transparent);
+    --sh-cta-hover:
+      0 18px 38px -8px color-mix(in oklab, var(--brand) 80%, transparent),
+      0 4px 12px -2px color-mix(in oklab, var(--brand) 55%, transparent);
 
     /* Brand soft-tint surfaces — re-derived from the live primary so
      * `.tb.primary` / `.acc-icon` read as brand-tinted against dark chrome
@@ -420,24 +446,26 @@
     --brand-300: color-mix(in oklab, var(--color-primary) 55%, transparent);
     --brand-700: var(--color-primary-300);
 
-    /* Canvas gradients — dim surfaces behind the white resume pages. */
-    --preview-bg: linear-gradient(180deg, #0b1220 0%, #070b14 100%);
+    /* Canvas gradients — dim surfaces behind the white resume pages.
+     * Brand wash kept emerald (independent of the surface neutralisation)
+     * so the hero still feels like CloakResume in dark mode. */
+    --preview-bg: linear-gradient(180deg, #09090b 0%, #050507 100%);
     --onboarding-bg:
       radial-gradient(ellipse at 20% 0%, rgba(16, 185, 129, 0.18), transparent 55%),
       radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.1), transparent 55%),
-      linear-gradient(180deg, #0b1220 0%, #060912 100%);
+      linear-gradient(180deg, #09090b 0%, #050507 100%);
 
     /* Overlay surfaces — dark theme swaps. */
-    --glass-bg: rgba(15, 23, 42, 0.78);
-    --glass-bg-fallback: rgba(15, 23, 42, 0.96);
+    --glass-bg: rgba(24, 24, 27, 0.78);
+    --glass-bg-fallback: rgba(24, 24, 27, 0.96);
     --glass-border: rgba(255, 255, 255, 0.08);
-    --popover-bg: rgba(11, 18, 32, 0.82);
-    --popover-bg-fallback: rgba(11, 18, 32, 0.96);
+    --popover-bg: rgba(15, 15, 17, 0.82);
+    --popover-bg-fallback: rgba(15, 15, 17, 0.96);
     --popover-border: rgba(255, 255, 255, 0.08);
     --overlay-shadow: 0 24px 56px -14px rgba(0, 0, 0, 0.6), 0 4px 14px -4px rgba(0, 0, 0, 0.35);
     --backdrop-bg: rgba(0, 0, 0, 0.55);
-    --lightness-thumb-bg: #0f172a;
-    --lightness-thumb-border: #e2e8f0;
+    --lightness-thumb-bg: #18181b;
+    --lightness-thumb-border: #e4e4e7;
   }
 }
 
@@ -602,16 +630,16 @@
      URL-bar zone and reads as a "weird halo" against the page bg. */
   .surface-glass-dark {
     color: #fff;
-    background: rgba(11, 18, 32, 0.72);
+    background: rgba(15, 15, 17, 0.72);
     backdrop-filter: blur(20px) saturate(160%);
     box-shadow:
       inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 8px 24px -8px rgba(15, 23, 42, 0.45),
-      0 2px 6px rgba(15, 23, 42, 0.18);
+      0 8px 24px -8px rgba(0, 0, 0, 0.45),
+      0 2px 6px rgba(0, 0, 0, 0.18);
   }
   @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
     .surface-glass-dark {
-      background: rgba(11, 18, 32, 0.95);
+      background: rgba(15, 15, 17, 0.95);
     }
   }
 
