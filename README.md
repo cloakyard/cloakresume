@@ -8,13 +8,11 @@
   <p><strong>Try it here →</strong> <a href="https://resume.cloakyard.com/">resume.cloakyard.com</a></p>
 
   <p>
-    <img src="https://img.shields.io/github/actions/workflow/status/sumitsahoo/cloakresume/deploy.yml?label=build" alt="Build status" />
-    <img src="https://img.shields.io/github/deployments/sumitsahoo/cloakresume/github-pages?label=deploy" alt="Deployment" />
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="MIT License" /></a>
+    <img src="https://img.shields.io/badge/deploy-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white" alt="Deployed on Cloudflare Workers" />
+    <img src="https://img.shields.io/badge/platform-Web%20%7C%20PWA-blue" alt="Platform: Web & PWA" />
   </p>
   <p>
-    <img src="https://img.shields.io/badge/platform-Web%20%7C%20PWA-blue" alt="Platform: Web & PWA" />
-    <img src="https://img.shields.io/badge/ATS-friendly-22c55e" alt="ATS-friendly" />
     <img src="https://img.shields.io/badge/privacy-100%25%20client--side-brightgreen" alt="100% client-side" />
   </p>
 
