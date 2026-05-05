@@ -68,6 +68,11 @@ interface Persisted {
   paperSize: PaperSize;
   jobDescription: string;
   activeSection: SectionId;
+  /** ISO timestamp of the most recent persistence write. Surfaced on
+   *  the onboarding "Resume editing" CTA as a "Saved 2h ago" caption.
+   *  Undefined on first run (no record yet) and on records written
+   *  before this field was introduced. */
+  savedAt?: string;
 }
 
 type PersistedInput = Partial<Persisted>;
@@ -94,6 +99,7 @@ function loadPersisted(): Persisted {
           paperSize: resolvePaperSize(parsed.paperSize),
           jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
           activeSection: (parsed.activeSection ?? "profile") as SectionId,
+          savedAt: typeof parsed.savedAt === "string" ? parsed.savedAt : undefined,
         };
       }
     }
@@ -149,6 +155,7 @@ export function App() {
         paperSize,
         jobDescription,
         activeSection,
+        savedAt: new Date().toISOString(),
       };
       try {
         localStorage.setItem(LS_KEY, JSON.stringify(payload));
@@ -411,6 +418,7 @@ export function App() {
           onLoadFile={handleLoadFile}
           onDismiss={hasSavedWork ? dismissOnboarding : undefined}
           onResumeEditing={hasSavedWork ? dismissOnboarding : undefined}
+          lastSavedAt={hasSavedWork ? initial.savedAt : undefined}
         />
       )}
 

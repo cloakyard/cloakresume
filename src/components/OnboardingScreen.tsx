@@ -34,6 +34,7 @@ import {
   Sparkles,
   SpellCheck,
   SquareDashed,
+  Star,
   UserRoundCheck,
   WifiOff,
 } from "lucide-react";
@@ -179,6 +180,107 @@ function GlowCard({
 }
 
 /* ────────────────────────────────────────────────────────────────
+ * CtaCard — the three primary entry-point tiles (Start blank / Load
+ * sample / Load saved) all render through this. Layout is a strict
+ * vertical stack: icon → title row → description, with the optional
+ * badge (Recommended / Fictional) flowing INLINE beside the title
+ * rather than living in a corner or a reserved top row. That keeps
+ * every card visually balanced whether or not it has a badge: cards
+ * without one simply have a title on its own line, and cards with
+ * one get a small chip riding alongside the title.
+ *
+ * Why inline-with-title (not corner-anchored):
+ *   - The badge labels the title, so reading-order pairs them.
+ *   - No wasted top-row real estate when the badge is absent.
+ *   - The icon, title, description, and arrow sit at identical
+ *     positions across all three cards by simple flow layout — no
+ *     absolute positioning gymnastics, no perceived drift.
+ *
+ * Both badge variants share `bg-(--brand-50) text-(--brand)`. In dark
+ * mode `--brand-50` and `--brand` are pinned to the emerald palette
+ * by LANDING_BRAND_PALETTE on the OnboardingScreen root, so the chip
+ * stays light-emerald-on-dark-emerald against either canvas.
+ * ──────────────────────────────────────────────────────────────── */
+
+interface CtaCardProps {
+  onClick: () => void;
+  ariaLabel: string;
+  icon: ReactNode;
+  /** Adds a -6deg hover tilt to the icon — used on Load sample to
+   *  reinforce the "shuffle / dice" feel. Off by default. */
+  iconRotateOnHover?: boolean;
+  title: string;
+  description: string;
+  /** Optional badge that flows next to the title. Pass `undefined`
+   *  for cards that have no badge (e.g. Load saved). */
+  badge?: { label: string; icon?: ReactNode };
+}
+
+function CtaCard({
+  onClick,
+  ariaLabel,
+  icon,
+  iconRotateOnHover,
+  title,
+  description,
+  badge,
+}: CtaCardProps) {
+  return (
+    <GlowCard onClick={onClick} glow="rgba(5, 150, 105, 0.22)" ariaLabel={ariaLabel}>
+      <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2.5">
+        <span
+          className={`w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105${
+            iconRotateOnHover ? " group-hover:-rotate-6" : ""
+          }`}
+        >
+          {icon}
+        </span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+            {title}
+          </span>
+          {badge && (
+            <span
+              className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
+              aria-hidden="true"
+            >
+              {badge.icon}
+              {badge.label}
+            </span>
+          )}
+        </div>
+        <span className="text-[13px] leading-normal text-(--ink-4)">{description}</span>
+        <ArrowRight
+          className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
+          aria-hidden="true"
+        />
+      </div>
+    </GlowCard>
+  );
+}
+
+/* Relative-time formatter for the "Saved Nm ago" caption under the
+ * Resume-editing CTA. Coarse buckets only — anything older than a day
+ * falls back to a date string. Returns null on bad input so the caller
+ * can hide the caption rather than render "NaN ago". */
+function formatRelativeTime(iso: string | undefined): string | null {
+  if (!iso) return null;
+  const t = Date.parse(iso);
+  if (Number.isNaN(t)) return null;
+  const diffMs = Date.now() - t;
+  if (diffMs < 0) return "just now";
+  const sec = Math.floor(diffMs / 1000);
+  if (sec < 45) return "just now";
+  const min = Math.floor(sec / 60);
+  if (min < 60) return `${min}m ago`;
+  const hr = Math.floor(min / 60);
+  if (hr < 24) return `${hr}h ago`;
+  const day = Math.floor(hr / 24);
+  if (day < 7) return `${day}d ago`;
+  return new Date(t).toLocaleDateString(undefined, { month: "short", day: "numeric" });
+}
+
+/* ────────────────────────────────────────────────────────────────
  * GitHub mark — inline SVG so we don't pull in another dep.
  * ──────────────────────────────────────────────────────────────── */
 function GithubMark({ className = "" }: { className?: string }) {
@@ -207,6 +309,13 @@ interface Props {
    * starting over.
    */
   onResumeEditing?: () => void;
+  /**
+   * ISO timestamp of the most recent persistence write. Rendered as a
+   * "Saved 2h ago" caption under the Resume-editing CTA so a returning
+   * visitor can confirm the draft they're about to pick up is the one
+   * they expect.
+   */
+  lastSavedAt?: string;
 }
 
 export function OnboardingScreen({
@@ -215,6 +324,7 @@ export function OnboardingScreen({
   onLoadFile,
   onDismiss,
   onResumeEditing,
+  lastSavedAt,
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
@@ -344,33 +454,70 @@ export function OnboardingScreen({
                   giving the hero its own button (alongside the
                   headline) lets visitors act without scrolling and
                   matches the CloakIMG / CloakPDF landing rhythm. */}
-              <div className="mt-6 sm:mt-7 flex justify-center lg:justify-start animate-[fade-in-up_0.6s_ease-out_0.18s_both]">
-                <button
-                  type="button"
-                  onClick={onResumeEditing ?? onStartBlank}
-                  className="inline-flex items-center gap-2 h-12 px-6 rounded-xl bg-(--brand) text-white text-[15px] font-semibold tracking-tight cursor-pointer border-0 shadow-(--sh-cta) transition-[background-color,transform,box-shadow] duration-200 ease-out hover:bg-(--brand-hover) hover:-translate-y-0.5 hover:shadow-(--sh-cta-hover) active:translate-y-0 active:shadow-(--sh-cta) focus-visible:outline-none focus-visible:shadow-[var(--sh-cta),var(--sh-focus)]"
-                >
-                  {onResumeEditing ? (
-                    <>
-                      <FilePen className="w-[18px] h-[18px]" />
-                      Resume editing
-                    </>
-                  ) : (
-                    <>
-                      <ArrowRight className="w-[18px] h-[18px]" />
-                      Get started
-                    </>
-                  )}
-                </button>
-              </div>
+              {/* Hero CTA — only shown to returning visitors with a
+                  saved draft. A wider draft "card-button" with
+                  eyebrow + title + saved-time metadata and a chevron
+                  affordance; the whole surface is the button so the
+                  hierarchy reads Your draft → Continue where you left
+                  off → saved time → arrow. First-time visitors don't
+                  get a hero CTA — the three tiles below (with "Start
+                  blank" marked Recommended) already carry the
+                  pick-your-starting-point story. */}
+              {onResumeEditing && (
+                <div className="mt-6 sm:mt-7 flex justify-center lg:justify-start animate-[fade-in-up_0.6s_ease-out_0.18s_both]">
+                  {(() => {
+                    const rel = formatRelativeTime(lastSavedAt);
+                    return (
+                      <button
+                        type="button"
+                        onClick={onResumeEditing}
+                        aria-label={
+                          rel
+                            ? `Resume editing your saved draft — saved ${rel}`
+                            : "Resume editing your saved draft"
+                        }
+                        className="group relative flex items-center gap-3.5 sm:gap-4 w-full max-w-md p-4 sm:p-4.5 rounded-2xl border border-(--brand-300) bg-[color-mix(in_oklab,var(--brand-50)_55%,var(--surface))] dark:bg-[color-mix(in_oklab,var(--brand)_14%,var(--surface))] text-left cursor-pointer shadow-[inset_0_1px_0_color-mix(in_oklab,var(--brand)_10%,transparent),0_10px_28px_-14px_color-mix(in_oklab,var(--brand)_38%,transparent)] transition-[transform,box-shadow,border-color] duration-200 ease-out hover:-translate-y-0.5 hover:border-(--brand-600) hover:shadow-[inset_0_1px_0_color-mix(in_oklab,var(--brand)_18%,transparent),0_16px_36px_-12px_color-mix(in_oklab,var(--brand)_45%,transparent)] active:translate-y-0 focus-visible:outline-none focus-visible:shadow-[var(--sh-cta),var(--sh-focus)]"
+                      >
+                        <span
+                          className="shrink-0 w-11 h-11 rounded-xl grid place-items-center bg-(--brand) text-white shadow-[0_4px_12px_-4px_color-mix(in_oklab,var(--brand)_55%,transparent)]"
+                          aria-hidden="true"
+                        >
+                          <FilePen className="w-5 h-5" />
+                        </span>
+                        <span className="flex-1 min-w-0 flex flex-col gap-0.5">
+                          <span className="text-[10.5px] font-semibold uppercase tracking-[0.12em] text-(--brand)">
+                            Your draft
+                          </span>
+                          <span className="text-[15px] sm:text-[16px] font-semibold tracking-[-0.005em] text-(--ink-1) leading-tight">
+                            Continue where you left off
+                          </span>
+                          <span className="mt-0.5 inline-flex items-center gap-1.5 text-[12px] text-(--ink-4)">
+                            <span
+                              className="w-1.5 h-1.5 rounded-full bg-(--brand)"
+                              aria-hidden="true"
+                            />
+                            {rel ? `Saved ${rel}` : "Saved draft ready"}
+                          </span>
+                        </span>
+                        <ArrowRight
+                          className="shrink-0 w-5 h-5 text-(--brand) transition-transform duration-200 group-hover:translate-x-0.5"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    );
+                  })()}
+                </div>
+              )}
 
-              {/* Trust strip — three quiet pills under the CTA.
-                  Mirrors the CloakIMG hero so the privacy promise is
-                  visible without extra clicks; left-aligned on desktop
-                  to match the headline. */}
+              {/* Trust strip — three quiet pills under the CTA. The
+                  privacy promise is already carried by the nav pill
+                  ("100% Private · Open Source"), so this strip stays
+                  complementary: each pill answers a different
+                  zero-friction question (no sign-up needed? works
+                  offline? ATS-aware?) without duplicating the header. */}
               <div className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-4.5 gap-y-2 text-[12.5px] text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.22s_both]">
                 <span className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-3.5 h-3.5 text-(--brand)" /> 100% on-device
+                  <UserRoundCheck className="w-3.5 h-3.5 text-(--brand)" /> No sign-up
                 </span>
                 <span className="flex items-center gap-1.5">
                   <WifiOff className="w-3.5 h-3.5 text-(--brand)" /> Works offline
@@ -425,85 +572,40 @@ export function OnboardingScreen({
             )}
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
-              <GlowCard
+              <CtaCard
                 onClick={onStartBlank}
-                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel={
                   onResumeEditing
                     ? "Start a blank résumé — replaces the work saved in your browser"
-                    : "Start a blank résumé from a clean template"
+                    : "Start a blank résumé from a clean template (recommended)"
                 }
-              >
-                <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                    <SquareDashed className="w-5 h-5" />
-                  </span>
-                  <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                    Start blank
-                  </span>
-                  <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                    Begin with a clean template and make it yours.
-                  </span>
-                  <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
-                    aria-hidden="true"
-                  />
-                </div>
-              </GlowCard>
+                icon={<SquareDashed className="w-5 h-5" />}
+                title="Start blank"
+                description="Begin with a clean template and make it yours."
+                badge={
+                  !onResumeEditing
+                    ? { label: "Recommended", icon: <Star className="w-3 h-3" /> }
+                    : undefined
+                }
+              />
 
-              <GlowCard
+              <CtaCard
                 onClick={onLoadSample}
-                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel="Load a randomly-generated sample résumé — content is fictional"
-              >
-                <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                  <div className="flex items-start justify-between gap-2">
-                    <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105 group-hover:-rotate-6">
-                      <Sparkles className="w-5 h-5" />
-                    </span>
-                    <span
-                      className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
-                      aria-hidden="true"
-                    >
-                      <Dices className="w-3 h-3" />
-                      Fictional
-                    </span>
-                  </div>
-                  <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                    Load sample
-                  </span>
-                  <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                    Fresh, randomly-generated content every time — names and details are fictional,
-                    not real people.
-                  </span>
-                  <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
-                    aria-hidden="true"
-                  />
-                </div>
-              </GlowCard>
+                icon={<Sparkles className="w-5 h-5" />}
+                iconRotateOnHover
+                title="Load sample"
+                description="Fresh, randomly-generated content every time — names and details are fictional, not real people."
+                badge={{ label: "Fictional", icon: <Dices className="w-3 h-3" /> }}
+              />
 
-              <GlowCard
+              <CtaCard
                 onClick={() => fileRef.current?.click()}
-                glow="rgba(5, 150, 105, 0.22)"
                 ariaLabel="Load a saved résumé from a local file"
-              >
-                <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2">
-                  <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) mb-2 transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105">
-                    <FolderOpen className="w-5 h-5" />
-                  </span>
-                  <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
-                    Load saved
-                  </span>
-                  <span className="text-[13px] leading-[1.5] text-(--ink-4)">
-                    Continue from a JSON file you previously saved.
-                  </span>
-                  <ArrowRight
-                    className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
-                    aria-hidden="true"
-                  />
-                </div>
-              </GlowCard>
+                icon={<FolderOpen className="w-5 h-5" />}
+                title="Load saved"
+                description="Continue from a JSON file you previously saved."
+              />
             </div>
 
             <input
@@ -932,6 +1034,17 @@ function ResumeMockup() {
       <div className="pointer-events-none absolute right-2 top-6 rotate-[8deg] inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white shadow-(--sh-md) ring-1 ring-(--brand-200) text-(--brand-700) text-[10px] font-semibold uppercase tracking-[0.08em]">
         <span className="w-1.5 h-1.5 rounded-full bg-(--brand)" />
         ATS · 92
+      </div>
+
+      {/* "Local only" chip — counter-anchored at bottom-left to
+          balance the ATS badge on the top-right. Reinforces the
+          "stays yours" hero promise with a visual cue at the
+          mockup level: the page sits on your device, nothing is
+          uploaded. Same chip recipe as the ATS badge so the two
+          read as a matched pair, just rotated the other way. */}
+      <div className="pointer-events-none absolute left-1 bottom-7 -rotate-6 inline-flex items-center gap-1 px-2 py-1 rounded-md bg-white shadow-(--sh-md) ring-1 ring-(--brand-200) text-(--brand-700) text-[10px] font-semibold uppercase tracking-[0.08em]">
+        <ShieldCheck className="w-2.5 h-2.5" aria-hidden="true" />
+        Local only
       </div>
     </div>
   );
