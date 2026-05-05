@@ -619,7 +619,7 @@ export function OnboardingScreen({
             <div className="mb-5 grid grid-cols-1 gap-3 sm:mb-6 sm:grid-cols-[minmax(0,7fr)_minmax(0,5fr)]">
               {/* How it works card — emerald glow anchored top-right */}
               <div
-                className="relative flex flex-col rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 backdrop-blur-md"
+                className="relative flex flex-col rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] p-5 backdrop-blur-md"
                 style={{
                   backgroundImage:
                     "radial-gradient(280px 280px at 100% 0%, rgba(5, 150, 105, 0.18) 0%, rgba(5, 150, 105, 0.06) 38%, transparent 68%)",
@@ -657,7 +657,7 @@ export function OnboardingScreen({
                 href={CLOAKYARD_URL}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="group relative flex flex-col justify-between rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_92%,transparent)] p-5 text-inherit no-underline backdrop-blur-md transition-colors hover:border-(--brand-300)"
+                className="group relative flex flex-col justify-between rounded-2xl border border-(--line-soft) bg-[color-mix(in_oklab,var(--surface)_78%,transparent)] p-5 text-inherit no-underline backdrop-blur-md transition-colors hover:border-(--brand-300)"
                 style={{
                   backgroundImage:
                     "radial-gradient(280px 280px at 0% 100%, rgba(5, 150, 105, 0.14) 0%, rgba(5, 150, 105, 0.05) 38%, transparent 68%)",
