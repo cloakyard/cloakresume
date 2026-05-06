@@ -501,6 +501,19 @@
     font-size: 14px;
     line-height: 1.5;
   }
+
+  /* Suppress browser zoom gestures on phones. The viewport meta in
+     index.html turns off pinch-zoom; `touch-action: manipulation` here
+     kills the double-tap-to-zoom that historic Safari versions ignored
+     even with `user-scalable=no`. `text-size-adjust` stops Safari from
+     auto-upscaling text in landscape, which would otherwise nudge the
+     pixel-tuned panel chrome. */
+  html,
+  body {
+    touch-action: manipulation;
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -564,10 +577,15 @@
   .tb.ghost {
     @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
   }
+  /* Outline-brand CTA — transparent fill with a clear brand-coloured ring,
+   * mirroring CloakIMG's `.btn-outline-coral`. Reads as a primary action
+   * without competing with the brand wordmark for top-bar attention. The
+   * `rounded-md` radius is inherited from `.tb` so the button still matches
+   * the rest of the toolbar's corner language. */
   .tb.primary {
-    @apply text-(--brand-700) border-(--brand-200)
-      [background:var(--brand-50)]
-      hover:[background:var(--brand-100)] hover:border-(--brand-300);
+    @apply text-(--brand-700) border-(--brand) border-[1.5px]
+      [background:transparent]
+      hover:[background:var(--brand-50)] hover:border-(--brand-hover);
   }
   .tb.danger-ghost {
     @apply border-transparent bg-transparent text-(--danger) hover:bg-(--danger-bg) hover:border-transparent;

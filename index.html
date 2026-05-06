@@ -18,8 +18,17 @@
     <!-- Safari pinned tab -->
     <link rel="mask-icon" href="/icons/favicon.svg" color="#059669" />
 
-    <!-- Viewport -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Viewport — `user-scalable=no, maximum-scale=1` disables the
+         browser's pinch-to-zoom on the page itself. The editor and
+         preview have their own scaling/scroll affordances; double-tap
+         zoom would just produce awkward layout shifts on phones. The
+         CSS `touch-action: manipulation` rule on body further suppresses
+         double-tap zoom on browsers that historically ignored
+         user-scalable=no. -->
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
 
     <!-- Theme -->
     <meta name="theme-color" content="#059669" />
