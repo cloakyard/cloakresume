@@ -96,7 +96,6 @@ export function ToolbarOverflow({
               onExportPdf();
             }}
           />
-          <OverflowDivider />
           <OverflowItem
             icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
             label="Scan résumé"
