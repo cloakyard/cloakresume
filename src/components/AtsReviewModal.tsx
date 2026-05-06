@@ -171,7 +171,7 @@ export function AtsReviewModal({
             type="button"
             onClick={onClose}
             aria-label="Close ATS review"
-            className="grid place-items-center w-9 h-9 rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-100 hover:bg-(--surface-3) hover:text-(--ink-1)"
+            className="grid place-items-center w-9 h-9 rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
           >
             <X className="w-4 h-4" />
           </button>

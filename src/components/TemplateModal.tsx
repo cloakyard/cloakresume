@@ -140,7 +140,7 @@ export function TemplateModal({
             <button
               type="button"
               onClick={onClose}
-              className="w-10 h-10 rounded-md grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              className="w-9 h-9 rounded-md grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
               aria-label="Close"
             >
               <X className="w-4 h-4" />

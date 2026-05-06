@@ -120,7 +120,7 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
             type="button"
             onClick={onClose}
             aria-label="Close privacy policy"
-            className="w-8 h-8 rounded-lg grid place-items-center text-(--ink-4) bg-transparent cursor-pointer transition-colors duration-150 hover:bg-(--surface-3) hover:text-(--ink-1) shrink-0"
+            className="w-9 h-9 rounded-md grid place-items-center text-(--ink-4) bg-transparent cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1) shrink-0"
           >
             <X className="w-4 h-4" />
           </button>
