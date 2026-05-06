@@ -8,10 +8,11 @@
  */
 
 import {
+  Download,
   FileText,
   FilePlus2,
   LayoutTemplate,
-  Menu,
+  MoreVertical,
   Palette,
   Save,
   ScanSearch,
@@ -30,6 +31,7 @@ interface ToolbarOverflowProps {
   onPrimaryChange: (hex: string) => void;
   paperSize: PaperSize;
   onPaperSizeChange: (size: PaperSize) => void;
+  onExportPdf: () => void;
   onNewResume: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
@@ -40,6 +42,7 @@ export function ToolbarOverflow({
   onPrimaryChange,
   paperSize,
   onPaperSizeChange,
+  onExportPdf,
   onNewResume,
   onSaveFile,
   onLoadFile,
@@ -61,11 +64,11 @@ export function ToolbarOverflow({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="tb ghost"
+        className="inline-flex items-center justify-center w-9 h-9 rounded-md text-(--ink-3) bg-transparent border-0 cursor-pointer transition-colors hover:bg-(--surface-3) hover:text-(--ink-1) focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
         aria-label="More options"
         aria-haspopup="menu"
       >
-        <Menu className="w-4 h-4" />
+        <MoreVertical className="w-4.5 h-4.5" strokeWidth={2} />
       </button>
 
       <input
@@ -85,6 +88,14 @@ export function ToolbarOverflow({
 
       <BottomSheet open={open} onClose={() => setOpen(false)} title="Options">
         <div className="flex flex-col gap-0.5">
+          <OverflowItem
+            icon={<Download className="w-4 h-4" style={{ color: "var(--brand)" }} />}
+            label="Export PDF"
+            onClick={() => {
+              setOpen(false);
+              onExportPdf();
+            }}
+          />
           <OverflowItem
             icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
             label="Scan résumé"

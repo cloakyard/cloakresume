@@ -144,7 +144,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                                     className={`flex gap-1.5 items-start ${ri > 0 ? "mt-2.5" : ""}`}
                                   >
                                     <div className="mt-2">{rHandle}</div>
-                                    <div className="flex-1">
+                                    <div className="flex-1 min-w-0">
                                       <RichTextArea
                                         fieldId={`projects.${i}.roles.${ri}`}
                                         value={r}

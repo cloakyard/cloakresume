@@ -1,8 +1,9 @@
 /**
  * Right-hand toolbar cluster: Scan résumé · New · Save · Load · Export PDF.
  *
- * Desktop shows the full cluster. Mobile shows only the primary Export PDF
- * button — the remaining actions live in `ToolbarOverflow`.
+ * Desktop shows the full cluster. Mobile renders nothing — the Export PDF
+ * primary action and the secondary actions all live in `ToolbarOverflow`,
+ * keeping the mobile header to brand + view-toggle + 3-dot menu.
  */
 
 import { Download, FilePlus2, Save, ScanSearch, Upload } from "lucide-react";
@@ -31,71 +32,70 @@ export function ToolbarActions({
   const loadInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useMediaQuery(BP.mobile);
 
+  if (isMobile) return null;
+
   return (
     <>
-      {!isMobile && (
-        <>
-          <button
-            type="button"
-            onClick={onScanAts}
-            className="tb ghost"
-            title="Scan résumé for ATS and writing issues"
-            aria-label="Scan résumé for ATS and writing issues"
-          >
-            <ScanSearch className="w-4 h-4 text-(--ink-4)" />
-            <span className="hidden 2xl:inline">Scan résumé</span>
-          </button>
+      <button
+        type="button"
+        onClick={onScanAts}
+        className="tb ghost"
+        title="Scan résumé for ATS and writing issues"
+        aria-label="Scan résumé for ATS and writing issues"
+      >
+        <ScanSearch className="w-4 h-4 text-(--ink-4)" />
+        <span className="hidden 2xl:inline">Scan résumé</span>
+      </button>
 
-          <ToolbarDivider />
+      <ToolbarDivider />
 
-          <div className="flex items-center gap-0.5">
-            <button
-              type="button"
-              onClick={onNewResume}
-              className="tb ghost"
-              title="Start a new blank resume"
-              aria-label="Start a new blank resume"
-            >
-              <FilePlus2 className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden 2xl:inline">New</span>
-            </button>
-            <button
-              type="button"
-              onClick={onSaveFile}
-              className="tb ghost"
-              title="Save resume data as JSON file"
-              aria-label="Save resume data as JSON file"
-            >
-              <Save className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden 2xl:inline">Save</span>
-            </button>
-            <button
-              type="button"
-              onClick={() => loadInputRef.current?.click()}
-              className="tb ghost"
-              title="Load a previously saved resume file"
-              aria-label="Load a previously saved resume file"
-            >
-              <Upload className="w-4 h-4 text-(--ink-4)" />
-              <span className="hidden 2xl:inline">Load</span>
-            </button>
-          </div>
+      <div className="flex items-center gap-0.5">
+        <button
+          type="button"
+          onClick={onNewResume}
+          className="tb ghost"
+          title="Start a new blank resume"
+          aria-label="Start a new blank resume"
+        >
+          <FilePlus2 className="w-4 h-4 text-(--ink-4)" />
+          <span className="hidden 2xl:inline">New</span>
+        </button>
+        <button
+          type="button"
+          onClick={onSaveFile}
+          className="tb ghost"
+          title="Save resume data as JSON file"
+          aria-label="Save resume data as JSON file"
+        >
+          <Save className="w-4 h-4 text-(--ink-4)" />
+          <span className="hidden 2xl:inline">Save</span>
+        </button>
+        <button
+          type="button"
+          onClick={() => loadInputRef.current?.click()}
+          className="tb ghost"
+          title="Load a previously saved resume file"
+          aria-label="Load a previously saved resume file"
+        >
+          <Upload className="w-4 h-4 text-(--ink-4)" />
+          <span className="hidden 2xl:inline">Load</span>
+        </button>
+      </div>
 
-          <ToolbarDivider />
+      <ToolbarDivider />
 
-          <input
-            ref={loadInputRef}
-            type="file"
-            accept="application/json,.json"
-            className="hidden"
-            onChange={(e) => {
-              const f = e.target.files?.[0];
-              if (f) onLoadFile(f);
-              e.target.value = "";
-            }}
-          />
-        </>
-      )}
+      <input
+        ref={loadInputRef}
+        type="file"
+        accept="application/json,.json"
+        className="hidden"
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) onLoadFile(f);
+          e.target.value = "";
+        }}
+      />
+
       <button
         type="button"
         onClick={onExportPdf}
@@ -104,7 +104,7 @@ export function ToolbarActions({
         title="Export to PDF"
       >
         <Download className="w-4 h-4" />
-        {!isMobile && <span className="hidden 2xl:inline">Export PDF</span>}
+        <span className="hidden 2xl:inline">Export PDF</span>
       </button>
     </>
   );

@@ -123,7 +123,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                             {(bHandle, bDelete, bMove) => (
                               <div className={`flex gap-1.5 items-start ${bi > 0 ? "mt-2.5" : ""}`}>
                                 <div className="mt-2">{bHandle}</div>
-                                <div className="flex-1">
+                                <div className="flex-1 min-w-0">
                                   <RichTextArea
                                     fieldId={`custom.${i}.bullets.${bi}`}
                                     value={b}

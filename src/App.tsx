@@ -360,6 +360,7 @@ export function App() {
                 onPrimaryChange={setPrimary}
                 paperSize={paperSize}
                 onPaperSizeChange={setPaperSize}
+                onExportPdf={handleExportPdf}
                 onNewResume={handleNewResume}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
