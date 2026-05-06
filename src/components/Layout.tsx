@@ -126,10 +126,8 @@ export function Layout({
   return (
     <div className={shellClass} data-mobile-view={mobileView}>
       <header
-        className={`z-50 flex items-center gap-2 bg-(--surface) border-b border-(--line) print:hidden ${
-          isMobile
-            ? "sticky top-0 h-16 shrink-0 px-2.5 py-3 gap-2.5"
-            : "[grid-area:header] px-4 py-3 gap-3"
+        className={`z-50 flex h-16 shrink-0 items-center bg-(--surface) border-b border-(--line) py-3 print:hidden ${
+          isMobile ? "sticky top-0 px-2.5 gap-2.5" : "[grid-area:header] px-4 gap-3"
         }`}
       >
         <BrandLogo />

@@ -396,7 +396,7 @@ export function OnboardingScreen({
                 aria-hidden="true"
                 className="w-10 h-10 shrink-0 drop-shadow-sm"
               />
-              <div className="font-semibold text-(--ink-1) text-[19px] tracking-tight leading-none truncate">
+              <div className="font-semibold text-(--ink-1) text-[19px] tracking-tight whitespace-nowrap">
                 Cloak<span className="text-(--brand)">Resume</span>
               </div>
             </div>

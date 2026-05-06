@@ -8,17 +8,19 @@
  *   it reads as a circular badge in chrome — matching the CloakPDF /
  *   CloakIMG header style.
  *
- * Sizing is consistent across mobile and desktop (40px mark, 19px
- * wordmark) to mirror the CloakPDF / CloakIMG family — those apps
- * keep one brand size at every viewport so the family reads the same
- * everywhere.
+ * Sizing mirrors the CloakPDF / CloakIMG family verbatim — 40px mark,
+ * 19px wordmark, -0.025em tracking, default leading — at every
+ * viewport so the family reads the same everywhere. Do not introduce
+ * `leading-none` or compact variants here; both siblings render the
+ * wordmark at the inherited line-height and any tighter value pinches
+ * the cap-height alignment relative to the 40px mark.
  */
 export function BrandLogo() {
   return (
     <a
       href="/"
       aria-label="CloakResume home"
-      className="inline-flex items-center gap-2.5 text-[19px] font-semibold tracking-tight text-(--ink-1) whitespace-nowrap no-underline shrink-0"
+      className="inline-flex items-center gap-2.5 no-underline shrink-0"
     >
       <img
         src="/icons/favicon.svg"
@@ -26,7 +28,7 @@ export function BrandLogo() {
         aria-hidden="true"
         className="w-10 h-10 shrink-0 drop-shadow-sm"
       />
-      <span className="leading-none">
+      <span className="text-[19px] font-semibold tracking-tight text-(--ink-1) whitespace-nowrap">
         Cloak<span className="text-(--brand)">Resume</span>
       </span>
     </a>

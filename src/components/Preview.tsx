@@ -7,10 +7,14 @@
  *
  * Zoom starts at a fit-to-width factor calculated from the scroll
  * container's available width (A4 = 210mm ≈ 794px at 96dpi, plus
- * breathing room). This keeps the preview readable on phones without
- * requiring a pinch-zoom, while still allowing users to zoom in/out
- * with the floating dock. Print styles reset the transform so the PDF
- * always prints at 1:1 A4.
+ * breathing room). The fit factor keeps the preview readable on
+ * phones; users can fine-tune via the floating dock or — on touch —
+ * by pinching directly on the preview. Pinch is the only surface in
+ * the app that opts back into multi-touch zoom (every other screen is
+ * locked down by the viewport meta + the global `pan-x pan-y`
+ * `touch-action`); the gesture writes into the same `zoom` state the
+ * dock controls, so dock and pinch stay in sync. Print styles reset
+ * the transform so the PDF always prints at 1:1 A4.
  */
 
 import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
@@ -50,6 +54,11 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
   const fitZoomRef = useRef(0.75);
   /** True until the user manually changes the zoom, then we stop auto-fitting. */
   const userOverrodeRef = useRef(false);
+  /** Mirror of `zoom` so the touch listeners (registered once with
+   *  `{ passive: false }`) can read the latest value without
+   *  re-binding on every render. */
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
 
   const { widthMm: pageWidthMm, heightMm: pageHeightMm } = PAPER_SIZES[paperSize];
   const pageWidthPx = pageWidthMm * PX_PER_MM;
@@ -89,6 +98,57 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
     return () => observer.disconnect();
   }, []);
 
+  /** Two-finger pinch zoom on touch devices. The viewport meta blocks
+   *  the browser's own pinch everywhere in the app, and the global
+   *  `touch-action: pan-x pan-y` keeps it that way for every other
+   *  surface; this listener is what re-enables it for the preview by
+   *  driving the same `zoom` state the floating dock controls. We
+   *  attach via `addEventListener` (not the React handler) so we can
+   *  pass `{ passive: false }` and `preventDefault` the move while two
+   *  fingers are down — otherwise iOS will hijack the gesture into a
+   *  two-finger scroll that fights the zoom transform. */
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    let pinch: { startDist: number; startZoom: number } | null = null;
+
+    const distance = (touches: TouchList): number => {
+      const dx = touches[0].clientX - touches[1].clientX;
+      const dy = touches[0].clientY - touches[1].clientY;
+      return Math.hypot(dx, dy);
+    };
+
+    const onTouchStart = (e: TouchEvent) => {
+      if (e.touches.length === 2) {
+        pinch = { startDist: distance(e.touches), startZoom: zoomRef.current };
+        userOverrodeRef.current = true;
+      }
+    };
+
+    const onTouchMove = (e: TouchEvent) => {
+      if (!pinch || e.touches.length < 2) return;
+      e.preventDefault();
+      const ratio = distance(e.touches) / Math.max(1, pinch.startDist);
+      setZoom(clampZoom(pinch.startZoom * ratio));
+    };
+
+    const onTouchEnd = (e: TouchEvent) => {
+      if (e.touches.length < 2) pinch = null;
+    };
+
+    el.addEventListener("touchstart", onTouchStart, { passive: true });
+    el.addEventListener("touchmove", onTouchMove, { passive: false });
+    el.addEventListener("touchend", onTouchEnd);
+    el.addEventListener("touchcancel", onTouchEnd);
+    return () => {
+      el.removeEventListener("touchstart", onTouchStart);
+      el.removeEventListener("touchmove", onTouchMove);
+      el.removeEventListener("touchend", onTouchEnd);
+      el.removeEventListener("touchcancel", onTouchEnd);
+    };
+  }, []);
+
   const onZoomOut = () => {
     userOverrodeRef.current = true;
     setZoom((z) => clampZoom(z - 0.1));
@@ -109,7 +169,7 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
   return (
     <div
       ref={containerRef}
-      className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto cr-scroll"
+      className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto cr-scroll [touch-action:pan-x_pan-y_pinch-zoom]"
     >
       {/* Outer frame sizes the scroll box to the *scaled* page so the
           transform actually affects layout dimensions — otherwise the

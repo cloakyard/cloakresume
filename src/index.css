@@ -502,15 +502,21 @@
     line-height: 1.5;
   }
 
-  /* Suppress browser zoom gestures on phones. The viewport meta in
-     index.html turns off pinch-zoom; `touch-action: manipulation` here
-     kills the double-tap-to-zoom that historic Safari versions ignored
-     even with `user-scalable=no`. `text-size-adjust` stops Safari from
-     auto-upscaling text in landscape, which would otherwise nudge the
-     pixel-tuned panel chrome. */
+  /* Suppress every browser zoom gesture on phones across every screen
+     (editor, onboarding, modals, sheets) — CloakResume drives its own
+     preview zoom via the floating dock and never wants the OS to
+     scale the form chrome. The viewport meta in index.html sets
+     `user-scalable=no, maximum-scale=1`; `touch-action: pan-x pan-y`
+     here is the CSS-level guarantee that survives iOS Safari's
+     historic habit of ignoring `user-scalable=no`. Listing the pan
+     axes explicitly (instead of `manipulation`, which still permits
+     `pinch-zoom`) is what actually blocks the gesture, while keeping
+     vertical/horizontal scroll fully native. `text-size-adjust` stops
+     Safari from auto-upscaling text in landscape, which would
+     otherwise nudge the pixel-tuned panel chrome. */
   html,
   body {
-    touch-action: manipulation;
+    touch-action: pan-x pan-y;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
