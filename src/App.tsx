@@ -21,6 +21,7 @@ import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
 import { ToolbarOverflow } from "./components/ToolbarOverflow.tsx";
 import { SectionPanel } from "./components/SectionPanel.tsx";
 import type { SectionId } from "./components/SectionRail.tsx";
+import type { MobileView } from "./components/ViewSegment.tsx";
 import { Preview } from "./components/Preview.tsx";
 
 // Code-split the ATS review — the panel plus its four sub-panes and the
@@ -117,6 +118,7 @@ export function App() {
   const [paperSize, setPaperSize] = useState<PaperSize>(initial.paperSize);
   const [jobDescription, setJobDescription] = useState<string>(initial.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.activeSection);
+  const [mobileView, setMobileView] = useState<MobileView>("panel");
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
    *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
@@ -244,6 +246,9 @@ export function App() {
               : null;
     if (!target) return;
     setActiveSection(target);
+    // On mobile the editor and preview are mutually exclusive — flip back
+    // to the editor so the highlighted field is actually on screen.
+    setMobileView("panel");
     setAtsOpen(false);
     // Delay past the sheet's close animation + section mount so the field
     // exists in the DOM by the time we try to query + scroll to it.
@@ -369,6 +374,8 @@ export function App() {
           }
           activeSection={activeSection}
           onSectionChange={setActiveSection}
+          mobileView={mobileView}
+          onMobileViewChange={setMobileView}
           panel={
             <FieldIssuesProvider report={grammarReport}>
               <SectionPanel
