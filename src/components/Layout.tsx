@@ -33,6 +33,10 @@ interface LayoutProps {
   /** Currently selected resume section — drives both rails. */
   activeSection: SectionId;
   onSectionChange: (id: SectionId) => void;
+  /** Mobile-only edit/preview toggle state. Lifted to App so flows like
+   *  the ATS jump-to-field can flip the view back to the editor. */
+  mobileView: MobileView;
+  onMobileViewChange: (next: MobileView) => void;
   /** Middle panel (single section editor). */
   panel: ReactNode;
   /** Preview area (resume canvas). */
@@ -44,11 +48,12 @@ export function Layout({
   toolbarRight,
   activeSection,
   onSectionChange,
+  mobileView,
+  onMobileViewChange,
   panel,
   preview,
 }: LayoutProps) {
   const isMobile = useMediaQuery(BP.mobile);
-  const [mobileView, setMobileView] = useState<MobileView>("panel");
   const [sectionDrawerOpen, setSectionDrawerOpen] = useState(false);
 
   /** When the user picks a section from the mobile drawer, close it and
@@ -57,9 +62,9 @@ export function Layout({
     (id: SectionId) => {
       onSectionChange(id);
       setSectionDrawerOpen(false);
-      setMobileView("panel");
+      onMobileViewChange("panel");
     },
-    [onSectionChange],
+    [onSectionChange, onMobileViewChange],
   );
 
   /** If the viewport crosses the breakpoint, snap state to a sane default. */
@@ -149,7 +154,7 @@ export function Layout({
         )}
 
         {/* Mobile: edit/preview segmented control sits right before the actions cluster. */}
-        {isMobile && <ViewSegment view={mobileView} onChange={setMobileView} />}
+        {isMobile && <ViewSegment view={mobileView} onChange={onMobileViewChange} />}
 
         <div className="flex items-center gap-1.5 shrink-0 lg:gap-2">{toolbarRight}</div>
 
