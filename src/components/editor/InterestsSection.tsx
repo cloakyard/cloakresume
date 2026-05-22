@@ -1,7 +1,7 @@
 /** Interests & Tools: two header labels + two comma-separated lists. */
 
-import { TextField } from "../fields.tsx";
-import { usePatch, type SectionProps } from "./shared.tsx";
+import { CsvField, TextField } from "../fields.tsx";
+import { type SectionProps, usePatch } from "./shared.tsx";
 
 export function InterestsSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
@@ -14,18 +14,10 @@ export function InterestsSection({ resume, onChange }: SectionProps) {
         placeholder="Interests"
         onChange={(v) => patch("interestsLabel", v)}
       />
-      <TextField
+      <CsvField
         label="Interests (comma-separated)"
-        value={resume.interests.join(", ")}
-        onChange={(v) =>
-          patch(
-            "interests",
-            v
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean),
-          )
-        }
+        value={resume.interests}
+        onChange={(v) => patch("interests", v)}
       />
       <TextField
         label="Tools — header label (optional)"
@@ -33,18 +25,10 @@ export function InterestsSection({ resume, onChange }: SectionProps) {
         placeholder="Tools"
         onChange={(v) => patch("toolsLabel", v)}
       />
-      <TextField
+      <CsvField
         label="Tools (comma-separated)"
-        value={resume.tools.join(", ")}
-        onChange={(v) =>
-          patch(
-            "tools",
-            v
-              .split(",")
-              .map((s) => s.trim())
-              .filter(Boolean),
-          )
-        }
+        value={resume.tools}
+        onChange={(v) => patch("tools", v)}
       />
     </div>
   );

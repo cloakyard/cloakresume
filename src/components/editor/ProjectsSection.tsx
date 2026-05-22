@@ -1,7 +1,7 @@
 /** Projects with description, role bullets, and stack chips. */
 
 import { Folder, Plus } from "lucide-react";
-import { TextField } from "../fields.tsx";
+import { CsvField, TextField } from "../fields.tsx";
 import { RichTextArea } from "../RichTextArea.tsx";
 import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
@@ -170,18 +170,12 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                           </DragList>
                         )}
                       </div>
-                      <TextField
+                      <CsvField
                         label="Stack (comma-separated)"
-                        value={p.stack.join(", ")}
+                        value={p.stack}
                         onChange={(v) => {
                           const next = [...resume.projects];
-                          next[i] = {
-                            ...p,
-                            stack: v
-                              .split(",")
-                              .map((s) => s.trim())
-                              .filter(Boolean),
-                          };
+                          next[i] = { ...p, stack: v };
                           patch("projects", next);
                         }}
                       />
