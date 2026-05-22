@@ -728,8 +728,16 @@ export function OnboardingScreen({
                 }}
               >
                 <div className="relative">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-(--brand)">
-                    How it works
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-(--brand)">
+                      How it works
+                    </div>
+                    <span
+                      translate="no"
+                      className="inline-flex shrink-0 items-center rounded-full border border-(--line-soft) bg-[color-mix(in_oklab,var(--ink-1)_4%,transparent)] px-2 py-0.5 font-mono text-[10px] tabular-nums tracking-tight text-(--ink-4)"
+                    >
+                      v{__APP_VERSION__}
+                    </span>
                   </div>
                   <h3 className="mt-2 text-[17px] sm:text-[19px] font-semibold tracking-[-0.01em] text-(--ink-1)">
                     From blank page to hired, in three steps.
@@ -766,20 +774,15 @@ export function OnboardingScreen({
                 }}
               >
                 <div className="relative">
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="flex items-center gap-2.5">
-                      <img
-                        src="/icons/cloakyard.svg"
-                        alt=""
-                        aria-hidden="true"
-                        className="h-7 w-7 drop-shadow-sm"
-                      />
-                      <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-(--ink-4)">
-                        Part of
-                      </span>
-                    </div>
-                    <span className="inline-flex shrink-0 items-center rounded-full border border-(--line-soft) bg-[color-mix(in_oklab,var(--ink-1)_4%,transparent)] px-2 py-px font-mono text-[10px] tabular-nums tracking-tight text-(--ink-4)">
-                      CloakResume v{__APP_VERSION__}
+                  <div className="flex items-center gap-2.5">
+                    <img
+                      src="/icons/cloakyard.svg"
+                      alt=""
+                      aria-hidden="true"
+                      className="h-7 w-7 drop-shadow-sm"
+                    />
+                    <span className="text-[10px] font-medium uppercase tracking-[0.16em] text-(--ink-4)">
+                      Part of
                     </span>
                   </div>
                   <h4 className="mt-2.5 text-[17px] sm:text-[19px] font-semibold tracking-[-0.01em] text-(--ink-1)">
