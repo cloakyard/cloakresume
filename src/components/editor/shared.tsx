@@ -117,7 +117,7 @@ export function SubCardHead({
   return (
     <div className="flex items-center gap-2 mb-2">
       {drag}
-      <span className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-[0.06em]">
+      <span className="font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] tabular-nums">
         {prefix} #{index + 1}
       </span>
       <div className="ml-auto flex items-center gap-1">

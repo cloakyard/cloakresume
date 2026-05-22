@@ -227,7 +227,7 @@ function CtaCard({
 }: CtaCardProps) {
   return (
     <GlowCard onClick={onClick} glow="rgba(5, 150, 105, 0.22)" ariaLabel={ariaLabel}>
-      <div className="relative px-5 py-6 sm:p-6 flex flex-col gap-2.5">
+      <div className="relative p-5 sm:p-6 flex flex-col gap-2.5">
         <span
           className={`w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) transition-[transform] duration-200 group-hover:-translate-y-px group-hover:scale-105${
             iconRotateOnHover ? " group-hover:-rotate-6" : ""
@@ -236,12 +236,12 @@ function CtaCard({
           {icon}
         </span>
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[15px] font-semibold tracking-[-0.005em] text-(--ink-1)">
+          <span className="text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">
             {title}
           </span>
           {badge && (
             <span
-              className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.08em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
+              className="inline-flex items-center gap-1 text-[10px] font-semibold uppercase tracking-[0.12em] px-1.5 py-0.5 rounded-md bg-(--brand-50) text-(--brand)"
               aria-hidden="true"
             >
               {badge.icon}
@@ -249,7 +249,7 @@ function CtaCard({
             </span>
           )}
         </div>
-        <span className="text-[13px] leading-normal text-(--ink-4)">{description}</span>
+        <span className="text-[13px] leading-[1.55] text-(--ink-4)">{description}</span>
         <ArrowRight
           className="absolute bottom-4 right-4 sm:bottom-5 sm:right-5 w-4 h-4 text-(--ink-5) opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 group-hover:text-(--brand)"
           aria-hidden="true"
@@ -436,12 +436,15 @@ export function OnboardingScreen({
         <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-12 sm:pt-16 md:pt-24 pb-10 sm:pb-14">
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] gap-10 lg:gap-14 items-center">
             <div className="text-center lg:text-left">
-              <h1 className="text-[34px] sm:text-[46px] md:text-[58px] lg:text-[60px] font-semibold text-(--ink-1) tracking-[-0.03em] leading-[1.05] m-0 max-w-[900px] mx-auto lg:mx-0 animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
+              <h1 className="text-[36px] sm:text-[48px] md:text-[58px] lg:text-[64px] font-semibold text-(--ink-1) tracking-[-0.035em] leading-[1.04] m-0 max-w-[900px] mx-auto lg:mx-0 [text-wrap:balance] animate-[fade-in-up_0.6s_ease-out_0.05s_both]">
                 Build a résumé that{" "}
-                <em className="font-serif italic font-normal text-(--brand)">stays yours</em>.
+                <em className="font-serif italic font-normal tracking-[-0.01em] text-(--brand)">
+                  stays yours
+                </em>
+                .
               </h1>
 
-              <p className="text-(--ink-3) text-[15px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[640px] mx-auto lg:mx-0 mt-5 sm:mt-6 animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
+              <p className="text-(--ink-3) text-[15.5px] sm:text-[17px] md:text-[18px] leading-[1.55] max-w-[620px] mx-auto lg:mx-0 mt-5 sm:mt-6 [text-wrap:pretty] animate-[fade-in-up_0.6s_ease-out_0.1s_both]">
                 Beautifully designed templates, real ATS analysis, and zero servers. Your data is
                 stored locally — nothing is ever uploaded.
               </p>
@@ -515,15 +518,16 @@ export function OnboardingScreen({
                   complementary: each pill answers a different
                   zero-friction question (no sign-up needed? works
                   offline? ATS-aware?) without duplicating the header. */}
-              <div className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-4.5 gap-y-2 text-[12.5px] text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.22s_both]">
+              <div className="mt-5 sm:mt-6 flex flex-wrap justify-center lg:justify-start gap-x-5 gap-y-2 text-[13px] text-(--ink-4) animate-[fade-in-up_0.6s_ease-out_0.22s_both]">
                 <span className="flex items-center gap-1.5">
-                  <UserRoundCheck className="w-3.5 h-3.5 text-(--brand)" /> No sign-up
+                  <UserRoundCheck className="w-4 h-4 text-(--brand)" aria-hidden="true" /> No
+                  sign-up
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <WifiOff className="w-3.5 h-3.5 text-(--brand)" /> Works offline
+                  <WifiOff className="w-4 h-4 text-(--brand)" aria-hidden="true" /> Works offline
                 </span>
                 <span className="flex items-center gap-1.5">
-                  <ScanSearch className="w-3.5 h-3.5 text-(--brand)" /> ATS-ready
+                  <ScanSearch className="w-4 h-4 text-(--brand)" aria-hidden="true" /> ATS-ready
                 </span>
               </div>
             </div>
@@ -625,13 +629,13 @@ export function OnboardingScreen({
         {/* ── Feature grid ─────────────────────────────────────── */}
         <section className="relative max-w-[1180px] mx-auto px-4 sm:px-6 lg:px-8 pt-6 sm:pt-10 pb-14 sm:pb-20">
           <div className="text-center mb-8 sm:mb-12">
-            <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-(--brand) mb-2.5">
+            <div className="text-[10.5px] font-semibold uppercase tracking-[0.16em] text-(--brand) mb-3">
               Why CloakResume
             </div>
-            <h2 className="text-[24px] sm:text-[30px] md:text-[36px] font-semibold text-(--ink-1) tracking-[-0.02em] leading-[1.15] m-0">
+            <h2 className="text-[26px] sm:text-[32px] md:text-[38px] font-semibold text-(--ink-1) tracking-[-0.025em] leading-[1.12] m-0 [text-wrap:balance]">
               Everything you need, nothing you don&apos;t.
             </h2>
-            <p className="text-(--ink-3) text-[14px] sm:text-[15.5px] leading-[1.55] max-w-[560px] mx-auto mt-3">
+            <p className="text-(--ink-3) text-[14.5px] sm:text-[15.5px] leading-[1.6] max-w-[560px] mx-auto mt-3 sm:mt-4 [text-wrap:pretty]">
               A modern résumé builder that respects your privacy — built for people who care about
               their data and their craft.
             </p>
@@ -862,10 +866,12 @@ function FeatureItem({ icon, title, description }: FeatureItemProps) {
         {icon}
       </span>
       <div className="min-w-0">
-        <div className="text-[14.5px] font-semibold tracking-[-0.005em] text-(--ink-1) mb-1">
+        <div className="text-[14.5px] font-semibold tracking-[-0.01em] text-(--ink-1) mb-1">
           {title}
         </div>
-        <div className="text-[13.5px] leading-[1.55] text-(--ink-4)">{description}</div>
+        <div className="text-[13.5px] leading-[1.6] text-(--ink-4) [text-wrap:pretty]">
+          {description}
+        </div>
       </div>
     </div>
   );

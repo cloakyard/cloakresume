@@ -742,10 +742,10 @@
     @apply flex-1 min-w-0;
   }
   .acc-title {
-    @apply text-[13.5px] font-semibold text-(--ink-1) tracking-[-0.005em];
+    @apply text-[13.5px] font-semibold text-(--ink-1) tracking-[-0.01em];
   }
   .acc-sub {
-    @apply text-xs text-(--ink-4) mt-px truncate;
+    @apply text-[11.5px] leading-snug text-(--ink-4) mt-0.5 truncate;
   }
   .acc-chev {
     @apply text-(--ink-5) transition-transform duration-200;
@@ -766,7 +766,7 @@
   }
   .cr-field-label,
   .field-label {
-    @apply block font-mono text-[10.5px] font-semibold text-(--ink-5) uppercase tracking-[0.08em] mb-1.5;
+    @apply block font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] mb-1;
   }
   .cr-input {
     @apply block w-full px-3 py-3 text-base leading-[1.45]
@@ -776,7 +776,7 @@
       transition-[border-color,box-shadow,background] duration-100
       hover:border-[#d6dadf]
       focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)
-      lg:px-3 lg:py-2.5 lg:text-[13.5px];
+      lg:px-3 lg:py-2.5 lg:text-[13.5px] lg:leading-[1.5];
   }
   .cr-input--compact {
     @apply px-2.5 py-2 text-[14.5px]
