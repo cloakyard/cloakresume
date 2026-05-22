@@ -78,6 +78,54 @@ export function TextField({
   );
 }
 
+interface CsvFieldProps {
+  label: string;
+  value: string[];
+  onChange: (v: string[]) => void;
+  placeholder?: string;
+}
+
+/**
+ * Comma-separated input that keeps a local raw string so the user can
+ * freely type leading/trailing/intermediate commas and spaces while the
+ * parsed array is published upstream on every change.
+ */
+export function CsvField({ label, value, onChange, placeholder }: CsvFieldProps) {
+  const [raw, setRaw] = useState(() => value.join(", "));
+
+  useEffect(() => {
+    const parsed = raw
+      .split(",")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const same = parsed.length === value.length && parsed.every((s, i) => s === value[i]);
+    if (!same) setRaw(value.join(", "));
+  }, [value, raw]);
+
+  return (
+    <label className="cr-field">
+      <span className="cr-field-label">{label}</span>
+      <input
+        type="text"
+        value={raw}
+        placeholder={placeholder}
+        spellCheck={true}
+        className="cr-input"
+        onChange={(e) => {
+          const next = e.target.value;
+          setRaw(next);
+          onChange(
+            next
+              .split(",")
+              .map((s) => s.trim())
+              .filter(Boolean),
+          );
+        }}
+      />
+    </label>
+  );
+}
+
 interface SelectFieldProps {
   label: string;
   value: string;

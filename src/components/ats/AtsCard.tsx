@@ -13,11 +13,11 @@ import type { ReactNode } from "react";
 
 export function CardHead({ title, sub }: { title: string; sub: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-2 mb-2 pb-1.5 border-b border-(--line-soft) sm:mb-3.5 sm:pb-2.5">
-      <h3 className="m-0 text-[13px] font-semibold text-(--ink-1) tracking-[-0.005em] sm:text-[15px]">
+    <div className="flex items-baseline justify-between gap-3 mb-2.5 pb-2 border-b border-(--line-soft) sm:mb-4 sm:pb-3">
+      <h3 className="m-0 text-[14px] font-semibold text-(--ink-1) tracking-[-0.01em] sm:text-[15px]">
         {title}
       </h3>
-      <span className="font-mono text-[10px] text-(--ink-5) tracking-[0.02em] whitespace-nowrap">
+      <span className="font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em] tabular-nums whitespace-nowrap">
         {sub}
       </span>
     </div>
