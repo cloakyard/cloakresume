@@ -1,16 +1,10 @@
 /**
- * The header brand mark uses /icons/favicon.svg rather than logo.svg.
+ * Sizing and artwork usage mirror CloakPDF verbatim: the full-bleed
+ * /icons/logo.svg is rendered in a 40px circular clip, paired with an
+ * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading.
  *
- * - logo.svg is full-bleed (a rect background gradient) so PWA
- *   launcher masks can crop it to circle / squircle without losing
- *   the brand surface.
- * - favicon.svg paints the same shield on a circular background, so
- *   it reads as a circular badge in chrome — matching the CloakPDF /
- *   CloakIMG header style.
- *
- * Sizing mirrors the CloakPDF / CloakIMG family verbatim — 40px mark,
- * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading — at
- * every viewport so the family reads the same everywhere.
+ * Do not substitute favicon.svg here. Its 128px circle is inset inside
+ * the 144px canvas, so it appears only 35.6px wide in a 40px image box.
  */
 export function BrandLogo() {
   return (
@@ -20,7 +14,7 @@ export function BrandLogo() {
       className="cr-brand-logo inline-flex items-center no-underline shrink-0"
     >
       <img
-        src="/icons/favicon.svg"
+        src="/icons/logo.svg"
         alt=""
         aria-hidden="true"
         width="40"
