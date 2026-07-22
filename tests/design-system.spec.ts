@@ -102,10 +102,11 @@ describe("CloakResume family contract", () => {
   });
 
   it("registers the same self-hosted UI fonts and wordmark metrics as CloakPDF", async () => {
-    const [indexCss, familyCss, brandLogo] = await Promise.all([
+    const [indexCss, familyCss, brandLogo, fallback] = await Promise.all([
       source("src/index.css"),
       source("src/cloak-family.css"),
       source("src/components/BrandLogo.tsx"),
+      source("public/404.html"),
     ]);
 
     expect(indexCss).toMatch(
@@ -118,11 +119,15 @@ describe("CloakResume family contract", () => {
     expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
     expect(brandLogo).toContain('width="40"');
     expect(brandLogo).toContain('height="40"');
+    expect(brandLogo).toContain('src="/icons/logo.svg"');
+    expect(brandLogo).not.toContain('src="/icons/favicon.svg"');
     expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
     expect(familyCss).toMatch(
       /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,
     );
     expect(brandLogo).toContain('translate="no"');
+    expect(fallback.match(/<img src="\/icons\/logo\.svg"/g)).toHaveLength(2);
+    expect(fallback).not.toContain('<img src="/icons/favicon.svg"');
   });
 
   it("matches CloakPDF footer provenance and privacy-document structure", async () => {

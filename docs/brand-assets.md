@@ -59,7 +59,8 @@ After regeneration:
    must remain 1200×630 and use an accurate alt description.
 2. Inspect every image at native resolution and at its likely card/store scale. The
    generated product state intentionally uses the light colour scheme.
-3. Confirm the header mark is 40px in CSS pixels. Confirm the entry workbench uses the responsive
+3. Confirm the header uses the full-bleed `public/icons/logo.svg` in a 40px circular clip. The
+   inset favicon remains browser metadata only. Confirm the entry workbench uses the responsive
    frame gutter and the tablet editor preserves its rail, panel, and proof-stage geometry.
 4. Confirm no browser chrome, animation frame, cursor, focus ring, or unintended local draft appears.
 5. Confirm [`../vite.config.ts`](../vite.config.ts) labels the screenshots by content, uses `orientation:
@@ -72,7 +73,7 @@ visual system would drift from CloakPDF and from the application over time.
 ## Recorded inspection — 22 July 2026
 
 The regenerated files were decoded and confirmed at 1200×630, 1290×2796, and
-2732×2048. Native-resolution inspection confirmed the current 40px header mark,
+2732×2048. Native-resolution inspection confirmed the full optical 40px header mark,
 Emerald identity, Archivo/JetBrains Mono typography, responsive gutters, and clean
 edges without browser chrome, a cursor, a focus ring, or an unintended saved draft.
 The Open Graph image shows the landing declaration/start workflow; the phone image
