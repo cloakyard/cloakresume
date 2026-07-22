@@ -73,7 +73,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                     }
                   />
                   <div className="cr-stack">
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <TextField
                         label="Job title"
                         value={job.title}
@@ -102,7 +102,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         patch("experience", next);
                       }}
                     />
-                    <div className="grid grid-cols-2 gap-3">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                       <MonthYearField
                         label="Start"
                         value={job.start}
@@ -135,7 +135,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                               next[i] = { ...job, bullets: [...job.bullets, ""] };
                               patch("experience", next);
                             }}
-                            className="inline-flex items-center gap-1 h-6 px-2 rounded-md text-[11.5px] text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
+                            className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
                           >
                             <Plus className="w-3 h-3" /> Bullet
                           </button>
@@ -170,6 +170,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                                 <div className="mt-2">{bHandle}</div>
                                 <div className="flex-1 min-w-0">
                                   <RichTextArea
+                                    ariaLabel={`Experience bullet ${bi + 1}`}
                                     fieldId={`experience.${i}.bullets.${bi}`}
                                     value={b}
                                     rows={3}

@@ -1,20 +1,42 @@
 /**
- * Privacy Policy — a lightweight modal describing how CloakResume
- * handles (or rather, doesn't handle) user data.
+ * CloakResume privacy document.
  *
- * Everything runs in the browser and the résumé is only persisted to
- * localStorage, so the policy is intentionally brief and concrete.
- * Matches the app's token-based design language and is portalled into
- * `document.body` so it overlays the landing screen cleanly.
+ * The shell keeps the shared modal lifecycle while the content uses the same
+ * architecture-first hierarchy as CloakPDF: promise, document path, absent
+ * routes, then the complete ruled policy.
  */
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ShieldCheck, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
+import { useModalDialog } from "../utils/useModalDialog.ts";
 
-const LAST_UPDATED = "April 24, 2026";
+const LAST_UPDATED_ISO = "2026-07-22";
+const LAST_UPDATED = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "long",
+  timeZone: "UTC",
+}).format(new Date(`${LAST_UPDATED_ISO}T00:00:00Z`));
 const REPO_URL = "https://github.com/cloakyard/cloakresume";
 const CLOAKYARD_URL = "https://github.com/cloakyard";
+
+const DOCUMENT_PATH = [
+  {
+    number: "01",
+    title: "Résumé content enters browser memory",
+    meta: "Input / editor or local JSON",
+  },
+  {
+    number: "02",
+    title: "Browser state and Harper do the work",
+    meta: "Process / this tab",
+  },
+  {
+    number: "03",
+    title: "PDF or JSON returns to your device",
+    meta: "Output / browser download",
+  },
+] as const;
 
 interface Props {
   open: boolean;
@@ -22,34 +44,26 @@ interface Props {
 }
 
 export function PrivacyPolicyModal({ open, onClose }: Props) {
-  const panelRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
+  const presence = useAnimatedPresence(open);
+  const panelRef = useModalDialog<HTMLDivElement>({
+    open: presence.mounted,
+    onClose,
+    initialFocusRef: closeRef,
+  });
 
-  useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open, onClose]);
-
-  /* Swipe-down-to-dismiss on the handle — matches BottomSheet / AtsReviewModal.
-   * Threshold is 120px of downward travel, identical to the other sheets. */
-  const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
+  const onHandleTouchStart = useCallback((event: React.TouchEvent) => {
+    touchStartY.current = event.touches[0].clientY;
     dragDeltaRef.current = 0;
   }, []);
 
-  const onHandleTouchMove = useCallback((e: React.TouchEvent) => {
+  const onHandleTouchMove = useCallback((event: React.TouchEvent) => {
     if (touchStartY.current == null) return;
-    const delta = e.touches[0].clientY - touchStartY.current;
+    const delta = event.touches[0].clientY - touchStartY.current;
     if (delta > 0 && panelRef.current) {
       dragDeltaRef.current = delta;
       panelRef.current.style.transform = `translateY(${delta}px)`;
@@ -69,149 +83,192 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
     dragDeltaRef.current = 0;
   }, [onClose]);
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
 
   return createPortal(
     <div
-      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center sm:p-6 backdrop animate-[fade_0.2s_ease]"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="privacy-policy-title"
+      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
+      data-state={presence.state}
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Close"
-        className="absolute inset-0 bg-transparent border-0 cursor-default"
-      />
-
       <div
         ref={panelRef}
-        className="surface-glass relative w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in"
+        className="cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
       >
-        {/* Drag handle — mobile only, swipe down to dismiss. */}
         <div
           onTouchStart={onHandleTouchStart}
           onTouchMove={onHandleTouchMove}
           onTouchEnd={onHandleTouchEnd}
-          className="sm:hidden shrink-0 grid place-items-center pt-2.5 pb-1.5 cursor-grab touch-none"
+          className="cr-privacy-dialog__handle sm:hidden"
+          aria-hidden="true"
         >
-          <span
-            aria-hidden="true"
-            className="w-11 h-1 rounded-full bg-(--ink-5)/40 transition-colors duration-150 hover:bg-(--ink-5)/60"
-          />
+          <span />
         </div>
 
-        {/* Header */}
-        <div className="shrink-0 flex items-center gap-3 sm:gap-4 px-5 sm:px-7 pt-3 sm:pt-6 pb-4 border-b border-(--line-soft)">
-          <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) shrink-0">
-            <ShieldCheck className="w-5 h-5" />
-          </span>
-          <div className="flex-1 min-w-0">
-            <h2
-              id="privacy-policy-title"
-              className="text-[17px] sm:text-[18px] font-semibold text-(--ink-1) tracking-[-0.01em] leading-tight"
-            >
-              Privacy Policy
-            </h2>
-            <p className="text-[12.5px] text-(--ink-4) mt-0.5">Last updated: {LAST_UPDATED}</p>
-          </div>
+        <div className="cr-privacy-dialog__bar">
+          <p>
+            <ShieldCheck aria-hidden="true" />
+            CloakResume / Privacy document
+          </p>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close privacy policy"
-            className="w-9 h-9 rounded-md grid place-items-center text-(--ink-4) bg-transparent cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1) shrink-0"
+            className="cr-privacy-dialog__close"
           >
-            <X className="w-4 h-4" />
+            <X aria-hidden="true" />
           </button>
         </div>
 
-        {/* Body */}
-        <div className="cr-scroll overflow-y-auto px-5 sm:px-7 py-5 sm:py-6">
-          <div className="space-y-6 text-[13.5px] leading-[1.65] text-(--ink-3)">
-            <Section title="Overview">
-              <p>
-                CloakResume is a free, open-source résumé builder that runs entirely in your web
-                browser. This policy explains what data is collected (spoiler: nothing leaves your
-                device) and how the application handles your information.
+        <div className="cr-scroll cr-privacy-dialog__scroll">
+          <section className="cr-privacy-dialog__architecture">
+            <div className="cr-privacy-dialog__promise">
+              <p className="cr-privacy-dialog__kicker">Privacy by architecture</p>
+              <h2 id={titleId}>The privacy promise has an architecture.</h2>
+              <p id={descriptionId} className="cr-privacy-dialog__lede">
+                CloakResume is a static, client-side résumé workbench. Résumé and target-job content
+                is processed inside this browser tab and is not sent with requests for app assets.
               </p>
-            </Section>
 
-            <Section title="Your résumé stays on your device">
+              <dl className="cr-privacy-dialog__facts">
+                <div>
+                  <dt>Last updated</dt>
+                  <dd>
+                    <time dateTime={LAST_UPDATED_ISO}>{LAST_UPDATED}</time>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Document uploads</dt>
+                  <dd>None</dd>
+                </div>
+                <div>
+                  <dt>Product analytics</dt>
+                  <dd>None</dd>
+                </div>
+              </dl>
+            </div>
+
+            <div className="cr-privacy-dialog__path">
+              <div className="cr-privacy-dialog__path-head">
+                <span>Document path</span>
+                <span>Verified by design</span>
+              </div>
+              <div className="cr-privacy-dialog__path-list">
+                {DOCUMENT_PATH.map((item) => (
+                  <div key={item.number} className="cr-privacy-dialog__path-row">
+                    <span>{item.number}</span>
+                    <div>
+                      <h3>{item.title}</h3>
+                      <p>{item.meta}</p>
+                    </div>
+                    <strong>Local</strong>
+                  </div>
+                ))}
+              </div>
+
+              <div className="cr-privacy-dialog__absent">
+                <p>Routes not present</p>
+                <div>
+                  <span>Upload server — none</span>
+                  <span>Required account — none</span>
+                  <span>Product analytics — none</span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <article className="cr-privacy-policy" aria-label="Complete privacy policy">
+            <PolicySection marker="01 / Local processing" title="Your résumé stays on your device">
               <p>
-                All authoring — editing, template selection, ATS analysis, grammar checking, and PDF
-                export — happens locally in your browser. Your résumé is{" "}
-                <Strong>never uploaded</Strong> to any server. No content, metadata, or personal
-                details are transmitted over the network.
+                Editing, template selection, ATS analysis, spelling and grammar checks, and PDF
+                export run inside this browser tab. Your résumé bytes, target job description,
+                document metadata, and edits are not sent to a CloakResume upload service because no
+                file-upload route exists.
               </p>
-            </Section>
-
-            <Section title="Local storage">
               <p>
-                So your work survives between sessions, CloakResume saves your résumé, chosen
-                template, colour preference, and theme to your browser&apos;s{" "}
-                <code className="font-mono text-[12.5px] px-1 py-0.5 rounded bg-(--surface-3) text-(--ink-2)">
-                  localStorage
-                </code>
-                . This data stays on your device and is never sent anywhere. Clear it any time via
-                your browser&apos;s settings or the &quot;New&quot; button in the toolbar.
+                Results are created in browser memory and offered back to you as a PDF or a
+                versioned <code>.cloakresume.json</code> browser download.
               </p>
-            </Section>
+            </PolicySection>
 
-            <Section title="No personal data collected">
-              <p>We do not collect, store, or process any personal information, including:</p>
-              <ul className="mt-2 space-y-1 list-disc list-inside marker:text-(--ink-5)">
-                <li>Names, email addresses, or account details — there are no accounts</li>
-                <li>IP addresses or device identifiers</li>
-                <li>Usage analytics or behavioural tracking</li>
-                <li>Cookies or persistent identifiers beyond the localStorage entry above</li>
+            <PolicySection marker="02 / Local storage" title="Your working draft remains local">
+              <p>
+                CloakResume stores your résumé, target job description, chosen template, document
+                colour, paper size, and current editor section in your browser’s local storage so
+                work can survive between sessions on this device.
+              </p>
+              <p>
+                This data is never sent anywhere by CloakResume. Clear it through your browser’s
+                site-data settings or start a new document from the toolbar.
+              </p>
+            </PolicySection>
+
+            <PolicySection
+              marker="03 / Data & tracking"
+              title="No accounts, advertising, or analytics"
+            >
+              <p>
+                CloakResume does not ask for a name or email address, create user profiles, set
+                tracking cookies, or install third-party analytics and advertising scripts. The
+                application does not intentionally collect or retain personal information about how
+                you use the workbench.
+              </p>
+              <ul>
+                <li>No account or profile database</li>
+                <li>No résumé-content telemetry</li>
+                <li>No advertising identifiers or behavioural tracking</li>
+                <li>No cookies beyond browser-managed local app storage and cache</li>
               </ul>
-            </Section>
+            </PolicySection>
 
-            <Section title="No cookies or tracking">
+            <PolicySection marker="04 / App delivery" title="Static assets can use the network">
               <p>
-                CloakResume does not use cookies, analytics, or any third-party tracking scripts.
-                The application may use your browser&apos;s cache and a Service Worker to enable
-                offline use after the first visit; this data is stored only on your device.
+                The browser can download CloakResume’s code, fonts, and local language-tooling
+                assets when the app needs them. A Service Worker may cache those static assets for
+                later use. Résumé content and job-description text are not attached to those
+                requests.
               </p>
-            </Section>
+              <p>
+                The application is hosted as a static site. The hosting provider may retain standard
+                access logs—such as IP address, requested path, and timestamp—for security and
+                operations under its own privacy policy. Those requests do not contain résumé
+                content.
+              </p>
+            </PolicySection>
 
-            <Section title="Third-party services">
+            <PolicySection
+              marker="05 / Verification & rights"
+              title="The implementation is inspectable"
+            >
               <p>
-                CloakResume does not integrate any third-party analytics, advertising, or
-                data-collection services. The application is hosted as a static site; standard
-                web-server access logs (IP, requested path, timestamp) may be retained by the
-                hosting provider for security and operational purposes, subject to that
-                provider&apos;s own privacy policy. No résumé content is included in these logs.
+                Inspect the source at <PolicyLink href={REPO_URL}>CloakResume on GitHub</PolicyLink>
+                . CloakResume is part of <PolicyLink href={CLOAKYARD_URL}>Cloakyard</PolicyLink>, a
+                family of privacy-focused open-source tools by Sumit Sahoo.
               </p>
-            </Section>
+              <p>
+                Because CloakResume does not collect personal data, there is nothing for us to
+                disclose, correct, or delete on your behalf. Ask a policy question through{" "}
+                <PolicyLink href={`${REPO_URL}/issues`}>GitHub Issues</PolicyLink>.
+              </p>
+            </PolicySection>
 
-            <Section title="Open source">
+            <PolicySection marker="06 / Changes" title="Policy revisions remain visible">
               <p>
-                CloakResume is fully open source. You can inspect the source code at{" "}
-                <PolicyLink href={REPO_URL}>github.com/cloakyard/cloakresume</PolicyLink> to verify
-                these claims independently. CloakResume is part of{" "}
-                <PolicyLink href={CLOAKYARD_URL}>Cloakyard</PolicyLink> — a collection of
-                privacy-focused open-source tools by Sumit Sahoo.
+                If this policy changes, the revised version and date will appear in this document.
+                The privacy architecture—local processing, no required account, and no product
+                analytics—remains the product contract.
               </p>
-            </Section>
-
-            <Section title="Your rights (GDPR &amp; similar)">
-              <p>
-                Because we do not collect any personal data, there is nothing for us to disclose,
-                correct, or delete on your behalf. If you have questions about this policy, reach
-                out via <PolicyLink href={`${REPO_URL}/issues`}>GitHub Issues</PolicyLink>.
-              </p>
-            </Section>
-
-            <Section title="Changes to this policy">
-              <p>
-                If this policy ever changes, the updated version will be published here with a
-                revised date at the top. Given the privacy-by-design nature of this application,
-                significant changes are unlikely.
-              </p>
-            </Section>
-          </div>
+            </PolicySection>
+          </article>
         </div>
       </div>
     </div>,
@@ -219,29 +276,27 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
   );
 }
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function PolicySection({
+  marker,
+  title,
+  children,
+}: {
+  marker: string;
+  title: string;
+  children: React.ReactNode;
+}) {
   return (
-    <section>
-      <h3 className="text-[14px] font-semibold text-(--ink-1) tracking-[-0.005em] mb-1.5">
-        {title}
-      </h3>
-      {children}
+    <section className="cr-privacy-policy__section">
+      <p className="cr-privacy-policy__marker">{marker}</p>
+      <h3>{title}</h3>
+      <div className="cr-privacy-policy__copy">{children}</div>
     </section>
   );
 }
 
-function Strong({ children }: { children: React.ReactNode }) {
-  return <strong className="font-semibold text-(--ink-1)">{children}</strong>;
-}
-
 function PolicyLink({ href, children }: { href: string; children: React.ReactNode }) {
   return (
-    <a
-      href={href}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="text-(--brand) font-medium hover:underline underline-offset-2"
-    >
+    <a href={href} target="_blank" rel="noopener noreferrer">
       {children}
     </a>
   );

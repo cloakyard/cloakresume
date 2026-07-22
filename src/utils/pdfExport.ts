@@ -222,10 +222,9 @@ export async function exportResumeToPdf(
 
     for (let i = 0; i < pageEls.length; i++) {
       const pageEl = pageEls[i]!;
-      // Strip box-shadow/border-radius on the clone page — those are preview
-      // decoration, not part of the printed document. Also clear any dark-mode
-      // dim filter so the export always looks the way the template was designed
-      // for paper, regardless of whether the user has the app in dark mode.
+      // Strip preview-only decoration from the clone page. The live proof stays
+      // template-true in every theme; clearing filter remains a defensive export
+      // guard for pages loaded from older cached styles.
       pageEl.style.boxShadow = "none";
       pageEl.style.borderRadius = "0";
       pageEl.style.filter = "none";

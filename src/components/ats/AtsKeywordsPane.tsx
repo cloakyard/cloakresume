@@ -56,11 +56,11 @@ export function AtsKeywordsPane({
 }: AtsKeywordsPaneProps) {
   if (!hasJobDescription) {
     return (
-      <div className="bg-(--brand-50) border border-(--brand-200) rounded-xl p-4 sm:p-5 sm:max-w-[540px]">
-        <h4 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">
+      <section className="max-w-[540px] border-t border-(--brand-200) bg-(--brand-50) p-4 sm:p-5">
+        <h3 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">
           Add a target job description
-        </h4>
-        <p className="m-0 mb-3 text-[13px] leading-[1.5] text-(--ink-3)">
+        </h3>
+        <p className="m-0 mb-3 text-sm leading-[1.5] text-(--ink-3)">
           Paste the JD for the role you're targeting and CloakResume will show which of its keywords
           appear in your résumé — and which are missing.
         </p>
@@ -72,7 +72,7 @@ export function AtsKeywordsPane({
         >
           Open JD editor →
         </button>
-      </div>
+      </section>
     );
   }
 
@@ -85,24 +85,29 @@ export function AtsKeywordsPane({
         title="Keyword coverage"
         sub={`${report.keywords.matched.length} of ${total} matched from target JD`}
       />
-      <div className="h-1.5 bg-(--line-soft) rounded-full overflow-hidden mb-3 sm:mb-4">
+      <div
+        role="progressbar"
+        aria-label="Keyword coverage"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={Math.round(matchPct)}
+        className="mb-3 h-1.5 overflow-hidden bg-(--line-soft) sm:mb-4"
+      >
         <div
-          className="h-full rounded-full transition-[width] duration-500"
-          style={{ width: `${matchPct}%`, background: toneColor(matchPct) }}
+          className="h-full origin-left transition-transform duration-220"
+          style={{ transform: `scaleX(${matchPct / 100})`, background: toneColor(matchPct) }}
         />
       </div>
-      <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3 min-[900px]:grid-cols-4">
+      <div className="grid grid-cols-2 border-t border-(--line) sm:grid-cols-3 min-[900px]:grid-cols-4">
         {report.keywords.matched.map((k) => {
           const count = countKeywordHits(resume, k);
           return (
             <div
               key={`m-${k}`}
-              className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-lg bg-(--surface) min-w-0"
+              className="flex min-w-0 items-center gap-1.5 border-b border-r border-(--line) px-2 py-2.5"
             >
-              <span className="w-[18px] h-[18px] rounded-md grid place-items-center shrink-0 bg-(--ok-bg) text-(--ok)">
-                <Check className="w-3 h-3" />
-              </span>
-              <span className="flex-1 min-w-0 text-[12px] font-medium text-(--ink-1) whitespace-nowrap overflow-hidden text-ellipsis">
+              <Check aria-hidden="true" className="h-4 w-4 shrink-0 text-(--ok)" />
+              <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-(--ink-1)">
                 {k}
               </span>
               <span className="font-mono text-[10px] text-(--ink-5) font-medium shrink-0">
@@ -114,12 +119,10 @@ export function AtsKeywordsPane({
         {report.keywords.missing.map((k) => (
           <div
             key={`x-${k}`}
-            className="flex items-center gap-1.5 p-1.5 sm:p-2 border border-(--line) rounded-lg bg-(--surface) min-w-0"
+            className="flex min-w-0 items-center gap-1.5 border-b border-r border-(--line) px-2 py-2.5"
           >
-            <span className="w-[18px] h-[18px] rounded-md grid place-items-center shrink-0 bg-(--danger-bg) text-(--danger)">
-              <X className="w-3 h-3" />
-            </span>
-            <span className="flex-1 min-w-0 text-[12px] font-medium text-(--ink-4) line-through decoration-(--danger-border) whitespace-nowrap overflow-hidden text-ellipsis">
+            <X aria-hidden="true" className="h-4 w-4 shrink-0 text-(--danger)" />
+            <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-(--ink-4) line-through decoration-(--danger-border)">
               {k}
             </span>
             <span className="font-mono text-[10px] text-(--ink-5) font-medium shrink-0">

@@ -99,17 +99,17 @@ export function AtsInsightsPane({ report, onJumpToField }: AtsInsightsPaneProps)
 
   if (items.length === 0) {
     return (
-      <div className="bg-(--brand-50) border border-(--brand-200) rounded-xl p-4">
-        <h4 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">No insights yet</h4>
-        <p className="m-0 text-[13px] leading-[1.5] text-(--ink-3)">
+      <section className="border-t border-(--brand-200) bg-(--brand-50) p-4">
+        <h3 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">No insights yet</h3>
+        <p className="m-0 text-sm leading-[1.5] text-(--ink-3)">
           Add résumé content to get personalised wins and suggestions.
         </p>
-      </div>
+      </section>
     );
   }
 
   return (
-    <div className="flex flex-col gap-1.5 sm:gap-2">
+    <div className="flex flex-col border-t border-(--line)">
       {items.map((it) => (
         <InsightCard key={it.key} tone={it.tone} icon={it.icon} title={it.title} body={it.body} />
       ))}
@@ -156,10 +156,10 @@ function WritingDetails({
     return { key: `${base}-${n}`, issue };
   });
   return (
-    <div className="mt-2 bg-(--surface) border border-(--line-soft) rounded-xl overflow-hidden">
-      <div className="flex items-center gap-2 px-3 py-2.5 border-b border-(--line-soft) bg-(--surface-2)">
-        <PencilLine className="w-3.5 h-3.5 text-(--ink-4)" />
-        <span className="text-[12.5px] font-semibold text-(--ink-1)">Writing details</span>
+    <section className="mt-4 overflow-hidden border-t border-(--line)">
+      <div className="flex items-center gap-2 border-b border-(--line-soft) bg-(--surface-2) px-3 py-2.5">
+        <PencilLine aria-hidden="true" className="h-3.5 w-3.5 text-(--ink-4)" />
+        <h3 className="m-0 text-sm font-semibold text-(--ink-1)">Writing details</h3>
         <span className="ml-auto font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em]">
           {issues.length} finding{issues.length === 1 ? "" : "s"}
         </span>
@@ -170,11 +170,11 @@ function WritingDetails({
         ))}
       </ul>
       {overflow > 0 && (
-        <div className="px-3 py-2 text-[11px] text-(--ink-5) text-center border-t border-(--line-soft) bg-(--surface-2)">
+        <div className="border-t border-(--line-soft) bg-(--surface-2) px-3 py-2 text-center text-xs text-(--ink-5)">
           +{overflow} more — fix the ones above and re-scan.
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
@@ -196,7 +196,7 @@ function WritingDetailRow({
         {KIND_LABEL[issue.kind]}
       </span>
       <div className="flex-1 min-w-0 text-left">
-        <div className="text-[12.5px] text-(--ink-1) leading-snug">
+        <div className="text-sm leading-snug text-(--ink-1)">
           <mark className="bg-(--warn-bg) text-(--ink-1) px-1 rounded">{preview}</mark>
           {issue.suggestions.length > 0 && (
             <span className="text-(--ink-3)">
@@ -205,7 +205,7 @@ function WritingDetailRow({
             </span>
           )}
         </div>
-        <div className="text-[11px] text-(--ink-4) mt-0.5 truncate">{issue.segmentLabel}</div>
+        <div className="mt-0.5 truncate text-xs text-(--ink-4)">{issue.segmentLabel}</div>
       </div>
       {interactive && (
         <ArrowUpRight aria-hidden="true" className="shrink-0 w-3.5 h-3.5 text-(--ink-5) mt-0.5" />
@@ -218,7 +218,7 @@ function WritingDetailRow({
         <button
           type="button"
           onClick={() => onJumpToField?.(issue.segmentId)}
-          className="w-full flex items-start gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-(--surface-2) focus-visible:outline-none focus-visible:bg-(--surface-2) focus-visible:shadow-(--sh-focus)"
+          className="flex min-h-11 w-full items-start gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-(--surface-2) focus-visible:outline-none focus-visible:bg-(--surface-2) focus-visible:shadow-(--sh-focus)"
           aria-label={`Jump to ${issue.segmentLabel}`}
         >
           {content}
@@ -251,28 +251,20 @@ function InsightCard({
           : AlertTriangle;
 
   const iconColors: Record<InsightTone, string> = {
-    ok: "bg-(--ok-bg) text-(--ok)",
-    warn: "bg-(--warn-bg) text-(--warn)",
-    err: "bg-(--danger-bg) text-(--danger)",
+    ok: "text-(--ok)",
+    warn: "text-(--warn)",
+    err: "text-(--danger)",
   };
 
   return (
-    <div className="flex gap-2.5 p-2.5 sm:gap-3 sm:p-3.5 rounded-lg bg-(--surface) border border-(--line-soft) items-start">
-      <div
-        className={`w-7 h-7 rounded-md shrink-0 grid place-items-center mt-px ${iconColors[tone]}`}
-      >
-        <IconComp className="w-4 h-4" />
-      </div>
+    <article className="flex items-start gap-3 border-b border-(--line-soft) px-1 py-3.5">
+      <IconComp aria-hidden="true" className={`mt-px h-5 w-5 shrink-0 ${iconColors[tone]}`} />
       <div className="min-w-0 flex-1">
-        <h5 className="m-0 mb-0.5 text-[13px] font-semibold text-(--ink-1) tracking-[-0.005em] sm:text-[13.5px]">
+        <h3 className="m-0 mb-0.5 text-sm font-semibold tracking-[-0.005em] text-(--ink-1)">
           {title}
-        </h5>
-        {body && (
-          <p className="m-0 text-[12.5px] text-(--ink-3) leading-[1.5] sm:text-[13px] sm:leading-[1.55]">
-            {body}
-          </p>
-        )}
+        </h3>
+        {body && <p className="m-0 text-sm leading-[1.55] text-(--ink-3)">{body}</p>}
       </div>
-    </div>
+    </article>
   );
 }

@@ -90,7 +90,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                               next[i] = { ...item, bullets: [...item.bullets, ""] };
                               patch("custom", next);
                             }}
-                            className="inline-flex items-center gap-1 h-6 px-2 rounded-md text-[11.5px] text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
+                            className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
                           >
                             <Plus className="w-3 h-3" /> Bullet
                           </button>
@@ -125,6 +125,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                                 <div className="mt-2">{bHandle}</div>
                                 <div className="flex-1 min-w-0">
                                   <RichTextArea
+                                    ariaLabel={`Custom section bullet ${bi + 1}`}
                                     fieldId={`custom.${i}.bullets.${bi}`}
                                     value={b}
                                     rows={3}
@@ -147,7 +148,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                           </DragItem>
                         ))}
                       </DragList>
-                      <p className="text-[11.5px] text-(--ink-4) mt-2">
+                      <p className="text-sm text-(--ink-4) mt-2">
                         Tip: a single bullet renders as a paragraph in the resume.
                       </p>
                     </div>

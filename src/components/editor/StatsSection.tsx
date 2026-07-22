@@ -60,7 +60,7 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                       )
                     }
                   />
-                  <div className="grid grid-cols-[120px_1fr] gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-3">
                     <TextField
                       label="Value"
                       placeholder="15+"
@@ -120,7 +120,7 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                       )
                     }
                   />
-                  <div className="grid grid-cols-[140px_1fr] gap-3">
+                  <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
                     <TextField
                       label="Label"
                       placeholder="Visa"

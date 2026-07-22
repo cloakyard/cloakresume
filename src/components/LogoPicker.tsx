@@ -7,9 +7,10 @@
  * loading the entire 3000-icon Lucide set into the bundle.
  */
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, Search, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { LOGO_ICONS, findLogoIcon, searchLogoIcons } from "../utils/logoIcons.ts";
 
 interface LogoPickerProps {
@@ -18,14 +19,27 @@ interface LogoPickerProps {
 }
 
 const POPOVER_W = 320;
-const POPOVER_H_EST = 340;
+const POPOVER_H_EST = 364;
+const SAFE_EDGE = 16;
+const POPOVER_GAP = 6;
+
+type PopoverPlacement = "above" | "below";
 
 export function LogoPicker({ value, onChange }: LogoPickerProps) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
   const [query, setQuery] = useState("");
+  const dialogId = useId();
+  const searchId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    maxHeight: number;
+    placement: PopoverPlacement;
+  } | null>(null);
   const selected = findLogoIcon(value);
   const results = searchLogoIcons(query).slice(0, 80);
 
@@ -33,14 +47,28 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
     const btn = buttonRef.current;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();
-    const viewportH = window.innerHeight;
-    const viewportW = window.innerWidth;
-    const spaceBelow = viewportH - rect.bottom;
-    const spaceAbove = rect.top;
-    const flip = spaceBelow < POPOVER_H_EST + 12 && spaceAbove > spaceBelow;
-    const top = flip ? Math.max(8, rect.top - POPOVER_H_EST - 6) : rect.bottom + 6;
-    const left = Math.max(8, Math.min(rect.left, viewportW - POPOVER_W - 8));
-    setCoords({ top, left });
+    const visualViewport = window.visualViewport;
+    const viewportTop = visualViewport?.offsetTop ?? 0;
+    const viewportLeft = visualViewport?.offsetLeft ?? 0;
+    const viewportHeight = visualViewport?.height ?? window.innerHeight;
+    const viewportWidth = visualViewport?.width ?? window.innerWidth;
+    const viewportBottom = viewportTop + viewportHeight;
+    const viewportRight = viewportLeft + viewportWidth;
+    const width = Math.min(POPOVER_W, Math.max(0, viewportWidth - SAFE_EDGE * 2));
+    const safeTop = viewportTop + SAFE_EDGE;
+    const safeBottom = viewportBottom - SAFE_EDGE;
+    const belowTop = Math.max(safeTop, Math.min(rect.bottom + POPOVER_GAP, safeBottom));
+    const aboveBottom = Math.max(safeTop, Math.min(rect.top - POPOVER_GAP, safeBottom));
+    const availableBelow = Math.max(0, safeBottom - belowTop);
+    const availableAbove = Math.max(0, aboveBottom - safeTop);
+    const placement: PopoverPlacement =
+      availableBelow < POPOVER_H_EST && availableAbove > availableBelow ? "above" : "below";
+    const top = placement === "above" ? aboveBottom : belowTop;
+    const minLeft = viewportLeft + SAFE_EDGE;
+    const maxLeft = Math.max(minLeft, viewportRight - width - SAFE_EDGE);
+    const left = Math.max(minLeft, Math.min(rect.left, maxLeft));
+    const maxHeight = placement === "above" ? availableAbove : availableBelow;
+    setCoords({ top, left, width, maxHeight, placement });
   }, []);
 
   useLayoutEffect(() => {
@@ -52,9 +80,13 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
     if (!open) return;
     window.addEventListener("scroll", updateCoords, true);
     window.addEventListener("resize", updateCoords);
+    window.visualViewport?.addEventListener("resize", updateCoords);
+    window.visualViewport?.addEventListener("scroll", updateCoords);
     return () => {
       window.removeEventListener("scroll", updateCoords, true);
       window.removeEventListener("resize", updateCoords);
+      window.visualViewport?.removeEventListener("resize", updateCoords);
+      window.visualViewport?.removeEventListener("scroll", updateCoords);
     };
   }, [open, updateCoords]);
 
@@ -67,7 +99,10 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
       setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
     }
     document.addEventListener("mousedown", onClick);
     document.addEventListener("keydown", onKey);
@@ -79,67 +114,77 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
 
   return (
     <>
-      <button
-        ref={buttonRef}
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="w-full flex items-center gap-2 px-3 py-2 text-sm border border-(--line) rounded-md bg-(--surface) hover:border-[#d6dadf] transition-colors"
-      >
-        <span className="w-7 h-7 rounded-md bg-(--brand-100) ring-1 ring-(--brand-200) flex items-center justify-center text-(--brand-700) shrink-0">
-          {selected ? (
-            <selected.Icon className="w-4 h-4" />
-          ) : (
-            <span className="text-[10px] font-bold text-(--ink-5)">—</span>
-          )}
-        </span>
-        <span className="flex-1 text-left text-(--ink-2)">
-          {selected ? selected.name : "Choose logo icon…"}
-        </span>
+      <div className="flex items-stretch gap-1 w-full">
+        <button
+          ref={buttonRef}
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          aria-controls={open ? dialogId : undefined}
+          aria-label={`Logo icon: ${selected?.name ?? "none"}`}
+          className="min-w-0 flex-1 min-h-11 md:min-h-10 flex items-center gap-2 px-3 text-sm border border-(--line) rounded-md bg-(--surface) hover:border-(--color-rule-strong) transition-colors"
+        >
+          <span className="w-6 h-6 flex items-center justify-center text-(--brand) shrink-0">
+            {selected ? (
+              <selected.Icon className="w-4 h-4" />
+            ) : (
+              <span className="text-[10px] font-bold text-(--ink-5)">—</span>
+            )}
+          </span>
+          <span className="flex-1 truncate text-left text-(--ink-2)">
+            {selected ? selected.name : "Choose logo icon…"}
+          </span>
+          <ChevronDown className="w-3.5 h-3.5 text-(--ink-5) shrink-0" />
+        </button>
         {selected && (
-          <span
-            role="button"
-            tabIndex={0}
-            onClick={(e) => {
-              e.stopPropagation();
-              onChange(undefined);
-            }}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                e.stopPropagation();
-                onChange(undefined);
-              }
-            }}
-            className="text-(--ink-5) hover:text-(--danger) cursor-pointer transition-colors"
+          <button
+            type="button"
+            onClick={() => onChange(undefined)}
+            className="min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md text-(--ink-5) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) transition-colors"
             aria-label="Clear logo"
           >
-            <X className="w-3.5 h-3.5" />
-          </span>
+            <X className="w-4 h-4" />
+          </button>
         )}
-        <ChevronDown className="w-3.5 h-3.5 text-(--ink-5)" />
-      </button>
+      </div>
 
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
+            id={dialogId}
             ref={popoverRef}
-            className="popover fixed z-80 w-80 animate-scale-in"
-            style={{ top: coords.top, left: coords.left }}
+            data-state={presence.state}
+            role="dialog"
+            aria-label="Choose a logo icon"
+            className="cr-popover popover fixed overscroll-contain"
+            style={{
+              top: coords.top,
+              left: coords.left,
+              width: coords.width,
+              maxHeight: coords.maxHeight,
+              transform: coords.placement === "above" ? "translateY(-100%)" : undefined,
+              overflowY: "auto",
+            }}
           >
             <div className="relative mb-2">
               <Search className="w-4 h-4 text-(--ink-5) absolute top-1/2 -translate-y-1/2 left-2.5" />
               {/* oxlint-disable-next-line jsx/no-autofocus */}
               <input
+                id={searchId}
+                name="logo-icon-search"
+                autoComplete="off"
+                aria-label="Search logo icons"
                 type="text"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search icons…"
-                className="w-full pl-8 pr-3 py-2 text-sm border border-(--line) rounded-md bg-white/60 text-(--ink-1) placeholder:text-(--ink-5) focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus) transition-[border-color,box-shadow]"
+                className="w-full min-h-11 md:min-h-10 pl-8 pr-3 text-sm border border-(--line) rounded-md bg-(--surface) text-(--ink-1) placeholder:text-(--ink-5) focus:border-(--brand) transition-colors"
                 autoFocus
               />
             </div>
-            <div className="grid grid-cols-8 gap-1 max-h-65 overflow-y-auto cr-scroll">
+            <div className="grid grid-cols-5 min-[360px]:grid-cols-6 gap-1 max-h-65 overflow-y-auto overscroll-contain cr-scroll">
               {results.map((e) => {
                 const active = e.name === value;
                 return (
@@ -150,9 +195,12 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
                       onChange(e.name);
                       setOpen(false);
                       setQuery("");
+                      requestAnimationFrame(() => buttonRef.current?.focus());
                     }}
                     title={e.name}
-                    className={`aspect-square flex items-center justify-center rounded-md transition-colors ${
+                    aria-label={e.name}
+                    aria-pressed={active}
+                    className={`aspect-square min-h-11 md:min-h-10 flex items-center justify-center rounded-md transition-colors ${
                       active
                         ? "bg-(--brand-100) text-(--brand-700) ring-1 ring-(--brand-300)"
                         : "text-(--ink-3) hover:bg-(--ink-1)/5"
@@ -163,7 +211,7 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
                 );
               })}
               {results.length === 0 && (
-                <div className="col-span-8 py-6 text-center text-xs text-(--ink-5)">
+                <div className="col-span-5 min-[360px]:col-span-6 py-6 text-center text-xs text-(--ink-5)">
                   No icons match “{query}”.
                 </div>
               )}

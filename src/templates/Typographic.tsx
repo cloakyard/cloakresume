@@ -44,11 +44,11 @@ interface Props {
 
 export const Typographic = memo(function Typographic({ resume, palette }: Props) {
   const css = `
-    .tg-root { font-family: 'Geist', 'Inter', sans-serif; color: #111827; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .tg-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #111827; font-size: 9.4pt; line-height: 1.5; overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .tg-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; gap: 6mm; border-bottom: 3px solid #111827; padding-bottom: 3mm; margin-bottom: 7mm; }
     .tg-head > div:first-child { min-width: 0; }
-    .tg-name { font-size: 32pt; font-weight: 800; color: #0a0a0a; letter-spacing: -1.2px; line-height: 0.95; margin: 0; overflow-wrap: break-word; }
-    .tg-title { font-size: 10pt; color: ${palette.primary700}; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 2mm; overflow-wrap: break-word; }
+    .tg-name { font-size: 32pt; font-weight: 800; color: #0a0a0a; letter-spacing: -1.2px; line-height: 0.95; margin: 0; overflow-wrap: normal; }
+    .tg-title { font-size: 10pt; color: ${palette.primary700}; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; margin-top: 2mm; overflow-wrap: normal; }
     .tg-handle { font-size: 9pt; color: #6b7280; text-align: right; font-variant-numeric: tabular-nums; line-height: 1.4; max-width: 72mm; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
     .tg-handle strong { color: #0a0a0a; display: block; font-size: 9.4pt; font-weight: 700; margin-bottom: 0.5mm; letter-spacing: 0.3px; }
     .tg-contact { font-size: 9pt; color: #374151; overflow-wrap: anywhere; word-break: break-word; }
@@ -58,48 +58,48 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
     .tg-section-end { margin-bottom: 7mm; }
     .tg-marker { border-top: 1px solid #111827; padding-top: 2mm; min-width: 0; }
     .tg-marker-num { font-size: 22pt; font-weight: 800; color: ${palette.primary600}; line-height: 0.9; letter-spacing: -0.6px; font-variant-numeric: tabular-nums; }
-    .tg-marker-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 2.4px; color: #111827; font-weight: 700; margin-top: 2mm; overflow-wrap: break-word; }
+    .tg-marker-label { font-size: 9pt; text-transform: uppercase; letter-spacing: 2.4px; color: #111827; font-weight: 700; margin-top: 2mm; overflow-wrap: normal; }
     .tg-body { border-top: 1px solid #111827; padding-top: 2.5mm; min-width: 0; }
     .tg-body-cont { padding-top: 0; min-width: 0; }
     .tg-body > *:last-child, .tg-body-cont > *:last-child { margin-bottom: 0; }
-    .tg-summary { font-size: 10.4pt; line-height: 1.6; color: #111827; max-width: 148mm; font-weight: 400; letter-spacing: -0.1px; hyphens: auto; overflow-wrap: break-word; }
+    .tg-summary { font-size: 10.4pt; line-height: 1.6; color: #111827; max-width: 148mm; font-weight: 400; letter-spacing: -0.1px; hyphens: manual; overflow-wrap: normal; }
     .tg-job { display: grid; grid-template-columns: 32mm minmax(0, 1fr); gap: 4mm; margin-bottom: 4.5mm; page-break-inside: avoid; break-inside: avoid; }
     .tg-job:last-child { margin-bottom: 0; }
     .tg-job > div { min-width: 0; }
-    .tg-job-meta { font-size: 8.8pt; color: #6b7280; font-variant-numeric: tabular-nums; line-height: 1.4; overflow-wrap: break-word; }
+    .tg-job-meta { font-size: 8.8pt; color: #6b7280; font-variant-numeric: tabular-nums; line-height: 1.4; overflow-wrap: normal; }
     .tg-job-meta .yr { color: #0a0a0a; font-weight: 700; display: block; font-size: 9pt; margin-bottom: 0.5mm; }
-    .tg-job-title { font-size: 11pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.2px; line-height: 1.2; overflow-wrap: break-word; }
-    .tg-job-co { font-size: 9.4pt; color: ${palette.primary700}; font-weight: 600; margin: 0.8mm 0 1.5mm; overflow-wrap: break-word; }
+    .tg-job-title { font-size: 11pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.2px; line-height: 1.2; overflow-wrap: normal; }
+    .tg-job-co { font-size: 9.4pt; color: ${palette.primary700}; font-weight: 600; margin: 0.8mm 0 1.5mm; overflow-wrap: normal; }
     .tg-job ul { list-style: none; padding: 0; margin: 0; }
-    .tg-job li { font-size: 9.4pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #1f2937; overflow-wrap: break-word; }
+    .tg-job li { font-size: 9.4pt; line-height: 1.5; padding-left: 5mm; position: relative; margin-bottom: 1mm; color: #1f2937; overflow-wrap: normal; }
     .tg-job li::before { content: "›"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 800; font-size: 10pt; line-height: 1.3; }
     .tg-grid-2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4mm 6mm; }
     .tg-grid-2 > div { min-width: 0; }
     .tg-skill { margin-bottom: 2mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
-    .tg-skill-label { font-size: 9.2pt; font-weight: 700; color: #0a0a0a; letter-spacing: 0.2px; margin-bottom: 0.5mm; overflow-wrap: break-word; }
+    .tg-skill-label { font-size: 9.2pt; font-weight: 700; color: #0a0a0a; letter-spacing: 0.2px; margin-bottom: 0.5mm; overflow-wrap: normal; }
     .tg-skill-list { font-size: 9.2pt; color: #374151; line-height: 1.5; overflow-wrap: anywhere; word-break: break-word; }
     .tg-edu { margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .tg-edu-head { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
-    .tg-edu-title { font-size: 10pt; font-weight: 700; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .tg-edu-title { font-size: 10pt; font-weight: 700; color: #0a0a0a; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
     .tg-edu-meta { font-size: 8.8pt; color: #6b7280; font-variant-numeric: tabular-nums; white-space: nowrap; flex-shrink: 0; }
-    .tg-edu-school { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.5mm; overflow-wrap: break-word; }
-    .tg-edu-detail { font-size: 9pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .tg-edu-school { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.5mm; overflow-wrap: normal; }
+    .tg-edu-detail { font-size: 9pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: normal; }
     .tg-proj { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
     .tg-proj-head { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4mm; align-items: baseline; border-bottom: 1px dotted #d1d5db; padding-bottom: 1mm; margin-bottom: 1.2mm; }
-    .tg-proj-name { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; min-width: 0; overflow-wrap: break-word; }
-    .tg-proj-role { font-size: 8.8pt; color: #6b7280; font-style: italic; text-align: right; max-width: 60mm; overflow-wrap: break-word; }
+    .tg-proj-name { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; min-width: 0; overflow-wrap: normal; }
+    .tg-proj-role { font-size: 8.8pt; color: #6b7280; font-style: italic; text-align: right; max-width: 60mm; overflow-wrap: normal; }
     .tg-proj-label { font-size: 8.4pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 0.8mm 0 0.4mm; }
     .tg-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
-    .tg-proj-bullets li { font-size: 9.2pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .tg-proj-bullets li { font-size: 9.2pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: normal; }
     .tg-proj-bullets li::before { content: "›"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 800; font-size: 10pt; line-height: 1.3; }
     .tg-proj-stack { font-size: 8.6pt; color: ${palette.primary700}; font-weight: 600; letter-spacing: 0.1px; margin-top: 0.4mm; overflow-wrap: anywhere; }
-    .tg-cert, .tg-award, .tg-lang { font-size: 9.2pt; margin-bottom: 1.4mm; color: #1f2937; overflow-wrap: break-word; }
-    .tg-cert strong, .tg-award strong, .tg-lang strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
+    .tg-cert, .tg-award, .tg-lang { font-size: 9.2pt; margin-bottom: 1.4mm; color: #1f2937; overflow-wrap: normal; }
+    .tg-cert strong, .tg-award strong, .tg-lang strong { color: #0a0a0a; font-weight: 700; overflow-wrap: normal; }
     .tg-cert .meta, .tg-award .meta, .tg-lang .meta { color: #6b7280; font-variant-numeric: tabular-nums; }
-    .tg-inline { font-size: 9.2pt; color: #1f2937; line-height: 1.55; overflow-wrap: break-word; }
-    .tg-inline strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
-    .tg-extra { font-size: 9.2pt; margin-bottom: 1mm; color: #1f2937; overflow-wrap: break-word; }
-    .tg-extra strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
+    .tg-inline { font-size: 9.2pt; color: #1f2937; line-height: 1.55; overflow-wrap: normal; }
+    .tg-inline strong { color: #0a0a0a; font-weight: 700; overflow-wrap: normal; }
+    .tg-extra { font-size: 9.2pt; margin-bottom: 1mm; color: #1f2937; overflow-wrap: normal; }
+    .tg-extra strong { color: #0a0a0a; font-weight: 700; overflow-wrap: normal; }
   `;
 
   const padNum = (n: number) => String(n).padStart(2, "0");

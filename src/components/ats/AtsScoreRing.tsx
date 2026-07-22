@@ -24,7 +24,6 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
   const c = 2 * Math.PI * r;
   const clamped = clamp(score, 0, 100);
   const offset = c - (clamped / 100) * c;
-  const glow = `color-mix(in srgb, ${color} 32%, transparent)`;
   return (
     <div className="relative grid place-items-center" style={{ width: size, height: size }}>
       <svg
@@ -53,8 +52,7 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
           strokeDashoffset={offset}
           strokeLinecap="round"
           style={{
-            transition: "stroke-dashoffset .6s ease",
-            filter: `drop-shadow(0 0 4px ${glow})`,
+            transition: "stroke-dashoffset var(--duration-long) var(--ease-out)",
           }}
         />
       </svg>

@@ -107,7 +107,7 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
           {report.writingReady ? (
             <DimensionList dimensions={writingDimensions} />
           ) : (
-            <div className="text-[12.5px] text-(--ink-4) leading-[1.5] py-2">
+            <div className="py-2 text-sm leading-[1.5] text-(--ink-4)">
               Writing analysis hasn't completed yet. Once the scan finishes, spelling, grammar,
               style, and readability each get their own score.
             </div>
@@ -121,50 +121,50 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
             title="Top fixes"
             sub={`${topFixes.length} change${topFixes.length === 1 ? "" : "s"} · ~${Math.max(1, topFixes.length)} min`}
           />
-          <div className="flex flex-col gap-2">
+          <ol className="m-0 flex list-none flex-col p-0">
             {topFixes.map((issue, i) => {
               const tone =
                 issue.severity === "fail" ? "err" : issue.severity === "warn" ? "warn" : "info";
               return (
-                <div
+                <li
                   key={issue.message}
-                  className="flex gap-2.5 p-2.5 border border-(--line) rounded-lg bg-(--surface-2) items-start sm:flex-nowrap sm:gap-3 sm:p-3"
+                  className="flex items-start gap-3 border-b border-(--line-soft) py-3 last:border-b-0"
                 >
                   <div
                     className={[
-                      "w-[26px] h-[26px] rounded-md shrink-0 grid place-items-center font-mono text-[10px] font-bold border sm:w-[30px] sm:h-[30px]",
+                      "w-7 shrink-0 pt-0.5 font-mono text-xs font-bold",
                       tone === "err"
-                        ? "bg-(--danger-bg) text-(--danger) border-(--danger-border)"
+                        ? "text-(--danger)"
                         : tone === "warn"
-                          ? "bg-(--warn-bg) text-(--warn) border-(--warn-border)"
-                          : "bg-(--brand-50) text-(--brand) border-(--brand-200)",
+                          ? "text-(--warn)"
+                          : "text-(--brand)",
                     ].join(" ")}
                   >
                     {String(i + 1).padStart(2, "0")}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <div className="text-[13px] font-semibold text-(--ink-1) mb-0.5 leading-[1.35]">
+                    <div className="mb-0.5 text-sm font-semibold leading-[1.35] text-(--ink-1)">
                       {issue.message}
                     </div>
                     {issue.suggestion && (
-                      <div className="text-[12px] text-(--ink-4) leading-normal">
+                      <div className="text-sm leading-normal text-(--ink-4)">
                         {issue.suggestion}
                       </div>
                     )}
                   </div>
-                </div>
+                </li>
               );
             })}
-          </div>
+          </ol>
         </Card>
       )}
 
       {!hasFixes && (
-        <div className="flex items-center gap-2.5 p-3 sm:p-4 bg-(--ok-bg) border border-(--ok-border) rounded-xl">
-          <ShieldCheck className="w-5 h-5 shrink-0 text-(--ok)" />
+        <div className="flex items-center gap-2.5 border-t border-(--ok-border) bg-(--ok-bg) p-3 sm:p-4">
+          <ShieldCheck aria-hidden="true" className="h-5 w-5 shrink-0 text-(--ok)" />
           <div>
             <div className="text-[14px] font-semibold text-(--ink-1)">All clear</div>
-            <div className="text-[12.5px] text-(--ink-3) leading-normal mt-px">
+            <div className="mt-px text-sm leading-normal text-(--ink-3)">
               No blocking issues detected — your résumé is in great shape.
             </div>
           </div>
@@ -191,17 +191,24 @@ function DimensionList({ dimensions }: { dimensions: Dimension[] }) {
               /100
             </small>
           </div>
-          <div className="flex-1 min-w-0 flex flex-col">
-            <div className="text-[12px] font-medium text-(--ink-2) mb-1 sm:text-[11.5px] sm:text-(--ink-3)">
+          <div className="flex min-w-0 flex-1 flex-col">
+            <div className="mb-1 text-sm font-medium text-(--ink-2) sm:text-(--ink-3)">
               {d.label}
             </div>
-            <div className="h-0.5 bg-(--line-soft) rounded-full overflow-hidden sm:h-[3px]">
+            <div
+              role="progressbar"
+              aria-label={d.label}
+              aria-valuemin={0}
+              aria-valuemax={100}
+              aria-valuenow={d.percent}
+              className="h-[3px] overflow-hidden bg-(--line-soft)"
+            >
               <div
-                className="h-full rounded-full transition-[width] duration-500"
-                style={{ width: `${d.percent}%`, background: d.tone }}
+                className="h-full origin-left transition-transform duration-220"
+                style={{ transform: `scaleX(${d.percent / 100})`, background: d.tone }}
               />
             </div>
-            <div className="font-mono text-[9.5px] text-(--ink-5) mt-0.5 tracking-[0.01em] leading-[1.35] line-clamp-2 sm:text-[10.5px]">
+            <div className="mt-1 line-clamp-2 font-mono text-[10.5px] leading-[1.35] tracking-[0.01em] text-(--ink-5)">
               {d.caption}
             </div>
           </div>

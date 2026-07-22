@@ -5,13 +5,15 @@
  * when typing directly in this field.
  */
 
-import { useCallback, useEffect, useLayoutEffect, useRef } from "react";
+import { useCallback, useEffect, useId, useRef } from "react";
 import { useFormatRegistration, useFormatScope } from "./FormatScope.tsx";
 import { toggleSelection } from "../utils/richText.tsx";
 import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
 
 interface RichTextAreaProps {
   label?: string;
+  /** Accessible name when the visible label is rendered outside this component. */
+  ariaLabel?: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
@@ -22,10 +24,15 @@ interface RichTextAreaProps {
   autoGrow?: boolean;
   /** Opt-in target for the ATS jump-to-fix glow highlight. */
   fieldId?: string;
+  name?: string;
+  autoComplete?: string;
+  hint?: string;
+  invalid?: boolean;
 }
 
 export function RichTextArea({
   label,
+  ariaLabel,
   value,
   onChange,
   placeholder,
@@ -33,7 +40,14 @@ export function RichTextArea({
   compact = false,
   autoGrow = true,
   fieldId,
+  name,
+  autoComplete = "off",
+  hint,
+  invalid = false,
 }: RichTextAreaProps) {
+  const reactId = useId();
+  const inputId = `${reactId}-textarea`;
+  const hintId = `${reactId}-hint`;
   const ref = useRef<HTMLTextAreaElement>(null);
   const scope = useFormatScope();
   const registration = useFormatRegistration(ref, onChange);
@@ -55,18 +69,18 @@ export function RichTextArea({
     registration.setHandler();
   });
 
-  // Grow the textarea to fit its content so long bullets / summaries
-  // don't clip behind a scrollbar. Runs synchronously with layout to
-  // avoid a one-frame flash before the new height applies. `value`
-  // is read so the effect re-runs on every keystroke.
-  useLayoutEffect(() => {
+  // Coalesce height reads and writes into the next frame. This avoids
+  // forcing layout synchronously for every keystroke while preserving
+  // the auto-growing editor behaviour.
+  useEffect(() => {
     if (!autoGrow) return;
     const el = ref.current;
     if (!el) return;
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    value;
-    el.style.height = "auto";
-    el.style.height = `${el.scrollHeight}px`;
+    const frame = requestAnimationFrame(() => {
+      el.style.height = "auto";
+      el.style.height = `${el.scrollHeight}px`;
+    });
+    return () => cancelAnimationFrame(frame);
   }, [value, autoGrow]);
 
   const applyInline = (marker: string) => {
@@ -85,10 +99,20 @@ export function RichTextArea({
   const hasIssues = issues.length > 0;
 
   return (
-    <label className={label ? "cr-field" : "block"}>
-      {label && <span className="cr-field-label">{label}</span>}
+    <div className={label ? "cr-field" : "block"}>
+      {label && (
+        <label className="cr-field-label" htmlFor={inputId}>
+          {label}
+        </label>
+      )}
       <div className="relative">
         <textarea
+          id={inputId}
+          name={name ?? fieldId ?? "rich-text"}
+          autoComplete={autoComplete}
+          aria-label={label ? undefined : (ariaLabel ?? "Rich text")}
+          aria-describedby={hint ? hintId : undefined}
+          aria-invalid={invalid || undefined}
           ref={ref}
           data-field-id={fieldId}
           value={value}
@@ -100,7 +124,7 @@ export function RichTextArea({
           spellCheck={true}
           className={`cr-input font-[inherit] ${compact ? "cr-input--compact" : ""} ${
             autoGrow ? "resize-none overflow-hidden" : "resize-y"
-          } ${hasIssues ? "cr-input--has-issues" : ""}`}
+          } ${hasIssues ? "cr-input--has-issues" : ""}${invalid ? " cr-input--invalid" : ""}`}
           onKeyDown={(e) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
               e.preventDefault();
@@ -113,6 +137,14 @@ export function RichTextArea({
         />
         <FieldIssuesBadge issues={issues} onApplySuggestion={applySuggestion} />
       </div>
-    </label>
+      <span
+        id={hintId}
+        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
+        aria-live={invalid ? "polite" : undefined}
+        aria-hidden={hint ? undefined : true}
+      >
+        {hint || "\u00a0"}
+      </span>
+    </div>
   );
 }

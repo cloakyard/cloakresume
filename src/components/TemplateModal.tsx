@@ -1,14 +1,22 @@
 /**
  * Responsive template picker — bottom-sheet on mobile with drag-to-dismiss,
- * top-docked modal on tablet+. Renders a grid of live template previews.
+ * centred wide dialog on tablet+. Renders a grid of live template previews.
  */
 
 import { Search, X } from "lucide-react";
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useId, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { generateSampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
+import { useModalDialog } from "../utils/useModalDialog.ts";
 import { TemplatePreview } from "./TemplatePreview.tsx";
+
+const COUNT_FORMATTER = new Intl.NumberFormat(undefined, {
+  minimumIntegerDigits: 2,
+  useGrouping: false,
+});
 
 /**
  * A fresh "Start fresh" resume leaves every section empty, which makes the
@@ -30,6 +38,7 @@ function isResumeEmpty(r: ResumeData): boolean {
 }
 
 interface TemplateModalProps {
+  open: boolean;
   templateId: TemplateId;
   onChange: (id: TemplateId) => void;
   onClose: () => void;
@@ -38,6 +47,7 @@ interface TemplateModalProps {
 }
 
 export function TemplateModal({
+  open,
   templateId,
   onChange,
   onClose,
@@ -46,7 +56,15 @@ export function TemplateModal({
 }: TemplateModalProps) {
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
+  const presence = useAnimatedPresence(open);
+  const sheetRef = useModalDialog<HTMLDivElement>({
+    open: presence.mounted,
+    onClose,
+    initialFocusRef: closeRef,
+  });
   const [query, setQuery] = useState("");
 
   const grouped = useMemo(() => {
@@ -100,24 +118,25 @@ export function TemplateModal({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
-  return (
+  if (!presence.mounted) return null;
+
+  return createPortal(
     <div
-      className="print-hide fixed inset-0 z-80 flex items-end sm:items-start justify-center sm:pt-8 md:pt-12 sm:px-3 md:px-6 backdrop animate-scale-in"
+      className="cr-overlay print-hide fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
+      data-state={presence.state}
       role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Close template picker"
-        className="absolute inset-0"
-        style={{ background: "transparent" }}
-      />
       <div
         ref={sheetRef}
-        className="surface-glass relative flex flex-col w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] overflow-hidden rounded-t-2xl sm:rounded-2xl"
+        className="cr-dialog cr-dialog-wide cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0 min-[640px]:animate-scale-in"
         role="dialog"
         aria-modal="true"
-        aria-label="Choose a template"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
       >
         <div
           onTouchStart={onHandleTouchStart}
@@ -130,20 +149,24 @@ export function TemplateModal({
         <div className="flex flex-col gap-3 px-4 md:px-7 pt-2 sm:pt-5 md:pt-5.5 pb-3.5 border-b border-(--line-soft)/70">
           <div className="flex items-start gap-3">
             <div className="flex-1">
-              <div className="text-base md:text-lg font-semibold tracking-[-0.01em] text-(--ink-1)">
+              <h2
+                id={titleId}
+                className="text-base md:text-lg font-semibold tracking-[-0.01em] text-(--ink-1)"
+              >
                 Choose a template
-              </div>
-              <div className="text-[13px] text-(--ink-4) mt-0.5">
+              </h2>
+              <p id={descriptionId} className="mt-0.5 text-sm text-(--ink-4)">
                 Your content stays — only the layout changes
-              </div>
+              </p>
             </div>
             <button
+              ref={closeRef}
               type="button"
               onClick={onClose}
-              className="w-9 h-9 rounded-md grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              className="grid h-11 w-11 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
               aria-label="Close"
             >
-              <X className="w-4 h-4" />
+              <X aria-hidden="true" className="w-4 h-4" />
             </button>
           </div>
           <div className="relative">
@@ -153,29 +176,32 @@ export function TemplateModal({
             />
             <input
               type="search"
+              name="template-search"
+              autoComplete="off"
+              spellCheck={false}
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Search templates by name, style, or level…"
               aria-label="Search templates"
-              className="w-full h-10 pl-9 pr-9 rounded-lg border border-(--line) bg-(--surface-2) text-[13px] text-(--ink-1) placeholder:text-(--ink-4) outline-none transition-colors duration-100 focus:border-(--brand) focus:bg-(--surface) focus:shadow-[0_0_0_3px_var(--brand-100)]"
+              className="h-11 w-full rounded-md border border-(--line) bg-(--surface-2) pl-9 pr-11 text-sm text-(--ink-1) placeholder:text-(--ink-4) transition-colors duration-160 hover:border-(--color-rule-strong) focus-visible:border-(--brand) focus-visible:bg-(--surface)"
             />
-            {query && (
+            {query ? (
               <button
                 type="button"
                 onClick={() => setQuery("")}
                 aria-label="Clear search"
-                className="absolute right-2 top-1/2 -translate-y-1/2 w-6 h-6 rounded grid place-items-center text-(--ink-4) bg-transparent border-0 cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+                className="absolute right-0 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
               >
-                <X className="w-3.5 h-3.5" />
+                <X aria-hidden="true" className="w-3.5 h-3.5" />
               </button>
-            )}
+            ) : null}
           </div>
         </div>
-        <div className="overflow-y-auto px-4 md:px-7 py-4 md:py-5.5 cr-scroll">
+        <div className="cr-scroll overflow-y-auto overscroll-contain px-4 md:px-7 py-4 md:py-5.5">
           {!hasResults && (
-            <div className="py-12 text-center">
+            <div className="py-12 text-center" role="status">
               <div className="text-sm font-medium text-(--ink-1)">No templates match “{query}”</div>
-              <div className="text-[13px] text-(--ink-4) mt-1">
+              <div className="mt-1 text-sm text-(--ink-4)">
                 Try a different name, style, or experience level
               </div>
             </div>
@@ -186,57 +212,64 @@ export function TemplateModal({
                 <h3 className="text-[11.5px] md:text-xs font-semibold tracking-[0.12em] uppercase text-(--ink-1)">
                   {category.label}
                 </h3>
-                <span className="text-[11px] text-(--ink-4) tracking-[0.01em] hidden sm:inline">
+                <span className="hidden text-sm tracking-[0.01em] text-(--ink-4) sm:inline">
                   {category.description}
                 </span>
                 <span className="ml-auto text-[11px] font-mono text-(--ink-4) tabular-nums">
-                  {String(templates.length).padStart(2, "0")}
+                  {COUNT_FORMATTER.format(templates.length)}
                 </span>
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4.5">
                 {templates.map((t) => {
                   const active = t.id === templateId;
                   return (
-                    <button
-                      type="button"
+                    <article
                       key={t.id}
-                      onClick={() => onChange(t.id)}
-                      className={`border rounded-xl overflow-hidden bg-(--surface) cursor-pointer transition-all duration-150 flex flex-col text-left p-0 hover:border-(--brand-300) hover:-translate-y-0.5 hover:shadow-(--sh-md) ${
+                      className={`cr-template-card relative flex flex-col overflow-hidden rounded-lg border bg-(--surface) text-left transition-[border-color,transform] duration-160 ${
                         active
-                          ? "border-(--brand) shadow-[0_0_0_3px_var(--brand-100),var(--sh-md)]"
+                          ? "border-(--brand) shadow-[0_0_0_2px_var(--brand-100)]"
                           : "border-(--line)"
                       }`}
                     >
-                      <div className="aspect-8.5/11 bg-(--surface-2) overflow-hidden relative border-b border-(--line)">
-                        <TemplatePreview
-                          TemplateComponent={t.component}
-                          resume={previewResume}
-                          accent={primary}
-                        />
+                      <div aria-hidden="true">
+                        <div className="aspect-8.5/11 bg-(--surface-2) overflow-hidden relative border-b border-(--line)">
+                          <TemplatePreview
+                            TemplateComponent={t.component}
+                            resume={previewResume}
+                            accent={primary}
+                          />
+                        </div>
+                        <div className="px-4 pt-3.5 pb-4">
+                          <div className="font-semibold text-sm text-(--ink-1) flex items-center gap-2 justify-between">
+                            <span>{t.name}</span>
+                            {t.badge && (
+                              <span
+                                className={`text-[10.5px] font-semibold tracking-[0.04em] px-2 py-0.5 rounded-full border whitespace-nowrap ${
+                                  t.badge.tone === "ats"
+                                    ? "bg-(--ok-bg) text-(--ok) border-(--ok-border)"
+                                    : "bg-(--brand-50) text-(--brand-700) border-(--brand-200)"
+                                }`}
+                              >
+                                {t.badge.label}
+                              </span>
+                            )}
+                          </div>
+                          <div className="mt-1 text-sm leading-[1.5] text-(--ink-4)">
+                            {t.description}
+                          </div>
+                          <div className="mt-2.5 border-t border-(--line-soft) pt-2 font-mono text-[11px] font-medium tracking-[0.01em] text-(--ink-3)">
+                            {t.level}
+                          </div>
+                        </div>
                       </div>
-                      <div className="px-4 pt-3.5 pb-4">
-                        <div className="font-semibold text-sm text-(--ink-1) flex items-center gap-2 justify-between">
-                          <span>{t.name}</span>
-                          {t.badge && (
-                            <span
-                              className={`text-[10.5px] font-semibold tracking-[0.04em] px-2 py-0.5 rounded-full border whitespace-nowrap ${
-                                t.badge.tone === "ats"
-                                  ? "bg-(--ok-bg) text-(--ok) border-(--ok-border)"
-                                  : "bg-(--brand-50) text-(--brand-700) border-(--brand-200)"
-                              }`}
-                            >
-                              {t.badge.label}
-                            </span>
-                          )}
-                        </div>
-                        <div className="text-xs text-(--ink-4) mt-1 leading-[1.45]">
-                          {t.description}
-                        </div>
-                        <div className="mt-2.5 pt-2 border-t border-(--line-soft) text-[11px] font-medium text-(--ink-3) tracking-[0.01em]">
-                          {t.level}
-                        </div>
-                      </div>
-                    </button>
+                      <button
+                        type="button"
+                        onClick={() => onChange(t.id)}
+                        aria-label={`${t.name} template. ${t.description}. ${t.level}`}
+                        aria-pressed={active}
+                        className="absolute inset-0 cursor-pointer rounded-lg border-2 border-transparent bg-transparent transition-[border-color] duration-160 hover:border-(--brand-300) focus-visible:border-(--brand) focus-visible:shadow-[0_0_0_3px_var(--brand-100)]"
+                      />
+                    </article>
                   );
                 })}
               </div>
@@ -244,6 +277,7 @@ export function TemplateModal({
           ))}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }

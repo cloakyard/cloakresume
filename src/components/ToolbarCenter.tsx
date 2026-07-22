@@ -8,11 +8,12 @@
  */
 
 import { ChevronDown, LayoutTemplate, Palette } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { TEMPLATE_LIST } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 import { PRESET_COLORS } from "../utils/colors.ts";
 import { type PaperSize } from "../utils/paperSize.ts";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
@@ -48,7 +49,14 @@ export function ToolbarCenter({
   const isMobile = useMediaQuery(BP.mobile);
   const [templateOpen, setTemplateOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
+  const colorPresence = useAnimatedPresence(colorOpen);
   const colorRef = useRef<HTMLDivElement>(null);
+  const colorButtonRef = useRef<HTMLButtonElement>(null);
+  const [colorPopoverLayout, setColorPopoverLayout] = useState({
+    placement: "below" as "above" | "below",
+    maxHeight: 0,
+  });
+  const colorPopoverId = useId();
   const activeTemplate = TEMPLATE_LIST.find((t) => t.id === templateId) ?? TEMPLATE_LIST[0];
 
   useEffect(() => {
@@ -75,6 +83,52 @@ export function ToolbarCenter({
     if (isMobile) setColorOpen(false);
   }, [isMobile]);
 
+  useLayoutEffect(() => {
+    if (!colorOpen || isMobile) return;
+
+    const updateLayout = () => {
+      const trigger = colorButtonRef.current;
+      if (!trigger) return;
+      const rect = trigger.getBoundingClientRect();
+      const safeEdge = 16;
+      const gap = 8;
+      const below = Math.max(0, window.innerHeight - rect.bottom - gap - safeEdge);
+      const above = Math.max(0, rect.top - gap - safeEdge);
+      const placement = below >= Math.min(360, above) || below >= above ? "below" : "above";
+      setColorPopoverLayout({
+        placement,
+        maxHeight: Math.floor(placement === "below" ? below : above),
+      });
+    };
+
+    updateLayout();
+    window.addEventListener("resize", updateLayout);
+    return () => window.removeEventListener("resize", updateLayout);
+  }, [colorOpen, isMobile]);
+
+  useEffect(() => {
+    if (!colorOpen || isMobile) return;
+
+    const focusFrame = window.requestAnimationFrame(() => {
+      colorRef.current
+        ?.querySelector<HTMLElement>(
+          '[role="dialog"] button:not([disabled]), [role="dialog"] [role="slider"], [role="dialog"] input:not([disabled])',
+        )
+        ?.focus({ preventScroll: true });
+    });
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== "Escape") return;
+      event.preventDefault();
+      setColorOpen(false);
+      colorButtonRef.current?.focus({ preventScroll: true });
+    };
+    document.addEventListener("keydown", onKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(focusFrame);
+      document.removeEventListener("keydown", onKeyDown, true);
+    };
+  }, [colorOpen, isMobile]);
+
   return (
     <>
       {!isMobile && (
@@ -82,7 +136,7 @@ export function ToolbarCenter({
           <button
             type="button"
             onClick={() => setTemplateOpen(true)}
-            className="tb"
+            className="tb min-h-10"
             aria-haspopup="dialog"
             aria-label={`Template: ${activeTemplate.name}`}
           >
@@ -92,28 +146,40 @@ export function ToolbarCenter({
 
           <div className="relative" ref={colorRef}>
             <button
+              ref={colorButtonRef}
               type="button"
               onClick={() => setColorOpen((v) => !v)}
-              className="tb"
+              className="tb min-h-10"
               aria-haspopup="dialog"
               aria-expanded={colorOpen}
+              aria-controls={colorOpen ? colorPopoverId : undefined}
               aria-label="Primary colour"
             >
               <Palette className="w-4 h-4 text-(--ink-4)" />
               <span
                 className="w-2.5 h-2.5 rounded-full"
-                style={{ background: primary, border: "1px solid rgba(0,0,0,0.08)" }}
+                style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
               />
               <span className="hidden 2xl:inline">
                 <ColorName hex={primary} />
               </span>
-              <ChevronDown className="w-3.5 h-3.5 caret hidden 2xl:inline-block" />
+              <span aria-hidden="true" className="caret ml-0.5 hidden 2xl:inline-flex">
+                <ChevronDown className="h-3.5 w-3.5" />
+              </span>
             </button>
-            {colorOpen && (
+            {colorPresence.mounted && (
               <div
-                className="popover absolute top-full right-0 mt-2 w-[320px] animate-scale-in"
-                style={{ zIndex: 60 }}
+                id={colorPopoverId}
+                data-state={colorPresence.state}
+                className={`cr-popover popover absolute right-0 w-[320px] max-w-[calc(100vw-32px)] overflow-y-auto overscroll-contain ${
+                  colorPopoverLayout.placement === "below" ? "top-full mt-2" : "bottom-full mb-2"
+                }`}
+                style={{
+                  zIndex: "var(--z-popover)",
+                  maxHeight: `${colorPopoverLayout.maxHeight}px`,
+                }}
                 role="dialog"
+                aria-label="Primary colour"
               >
                 <ColorPickerContent primary={primary} onChange={onPrimaryChange} />
               </div>
@@ -124,18 +190,17 @@ export function ToolbarCenter({
         </>
       )}
 
-      {templateOpen && (
-        <TemplateModal
-          templateId={templateId}
-          onChange={(id) => {
-            onTemplateChange(id);
-            setTemplateOpen(false);
-          }}
-          onClose={() => setTemplateOpen(false)}
-          resume={resume}
-          primary={primary}
-        />
-      )}
+      <TemplateModal
+        open={templateOpen}
+        templateId={templateId}
+        onChange={(id) => {
+          onTemplateChange(id);
+          setTemplateOpen(false);
+        }}
+        onClose={() => setTemplateOpen(false)}
+        resume={resume}
+        primary={primary}
+      />
 
       <ToolbarCenterBridge
         onOpenTemplate={() => setTemplateOpen(true)}

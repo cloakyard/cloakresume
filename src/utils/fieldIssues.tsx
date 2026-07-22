@@ -18,6 +18,7 @@ import {
   useCallback,
   useContext,
   useEffect,
+  useId,
   useLayoutEffect,
   useMemo,
   useRef,
@@ -27,6 +28,7 @@ import {
 import { createPortal } from "react-dom";
 import { AlertCircle, BookOpen, SpellCheck, Sparkles } from "lucide-react";
 import type { GrammarIssue, GrammarIssueKind, GrammarReport } from "../types.ts";
+import { useAnimatedPresence } from "./useAnimatedPresence.ts";
 
 type FieldIssuesMap = Record<string, GrammarIssue[]>;
 
@@ -68,35 +70,39 @@ const KIND_META: Record<GrammarIssueKind, KindMeta> = {
   spelling: {
     label: "Spelling",
     icon: <SpellCheck className="w-3 h-3" />,
-    color: "var(--danger)",
-    bg: "var(--danger-bg)",
-    border: "var(--danger-border)",
+    color: "var(--color-status-danger)",
+    bg: "var(--color-status-danger-soft)",
+    border: "var(--color-status-danger)",
   },
   grammar: {
     label: "Grammar",
     icon: <AlertCircle className="w-3 h-3" />,
-    color: "var(--warn)",
-    bg: "var(--warn-bg)",
-    border: "var(--warn-border)",
+    color: "var(--color-status-warning)",
+    bg: "var(--color-status-warning-soft)",
+    border: "var(--color-status-warning)",
   },
   style: {
     label: "Style",
     icon: <Sparkles className="w-3 h-3" />,
-    color: "var(--warn)",
-    bg: "var(--warn-bg)",
-    border: "var(--warn-border)",
+    color: "var(--color-status-warning)",
+    bg: "var(--color-status-warning-soft)",
+    border: "var(--color-status-warning)",
   },
   readability: {
     label: "Readability",
     icon: <BookOpen className="w-3 h-3" />,
-    color: "var(--warn)",
-    bg: "var(--warn-bg)",
-    border: "var(--warn-border)",
+    color: "var(--color-status-warning)",
+    bg: "var(--color-status-warning-soft)",
+    border: "var(--color-status-warning)",
   },
 };
 
 const POPOVER_W = 320;
 const POPOVER_H_EST = 260;
+const SAFE_EDGE = 16;
+const POPOVER_GAP = 6;
+
+type PopoverPlacement = "above" | "below";
 
 /**
  * Field-level writing-issue chip. Sits inside the field frame (absolute,
@@ -118,21 +124,45 @@ export function FieldIssuesBadge({
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
+  const dialogId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const didFocusPopoverRef = useRef(false);
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    maxHeight: number;
+    placement: PopoverPlacement;
+  } | null>(null);
 
   const updateCoords = useCallback(() => {
     const btn = buttonRef.current;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();
-    const vpH = window.innerHeight;
-    const vpW = window.innerWidth;
-    const below = vpH - rect.bottom;
-    const flip = below < POPOVER_H_EST + 12 && rect.top > below;
-    const top = flip ? Math.max(8, rect.top - POPOVER_H_EST - 6) : rect.bottom + 6;
-    const left = Math.max(8, Math.min(rect.right - POPOVER_W, vpW - POPOVER_W - 8));
-    setCoords({ top, left });
+    const visualViewport = window.visualViewport;
+    const viewportTop = visualViewport?.offsetTop ?? 0;
+    const viewportLeft = visualViewport?.offsetLeft ?? 0;
+    const viewportHeight = visualViewport?.height ?? window.innerHeight;
+    const viewportWidth = visualViewport?.width ?? window.innerWidth;
+    const viewportBottom = viewportTop + viewportHeight;
+    const viewportRight = viewportLeft + viewportWidth;
+    const width = Math.min(POPOVER_W, Math.max(0, viewportWidth - SAFE_EDGE * 2));
+    const safeTop = viewportTop + SAFE_EDGE;
+    const safeBottom = viewportBottom - SAFE_EDGE;
+    const belowTop = Math.max(safeTop, Math.min(rect.bottom + POPOVER_GAP, safeBottom));
+    const aboveBottom = Math.max(safeTop, Math.min(rect.top - POPOVER_GAP, safeBottom));
+    const availableBelow = Math.max(0, safeBottom - belowTop);
+    const availableAbove = Math.max(0, aboveBottom - safeTop);
+    const placement: PopoverPlacement =
+      availableBelow < POPOVER_H_EST && availableAbove > availableBelow ? "above" : "below";
+    const top = placement === "above" ? aboveBottom : belowTop;
+    const minLeft = viewportLeft + SAFE_EDGE;
+    const maxLeft = Math.max(minLeft, viewportRight - width - SAFE_EDGE);
+    const left = Math.max(minLeft, Math.min(rect.right - width, maxLeft));
+    const maxHeight = placement === "above" ? availableAbove : availableBelow;
+    setCoords({ top, left, width, maxHeight, placement });
   }, []);
 
   useLayoutEffect(() => {
@@ -144,9 +174,13 @@ export function FieldIssuesBadge({
     if (!open) return;
     window.addEventListener("scroll", updateCoords, true);
     window.addEventListener("resize", updateCoords);
+    window.visualViewport?.addEventListener("resize", updateCoords);
+    window.visualViewport?.addEventListener("scroll", updateCoords);
     return () => {
       window.removeEventListener("scroll", updateCoords, true);
       window.removeEventListener("resize", updateCoords);
+      window.visualViewport?.removeEventListener("resize", updateCoords);
+      window.visualViewport?.removeEventListener("scroll", updateCoords);
     };
   }, [open, updateCoords]);
 
@@ -159,7 +193,10 @@ export function FieldIssuesBadge({
       setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
     }
     document.addEventListener("mousedown", handler);
     document.addEventListener("keydown", onKey);
@@ -167,6 +204,16 @@ export function FieldIssuesBadge({
       document.removeEventListener("mousedown", handler);
       document.removeEventListener("keydown", onKey);
     };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open || !coords || didFocusPopoverRef.current) return;
+    didFocusPopoverRef.current = true;
+    requestAnimationFrame(() => popoverRef.current?.focus());
+  }, [open, coords]);
+
+  useEffect(() => {
+    if (!open) didFocusPopoverRef.current = false;
   }, [open]);
 
   if (issues.length === 0) return null;
@@ -187,43 +234,54 @@ export function FieldIssuesBadge({
         }}
         aria-label={`${issues.length} writing ${issues.length === 1 ? "hint" : "hints"} — click to view`}
         aria-expanded={open}
-        className={`absolute z-10 inline-flex items-center gap-1 h-5 px-1.5 rounded-md border text-[10.5px] font-semibold tabular-nums leading-none shadow-(--sh-xs) transition-transform hover:scale-[1.04] active:scale-95 ${
-          className ?? "top-1.5 right-1.5"
+        aria-haspopup="dialog"
+        aria-controls={open ? dialogId : undefined}
+        className={`absolute z-10 min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center border-0 bg-transparent p-0 ${
+          className ?? "top-1/2 -translate-y-1/2 right-0"
         }`}
-        style={{
-          color: meta.color,
-          background: meta.bg,
-          borderColor: meta.border,
-        }}
       >
-        {meta.icon}
-        <span className="font-mono">{issues.length}</span>
+        <span
+          className="inline-flex items-center gap-1 min-h-5 px-1.5 rounded-md border text-[10.5px] font-semibold tabular-nums leading-none"
+          style={{ color: meta.color, background: meta.bg, borderColor: meta.border }}
+        >
+          {meta.icon}
+          <span className="font-mono">{issues.length}</span>
+        </span>
       </button>
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
+            id={dialogId}
             ref={popoverRef}
+            data-state={presence.state}
             role="dialog"
+            tabIndex={-1}
             aria-label="Writing hints"
-            className="popover fixed z-80 animate-scale-in"
-            style={{ top: coords.top, left: coords.left, width: POPOVER_W }}
+            className="cr-popover popover fixed overscroll-contain"
+            style={{
+              top: coords.top,
+              left: coords.left,
+              width: coords.width,
+              maxHeight: coords.maxHeight,
+              transform: coords.placement === "above" ? "translateY(-100%)" : undefined,
+              overflowY: "auto",
+            }}
           >
             <div className="flex items-center justify-between mb-1.5 px-0.5">
               <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.08em] text-(--ink-4)">
                 {issues.length} writing {issues.length === 1 ? "hint" : "hints"}
               </span>
-              <span className="text-[11px] text-(--ink-5)">Esc to close</span>
+              <span className="font-mono text-[10.5px] text-(--ink-5)">Esc to close</span>
             </div>
-            <div className="max-h-[240px] overflow-y-auto cr-scroll -mx-0.5 px-0.5 space-y-2">
+            <div className="-mx-0.5 divide-y divide-(--line) px-0.5">
               {issues.map((issue, i) => {
                 const im = KIND_META[issue.kind];
                 return (
                   <div
                     // oxlint-disable-next-line jsx/no-array-index-key
                     key={i}
-                    className="rounded-lg border bg-white/60 p-2"
-                    style={{ borderColor: "var(--line)" }}
+                    className="py-2.5 first:pt-2 last:pb-0"
                   >
                     <div className="flex items-center gap-1.5 mb-1 min-w-0">
                       <span
@@ -240,7 +298,7 @@ export function FieldIssuesBadge({
                         &ldquo;{issue.actual}&rdquo;
                       </span>
                     </div>
-                    <div className="text-[12px] text-(--ink-2) leading-snug">{issue.reason}</div>
+                    <div className="text-sm leading-[1.5] text-(--ink-2)">{issue.reason}</div>
                     {issue.suggestions.length > 0 && onApplySuggestion && (
                       <div className="mt-1.5 flex flex-wrap gap-1">
                         {issue.suggestions.map((s) => (
@@ -250,8 +308,9 @@ export function FieldIssuesBadge({
                             onClick={() => {
                               onApplySuggestion(issue.actual, s);
                               setOpen(false);
+                              requestAnimationFrame(() => buttonRef.current?.focus());
                             }}
-                            className="inline-flex items-center h-5 px-1.5 rounded text-[11px] font-semibold text-(--brand) bg-(--brand-50) border border-(--brand-100) hover:bg-(--brand-100) transition-colors"
+                            className="inline-flex min-h-11 items-center rounded-md border border-(--brand-100) bg-(--brand-50) px-2 text-sm font-semibold text-(--brand) transition-colors hover:bg-(--brand-100) md:min-h-10"
                           >
                             {s}
                           </button>

@@ -33,7 +33,7 @@ export function useMediaQuery(query: string): boolean {
 export const BP = {
   /** `true` below 1024px — collapses the desktop 3-column shell. */
   mobile: "(max-width: 1023px)",
-  /** `true` below 768px — stacks onboarding tiles, compresses header. */
+  /** `true` below 768px — stacks landing actions and compresses the header. */
   narrow: "(max-width: 767px)",
   /** `true` below 480px — drops non-essential labels. */
   tiny: "(max-width: 479px)",

@@ -33,59 +33,59 @@ interface Props {
 export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .mm-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.5pt; line-height: 1.45; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .mm-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #1f2937; font-size: 9.5pt; line-height: 1.45; overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .mm-head { border-bottom: 3px solid ${palette.primary600}; padding-bottom: 4mm; margin-bottom: 6mm; display: flex; align-items: flex-start; gap: 5mm; }
     .mm-head-body { flex: 1; min-width: 0; }
     .mm-logo { width: 16mm; height: 16mm; border-radius: 4mm; background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .mm-name { font-size: 22pt; font-weight: 700; color: #111827; letter-spacing: -0.3px; margin: 0; overflow-wrap: break-word; }
-    .mm-title { font-size: 11pt; color: ${palette.primary600}; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; margin-top: 1.2mm; overflow-wrap: break-word; }
+    .mm-name { font-size: 22pt; font-weight: 700; color: #111827; letter-spacing: -0.3px; margin: 0; overflow-wrap: normal; }
+    .mm-title { font-size: 11pt; color: ${palette.primary600}; font-weight: 600; letter-spacing: 0.4px; text-transform: uppercase; margin-top: 1.2mm; overflow-wrap: normal; }
     .mm-contact { display: flex; flex-wrap: wrap; gap: 3mm 5mm; margin-top: 4mm; font-size: 8.6pt; color: #4b5563; }
     .mm-contact span { display: inline-flex; align-items: center; gap: 1.2mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
     .mm-contact svg { color: ${palette.primary600}; flex-shrink: 0; }
-    .mm-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.5px; color: ${palette.primary600}; font-weight: 700; margin: 5.5mm 0 3mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; overflow-wrap: break-word; }
+    .mm-h2 { font-size: 9.4pt; text-transform: uppercase; letter-spacing: 1.5px; color: ${palette.primary600}; font-weight: 700; margin: 5.5mm 0 3mm; display: flex; align-items: center; gap: 3mm; break-after: avoid; page-break-after: avoid; overflow-wrap: normal; }
     .mm-h2::after { content: ""; flex: 1; height: 1px; background: #e5e7eb; }
-    .mm-summary { font-size: 9.5pt; line-height: 1.55; color: #1e293b; overflow-wrap: break-word; }
+    .mm-summary { font-size: 9.5pt; line-height: 1.55; color: #1e293b; overflow-wrap: normal; }
     .mm-grid { display: grid; grid-template-columns: 28mm minmax(0, 1fr); gap: 3mm 5mm; }
     .mm-job { display: grid; grid-template-columns: 38mm minmax(0, 1fr); gap: 4mm; margin-bottom: 4mm; page-break-inside: avoid; break-inside: avoid; }
     .mm-job > div { min-width: 0; }
     .mm-job-head { margin-bottom: 0; }
     .mm-job-bullet { margin-bottom: 0; }
     .mm-job-bullet-last { margin-bottom: 4mm; }
-    .mm-jobmeta { font-size: 8.5pt; color: #6b7280; overflow-wrap: break-word; }
-    .mm-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9.2pt; display: block; margin-bottom: 0.5mm; overflow-wrap: break-word; }
+    .mm-jobmeta { font-size: 8.5pt; color: #6b7280; overflow-wrap: normal; }
+    .mm-jobmeta .co { color: ${palette.primary700}; font-weight: 700; font-size: 9.2pt; display: block; margin-bottom: 0.5mm; overflow-wrap: normal; }
     .mm-jobmeta .dates { display: block; margin-top: 0.5mm; }
-    .mm-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.5mm; overflow-wrap: break-word; }
+    .mm-jobtitle { font-size: 10pt; font-weight: 700; color: #111827; margin-bottom: 1.5mm; overflow-wrap: normal; }
     .mm-job ul { list-style: none; padding: 0; margin: 0; }
-    .mm-job li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
+    .mm-job li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: normal; }
     .mm-job li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary600}; border-radius: 50%; }
     .mm-ul-bullet { list-style: none; padding: 0; margin: 0; }
-    .mm-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: break-word; }
+    .mm-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 1mm; color: #27272a; overflow-wrap: normal; }
     .mm-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.6mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary600}; border-radius: 50%; }
     .mm-skill-col { display: grid; grid-template-columns: 36mm minmax(0, 1fr); gap: 2mm 4mm; margin-bottom: 1.2mm; font-size: 9pt; page-break-inside: avoid; break-inside: avoid; }
-    .mm-skill-label { color: #111827; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
+    .mm-skill-label { color: #111827; font-weight: 700; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: normal; }
     .mm-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .mm-skill-list { color: #27272a; min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
     .mm-proj { border-left: 2px solid ${palette.primary600}; padding: 0 0 0 4mm; margin-bottom: 3mm; page-break-inside: avoid; break-inside: avoid; }
     .mm-projhead { display: flex; justify-content: space-between; align-items: baseline; gap: 3mm; flex-wrap: wrap; }
-    .mm-projname { font-size: 9.8pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: break-word; }
+    .mm-projname { font-size: 9.8pt; font-weight: 700; color: #111827; min-width: 0; overflow-wrap: normal; }
     .mm-proj-label { font-size: 7.8pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary700}; margin: 1mm 0 0.4mm; }
     .mm-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
-    .mm-proj-bullets li { font-size: 8.9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #374151; overflow-wrap: break-word; }
+    .mm-proj-bullets li { font-size: 8.9pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #374151; overflow-wrap: normal; }
     .mm-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .mm-projstack { font-size: 8.3pt; color: ${palette.primary700}; font-weight: 600; margin-top: 1mm; overflow-wrap: anywhere; }
     .mm-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 1.5mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .mm-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .mm-edutitle { font-weight: 700; color: #111827; font-size: 9.4pt; overflow-wrap: break-word; }
-    .mm-eduschool { color: ${palette.primary700}; font-size: 8.8pt; overflow-wrap: break-word; }
+    .mm-edutitle { font-weight: 700; color: #111827; font-size: 9.4pt; overflow-wrap: normal; }
+    .mm-eduschool { color: ${palette.primary700}; font-size: 8.8pt; overflow-wrap: normal; }
     .mm-edumeta { color: #6b7280; font-size: 8.6pt; flex-shrink: 0; }
     .mm-three { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr); gap: 4mm; }
     .mm-three > div { min-width: 0; }
-    .mm-cert { font-size: 8.8pt; margin-bottom: 1.5mm; overflow-wrap: break-word; }
-    .mm-cert strong { color: #111827; display: block; overflow-wrap: break-word; }
+    .mm-cert { font-size: 8.8pt; margin-bottom: 1.5mm; overflow-wrap: normal; }
+    .mm-cert strong { color: #111827; display: block; overflow-wrap: normal; }
     .mm-cert .year { color: #6b7280; font-style: italic; }
-    .mm-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.4mm 1.8mm; margin: 0.4mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
-    .mm-kv { font-size: 8.8pt; margin-bottom: 1.2mm; overflow-wrap: break-word; }
-    .mm-kv strong { color: #111827; overflow-wrap: break-word; }
+    .mm-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.4mm 1.8mm; margin: 0.4mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
+    .mm-kv { font-size: 8.8pt; margin-bottom: 1.2mm; overflow-wrap: normal; }
+    .mm-kv strong { color: #111827; overflow-wrap: normal; }
   `;
 
   const atoms: React.ReactNode[] = [];

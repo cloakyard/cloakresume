@@ -8,9 +8,10 @@
  * date so the user doesn't have to remember the exact spelling.
  */
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 
 interface MonthYearFieldProps {
   label: string;
@@ -40,6 +41,10 @@ const MONTHS = [
 // graduation dates a few years out.
 const YEAR_RANGE_BACK = 60;
 const YEAR_RANGE_FORWARD = 10;
+const POPOVER_W = 288;
+const POPOVER_H_EST = 364;
+const SAFE_EDGE = 16;
+const POPOVER_GAP = 6;
 
 interface Parsed {
   month: number | null; // 0–11, null means no month set
@@ -80,15 +85,25 @@ export function MonthYearField({
   placeholder,
 }: MonthYearFieldProps) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
   const [showYearPicker, setShowYearPicker] = useState(false);
+  const labelId = useId();
+  const dialogId = useId();
+  const valueId = useId();
   const [yearCursor, setYearCursor] = useState<number>(() => {
     const p = parseValue(value);
     return p.year ?? new Date().getFullYear();
   });
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const didFocusPopoverRef = useRef(false);
   const selectedYearRef = useRef<HTMLButtonElement>(null);
-  const [coords, setCoords] = useState<{ top: number; left: number } | null>(null);
+  const [coords, setCoords] = useState<{
+    top: number;
+    left: number;
+    width: number;
+    maxHeight: number;
+  } | null>(null);
 
   const parsed = useMemo(() => parseValue(value), [value]);
   const todayYear = new Date().getFullYear();
@@ -101,36 +116,61 @@ export function MonthYearField({
 
   // Compute popover position relative to the trigger button using fixed
   // coords — the popover is portaled out of any scroll container so it
-  // no longer gets clipped.
+  // no longer gets clipped. visualViewport offsets keep it inside the
+  // actually visible area when a software keyboard or browser zoom shifts
+  // that viewport away from the layout viewport origin.
   const updateCoords = useCallback(() => {
-    const POPOVER_W = 288; // matches w-72 (18rem)
-    const POPOVER_H_EST = 300; // rough — enough to decide flip above vs below
     const btn = buttonRef.current;
     if (!btn) return;
     const rect = btn.getBoundingClientRect();
-    const viewportH = window.innerHeight;
-    const viewportW = window.innerWidth;
-    const spaceBelow = viewportH - rect.bottom;
-    const spaceAbove = rect.top;
-    const flip = spaceBelow < POPOVER_H_EST + 12 && spaceAbove > spaceBelow;
-    const top = flip ? Math.max(8, rect.top - POPOVER_H_EST - 6) : rect.bottom + 6;
-    const left = Math.max(8, Math.min(rect.left, viewportW - POPOVER_W - 8));
-    setCoords({ top, left });
+    const visualViewport = window.visualViewport;
+    const viewportTop = visualViewport?.offsetTop ?? 0;
+    const viewportLeft = visualViewport?.offsetLeft ?? 0;
+    const viewportWidth = visualViewport?.width ?? window.innerWidth;
+    const viewportHeight = visualViewport?.height ?? window.innerHeight;
+    const viewportRight = viewportLeft + viewportWidth;
+    const viewportBottom = viewportTop + viewportHeight;
+    const width = Math.min(POPOVER_W, Math.max(0, viewportWidth - SAFE_EDGE * 2));
+    const viewportContentTop = viewportTop + SAFE_EDGE;
+    const viewportContentBottom = viewportBottom - SAFE_EDGE;
+    const belowTop = Math.max(viewportContentTop, rect.bottom + POPOVER_GAP);
+    const aboveBottom = Math.min(viewportContentBottom, rect.top - POPOVER_GAP);
+    const spaceBelow = Math.max(0, viewportContentBottom - belowTop);
+    const spaceAbove = Math.max(0, aboveBottom - viewportContentTop);
+    const desiredHeight = popoverRef.current?.scrollHeight ?? POPOVER_H_EST;
+    const flip = spaceBelow < Math.min(desiredHeight, POPOVER_H_EST) && spaceAbove > spaceBelow;
+    const maxHeight = flip ? spaceAbove : spaceBelow;
+    const renderedHeight = Math.min(desiredHeight, maxHeight);
+    const top = flip ? Math.max(viewportContentTop, aboveBottom - renderedHeight) : belowTop;
+    const left = Math.max(
+      viewportLeft + SAFE_EDGE,
+      Math.min(rect.left, viewportRight - width - SAFE_EDGE),
+    );
+    setCoords({ top, left, width, maxHeight });
   }, []);
 
   useLayoutEffect(() => {
     if (!open) return;
     updateCoords();
-  }, [open, updateCoords]);
+    // The first pass mounts the portal; the second can use its real scroll
+    // height instead of the conservative pre-mount estimate.
+    const frame = requestAnimationFrame(updateCoords);
+    return () => cancelAnimationFrame(frame);
+  }, [open, showYearPicker, updateCoords]);
 
   useEffect(() => {
     if (!open) return;
     // Capture-phase scroll listener catches any ancestor scroll container.
+    const visualViewport = window.visualViewport;
     window.addEventListener("scroll", updateCoords, true);
     window.addEventListener("resize", updateCoords);
+    visualViewport?.addEventListener("scroll", updateCoords);
+    visualViewport?.addEventListener("resize", updateCoords);
     return () => {
       window.removeEventListener("scroll", updateCoords, true);
       window.removeEventListener("resize", updateCoords);
+      visualViewport?.removeEventListener("scroll", updateCoords);
+      visualViewport?.removeEventListener("resize", updateCoords);
     };
   }, [open, updateCoords]);
 
@@ -143,7 +183,10 @@ export function MonthYearField({
       setOpen(false);
     }
     function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        buttonRef.current?.focus();
+      }
     }
     document.addEventListener("mousedown", handler);
     document.addEventListener("keydown", onKey);
@@ -162,7 +205,22 @@ export function MonthYearField({
 
   // Reset internal picker state whenever the popover closes.
   useEffect(() => {
-    if (!open) setShowYearPicker(false);
+    if (!presence.mounted) {
+      setShowYearPicker(false);
+      setCoords(null);
+    }
+  }, [presence.mounted]);
+
+  useEffect(() => {
+    if (!open || !coords || didFocusPopoverRef.current) return;
+    didFocusPopoverRef.current = true;
+    requestAnimationFrame(() => {
+      popoverRef.current?.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
+    });
+  }, [open, coords]);
+
+  useEffect(() => {
+    if (!open) didFocusPopoverRef.current = false;
   }, [open]);
 
   const commit = (patch: Partial<Parsed>) => {
@@ -172,6 +230,11 @@ export function MonthYearField({
       next.year = null;
     }
     onChange(formatValue(next));
+  };
+
+  const closeAndReturnFocus = () => {
+    setOpen(false);
+    requestAnimationFrame(() => buttonRef.current?.focus());
   };
 
   const displayLabel = value.trim() || placeholder || "Select…";
@@ -188,7 +251,9 @@ export function MonthYearField({
 
   return (
     <div className="cr-field">
-      <span className="cr-field-label">{label}</span>
+      <span id={labelId} className="cr-field-label">
+        {label}
+      </span>
       <div className="relative">
         <button
           ref={buttonRef}
@@ -196,50 +261,63 @@ export function MonthYearField({
           onClick={() => setOpen((v) => !v)}
           aria-haspopup="dialog"
           aria-expanded={open}
-          className={`cr-input flex items-center gap-2 text-left ${hasValue ? "pr-9" : ""} ${
+          aria-controls={open ? dialogId : undefined}
+          aria-labelledby={`${labelId} ${valueId}`}
+          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue ? "pr-12" : ""} ${
             open ? "border-(--brand)! shadow-(--sh-focus)!" : ""
           }`}
         >
           <Calendar className="w-4 h-4 text-(--brand) shrink-0" />
-          <span className={`flex-1 truncate ${hasValue ? "text-(--ink-1)" : "text-(--ink-5)"}`}>
+          <span
+            id={valueId}
+            className={`flex-1 truncate ${hasValue ? "text-(--ink-1)" : "text-(--ink-5)"}`}
+          >
             {displayLabel}
           </span>
         </button>
         {hasValue && (
           <button
             type="button"
-            aria-label="Clear"
+            aria-label={`Clear ${label.toLowerCase()}`}
             onClick={(e) => {
               e.stopPropagation();
               onChange("");
             }}
-            className="absolute top-1/2 right-2 -translate-y-1/2 p-1 rounded text-(--ink-5) hover:text-(--danger) hover:bg-(--danger-bg) transition-colors"
+            className="absolute top-1/2 right-0 -translate-y-1/2 min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md text-(--ink-5) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) transition-colors"
           >
             <X className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
 
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
+            id={dialogId}
             ref={popoverRef}
+            data-state={presence.state}
             role="dialog"
-            aria-label="Select month and year"
-            className="popover fixed z-80 w-72 space-y-2 animate-scale-in"
-            style={{ top: coords.top, left: coords.left }}
+            aria-labelledby={labelId}
+            className="cr-popover popover fixed space-y-2 overscroll-contain"
+            style={{
+              top: coords.top,
+              left: coords.left,
+              width: coords.width,
+              maxHeight: coords.maxHeight,
+              overflowY: "auto",
+            }}
           >
             {allowPresent && (
               <button
                 type="button"
                 onClick={() => {
                   commit({ isPresent: true });
-                  setOpen(false);
+                  closeAndReturnFocus();
                 }}
-                className={`w-full px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
+                className={`w-full min-h-11 md:min-h-10 px-3 rounded-md text-xs font-semibold transition-colors ${
                   parsed.isPresent
-                    ? "bg-(--brand) text-white"
+                    ? "bg-(--color-accent) text-(--color-accent-ink)"
                     : "bg-(--brand-50) text-(--brand-700) hover:bg-(--brand-100)"
                 }`}
               >
@@ -255,7 +333,7 @@ export function MonthYearField({
                 onClick={() => setYearCursor((y) => y - 1)}
                 disabled={showYearPicker}
                 aria-label="Previous year"
-                className={`p-1 rounded-md transition-[color,background-color,transform] active:scale-90 ${
+                className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md transition-colors ${
                   showYearPicker
                     ? "text-(--ink-6) cursor-not-allowed"
                     : "text-(--ink-4) hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
@@ -269,16 +347,19 @@ export function MonthYearField({
                 onClick={() => setShowYearPicker((v) => !v)}
                 aria-expanded={showYearPicker}
                 aria-label="Select year"
-                className={`flex items-center gap-0.5 font-mono text-xs font-semibold tabular-nums rounded-md px-2 py-0.5 transition-colors select-none ${
+                className={`min-h-11 md:min-h-10 flex items-center gap-0.5 font-mono text-xs font-semibold tabular-nums rounded-md px-3 transition-colors select-none ${
                   showYearPicker
                     ? "bg-(--brand-50) text-(--brand)"
                     : "text-(--ink-2) hover:bg-(--ink-1)/5"
                 }`}
               >
                 {yearCursor}
-                <ChevronDown
-                  className={`w-3 h-3 transition-transform ${showYearPicker ? "rotate-180" : ""}`}
-                />
+                <span
+                  aria-hidden="true"
+                  className={`inline-flex transition-transform ${showYearPicker ? "rotate-180" : ""}`}
+                >
+                  <ChevronDown className="h-3 w-3" />
+                </span>
               </button>
 
               <button
@@ -286,7 +367,7 @@ export function MonthYearField({
                 onClick={() => setYearCursor((y) => y + 1)}
                 disabled={showYearPicker}
                 aria-label="Next year"
-                className={`p-1 rounded-md transition-[color,background-color,transform] active:scale-90 ${
+                className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md transition-colors ${
                   showYearPicker
                     ? "text-(--ink-6) cursor-not-allowed"
                     : "text-(--ink-4) hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
@@ -297,7 +378,7 @@ export function MonthYearField({
             </div>
 
             {showYearPicker ? (
-              <div className="cr-scroll grid grid-cols-4 gap-1 max-h-44 overflow-y-auto py-0.5 pr-1">
+              <div className="cr-scroll grid grid-cols-4 gap-1 max-h-44 overflow-y-auto overscroll-contain py-0.5 pr-1">
                 {yearList.map((year) => (
                   <button
                     key={year}
@@ -307,9 +388,9 @@ export function MonthYearField({
                       setYearCursor(year);
                       setShowYearPicker(false);
                     }}
-                    className={`py-1.5 rounded-md font-mono text-xs font-medium tabular-nums transition-colors ${
+                    className={`min-h-11 md:min-h-10 px-1 rounded-md font-mono text-xs font-medium tabular-nums transition-colors ${
                       year === yearCursor
-                        ? "bg-(--brand) text-white"
+                        ? "bg-(--color-accent) text-(--color-accent-ink)"
                         : year === parsed.year
                           ? "border border-(--brand-300) text-(--brand-700) hover:bg-(--brand-50)"
                           : year === todayYear
@@ -332,12 +413,12 @@ export function MonthYearField({
                       key={m}
                       onClick={() => {
                         commit({ month: i, year: yearCursor, isPresent: false });
-                        setOpen(false);
+                        closeAndReturnFocus();
                       }}
                       aria-pressed={active}
-                      className={`px-2 py-1.5 text-xs font-medium rounded-md transition-colors ${
+                      className={`min-h-11 md:min-h-10 px-2 text-xs font-medium rounded-md transition-colors ${
                         active
-                          ? "bg-(--brand) text-white"
+                          ? "bg-(--color-accent) text-(--color-accent-ink)"
                           : "text-(--ink-2) hover:bg-(--brand-50) hover:text-(--brand-700)"
                       }`}
                     >
@@ -353,9 +434,9 @@ export function MonthYearField({
                 type="button"
                 onClick={() => {
                   onChange("");
-                  setOpen(false);
+                  closeAndReturnFocus();
                 }}
-                className="text-xs text-(--ink-4) hover:text-(--danger) transition-colors"
+                className="min-h-11 md:min-h-10 px-2 rounded-md text-xs text-(--ink-4) hover:text-(--color-status-danger) transition-colors"
               >
                 Clear
               </button>
@@ -364,16 +445,16 @@ export function MonthYearField({
                   type="button"
                   onClick={() => {
                     commit({ month: null, year: yearCursor, isPresent: false });
-                    setOpen(false);
+                    closeAndReturnFocus();
                   }}
-                  className="text-xs text-(--brand) hover:text-(--brand-700) transition-colors"
+                  className="min-h-11 md:min-h-10 px-2 rounded-md text-xs text-(--brand) hover:text-(--brand-700) transition-colors"
                 >
                   Year only
                 </button>
                 <button
                   type="button"
-                  onClick={() => setOpen(false)}
-                  className="text-xs font-semibold text-white bg-(--brand) hover:bg-(--brand-hover) px-3 py-1 rounded-lg transition-colors"
+                  onClick={closeAndReturnFocus}
+                  className="min-h-11 rounded-md bg-(--color-accent) px-3 text-xs font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover) md:min-h-10"
                 >
                   Done
                 </button>

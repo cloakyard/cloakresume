@@ -7,7 +7,7 @@
  */
 
 import { Check } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { PRESET_COLORS } from "../utils/colors.ts";
 
 interface Props {
@@ -64,11 +64,16 @@ function hslToHex(h: number, s: number, l: number): string {
 }
 
 export function ColorPickerContent({ primary, onChange }: Props) {
+  const lightnessId = useId();
+  const wheelHelpId = useId();
+  const [hexDraft, setHexDraft] = useState(primary);
   const { h, s, l } = hexToHsl(primary);
   const wheelRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
   const lRef = useRef(l);
   lRef.current = l;
+
+  useEffect(() => setHexDraft(primary), [primary]);
 
   const applyFromPointer = useCallback(
     (clientX: number, clientY: number) => {
@@ -111,6 +116,37 @@ export function ColorPickerContent({ primary, onChange }: Props) {
 
   const lightnessTrack = `linear-gradient(to right, #000, ${hslToHex(h, Math.max(s, 0.0001), 0.5)}, #fff)`;
 
+  const handleWheelKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    const hueStep = event.shiftKey ? 10 : 1;
+    const saturationStep = event.shiftKey ? 0.1 : 0.01;
+    let nextHue = h;
+    let nextSaturation = s;
+    switch (event.key) {
+      case "ArrowLeft":
+        nextHue = (h - hueStep + 360) % 360;
+        break;
+      case "ArrowRight":
+        nextHue = (h + hueStep) % 360;
+        break;
+      case "ArrowUp":
+        nextSaturation = Math.min(1, s + saturationStep);
+        break;
+      case "ArrowDown":
+        nextSaturation = Math.max(0, s - saturationStep);
+        break;
+      case "Home":
+        nextHue = 0;
+        break;
+      case "End":
+        nextHue = 359;
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+    onChange(hslToHex(nextHue, nextSaturation, l));
+  };
+
   return (
     <>
       <div className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider mb-2">
@@ -124,18 +160,22 @@ export function ColorPickerContent({ primary, onChange }: Props) {
               type="button"
               key={c.value}
               onClick={() => onChange(c.value)}
-              className="relative aspect-square rounded-lg transition-transform hover:scale-105"
+              aria-pressed={active}
+              className="relative aspect-square min-w-11 min-h-11 rounded-md transition-colors"
               style={{
                 background: c.value,
-                border: active ? "2px solid var(--ink-1)" : "2px solid transparent",
-                boxShadow: active ? "inset 0 0 0 2px white" : "0 0 0 1px var(--line)",
-                minHeight: 44,
+                border: active
+                  ? "2px solid var(--color-ink)"
+                  : "1px solid var(--color-rule-strong)",
               }}
               title={c.name}
               aria-label={`Set primary colour to ${c.name}`}
             >
               {active && (
-                <Check className="w-3.5 h-3.5 text-white absolute inset-0 m-auto drop-shadow" />
+                <Check
+                  className="w-4 h-4 absolute inset-0 m-auto"
+                  style={{ color: l > 0.65 ? "var(--color-proof-ink)" : "var(--color-accent-ink)" }}
+                />
               )}
             </button>
           );
@@ -149,18 +189,27 @@ export function ColorPickerContent({ primary, onChange }: Props) {
       <div className="flex flex-col items-center gap-3">
         <div
           ref={wheelRef}
+          role="slider"
+          tabIndex={0}
+          aria-label="Hue and saturation"
+          aria-valuemin={0}
+          aria-valuemax={359}
+          aria-valuenow={Math.round(h)}
+          aria-valuetext={`Hue ${Math.round(h)} degrees, saturation ${Math.round(s * 100)} percent`}
+          aria-describedby={wheelHelpId}
+          onKeyDown={handleWheelKey}
           onPointerDown={(e) => {
             e.currentTarget.setPointerCapture(e.pointerId);
             draggingRef.current = true;
             applyFromPointer(e.clientX, e.clientY);
           }}
-          title="Drag to pick hue and saturation"
+          title="Choose hue and saturation"
           className="relative w-36 h-36 rounded-full cursor-crosshair touch-none select-none"
           style={{
             background:
               "radial-gradient(circle at center, #fff 0%, rgba(255,255,255,0) 70%), " +
               "conic-gradient(from -90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
-            boxShadow: "inset 0 0 0 1px rgba(15,23,42,0.08), 0 1px 2px rgba(15,23,42,0.06)",
+            boxShadow: "inset 0 0 0 1px var(--color-rule-strong)",
           }}
         >
           <div
@@ -170,22 +219,31 @@ export function ColorPickerContent({ primary, onChange }: Props) {
               left: `calc(${thumbX}% - 8px)`,
               top: `calc(${thumbY}% - 8px)`,
               background: primary,
-              border: "2px solid #fff",
-              boxShadow: "0 0 0 1px rgba(15,23,42,0.35), 0 1px 3px rgba(15,23,42,0.25)",
+              border: "2px solid var(--color-surface)",
+              boxShadow: "0 0 0 1px var(--color-ink)",
             }}
           />
         </div>
+        <span id={wheelHelpId} className="text-sm leading-[1.5] text-(--ink-4) text-center">
+          Arrow left/right changes hue; up/down changes saturation. Hold Shift for larger steps.
+        </span>
 
         <div className="w-full">
           <div className="flex items-center justify-between mb-1">
-            <span className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider">
+            <label
+              htmlFor={lightnessId}
+              className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider"
+            >
               Lightness
-            </span>
+            </label>
             <span className="text-[10.5px] font-mono text-(--ink-5) tabular-nums">
               {Math.round(l * 100)}%
             </span>
           </div>
           <input
+            id={lightnessId}
+            name="resume-primary-lightness"
+            autoComplete="off"
             type="range"
             min={0}
             max={100}
@@ -193,7 +251,13 @@ export function ColorPickerContent({ primary, onChange }: Props) {
             onChange={(e) => onChange(hslToHex(h, s, Number(e.target.value) / 100))}
             aria-label="Lightness"
             className="color-lightness-slider w-full"
-            style={{ background: lightnessTrack }}
+            style={{
+              background: lightnessTrack,
+              height: 44,
+              paddingBlock: 17,
+              backgroundClip: "content-box",
+              boxSizing: "border-box",
+            }}
           />
         </div>
 
@@ -203,19 +267,33 @@ export function ColorPickerContent({ primary, onChange }: Props) {
             className="w-10 h-10 rounded-full shrink-0"
             style={{
               background: primary,
-              boxShadow: "inset 0 0 0 1px rgba(15,23,42,0.1), 0 1px 2px rgba(15,23,42,0.08)",
+              border: "1px solid var(--color-rule-strong)",
             }}
           />
+          <label htmlFor={`${lightnessId}-hex`} className="sr-only">
+            Hex colour value
+          </label>
           <input
+            id={`${lightnessId}-hex`}
+            name="resume-primary-hex"
+            autoComplete="off"
+            inputMode="text"
+            spellCheck={false}
             type="text"
-            value={primary}
+            value={hexDraft}
             onChange={(e) => {
-              const v = e.target.value.trim();
+              const v = e.target.value;
+              setHexDraft(v);
               if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)) onChange(v);
             }}
-            placeholder="#059669"
+            onBlur={() => {
+              if (!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexDraft)) {
+                setHexDraft(primary);
+              }
+            }}
+            placeholder="#047857"
             aria-label="Hex colour value"
-            className="min-w-0 flex-1 px-3 h-10 text-sm font-mono rounded-md border border-(--line) bg-white/60 text-(--ink-1) placeholder:text-(--ink-5) transition-[border-color,box-shadow] duration-100 focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)"
+            className="min-w-0 flex-1 px-3 min-h-11 md:min-h-10 text-sm font-mono rounded-md border border-(--line) bg-(--surface) text-(--ink-1) placeholder:text-(--ink-5) transition-colors duration-160 focus:border-(--brand)"
           />
         </div>
       </div>

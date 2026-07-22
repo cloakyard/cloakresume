@@ -5,7 +5,7 @@
  */
 
 import type { ReactNode } from "react";
-import { useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Plus, Trash2 } from "lucide-react";
 import type { ResumeData } from "../../types.ts";
 
@@ -41,9 +41,9 @@ export function AddButton({ children, onClick }: { children: ReactNode; onClick:
       <button
         type="button"
         onClick={onClick}
-        className="inline-flex items-center gap-1.5 h-9 px-3 rounded-md text-[12.5px] font-semibold text-(--brand) bg-(--brand-50) border border-(--brand-100) transition-colors"
+        className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-(--brand-100) bg-(--brand-50) px-3 text-sm font-semibold text-(--brand) transition-colors md:min-h-10"
       >
-        <Plus className="w-3.5 h-3.5" />
+        <Plus aria-hidden="true" className="w-3.5 h-3.5" />
         {children}
       </button>
     </div>
@@ -71,32 +71,26 @@ export function EmptyState({
   onAdd: () => void;
 }) {
   return (
-    <div className="bg-(--surface) border border-(--line) rounded-xl overflow-hidden">
-      <div className="flex items-center justify-between px-4 py-3 bg-(--surface-2) border-b border-(--line-soft)">
-        <span className="text-[13.5px] font-semibold text-(--ink-1)">Empty {sectionLabel}</span>
-        <span className="font-mono text-[11px] text-(--ink-3) px-2 py-0.75 border border-(--line) rounded-md bg-(--surface)">
-          zero state
-        </span>
-      </div>
-      <div className="flex flex-col items-center text-center px-7 py-14">
-        <span
-          className="w-12 h-12 rounded-xl grid place-items-center text-(--brand) bg-(--brand-50) mb-4.5"
-          aria-hidden="true"
-        >
+    <section
+      className="border-t border-(--line) px-4 py-12 text-center"
+      aria-label={`Empty ${sectionLabel}`}
+    >
+      <div className="flex flex-col items-center">
+        <span className="mb-4 text-(--brand)" aria-hidden="true">
           {icon}
         </span>
-        <h3 className="text-base font-bold text-(--ink-1) m-0 mb-1.5">{heading}</h3>
-        <p className="text-[13px] text-(--ink-3) leading-normal m-0 mb-5 max-w-85">{description}</p>
+        <h3 className="m-0 mb-1.5 text-base font-bold text-(--ink-1)">{heading}</h3>
+        <p className="m-0 mb-5 max-w-85 text-sm leading-normal text-(--ink-3)">{description}</p>
         <button
           type="button"
           onClick={onAdd}
-          className="inline-flex items-center gap-1.5 px-4.5 py-2.5 text-[13.5px] font-semibold text-white bg-(--brand) rounded-lg cursor-pointer transition-colors hover:bg-(--brand-hover) focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
+          className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-md bg-(--color-accent) px-4.5 py-2.5 text-sm font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover) focus-visible:outline-none focus-visible:shadow-(--sh-focus) md:min-h-10"
         >
-          <Plus className="w-4 h-4" strokeWidth={2.25} />
+          <Plus aria-hidden="true" className="w-4 h-4" strokeWidth={2.25} />
           {buttonLabel}
         </button>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -114,21 +108,38 @@ export function SubCardHead({
   drag?: ReactNode;
   moveBtns?: ReactNode;
 }) {
+  const [deleteArmed, setDeleteArmed] = useState(false);
+
+  useEffect(() => {
+    if (!deleteArmed) return;
+    const timeout = window.setTimeout(() => setDeleteArmed(false), 3000);
+    return () => window.clearTimeout(timeout);
+  }, [deleteArmed]);
+
+  const itemLabel = `${prefix.toLowerCase()} ${index + 1}`;
+
   return (
     <div className="flex items-center gap-2 mb-2">
-      {drag}
-      <span className="font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] tabular-nums">
+      {drag && <span className="hidden sm:inline-flex">{drag}</span>}
+      <span className="min-w-0 truncate font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] tabular-nums">
         {prefix} #{index + 1}
       </span>
       <div className="ml-auto flex items-center gap-1">
         {moveBtns}
         <button
           type="button"
-          onClick={onDelete}
-          className="w-7 h-7 rounded-md grid place-items-center text-(--ink-5) hover:text-(--danger) hover:bg-(--danger-bg) transition-colors"
-          aria-label={`Delete ${prefix.toLowerCase()} ${index + 1}`}
+          onClick={() => {
+            if (deleteArmed) onDelete();
+            else setDeleteArmed(true);
+          }}
+          className="grid min-h-11 min-w-11 place-items-center rounded-md text-(--ink-5) transition-colors hover:bg-(--danger-bg) hover:text-(--danger) md:min-h-10 md:min-w-10"
+          aria-label={deleteArmed ? `Confirm deletion of ${itemLabel}` : `Delete ${itemLabel}`}
         >
-          <Trash2 className="w-3.5 h-3.5" />
+          {deleteArmed ? (
+            <span className="px-1 text-[10px] font-bold uppercase tracking-wide">Confirm</span>
+          ) : (
+            <Trash2 aria-hidden="true" className="w-3.5 h-3.5" />
+          )}
         </button>
       </div>
     </div>

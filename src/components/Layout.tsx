@@ -1,28 +1,25 @@
 /**
  * App shell — header + body (rail | panel | preview on desktop,
- * single-view with floating section pill on mobile).
+ * preview/editor split workbench on mobile).
  *
  * Owns responsive behaviour so the rest of the app is blissfully
  * unaware of viewport size:
  *
  *   • ≥1024px (`lg:` breakpoint) — 3-column grid. Section rail on the
- *     left; panel + preview share the remaining width.
- *   • <1024px — a single view at a time. A segmented toggle in the
- *     header switches between the editor and the preview. A floating
- *     pill anchored above the bottom safe-area shows the current
- *     section and opens the section drawer on tap.
+ *     left; panel + preview share the remaining width. The properties
+ *     panel grows from 20.5rem to 24rem at the 1280px widescreen token.
+ *   • <1024px — Edit keeps the proof and the lower workspace visible in
+ *     an exact 50:50 split. The lower pane shows either one open editor
+ *     or the section picker, never both. Preview expands the proof.
  *
  * Mobile-first: the base layout is the mobile single-column stack.
  * The `lg:` modifier switches it to the desktop three-column grid.
  */
 
-import { useCallback, useEffect, useState, type ReactNode } from "react";
+import { useCallback, type MouseEvent, type ReactNode } from "react";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
-import { BottomSheet } from "./BottomSheet.tsx";
 import { BrandLogo } from "./BrandLogo.tsx";
-import { FloatingSectionPill } from "./FloatingSectionPill.tsx";
-import { GithubIcon } from "./GithubIcon.tsx";
-import { SECTIONS, SectionRail, type SectionId } from "./SectionRail.tsx";
+import { SectionRail, type SectionId } from "./SectionRail.tsx";
 import { ViewSegment, type MobileView } from "./ViewSegment.tsx";
 
 interface LayoutProps {
@@ -33,10 +30,13 @@ interface LayoutProps {
   /** Currently selected resume section — drives both rails. */
   activeSection: SectionId;
   onSectionChange: (id: SectionId) => void;
-  /** Mobile-only edit/preview toggle state. Lifted to App so flows like
-   *  the ATS jump-to-field can flip the view back to the editor. */
+  /** Mobile-only split/full-preview state. Lifted to App so ATS jumps can
+   *  restore the split workbench before focusing a field. */
   mobileView: MobileView;
   onMobileViewChange: (next: MobileView) => void;
+  /** Mobile lower-pane state: one section editor or the inline picker. */
+  mobileSectionOpen: boolean;
+  onMobileSectionOpenChange: (open: boolean) => void;
   /** Middle panel (single section editor). */
   panel: ReactNode;
   /** Preview area (resume canvas). */
@@ -50,89 +50,70 @@ export function Layout({
   onSectionChange,
   mobileView,
   onMobileViewChange,
+  mobileSectionOpen,
+  onMobileSectionOpenChange,
   panel,
   preview,
 }: LayoutProps) {
   const isMobile = useMediaQuery(BP.mobile);
-  const [sectionDrawerOpen, setSectionDrawerOpen] = useState(false);
 
-  /** When the user picks a section from the mobile drawer, close it and
-   *  switch to the edit panel so they land on the new section. */
+  /** A mobile pick replaces the picker with exactly one editor. */
   const handleMobileSectionPick = useCallback(
     (id: SectionId) => {
       onSectionChange(id);
-      setSectionDrawerOpen(false);
+      onMobileSectionOpenChange(true);
       onMobileViewChange("panel");
     },
-    [onSectionChange, onMobileViewChange],
+    [onMobileSectionOpenChange, onMobileViewChange, onSectionChange],
+  );
+  // Only one responsive branch is mounted at a time; sharing these props
+  // keeps the document to one stable skip target at every viewport.
+  const editorTargetProps = {
+    id: "editor-content",
+    tabIndex: -1,
+  } as const;
+
+  const handleSkipToEditor = useCallback(
+    (event: MouseEvent<HTMLAnchorElement>) => {
+      event.preventDefault();
+      if (isMobile && mobileView !== "panel") {
+        onMobileViewChange("panel");
+      }
+
+      const focusTarget = () => {
+        const target = document.getElementById("editor-content");
+        target?.focus({ preventScroll: true });
+        return Boolean(target);
+      };
+
+      if (focusTarget()) return;
+
+      // Mobile preview mode mounts the editor in response to this click.
+      // Waiting through the next paint keeps the hash target unique while
+      // still moving keyboard focus into the newly rendered panel.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          focusTarget();
+        });
+      });
+    },
+    [isMobile, mobileView, onMobileViewChange],
   );
 
-  /** If the viewport crosses the breakpoint, snap state to a sane default. */
-  useEffect(() => {
-    if (!isMobile) {
-      setSectionDrawerOpen(false);
-    }
-  }, [isMobile]);
-
-  /* Mobile-only iOS Safari URL-bar fix.
-   *
-   * The editor's desktop shell is `h-[100svh] overflow-hidden grid`
-   * and the global `body { overflow: hidden; height: 100% }` lock
-   * from index.css is what makes that 3-column app shell work. On
-   * iPhone Safari, that same lock prevents the document from ever
-   * scrolling — and iOS only collapses its bottom URL bar when the
-   * *document* scrolls, not when an inner container does. Without
-   * this unlock the URL bar stays at full height for the entire
-   * editor session (the same "white bar" the welcome screen used to
-   * show before its own unlock effect).
-   *
-   * The mobile shell below is a `flex-col min-h-[100dvh]` page with
-   * a sticky header, rather than a fixed grid. With this combined
-   * with the unlock, the panel's natural content (which is almost
-   * always taller than a phone viewport) scrolls the document, iOS
-   * collapses the URL bar to its slim pill, and `100dvh` instantly
-   * resizes the layout to fill the now-larger viewport.
-   *
-   * Restored on unmount and when the viewport crosses back to
-   * desktop so the locked-shell behaviour is preserved everywhere
-   * else. Mirrors the OnboardingScreen pattern. */
-  useEffect(() => {
-    if (!isMobile) return;
-    const html = document.documentElement;
-    const body = document.body;
-    const prev = {
-      htmlHeight: html.style.height,
-      htmlOverflow: html.style.overflow,
-      bodyHeight: body.style.height,
-      bodyOverflow: body.style.overflow,
-    };
-    html.style.height = "auto";
-    html.style.overflow = "visible";
-    body.style.height = "auto";
-    body.style.overflow = "visible";
-    return () => {
-      html.style.height = prev.htmlHeight;
-      html.style.overflow = prev.htmlOverflow;
-      body.style.height = prev.bodyHeight;
-      body.style.overflow = prev.bodyOverflow;
-    };
-  }, [isMobile]);
-
-  const activeMeta = SECTIONS.find((s) => s.id === activeSection) ?? SECTIONS[0];
-
-  // Mobile shell is a normal-flow `flex-col` page with `min-h-[100dvh]`
-  // so the document scrolls naturally — required for iOS Safari URL-bar
-  // collapse (see unlock effect above). Desktop keeps the original
-  // fixed-height 3-column grid.
+  // Both modes are viewport instruments; only their internal regions scroll.
   const shellClass = isMobile
-    ? "bg-(--surface-2) min-h-[100dvh] flex flex-col overflow-x-clip"
-    : "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[64px_1fr] grid-cols-[56px_400px_1fr] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
+    ? "cr-editor-shell bg-(--surface-2) h-[100dvh] flex flex-col overflow-hidden"
+    : "cr-editor-shell grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[var(--editor-header-height)_minmax(0,1fr)] grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
 
   return (
     <div className={shellClass} data-mobile-view={mobileView}>
+      <a className="cr-skip-link" href="#editor-content" onClick={handleSkipToEditor}>
+        Skip to résumé editor
+      </a>
+      <h1 className="sr-only">CloakResume editor</h1>
       <header
-        className={`z-50 flex h-16 shrink-0 items-center bg-(--surface) border-b border-(--line) py-3 print:hidden ${
-          isMobile ? "sticky top-0 px-2.5 gap-1.5" : "[grid-area:header] px-4 gap-3"
+        className={`cr-editor-header z-50 flex h-16 shrink-0 items-center bg-(--surface) border-b border-(--line) print:hidden ${
+          isMobile ? "px-2.5 py-2.5 gap-1.5" : "[grid-area:header] px-4 py-3 gap-3"
         }`}
       >
         <BrandLogo />
@@ -157,37 +138,19 @@ export function Layout({
         {isMobile && <ViewSegment view={mobileView} onChange={onMobileViewChange} />}
 
         <div className="flex items-center gap-1.5 shrink-0 lg:gap-2">{toolbarRight}</div>
-
-        {!isMobile && (
-          <>
-            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
-            <div className="hidden 2xl:inline-flex items-center gap-2 text-[11.5px] font-normal text-(--ink-4) tracking-[0.02em] whitespace-nowrap">
-              <span>100% Private · Open Source</span>
-            </div>
-            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
-            <a
-              href="https://github.com/cloakyard/cloakresume"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View source on GitHub"
-              className="grid place-items-center text-(--ink-4) transition-colors duration-100 hover:text-(--ink-1)"
-            >
-              <GithubIcon className="w-4.5 h-4.5" />
-            </a>
-          </>
-        )}
       </header>
 
       {!isMobile && (
-        <div className="[grid-area:rail] flex flex-col items-center gap-0.5 px-0 pt-4 pb-2.5 bg-(--surface) border-r border-(--line) overflow-hidden">
+        <div className="cr-editor-rail [grid-area:rail] flex flex-col items-center gap-0.5 px-0 pt-4 pb-2.5 bg-(--surface) border-r border-(--line) overflow-hidden">
           <SectionRail active={activeSection} onChange={onSectionChange} />
         </div>
       )}
 
       {!isMobile && (
         <aside
+          {...editorTargetProps}
           data-panel-root
-          className="[grid-area:panel] flex flex-col min-w-0 overflow-hidden bg-(--surface) border-r border-(--line)"
+          className="cr-editor-panel [grid-area:panel] flex flex-col min-w-0 overflow-hidden bg-(--surface) border-r border-(--line)"
         >
           {panel}
         </aside>
@@ -195,50 +158,65 @@ export function Layout({
 
       {!isMobile && (
         <main
-          className="[grid-area:preview] relative flex flex-col overflow-hidden"
+          className="cr-editor-preview [grid-area:preview] relative flex flex-col overflow-hidden"
           style={{ background: "var(--preview-bg)" }}
         >
           {preview}
         </main>
       )}
 
-      {/* Mobile body — natural flow so the document scrolls.
-       *
-       * Panel renders at its full natural height (its own scroll
-       * container is opted out on mobile via `lg:` classes inside
-       * SectionPanel), so the document grows with the form content
-       * and iOS Safari can collapse its URL bar on user scroll.
-       *
-       * Preview keeps its internal scroll for the canvas zoom/pan,
-       * so its wrapper gets an explicit `100dvh - 64px` height to
-       * match the visible body area. The page itself doesn't scroll
-       * in preview view, but URL-bar state is preserved across the
-       * panel/preview toggle so the slim pill stays once the user
-       * has scrolled the panel. */}
+      {/* Mobile Edit is the family 50:50 proof/workspace contract. Preview
+       * expands the proof without unmounting any desktop-only state. */}
       {isMobile && (
-        <div data-panel-root className="flex-1 flex flex-col min-w-0 bg-(--surface-2)">
-          {mobileView === "panel" && panel}
-          {mobileView === "preview" && (
-            <div className="flex flex-col min-w-0 min-h-0 h-[calc(100dvh-4rem)]">{preview}</div>
-          )}
-
-          {mobileView === "panel" && (
-            <FloatingSectionPill
-              icon={activeMeta.icon}
-              label={activeMeta.label}
-              onClick={() => setSectionDrawerOpen(true)}
-            />
+        <div className="flex min-h-0 flex-1 flex-col bg-(--surface-2)">
+          {mobileView === "panel" ? (
+            <div className="grid min-h-0 flex-1 grid-rows-2 overflow-hidden">
+              <main
+                aria-label="Résumé preview"
+                className="cr-editor-preview flex min-h-0 min-w-0 flex-col border-b border-(--line)"
+              >
+                {preview}
+              </main>
+              {mobileSectionOpen ? (
+                <aside
+                  {...editorTargetProps}
+                  aria-label="Résumé editor"
+                  data-panel-root
+                  className="cr-editor-panel cr-workspace-enter relative flex min-h-0 min-w-0 flex-col overflow-hidden"
+                >
+                  {panel}
+                </aside>
+              ) : (
+                <aside
+                  {...editorTargetProps}
+                  aria-label="Résumé section picker"
+                  className="cr-editor-panel cr-workspace-enter flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--surface)"
+                >
+                  <header className="shrink-0 border-b border-(--line) px-4 py-3">
+                    <h2 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">
+                      Choose a section
+                    </h2>
+                    <p className="m-0 mt-0.5 text-sm leading-[1.45] text-(--ink-4)">
+                      Open one part of the résumé at a time.
+                    </p>
+                  </header>
+                  <div className="cr-scroll min-h-0 flex-1 overflow-y-auto overscroll-contain px-3 py-3 pb-[calc(0.75rem+env(safe-area-inset-bottom,0px))]">
+                    <SectionRail
+                      active={activeSection}
+                      onChange={handleMobileSectionPick}
+                      variant="picker"
+                    />
+                  </div>
+                </aside>
+              )}
+            </div>
+          ) : (
+            <main aria-label="Résumé preview" className="flex min-h-0 min-w-0 flex-1 flex-col">
+              {preview}
+            </main>
           )}
         </div>
       )}
-
-      <BottomSheet
-        open={sectionDrawerOpen}
-        onClose={() => setSectionDrawerOpen(false)}
-        title="Jump to section"
-      >
-        <SectionRail active={activeSection} onChange={handleMobileSectionPick} variant="drawer" />
-      </BottomSheet>
     </div>
   );
 }

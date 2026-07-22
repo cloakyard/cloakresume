@@ -9,8 +9,7 @@
  * An overlay intercepts pointer events so clicks reach the card button.
  */
 
-import { useLayoutEffect, useRef, useState } from "react";
-import type { ComponentType } from "react";
+import { Suspense, useLayoutEffect, useMemo, useRef, useState, type ComponentType } from "react";
 import type { ResumeData } from "../types.ts";
 import { derivePalette, type PrimaryPalette } from "../utils/colors.ts";
 import type { TemplateProps } from "../templates/index.ts";
@@ -34,7 +33,12 @@ export function TemplatePreview({ TemplateComponent, resume, accent }: Props) {
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
       const w = entries[0]?.contentRect.width ?? el.clientWidth;
-      if (w > 0) setScale(w / A4_WIDTH_PX);
+      if (w > 0) {
+        const nextScale = w / A4_WIDTH_PX;
+        setScale((currentScale) =>
+          Math.abs(currentScale - nextScale) > 0.0001 ? nextScale : currentScale,
+        );
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
@@ -45,16 +49,19 @@ export function TemplatePreview({ TemplateComponent, resume, accent }: Props) {
    * suggested accent means cards stay distinguishable even when the
    * user picks a brand colour that clashes with one template.
    */
-  const palette: PrimaryPalette = derivePalette(accent);
+  const palette: PrimaryPalette = useMemo(() => derivePalette(accent), [accent]);
 
   return (
     <div
       ref={wrapRef}
       className="relative w-full"
+      inert
+      aria-hidden="true"
+      tabIndex={-1}
       style={{
         aspectRatio: "210 / 297",
         overflow: "hidden",
-        background: "#fff",
+        background: "var(--color-proof-paper)",
         pointerEvents: "none",
       }}
     >
@@ -68,7 +75,9 @@ export function TemplatePreview({ TemplateComponent, resume, accent }: Props) {
           transformOrigin: "top left",
         }}
       >
-        <TemplateComponent resume={resume} palette={palette} />
+        <Suspense fallback={<div className="resume-page bg-(--color-proof-paper)" />}>
+          <TemplateComponent resume={resume} palette={palette} />
+        </Suspense>
       </div>
     </div>
   );

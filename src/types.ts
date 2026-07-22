@@ -23,7 +23,7 @@ export interface ContactLink {
   value: string;
 }
 
-export interface SkillGroup {
+interface SkillGroup {
   id: string;
   label: string;
   items: string; // comma-separated for ergonomic editing
@@ -31,7 +31,7 @@ export interface SkillGroup {
   iconName?: string;
 }
 
-export interface Experience {
+interface Experience {
   id: string;
   title: string;
   company: string;
@@ -41,7 +41,7 @@ export interface Experience {
   bullets: string[];
 }
 
-export interface EducationItem {
+interface EducationItem {
   id: string;
   degree: string;
   school: string;
@@ -69,20 +69,20 @@ export interface Certification {
   url?: string;
 }
 
-export interface AwardItem {
+interface AwardItem {
   id: string;
   title: string;
   year: string;
   detail: string;
 }
 
-export interface LanguageItem {
+interface LanguageItem {
   id: string;
   name: string;
   level: string;
 }
 
-export interface CustomSection {
+interface CustomSection {
   id: string;
   /** Custom heading label the user provides (e.g. "Volunteering", "Publications"). */
   header: string;
@@ -163,7 +163,7 @@ export interface AtsIssue {
   suggestion?: string;
 }
 
-export interface AtsBreakdownItem {
+interface AtsBreakdownItem {
   category: string;
   earned: number;
   max: number;
@@ -189,14 +189,6 @@ export interface AtsReport {
   keywords: { matched: string[]; missing: string[] };
   /** Per-word / per-phrase grammar findings. Present once the scan has run. */
   grammar?: GrammarReport;
-}
-
-/** One piece of prose sent to the grammar worker for analysis. */
-export interface GrammarSegment {
-  id: string;
-  /** Human-readable label shown in the Insights tab (e.g. "Senior Engineer · bullet 2"). */
-  label: string;
-  text: string;
 }
 
 export type GrammarIssueKind = "spelling" | "grammar" | "style" | "readability";

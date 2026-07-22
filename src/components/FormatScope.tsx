@@ -144,8 +144,7 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
   };
 
   const disabled = !scope?.hasActive;
-  const size = compact ? "w-6 h-6" : "w-7 h-7";
-  const icon = compact ? "w-3 h-3" : "w-3.5 h-3.5";
+  const icon = compact ? "w-3.5 h-3.5" : "w-4 h-4";
   const format = scope?.format ?? EMPTY_FORMAT;
 
   return (
@@ -161,7 +160,6 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         onClick={() => apply("**")}
         disabled={disabled}
         active={format.bold}
-        size={size}
       >
         <Bold className={icon} strokeWidth={2.5} />
       </FmtBtn>
@@ -170,17 +168,10 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         onClick={() => apply("*")}
         disabled={disabled}
         active={format.italic}
-        size={size}
       >
         <Italic className={icon} strokeWidth={2.5} />
       </FmtBtn>
-      <FmtBtn
-        label="Code"
-        onClick={() => apply("`")}
-        disabled={disabled}
-        active={format.code}
-        size={size}
-      >
+      <FmtBtn label="Code" onClick={() => apply("`")} disabled={disabled} active={format.code}>
         <Code2 className={icon} strokeWidth={2.5} />
       </FmtBtn>
     </div>
@@ -193,14 +184,12 @@ function FmtBtn({
   label,
   disabled,
   active,
-  size,
 }: {
   children: ReactNode;
   onClick: () => void;
   label: string;
   disabled?: boolean;
   active?: boolean;
-  size: string;
 }) {
   const stateClasses = disabled
     ? "text-(--ink-6) cursor-not-allowed"
@@ -215,7 +204,7 @@ function FmtBtn({
       aria-label={label}
       aria-pressed={active ? true : undefined}
       disabled={disabled}
-      className={`${size} rounded-md flex items-center justify-center transition-colors ${stateClasses}`}
+      className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 rounded-md flex items-center justify-center transition-colors ${stateClasses}`}
     >
       {children}
     </button>

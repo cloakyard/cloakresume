@@ -5,17 +5,9 @@
  * editor passes values down and receives changes through `onChange`.
  */
 
-import { ChevronDown, ChevronRight } from "lucide-react";
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
+import { ChevronDown } from "lucide-react";
+import { useCallback, useEffect, useId, useState } from "react";
 import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
-
-interface SectionsBulkSignal {
-  /** Monotonically increments on each bulk toggle; 0 means "no bulk action yet". */
-  nonce: number;
-  open: boolean;
-}
-
-export const SectionsBulkContext = createContext<SectionsBulkSignal>({ nonce: 0, open: true });
 
 interface TextFieldProps {
   label: string;
@@ -29,6 +21,30 @@ interface TextFieldProps {
   hint?: string;
   /** Opt-in target for the ATS jump-to-fix glow highlight. */
   fieldId?: string;
+  /** Stable browser/form identifier. Falls back to `fieldId` or a label slug. */
+  name?: string;
+  /** Browser autofill hint. Obvious identity fields are inferred; other fields opt out. */
+  autoComplete?: string;
+}
+
+function fieldName(label: string, explicit?: string) {
+  return (
+    explicit ??
+    label
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-|-$/g, "")
+  );
+}
+
+function inferredAutoComplete(label: string, type: TextFieldProps["type"] = "text") {
+  if (type === "email") return "email";
+  if (type === "tel") return "tel";
+  if (type === "url") return "url";
+  const normalized = label.toLowerCase();
+  if (normalized.includes("full name")) return "name";
+  if (normalized === "location" || normalized.includes("city")) return "address-level2";
+  return "off";
 }
 
 export function TextField({
@@ -40,7 +56,12 @@ export function TextField({
   invalid = false,
   hint,
   fieldId,
+  name,
+  autoComplete,
 }: TextFieldProps) {
+  const reactId = useId();
+  const inputId = `${reactId}-input`;
+  const hintId = `${reactId}-hint`;
   const issues = useFieldIssues(fieldId);
   const hasIssues = issues.length > 0 && !invalid;
   const applySuggestion = useCallback(
@@ -52,16 +73,22 @@ export function TextField({
     [value, onChange],
   );
   return (
-    <label className="cr-field">
-      <span className="cr-field-label">{label}</span>
+    <div className="cr-field">
+      <label className="cr-field-label" htmlFor={inputId}>
+        {label}
+      </label>
       <div className="relative">
         <input
+          id={inputId}
+          name={fieldName(label, name ?? fieldId)}
+          autoComplete={autoComplete ?? inferredAutoComplete(label, type)}
           type={type}
           data-field-id={fieldId}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
           aria-invalid={invalid || undefined}
+          aria-describedby={hint ? hintId : undefined}
           spellCheck={type === "text"}
           className={`cr-input${invalid ? " cr-input--invalid" : ""}${hasIssues ? " cr-input--has-issues" : ""}`}
         />
@@ -71,10 +98,15 @@ export function TextField({
           className="top-1/2 -translate-y-1/2 right-2"
         />
       </div>
-      {hint && (
-        <span className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}`}>{hint}</span>
-      )}
-    </label>
+      <span
+        id={hintId}
+        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
+        aria-live={invalid ? "polite" : undefined}
+        aria-hidden={hint ? undefined : true}
+      >
+        {hint || "\u00a0"}
+      </span>
+    </div>
   );
 }
 
@@ -83,6 +115,8 @@ interface CsvFieldProps {
   value: string[];
   onChange: (v: string[]) => void;
   placeholder?: string;
+  name?: string;
+  autoComplete?: string;
 }
 
 /**
@@ -90,7 +124,15 @@ interface CsvFieldProps {
  * freely type leading/trailing/intermediate commas and spaces while the
  * parsed array is published upstream on every change.
  */
-export function CsvField({ label, value, onChange, placeholder }: CsvFieldProps) {
+export function CsvField({
+  label,
+  value,
+  onChange,
+  placeholder,
+  name,
+  autoComplete = "off",
+}: CsvFieldProps) {
+  const inputId = `${useId()}-input`;
   const [raw, setRaw] = useState(() => value.join(", "));
 
   useEffect(() => {
@@ -103,9 +145,14 @@ export function CsvField({ label, value, onChange, placeholder }: CsvFieldProps)
   }, [value, raw]);
 
   return (
-    <label className="cr-field">
-      <span className="cr-field-label">{label}</span>
+    <div className="cr-field">
+      <label className="cr-field-label" htmlFor={inputId}>
+        {label}
+      </label>
       <input
+        id={inputId}
+        name={fieldName(label, name)}
+        autoComplete={autoComplete}
         type="text"
         value={raw}
         placeholder={placeholder}
@@ -122,7 +169,7 @@ export function CsvField({ label, value, onChange, placeholder }: CsvFieldProps)
           );
         }}
       />
-    </label>
+    </div>
   );
 }
 
@@ -132,6 +179,8 @@ interface SelectFieldProps {
   onChange: (v: string) => void;
   options: readonly string[];
   placeholder?: string;
+  name?: string;
+  autoComplete?: string;
 }
 
 export function SelectField({
@@ -140,13 +189,21 @@ export function SelectField({
   onChange,
   options,
   placeholder = "Select…",
+  name,
+  autoComplete = "off",
 }: SelectFieldProps) {
+  const inputId = `${useId()}-select`;
   const isCustom = value.length > 0 && !options.includes(value);
   return (
-    <label className="cr-field">
-      <span className="cr-field-label">{label}</span>
+    <div className="cr-field">
+      <label className="cr-field-label" htmlFor={inputId}>
+        {label}
+      </label>
       <div className="relative">
         <select
+          id={inputId}
+          name={fieldName(label, name)}
+          autoComplete={autoComplete}
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={`cr-input appearance-none pr-9 cursor-pointer ${
@@ -163,9 +220,12 @@ export function SelectField({
           ))}
           {isCustom && <option value={value}>{value}</option>}
         </select>
-        <ChevronDown className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 w-4 h-4 text-(--ink-5)" />
+        <ChevronDown
+          aria-hidden="true"
+          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 w-4 h-4 text-(--ink-5)"
+        />
       </div>
-    </label>
+    </div>
   );
 }
 
@@ -175,90 +235,52 @@ interface TextAreaProps {
   onChange: (v: string) => void;
   placeholder?: string;
   rows?: number;
+  name?: string;
+  autoComplete?: string;
+  hint?: string;
+  invalid?: boolean;
 }
 
-export function TextArea({ label, value, onChange, placeholder, rows = 5 }: TextAreaProps) {
+export function TextArea({
+  label,
+  value,
+  onChange,
+  placeholder,
+  rows = 5,
+  name,
+  autoComplete = "off",
+  hint,
+  invalid = false,
+}: TextAreaProps) {
+  const reactId = useId();
+  const inputId = `${reactId}-textarea`;
+  const hintId = `${reactId}-hint`;
   return (
-    <label className="cr-field">
-      <span className="cr-field-label">{label}</span>
+    <div className="cr-field">
+      <label className="cr-field-label" htmlFor={inputId}>
+        {label}
+      </label>
       <textarea
+        id={inputId}
+        name={fieldName(label, name)}
+        autoComplete={autoComplete}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         placeholder={placeholder}
         rows={rows}
         spellCheck={true}
-        className="cr-input font-[inherit] resize-y"
+        aria-invalid={invalid || undefined}
+        aria-describedby={hint ? hintId : undefined}
+        className={`cr-input font-[inherit] resize-y${invalid ? " cr-input--invalid" : ""}`}
       />
-    </label>
-  );
-}
-
-/**
- * `tone` is retained as a compatibility prop but the visual treatment
- * now comes from the unified design system — every section head uses
- * the brand emerald accent so the editor reads as one calm list rather
- * than a rainbow of tinted cards.
- */
-type Tone =
-  | "blue"
-  | "cyan"
-  | "sky"
-  | "violet"
-  | "indigo"
-  | "emerald"
-  | "teal"
-  | "amber"
-  | "orange"
-  | "rose"
-  | "pink"
-  | "fuchsia"
-  | "slate";
-
-interface SectionCardProps {
-  title: string;
-  /** One-line description shown beneath the title to contextualise the section at a glance. */
-  description?: string;
-  icon?: ReactNode;
-  action?: ReactNode;
-  children: ReactNode;
-  defaultOpen?: boolean;
-  tone?: Tone;
-}
-
-export function SectionCard({
-  title,
-  description,
-  icon,
-  action,
-  children,
-  defaultOpen = true,
-}: SectionCardProps) {
-  const [open, setOpen] = useState(defaultOpen);
-  const toggle = () => setOpen((v) => !v);
-
-  const bulk = useContext(SectionsBulkContext);
-  useEffect(() => {
-    if (bulk.nonce === 0) return;
-    setOpen(bulk.open);
-  }, [bulk]);
-  return (
-    <section className={`acc ${open ? "open" : ""}`}>
-      <div className="flex items-center">
-        <button type="button" onClick={toggle} className="acc-head flex-1" aria-expanded={open}>
-          {icon && <span className="acc-icon">{icon}</span>}
-          <div className="acc-text">
-            <div className="acc-title">{title}</div>
-            {description && <div className="acc-sub">{description}</div>}
-          </div>
-          <ChevronRight className="acc-chev w-4 h-4" aria-hidden="true" />
-        </button>
-      </div>
-      {open && (
-        <div className="acc-body space-y-3">
-          {action && <div className="flex justify-end -mt-1 mb-1">{action}</div>}
-          {children}
-        </div>
-      )}
-    </section>
+      <span
+        id={hintId}
+        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
+        aria-live={invalid ? "polite" : undefined}
+        aria-hidden={hint ? undefined : true}
+      >
+        {hint || "\u00a0"}
+      </span>
+    </div>
   );
 }

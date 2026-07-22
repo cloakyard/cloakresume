@@ -108,24 +108,6 @@ export function RichText({ value, block = false }: { value: string; block?: bool
 }
 
 /**
- * Wrap the currently-selected range in a textarea with the given marker.
- * Returns the updated value and the new selection positions.
- */
-export function wrapSelection(
-  textarea: HTMLTextAreaElement,
-  marker: string,
-): { value: string; start: number; end: number } {
-  const { selectionStart, selectionEnd, value } = textarea;
-  const before = value.slice(0, selectionStart);
-  const selected = value.slice(selectionStart, selectionEnd);
-  const after = value.slice(selectionEnd);
-  const next = `${before}${marker}${selected || "text"}${marker}${after}`;
-  const innerStart = before.length + marker.length;
-  const innerEnd = innerStart + (selected.length || 4);
-  return { value: next, start: innerStart, end: innerEnd };
-}
-
-/**
  * Toggle the given marker around the current selection. If the selection
  * is already wrapped (markers immediately outside, immediately inside, or
  * a collapsed cursor sitting within a matched pair on the same line) the

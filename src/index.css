@@ -1,13 +1,29 @@
-/* Fonts are self-hosted via @fontsource so the CSP can stay on 'self' only —
- * keeps the "nothing leaves the browser" promise and avoids the Google Fonts
- * stylesheet being blocked by the CSP meta tag in index.html. */
+/* UI fonts mirror CloakPDF's explicit self-hosted registrations so the shared
+ * token names resolve to the same files and metrics in both products. Résumé-
+ * specific faces remain bundled through Fontsource; every asset stays local. */
+@import "../tokens.css";
+@import "tailwindcss";
 @import "@fontsource-variable/geist/index.css";
-@import "@fontsource-variable/geist-mono/index.css";
 @import "@fontsource/instrument-serif/400.css";
 @import "@fontsource/instrument-serif/400-italic.css";
 @import "@fontsource/lora/600.css";
 @import "@fontsource/lora/700.css";
-@import "tailwindcss";
+
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url("/fonts/archivo-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+}
 
 /* System-driven dark variant — enables Tailwind `dark:` utilities to
  * gate on `prefers-color-scheme: dark`. The app does not expose a
@@ -15,97 +31,49 @@
  * token overrides further down (also keyed off the same media query). */
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
-/* ────────────────────────────────────────────────────────────────
- * Design system — privacy-emerald, privacy-first.
- * All tokens live inside @theme so they're exposed to Tailwind as
- * `text-primary-600`, `bg-surface`, `rounded-lg`, etc. Legacy alias
- * vars in :root keep inline `style={{}}` props and template code
- * working without rewrites.
- * ──────────────────────────────────────────────────────────────── */
+/* Tailwind names are aliases only. Normative values live in tokens.css. */
 @theme {
-  /* Emerald primary palette — privacy green that anchors the brand. */
-  --color-primary-50: #ecfdf5;
-  --color-primary-100: #d1fae5;
-  --color-primary-200: #a7f3d0;
-  --color-primary-300: #6ee7b7;
-  --color-primary-400: #34d399;
-  --color-primary-500: #10b981;
-  --color-primary-600: #059669;
-  --color-primary-700: #047857;
-  --color-primary-800: #065f46;
-  --color-primary-900: #064e3b;
-  --color-primary: #047857;
-
-  /* Text (ink) scale */
-  --color-ink-0: #050816;
-  --color-ink-1: #0b1220;
-  --color-ink-2: #1f2937;
-  --color-ink-3: #4b5563;
-  --color-ink-4: #6b7280;
-  --color-ink-5: #9ca3af;
-  --color-ink-6: #d1d5db;
-
-  /* Surfaces & lines */
-  --color-surface: #ffffff;
-  --color-surface-2: #f8fafc;
-  --color-surface-3: #f1f5f9;
-  --color-surface-panel: #fcfcfd;
-  --color-page-bg: #f8fafc;
-  --color-line: #e5e7eb;
-  --color-line-soft: #eff1f4;
-  --color-line-hairline: #f3f4f6;
-  --color-border: #e5e7eb;
-  --color-text: #0b1220;
-  --color-text-muted: #6b7280;
-
-  /* Status */
-  --color-ok: #059669;
-  --color-ok-bg: #ecfdf5;
-  --color-ok-border: #a7f3d0;
-  --color-warn: #d97706;
-  --color-warn-bg: #fffbeb;
-  --color-warn-border: #fde68a;
-  --color-danger: #dc2626;
-  --color-danger-bg: #fef2f2;
-  --color-danger-border: #fecaca;
+  --color-primary-50: var(--brand-50);
+  --color-primary-100: var(--brand-100);
+  --color-primary-200: var(--brand-200);
+  --color-primary-300: var(--brand-300);
+  --color-primary-400: var(--color-accent);
+  --color-primary-500: var(--color-accent);
+  --color-primary-600: var(--color-accent);
+  --color-primary-700: var(--color-accent-hover);
+  --color-primary-800: var(--color-accent-active);
+  --color-primary-900: var(--color-accent-active);
+  --color-primary: var(--color-accent);
+  --color-ok: var(--ok);
+  --color-ok-bg: var(--ok-bg);
+  --color-ok-border: var(--ok-border);
+  --color-warn: var(--warn);
+  --color-warn-bg: var(--warn-bg);
+  --color-warn-border: var(--warn-border);
+  --color-danger: var(--danger);
+  --color-danger-bg: var(--danger-bg);
+  --color-danger-border: var(--danger-border);
 
   /* Typography */
-  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-sans: "Archivo", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", "Menlo", "Consolas", monospace;
 
-  /* Shadows */
-  --shadow-xs: 0 1px 0 rgba(15, 23, 42, 0.04);
-  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-  --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --shadow-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
-  --shadow-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --shadow-focus: 0 0 0 3px rgba(4, 120, 87, 0.2);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: var(--shadow-popover);
+  --shadow-lg: var(--shadow-overlay);
+  --shadow-xl: var(--shadow-overlay);
+  --shadow-focus: var(--sh-focus);
+  --radius-xs: var(--radius-control);
+  --radius-sm: var(--radius-control);
+  --radius-md: var(--radius-card);
+  --radius-lg: var(--radius-card);
+  --radius-xl: var(--radius-card);
+  --radius-2xl: var(--radius-card);
 
-  /* Radii (aligned with Tailwind's rounded-* scale) */
-  --radius-xs: 4px;
-  --radius-sm: 6px;
-  --radius-md: 8px;
-  --radius-lg: 10px;
-  --radius-xl: 14px;
-  --radius-2xl: 20px;
-
-  /* Custom animations — expose `animate-fade-in-up` / `animate-scale-in` / `animate-sheet-rise` */
-  --animate-fade-in-up: fade-in-up 0.28s ease-out both;
-  --animate-scale-in: scale-in 0.16s cubic-bezier(0.2, 0.8, 0.2, 1) both;
-  --animate-sheet-rise: sheet-rise 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
-  --animate-ats-slide-up: ats-slide-up 0.3s cubic-bezier(0.32, 0.72, 0, 1);
-
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  /* Contextual overlay motion used by every dialog and mobile sheet. */
+  --animate-scale-in: scale-in var(--duration-base) var(--ease-out) both;
+  --animate-sheet-rise: sheet-rise var(--duration-base) var(--ease-out);
   @keyframes scale-in {
     from {
       opacity: 0;
@@ -122,21 +90,6 @@
     }
     to {
       transform: translateY(0);
-    }
-  }
-  @keyframes ats-slide-up {
-    from {
-      transform: translateY(28px);
-      opacity: 0.7;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  @keyframes fade {
-    from {
-      opacity: 0;
     }
   }
 }
@@ -165,316 +118,45 @@
   }
 }
 
-/*
- * Soft pulsating glow applied when the user taps an insight to jump to
- * a specific field. Three decaying "breaths" over ~4 s: each peak flashes
- * a soft brand-coloured ring, each valley eases it back toward the input
- * without going fully transparent, and the final decay fades the last
- * pulse out. Timed to match `GLOW_DURATION_MS` in
- * src/utils/highlightField.ts. Lives *outside* `@theme` because
- * Tailwind v4 only emits design tokens + animation keyframes from that
- * block — regular class selectors are dropped.
- */
+/* Brief field locator used after an ATS issue jump. The ring itself is a
+ * pseudo-element so the animation remains on the compositor. */
 @keyframes cr-field-glow {
   0% {
-    box-shadow:
-      0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent),
-      0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent);
+    opacity: 0;
+    transform: scale(0.985);
   }
-  /* Pulse 1 — strongest, draws the eye */
-  14% {
-    box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--brand) 55%, transparent),
-      0 0 0 14px color-mix(in oklab, var(--brand) 22%, transparent);
-  }
-  28% {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--brand) 28%, transparent),
-      0 0 0 6px color-mix(in oklab, var(--brand) 10%, transparent);
-  }
-  /* Pulse 2 — slightly softer */
-  42% {
-    box-shadow:
-      0 0 0 3px color-mix(in oklab, var(--brand) 42%, transparent),
-      0 0 0 12px color-mix(in oklab, var(--brand) 17%, transparent);
-  }
-  56% {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--brand) 22%, transparent),
-      0 0 0 5px color-mix(in oklab, var(--brand) 8%, transparent);
-  }
-  /* Pulse 3 — settles */
-  70% {
-    box-shadow:
-      0 0 0 2px color-mix(in oklab, var(--brand) 30%, transparent),
-      0 0 0 9px color-mix(in oklab, var(--brand) 12%, transparent);
-  }
-  85% {
-    box-shadow:
-      0 0 0 1px color-mix(in oklab, var(--brand) 14%, transparent),
-      0 0 0 4px color-mix(in oklab, var(--brand) 5%, transparent);
+  35% {
+    opacity: 1;
+    transform: scale(1);
   }
   100% {
-    box-shadow:
-      0 0 0 0 transparent,
-      0 0 0 0 transparent;
+    opacity: 0;
+    transform: scale(1.015);
   }
 }
 .cr-field-glow {
-  animation: cr-field-glow 4s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 12px;
-  scroll-margin: 120px;
+  border-radius: var(--radius-control);
+  scroll-margin: 5rem;
   position: relative;
   z-index: 1;
 }
-
-/*
- * The onboarding hero now uses the self-contained `Grainient`
- * component (a WebGL2 noise/gradient shader) for its animated
- * backdrop. Its CSS lives next to the component and is loaded by it
- * so the effect ships as a single unit per the CloakIMG pattern.
- */
-
-/*
- * Legacy CSS variable aliases — consumed by inline `style={{}}` props
- * and the resume templates. Keeping them means we didn't have to rewrite
- * every template or every use of `text-(--ink-3)` during the migration.
- */
-:root {
-  /* Brand emerald — picked off the bottom stop of the logo gradient
-   * (`rgb(4,120,87)` / emerald-700). The previous `#059669` (emerald-600)
-   * was a touch too saturated against light surfaces; the deeper shade
-   * reads calmer and matches the wordmark's bottom stop. */
-  --brand: #047857;
-  --brand-hover: #065f46;
-  --brand-active: #064e3b;
-  --brand-50: #ecfdf5;
-  --brand-100: #d1fae5;
-  --brand-200: #a7f3d0;
-  --brand-300: #6ee7b7;
-  --brand-600: #047857;
-  --brand-700: #065f46;
-
-  --ink-0: #050816;
-  --ink-1: #0b1220;
-  --ink-2: #1f2937;
-  --ink-3: #4b5563;
-  --ink-4: #6b7280;
-  --ink-5: #9ca3af;
-  --ink-6: #d1d5db;
-
-  --line: #e5e7eb;
-  --line-soft: #eff1f4;
-  --line-hairline: #f3f4f6;
-  --surface: #ffffff;
-  --surface-2: #f8fafc;
-  --surface-3: #f1f5f9;
-  --surface-panel: #fcfcfd;
-  /* "Raised" surface for cards that sit INSIDE a glass panel (ATS review,
-   * modal content). In light mode this is plain white — identical to
-   * --surface — so nothing visually changes. In dark mode it's nudged one
-   * step lighter than --surface so the card still reads as elevated
-   * against the frosted panel behind it. */
-  --surface-raised: #ffffff;
-
-  --ok: #059669;
-  --ok-bg: #ecfdf5;
-  --ok-border: #a7f3d0;
-  --warn: #d97706;
-  --warn-bg: #fffbeb;
-  --warn-border: #fde68a;
-  --danger: #dc2626;
-  --danger-bg: #fef2f2;
-  --danger-border: #fecaca;
-
-  --sh-xs: 0 1px 0 rgba(15, 23, 42, 0.04);
-  --sh-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 1px 3px rgba(15, 23, 42, 0.04);
-  --sh-md: 0 4px 12px rgba(15, 23, 42, 0.06), 0 1px 2px rgba(15, 23, 42, 0.04);
-  --sh-lg: 0 20px 40px -12px rgba(15, 23, 42, 0.15), 0 4px 8px rgba(15, 23, 42, 0.05);
-  --sh-xl: 0 30px 60px -20px rgba(15, 23, 42, 0.25), 0 8px 20px -8px rgba(15, 23, 42, 0.08);
-  --sh-focus: 0 0 0 3px rgba(4, 120, 87, 0.2);
-  /* Brand-tinted CTA halo — ties the primary button to the brand
-   * colour instead of sitting under a flat gray drop shadow. Mirrors
-   * CloakIMG's `--shadow-cta`, scaled up a touch for hero presence. */
-  --sh-cta:
-    0 8px 24px -6px color-mix(in oklab, var(--brand) 55%, transparent),
-    0 2px 6px -1px color-mix(in oklab, var(--brand) 35%, transparent);
-  --sh-cta-hover:
-    0 14px 32px -8px color-mix(in oklab, var(--brand) 65%, transparent),
-    0 4px 10px -2px color-mix(in oklab, var(--brand) 40%, transparent);
-
-  --r-xs: 4px;
-  --r-sm: 6px;
-  --r-md: 8px;
-  --r-lg: 10px;
-  --r-xl: 14px;
-  --r-2xl: 20px;
-
-  /* Gradient backdrop for the preview pane. Swapped by dark mode. */
-  --preview-bg: linear-gradient(180deg, #eef2f7 0%, #e8edf4 100%);
-  /* Onboarding screen backdrop — fallback gradient that fills the
-   * screen behind the WebGL Grainient (rendered on top with a fixed
-   * className). The radial accents seed brand presence even before
-   * the shader has compiled / when WebGL is unavailable. */
-  --onboarding-bg:
-    radial-gradient(ellipse at 20% 0%, rgba(5, 150, 105, 0.08), transparent 55%),
-    radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.05), transparent 55%),
-    linear-gradient(180deg, #fafbfc 0%, #f1f5f9 100%);
-
-  /* Overlay surfaces (glass panels, popovers, backdrops). The base
-   * values live here; the dark blocks below swap them. The `*-fallback`
-   * vars apply when backdrop-filter isn't supported (the @supports
-   * rule on the component bumps the bg toward solid). */
-  --glass-bg: rgba(255, 255, 255, 0.88);
-  --glass-bg-fallback: var(--surface);
-  --glass-border: rgba(15, 23, 42, 0.06);
-  --popover-bg: rgba(248, 250, 252, 0.7);
-  --popover-bg-fallback: var(--surface);
-  --popover-border: rgba(15, 23, 42, 0.08);
-  --overlay-shadow:
-    0 24px 56px -14px rgba(15, 23, 42, 0.18), 0 4px 14px -4px rgba(15, 23, 42, 0.06);
-  --backdrop-bg: rgba(15, 23, 42, 0.28);
-  --lightness-thumb-bg: #fff;
-  --lightness-thumb-border: var(--ink-1);
+.cr-field-glow::after {
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border: 2px solid color-mix(in oklab, var(--brand) 52%, transparent);
+  border-radius: calc(var(--radius-control) + 4px);
+  content: "";
+  pointer-events: none;
 }
-
-/* ────────────────────────────────────────────────────────────────
- * Dark mode — token overrides driven entirely by the OS
- * `prefers-color-scheme: dark` media query. Chrome (toolbars, panels,
- * inputs, modals) picks up dark mode automatically because everything
- * reads from these tokens. The resume pages themselves stay white — a
- * soft brightness filter dims them against the darker canvas so they
- * don't glare, and print/export strips the filter so output looks
- * printed.
- *
- * No manual toggle is exposed: matching CloakPDF, the app follows the
- * system appearance live. Removing the override removed an entire
- * class of "sometimes the toggle works, sometimes it doesn't" bugs.
- * ──────────────────────────────────────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
+@media (prefers-reduced-motion: no-preference) {
+  .cr-field-glow::after {
+    animation: cr-field-glow var(--duration-long) var(--ease-out) both;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Tailwind @theme tokens — inverted ink ladder, neutral charcoal
-     * surfaces. Previously these used Tailwind slate (cool, blue-tinted),
-     * which gave cards / editor chrome a noticeable navy cast against the
-     * emerald brand. Swapped to the zinc family so the dark theme reads as
-     * warm-neutral charcoal — same brightness ladder, no blue undertone. */
-    --color-ink-0: #fafafa;
-    --color-ink-1: #f4f4f5;
-    --color-ink-2: #e4e4e7;
-    --color-ink-3: #d4d4d8;
-    --color-ink-4: #a1a1aa;
-    --color-ink-5: #71717a;
-    --color-ink-6: #52525b;
-    --color-surface: #18181b;
-    --color-surface-2: #09090b;
-    --color-surface-3: #27272a;
-    --color-surface-panel: #131316;
-    --color-page-bg: #09090b;
-    --color-line: #27272a;
-    --color-line-soft: #1f1f22;
-    --color-line-hairline: #131316;
-    --color-border: #27272a;
-    --color-text: #f4f4f5;
-    --color-text-muted: #a1a1aa;
-    --color-ok: #34d399;
-    --color-ok-bg: rgba(5, 150, 105, 0.16);
-    --color-ok-border: rgba(52, 211, 153, 0.32);
-    --color-warn: #fbbf24;
-    --color-warn-bg: rgba(217, 119, 6, 0.16);
-    --color-warn-border: rgba(251, 191, 36, 0.32);
-    --color-danger: #f87171;
-    --color-danger-bg: rgba(220, 38, 38, 0.16);
-    --color-danger-border: rgba(248, 113, 113, 0.32);
-    --shadow-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-    --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.3);
-    --shadow-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-    --shadow-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
-
-    /* Legacy aliases — consumed by inline style={{}} props and templates. */
-    --ink-0: #fafafa;
-    --ink-1: #f4f4f5;
-    --ink-2: #e4e4e7;
-    --ink-3: #d4d4d8;
-    --ink-4: #a1a1aa;
-    --ink-5: #71717a;
-    --ink-6: #52525b;
-    --line: #27272a;
-    --line-soft: #1f1f22;
-    --line-hairline: #131316;
-    --surface: #18181b;
-    --surface-2: #09090b;
-    --surface-3: #27272a;
-    --surface-panel: #131316;
-    --surface-raised: #27272a;
-    --ok: #34d399;
-    --ok-bg: rgba(5, 150, 105, 0.16);
-    --ok-border: rgba(52, 211, 153, 0.32);
-    --warn: #fbbf24;
-    --warn-bg: rgba(217, 119, 6, 0.16);
-    --warn-border: rgba(251, 191, 36, 0.32);
-    --danger: #f87171;
-    --danger-bg: rgba(220, 38, 38, 0.16);
-    --danger-border: rgba(248, 113, 113, 0.32);
-    --sh-xs: 0 1px 0 rgba(0, 0, 0, 0.3);
-    --sh-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.3);
-    --sh-md: 0 4px 12px rgba(0, 0, 0, 0.7), 0 1px 2px rgba(0, 0, 0, 0.3);
-    --sh-lg: 0 20px 40px -12px rgba(0, 0, 0, 0.6), 0 4px 8px rgba(0, 0, 0, 0.35);
-    --sh-xl: 0 30px 60px -20px rgba(0, 0, 0, 0.7), 0 8px 20px -8px rgba(0, 0, 0, 0.4);
-    /* Same idea in dark mode but pulled brighter: against a near-black
-     * canvas the brand-tinted halo reads as a soft glow rather than a
-     * shadow, which is what CloakIMG's hero feels like in dark mode. */
-    --sh-cta:
-      0 10px 28px -6px color-mix(in oklab, var(--brand) 70%, transparent),
-      0 2px 8px -1px color-mix(in oklab, var(--brand) 50%, transparent);
-    --sh-cta-hover:
-      0 18px 38px -8px color-mix(in oklab, var(--brand) 80%, transparent),
-      0 4px 12px -2px color-mix(in oklab, var(--brand) 55%, transparent);
-
-    /* Brand soft-tint surfaces — re-derived from the live primary so
-     * `.tb.primary` / `.acc-icon` read as brand-tinted against dark chrome
-     * even when the user picks a custom primary. */
-    --brand-50: color-mix(in oklab, var(--color-primary) 18%, transparent);
-    --brand-100: color-mix(in oklab, var(--color-primary) 26%, transparent);
-    --brand-200: color-mix(in oklab, var(--color-primary) 40%, transparent);
-    --brand-300: color-mix(in oklab, var(--color-primary) 55%, transparent);
-    --brand-700: var(--color-primary-300);
-
-    /* Canvas gradients — dim surfaces behind the white resume pages.
-     * Brand wash kept emerald (independent of the surface neutralisation)
-     * so the hero still feels like CloakResume in dark mode. */
-    --preview-bg: linear-gradient(180deg, #09090b 0%, #050507 100%);
-    --onboarding-bg:
-      radial-gradient(ellipse at 20% 0%, rgba(16, 185, 129, 0.18), transparent 55%),
-      radial-gradient(ellipse at 80% 100%, rgba(5, 150, 105, 0.1), transparent 55%),
-      linear-gradient(180deg, #09090b 0%, #050507 100%);
-
-    /* Overlay surfaces — dark theme swaps. */
-    --glass-bg: rgba(24, 24, 27, 0.78);
-    --glass-bg-fallback: rgba(24, 24, 27, 0.96);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --popover-bg: rgba(15, 15, 17, 0.82);
-    --popover-bg-fallback: rgba(15, 15, 17, 0.96);
-    --popover-border: rgba(255, 255, 255, 0.08);
-    --overlay-shadow: 0 24px 56px -14px rgba(0, 0, 0, 0.6), 0 4px 14px -4px rgba(0, 0, 0, 0.35);
-    --backdrop-bg: rgba(0, 0, 0, 0.55);
-    --lightness-thumb-bg: #18181b;
-    --lightness-thumb-border: #e4e4e7;
-  }
-}
-
-/* Component-level dark overrides used to live here as duplicated rule
- * bodies (one per activation mode). They've been refactored to read
- * theme-swapped CSS tokens (--glass-*, --popover-*, --backdrop-bg,
- * --lightness-thumb-*) defined in the dark blocks above, so each
- * component class below has a single rule that automatically picks
- * up the right values. */
+/* Component-level dark overrides read theme-swapped surface, overlay,
+ * popover, and lightness-thumb tokens so each component owns one rule. */
 
 /* ────────────────────────────────────────────────────────────────
  * Base — html/body reset, page background, typography.
@@ -483,7 +165,7 @@
 @layer base {
   html,
   body,
-  #root {
+  #app {
     height: 100%;
     margin: 0;
     font-family: var(--font-sans);
@@ -502,21 +184,10 @@
     line-height: 1.5;
   }
 
-  /* Suppress every browser zoom gesture on phones across every screen
-     (editor, onboarding, modals, sheets) — CloakResume drives its own
-     preview zoom via the floating dock and never wants the OS to
-     scale the form chrome. The viewport meta in index.html sets
-     `user-scalable=no, maximum-scale=1`; `touch-action: pan-x pan-y`
-     here is the CSS-level guarantee that survives iOS Safari's
-     historic habit of ignoring `user-scalable=no`. Listing the pan
-     axes explicitly (instead of `manipulation`, which still permits
-     `pinch-zoom`) is what actually blocks the gesture, while keeping
-     vertical/horizontal scroll fully native. `text-size-adjust` stops
-     Safari from auto-upscaling text in landscape, which would
-     otherwise nudge the pixel-tuned panel chrome. */
+  /* Preserve browser zoom; manipulation only removes delayed tap handling. */
   html,
   body {
-    touch-action: pan-x pan-y;
+    touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
     text-size-adjust: 100%;
   }
@@ -535,24 +206,24 @@
   .cr-scroll {
     scrollbar-gutter: stable;
     scrollbar-width: thin;
-    scrollbar-color: rgba(100, 116, 139, 0.35) transparent;
+    scrollbar-color: color-mix(in oklab, var(--color-ink-3) 40%, transparent) transparent;
   }
   .cr-scroll::-webkit-scrollbar {
     width: 10px;
     height: 10px;
   }
   .cr-scroll::-webkit-scrollbar-thumb {
-    background: rgba(100, 116, 139, 0.3);
-    border-radius: 6px;
+    background: color-mix(in oklab, var(--color-ink-3) 35%, transparent);
+    border-radius: var(--radius-control);
     border: 2px solid transparent;
     background-clip: content-box;
   }
   .cr-scroll::-webkit-scrollbar-thumb:hover {
-    background: rgba(100, 116, 139, 0.5);
+    background: color-mix(in oklab, var(--color-ink-3) 55%, transparent);
     background-clip: content-box;
   }
   .cr-scroll::-webkit-scrollbar-thumb:active {
-    background: rgba(100, 116, 139, 0.65);
+    background: color-mix(in oklab, var(--color-ink-3) 70%, transparent);
     background-clip: content-box;
   }
   .cr-scroll::-webkit-scrollbar-track {
@@ -562,125 +233,36 @@
     background: transparent;
   }
 
-  /* ─── Buttons ───
-   * `.tb` is the canonical toolbar button. Variants opt in via modifier
-   * classes. Mobile-first: 38 px tall for touch targets, shrinks to 34 px
-   * on desktop where pointer precision is higher. */
+  /* Canonical toolbar button: 40px at every density. */
   .tb {
-    @apply inline-flex items-center gap-2 h-[38px] min-h-[38px] px-3
+    @apply inline-flex items-center gap-2 h-10 min-h-10 px-3
       rounded-md border border-(--line) bg-(--surface)
       text-[13px] font-medium text-(--ink-2) whitespace-nowrap
-      transition-[background-color,border-color,box-shadow,transform] duration-100
+      transition-[background-color,border-color,transform] duration-160
       cursor-pointer select-none
-      hover:bg-(--surface-2) hover:border-[#d6dadf]
+      hover:bg-(--surface-2) hover:border-(--color-rule-strong)
       focus-visible:outline-none focus-visible:shadow-(--sh-focus)
-      active:translate-y-px
-      lg:h-[34px] lg:min-h-[34px];
+      active:translate-y-px;
   }
   .tb .caret {
-    @apply text-(--ink-5) ml-0.5;
+    @apply text-(--ink-5) ml-0.5 transition-transform duration-160;
   }
   .tb.ghost {
     @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
   }
-  /* Outline-brand CTA — transparent fill with a clear brand-coloured ring,
-   * mirroring CloakIMG's `.btn-outline-coral`. Reads as a primary action
-   * without competing with the brand wordmark for top-bar attention. The
-   * `rounded-md` radius is inherited from `.tb` so the button still matches
-   * the rest of the toolbar's corner language. */
+  /* Outline Emerald CTA for the editor toolbar. */
   .tb.primary {
     @apply text-(--brand-700) border-(--brand) border-[1.5px]
       [background:transparent]
       hover:[background:var(--brand-50)] hover:border-(--brand-hover);
   }
-  .tb.danger-ghost {
-    @apply border-transparent bg-transparent text-(--danger) hover:bg-(--danger-bg) hover:border-transparent;
-  }
-
-  /* Segmented button group — shares a single border with dividers. */
-  .tb-group {
-    @apply inline-flex items-stretch overflow-hidden rounded-md border border-(--line) bg-(--surface);
-  }
-  .tb-group > .tb {
-    @apply border-0 rounded-none h-8 lg:h-8 border-r border-(--line);
-  }
-  .tb-group > .tb:last-child {
-    @apply border-r-0;
-  }
-
-  /* ─── Glass surfaces & backdrops ───
-   *
-   * Central design primitives used by every popup, sheet, and modal.
-   * `.backdrop` dims the page behind an overlay; `.surface-glass` is
-   * the translucent frosted pane that sits on top. Keeping them as
-   * classes (not ad-hoc Tailwind strings in each component) means the
-   * whole app picks up look-and-feel tweaks from one place.
-   */
-
-  /* Page-wide dim used behind sheets and modals.
-     Note: `-webkit-` prefix is emitted automatically by Lightning CSS
-     based on browserslist. Declaring it manually here causes Lightning
-     CSS to drop the unprefixed form as a "redundant duplicate", which
-     kills blur on Firefox and non-webkit Chromium builds. */
-  .backdrop {
-    background: var(--backdrop-bg);
-    backdrop-filter: blur(4px);
-  }
-
-  /* Frosted-glass panel — the app's signature overlay surface.
-     Neutral white base at lower opacity so the heavy blur actually
-     reads through. Content that needs strong legibility (score numbers,
-     form fields) should sit inside solid `bg-white` cards — don't stack
-     translucent surfaces on the glass. */
-  .surface-glass {
-    background: var(--glass-bg);
-    backdrop-filter: blur(14px);
-    border: 1px solid var(--glass-border);
-    box-shadow: var(--overlay-shadow);
-  }
-  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
-    .surface-glass {
-      background: var(--glass-bg-fallback);
-    }
-  }
-
-  /* Dark frosted-glass surface — the complement to `.surface-glass`.
-     Used by floating docks and pills that sit over the preview or editor
-     (zoom dock, mobile section pill). Same blur recipe as the light
-     variant but with a deep-ink tint so it reads against bright content.
-
-     Shadow stays tight (≤32px reach) because both consumers anchor near
-     the viewport bottom — a heavier shadow bleeds into the iOS Safari
-     URL-bar zone and reads as a "weird halo" against the page bg. */
-  .surface-glass-dark {
-    color: #fff;
-    background: rgba(15, 15, 17, 0.72);
-    backdrop-filter: blur(20px) saturate(160%);
-    box-shadow:
-      inset 0 1px 0 rgba(255, 255, 255, 0.1),
-      0 8px 24px -8px rgba(0, 0, 0, 0.45),
-      0 2px 6px rgba(0, 0, 0, 0.18);
-  }
-  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
-    .surface-glass-dark {
-      background: rgba(15, 15, 17, 0.95);
-    }
-  }
-
-  /* Small popover (dropdown menus, colour picker, date picker) — shares
-     the exact frosted-glass recipe as `.surface-glass` so every overlay
-     across the app reads as one design language. */
+  /* Flat overlay primitives shared by dialogs, sheets, and popovers. */
   .popover {
-    @apply rounded-xl p-3.5;
-    background: var(--popover-bg);
-    backdrop-filter: blur(24px) saturate(160%);
-    border: 1px solid var(--popover-border);
-    box-shadow: var(--overlay-shadow);
-  }
-  @supports not ((backdrop-filter: blur(0)) or (-webkit-backdrop-filter: blur(0))) {
-    .popover {
-      background: var(--popover-bg-fallback);
-    }
+    @apply p-3.5;
+    background: var(--surface);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: var(--radius-control);
+    box-shadow: var(--shadow-popover);
   }
 
   /* Lightness slider in the custom colour picker — thin rounded track with
@@ -690,7 +272,7 @@
     appearance: none;
     height: 10px;
     border-radius: 999px;
-    box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.1);
+    box-shadow: inset 0 0 0 1px var(--color-rule-strong);
     cursor: pointer;
     outline: none;
   }
@@ -702,7 +284,7 @@
     border-radius: 50%;
     background: var(--lightness-thumb-bg);
     border: 2px solid var(--lightness-thumb-border);
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    box-shadow: none;
     cursor: grab;
   }
   .color-lightness-slider::-moz-range-thumb {
@@ -711,50 +293,13 @@
     border-radius: 50%;
     background: var(--lightness-thumb-bg);
     border: 2px solid var(--lightness-thumb-border);
-    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+    box-shadow: none;
     cursor: grab;
   }
   .color-lightness-slider:focus-visible {
     box-shadow:
-      inset 0 0 0 1px rgba(15, 23, 42, 0.1),
+      inset 0 0 0 1px var(--color-rule-strong),
       var(--sh-focus);
-  }
-
-  /* ─── Accordion (editor sections) ─── */
-  .acc {
-    @apply mb-2.5 overflow-hidden rounded-lg border border-(--line-soft) bg-(--surface)
-      transition-[border-color,box-shadow] duration-150;
-  }
-  .acc.open {
-    @apply border-(--line) shadow-(--sh-xs);
-  }
-  .acc-head {
-    @apply flex items-center gap-3 w-full
-      px-4 py-3.5 min-h-14 text-left cursor-pointer bg-transparent border-0
-      transition-colors duration-100
-      hover:bg-(--surface-2)
-      lg:px-3.5 lg:py-3 lg:min-h-0;
-  }
-  .acc-icon {
-    @apply grid place-items-center w-7 h-7 shrink-0 rounded-md text-(--brand) bg-(--brand-50);
-  }
-  .acc-text {
-    @apply flex-1 min-w-0;
-  }
-  .acc-title {
-    @apply text-[13.5px] font-semibold text-(--ink-1) tracking-[-0.01em];
-  }
-  .acc-sub {
-    @apply text-[11.5px] leading-snug text-(--ink-4) mt-0.5 truncate;
-  }
-  .acc-chev {
-    @apply text-(--ink-5) transition-transform duration-200;
-  }
-  .acc.open .acc-chev {
-    @apply rotate-90;
-  }
-  .acc-body {
-    @apply px-3.5 pt-3 pb-3.5 border-t border-(--line-hairline);
   }
 
   /* ─── Form primitives ───
@@ -764,8 +309,7 @@
   .cr-field {
     @apply block;
   }
-  .cr-field-label,
-  .field-label {
+  .cr-field-label {
     @apply block font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] mb-1;
   }
   .cr-input {
@@ -773,32 +317,32 @@
       text-(--ink-1) bg-(--surface)
       border border-(--line) rounded-md
       placeholder:text-(--ink-5)
-      transition-[border-color,box-shadow,background] duration-100
-      hover:border-[#d6dadf]
+      transition-[border-color,background-color] duration-160
+      hover:border-(--color-rule-strong)
       focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)
-      lg:px-3 lg:py-2.5 lg:text-[13.5px] lg:leading-[1.5];
+      lg:px-3 lg:py-2.5 lg:text-sm lg:leading-[1.5];
   }
   .cr-input--compact {
     @apply px-2.5 py-2 text-[14.5px]
-      lg:px-2.5 lg:py-2 lg:text-[13.5px];
+      lg:px-2.5 lg:py-2 lg:text-sm;
   }
   /* Invalid state for text inputs — red border, red focus halo. */
   .cr-input--invalid {
     @apply border-(--danger-border) bg-(--danger-bg)/50
       hover:border-(--danger-border)
-      focus:border-(--danger) focus:shadow-[0_0_0_3px_rgba(220,38,38,0.12)];
+      focus:border-(--danger) focus:shadow-[0_0_0_3px_color-mix(in_oklab,var(--danger)_18%,transparent)];
   }
   /* Live writing-hint state — amber border, reserves space on the right so
      text doesn't run under the floating issue badge. */
   .cr-input--has-issues {
     @apply border-(--warn-border)
       hover:border-(--warn-border)
-      focus:border-(--warn) focus:shadow-[0_0_0_3px_rgba(217,119,6,0.14)]
+      focus:border-(--warn) focus:shadow-[0_0_0_3px_color-mix(in_oklab,var(--warn)_18%,transparent)]
       pr-10;
   }
   /* Helper text shown below a field. Red variant signals validation errors. */
   .cr-field-hint {
-    @apply block mt-1 text-[11.5px] leading-snug text-(--ink-4);
+    @apply block mt-1 text-sm leading-[1.5] text-(--ink-4);
   }
   .cr-field-hint--error {
     @apply text-(--danger);
@@ -808,10 +352,6 @@
   .cr-stack > * + * {
     @apply mt-4;
   }
-  .cr-stack--tight > * + * {
-    @apply mt-3;
-  }
-
   /* Row used to pair a section-scope label with an inline action. */
   .cr-field-row {
     @apply flex items-center justify-between min-h-[22px] mb-1.5;
@@ -822,29 +362,7 @@
 
   /* Sub-card — a single entry within a list section (e.g. one role). */
   .sub-card {
-    @apply p-2.5 rounded-md border border-(--line-soft) bg-(--surface-2)
-      lg:p-3;
-  }
-
-  /* Score ring (ATS) — absolute-centered text within an SVG. */
-  .score-ring {
-    @apply relative grid place-items-center;
-  }
-  .score-ring svg {
-    @apply -rotate-90;
-  }
-  .score-ring .score-num {
-    @apply absolute font-mono text-[22px] font-bold text-(--ink-1) tracking-[-0.02em]
-      tabular-nums leading-none;
-  }
-  .score-ring .score-sub {
-    @apply absolute top-[calc(50%+14px)] font-mono text-[9px] font-semibold
-      uppercase tracking-[0.08em] text-(--ink-4);
-  }
-
-  /* Tiny "section divider" tracked-caps style reused by templates. */
-  .uppercase-track {
-    @apply uppercase tracking-[1.3px];
+    @apply border border-(--line) bg-(--surface) p-3;
   }
 }
 
@@ -871,10 +389,10 @@
   -webkit-print-color-adjust: exact;
 }
 
-/* Consistent box model + long-token safety for every element rendered
- * inside a resume. Templates can still override per-element as needed;
- * elements that need unbroken text (dates, tabular numerics) already
- * declare `white-space: nowrap` explicitly. */
+/* Consistent box model for every element rendered inside a resume.
+ * Ordinary prose keeps natural word boundaries; only link-like tokens get
+ * an explicit escape hatch below. Templates can still override per-element
+ * for contact details, skill lists, and other constrained output fields. */
 .resume-root,
 .resume-root *,
 .resume-root *::before,
@@ -883,17 +401,22 @@
 }
 
 .resume-root {
+  overflow-wrap: normal;
+  word-break: normal;
+  hyphens: manual;
+}
+
+.resume-root a,
+.resume-root code {
   overflow-wrap: anywhere;
+  word-break: break-word;
 }
 
 .resume-root .resume-page {
   width: var(--resume-page-w);
   min-height: var(--resume-page-h);
   background: #ffffff;
-  box-shadow:
-    0 1px 3px rgba(15, 23, 42, 0.08),
-    0 24px 60px -24px rgba(15, 23, 42, 0.22),
-    0 6px 12px -6px rgba(15, 23, 42, 0.08);
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12);
   position: relative;
   color: #1f2937;
   border-radius: 2px;
@@ -910,25 +433,15 @@
   border-bottom: 1px dotted currentColor;
 }
 .resume-root a.tpl-link:hover {
-  color: #059669;
-  border-bottom-color: #059669;
+  color: var(--brand);
+  border-bottom-color: var(--brand);
 }
 
-/* Preview scroller gets momentum scroll + the same gradient backing. */
+/* Preview scroller gets momentum scroll and the family paper backing. */
 .cr-preview-scroll {
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
   background: var(--preview-bg);
-}
-
-/* In dark mode the resume page stays white (so exported PDFs and prints
- * look identical to light mode) but we dim it just enough that the bright
- * paper doesn't glare against the dark canvas. Print / PDF export strip
- * the filter so output looks exactly as designed. */
-@media (prefers-color-scheme: dark) {
-  .resume-root .resume-page {
-    filter: brightness(0.88) contrast(0.98);
-  }
 }
 
 /* ────────────────────────────────────────────────────────────────
@@ -947,7 +460,7 @@
 
   html,
   body,
-  #root {
+  #app {
     background: #ffffff !important;
     margin: 0 !important;
     padding: 0 !important;
@@ -988,9 +501,6 @@
     margin: 0 !important;
     background: #ffffff !important;
     overflow: visible !important;
-    /* Strip the dark-mode dim filter so printed / exported output is
-     * always the true designed-for-paper version. */
-    filter: none !important;
   }
 
   .resume-root .resume-page:has(+ .resume-page) {

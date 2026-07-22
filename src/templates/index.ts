@@ -8,24 +8,70 @@
  * and `badge` is an optional marketing tag.
  */
 
-import type { ComponentType } from "react";
+import { lazy, type ComponentType } from "react";
 import type { ResumeData, TemplateCategory, TemplateId, TemplateMeta } from "../types.ts";
 import type { PrimaryPalette } from "../utils/colors.ts";
-import { Academic } from "./Academic.tsx";
-import { AtsPlain } from "./AtsPlain.tsx";
-import { AtsProfessional } from "./AtsProfessional.tsx";
-import { Aurora } from "./Aurora.tsx";
-import { Bauhaus } from "./Bauhaus.tsx";
-import { ClassicSidebar } from "./ClassicSidebar.tsx";
-import { CompactTimeline } from "./CompactTimeline.tsx";
-import { ExecutiveSerif } from "./ExecutiveSerif.tsx";
-import { GradientHeader } from "./GradientHeader.tsx";
-import { Horizon } from "./Horizon.tsx";
-import { Minimalist } from "./Minimalist.tsx";
-import { ModernMinimal } from "./ModernMinimal.tsx";
-import { Monograph } from "./Monograph.tsx";
-import { Prism } from "./Prism.tsx";
-import { Typographic } from "./Typographic.tsx";
+
+// Keep every path literal so Vite can emit one predictable chunk per template.
+// React.lazy caches both the import promise and resolved component, so the live
+// editor and gallery share each loaded module without repeat network work.
+const Academic = lazy(() =>
+  import("./Academic.tsx").then(({ Academic: component }) => ({ default: component })),
+);
+const AtsPlain = lazy(() =>
+  import("./AtsPlain.tsx").then(({ AtsPlain: component }) => ({ default: component })),
+);
+const AtsProfessional = lazy(() =>
+  import("./AtsProfessional.tsx").then(({ AtsProfessional: component }) => ({
+    default: component,
+  })),
+);
+const Aurora = lazy(() =>
+  import("./Aurora.tsx").then(({ Aurora: component }) => ({ default: component })),
+);
+const Bauhaus = lazy(() =>
+  import("./Bauhaus.tsx").then(({ Bauhaus: component }) => ({ default: component })),
+);
+const ClassicSidebar = lazy(() =>
+  import("./ClassicSidebar.tsx").then(({ ClassicSidebar: component }) => ({
+    default: component,
+  })),
+);
+const CompactTimeline = lazy(() =>
+  import("./CompactTimeline.tsx").then(({ CompactTimeline: component }) => ({
+    default: component,
+  })),
+);
+const ExecutiveSerif = lazy(() =>
+  import("./ExecutiveSerif.tsx").then(({ ExecutiveSerif: component }) => ({
+    default: component,
+  })),
+);
+const GradientHeader = lazy(() =>
+  import("./GradientHeader.tsx").then(({ GradientHeader: component }) => ({
+    default: component,
+  })),
+);
+const Horizon = lazy(() =>
+  import("./Horizon.tsx").then(({ Horizon: component }) => ({ default: component })),
+);
+const Minimalist = lazy(() =>
+  import("./Minimalist.tsx").then(({ Minimalist: component }) => ({ default: component })),
+);
+const ModernMinimal = lazy(() =>
+  import("./ModernMinimal.tsx").then(({ ModernMinimal: component }) => ({
+    default: component,
+  })),
+);
+const Monograph = lazy(() =>
+  import("./Monograph.tsx").then(({ Monograph: component }) => ({ default: component })),
+);
+const Prism = lazy(() =>
+  import("./Prism.tsx").then(({ Prism: component }) => ({ default: component })),
+);
+const Typographic = lazy(() =>
+  import("./Typographic.tsx").then(({ Typographic: component }) => ({ default: component })),
+);
 
 export interface TemplateProps {
   resume: ResumeData;
@@ -40,7 +86,7 @@ export const TEMPLATES: Record<
     id: "classic-sidebar",
     name: "Classic Sidebar",
     description: "Tinted sidebar · Detail-rich",
-    accent: "#059669",
+    accent: "#047857",
     level: "Mid–Senior · 5–15 years",
     category: "classic",
     badge: { label: "Recommended", tone: "brand" },
@@ -70,7 +116,7 @@ export const TEMPLATES: Record<
     id: "ats-professional",
     name: "ATS Professional",
     description: "Single column · Subtle accent",
-    accent: "#059669",
+    accent: "#047857",
     level: "All levels · Best for online applications",
     category: "ats",
     badge: { label: "ATS-safe", tone: "ats" },
@@ -90,7 +136,7 @@ export const TEMPLATES: Record<
     id: "modern-minimal",
     name: "Modern Minimal",
     description: "Single column · Clean tech",
-    accent: "#059669",
+    accent: "#047857",
     level: "Early–Mid · 2–8 years",
     category: "modern",
     badge: { label: "Popular", tone: "brand" },
