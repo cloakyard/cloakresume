@@ -47,18 +47,18 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const initials = extractInitials(resume.profile.name);
   const css = `
-    .hz-root { font-family: 'Geist', 'Inter', sans-serif; color: #111827; font-size: 9.3pt; line-height: 1.48; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .hz-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #111827; font-size: 9.3pt; line-height: 1.48; overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .hz-sidebar { background: ${SIDEBAR_BG}; color: #111827; position: relative; min-width: 0; }
     .hz-sidebar::after { content: ""; position: absolute; right: 0; top: 0; bottom: 0; width: 0.8mm; background: linear-gradient(to bottom, ${palette.primary300}, ${palette.primary600}); }
     .hz-identity { text-align: center; padding-bottom: 3.2mm; margin-bottom: 4mm; border-bottom: 1px solid ${palette.primary100}; }
     .hz-mono { width: 22mm; height: 22mm; border-radius: 5.5mm; background: linear-gradient(135deg, ${palette.primary50}, ${palette.primary200}); color: ${palette.primary800}; display: flex; align-items: center; justify-content: center; margin: 0 auto 3mm; font-size: 12pt; font-weight: 800; letter-spacing: -0.3px; overflow: hidden; border: 1px solid ${palette.primary200}; flex-shrink: 0; }
     .hz-mono img { width: 100%; height: 100%; object-fit: cover; }
-    .hz-name { font-size: 17pt; font-weight: 700; color: #0f172a; line-height: 1.1; letter-spacing: -0.4px; margin: 0; overflow-wrap: break-word; }
-    .hz-role { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; margin-top: 1.6mm; letter-spacing: 1.4px; text-transform: uppercase; overflow-wrap: break-word; }
-    .hz-cont-name { padding-bottom: 1.8mm; margin-bottom: 4mm; border-bottom: 1px solid ${palette.primary100}; text-align: center; overflow-wrap: break-word; }
+    .hz-name { font-size: 17pt; font-weight: 700; color: #0f172a; line-height: 1.1; letter-spacing: -0.4px; margin: 0; overflow-wrap: normal; }
+    .hz-role { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; margin-top: 1.6mm; letter-spacing: 1.4px; text-transform: uppercase; overflow-wrap: normal; }
+    .hz-cont-name { padding-bottom: 1.8mm; margin-bottom: 4mm; border-bottom: 1px solid ${palette.primary100}; text-align: center; overflow-wrap: normal; }
     .hz-cont-name strong { display: block; font-size: 11pt; font-weight: 700; color: #0f172a; letter-spacing: -0.2px; }
     .hz-cont-name small { display: block; font-size: 7.4pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 1.2px; margin-top: 0.8mm; }
-    .hz-h3 { display: block; font-size: 7.8pt; text-transform: uppercase; letter-spacing: 2.2px; font-weight: 800; color: #0f172a; margin-bottom: 2.2mm; padding-bottom: 1.2mm; position: relative; overflow-wrap: break-word; }
+    .hz-h3 { display: block; font-size: 7.8pt; text-transform: uppercase; letter-spacing: 2.2px; font-weight: 800; color: #0f172a; margin-bottom: 2.2mm; padding-bottom: 1.2mm; position: relative; overflow-wrap: normal; }
     .hz-h3::after { content: ""; position: absolute; left: 0; bottom: 0; width: 6mm; height: 1mm; background: ${palette.primary600}; border-radius: 0.5mm; }
     .hz-sb-atom { margin-bottom: 4.4mm; min-width: 0; }
     .hz-contact { display: flex; align-items: flex-start; gap: 2mm; margin-bottom: 1.2mm; font-size: 8.2pt; color: #374151; overflow-wrap: anywhere; word-break: break-word; }
@@ -66,34 +66,34 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
     .hz-skill-group { margin-bottom: 2mm; }
     .hz-skill-group:last-child { margin-bottom: 0; }
-    .hz-skill-label { font-size: 8.4pt; font-weight: 700; color: #0f172a; margin-bottom: 0.4mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: break-word; }
+    .hz-skill-label { font-size: 8.4pt; font-weight: 700; color: #0f172a; margin-bottom: 0.4mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: normal; }
     .hz-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .hz-skill-list { font-size: 8.1pt; color: #374151; line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; }
     .hz-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 0.9mm; color: #374151; padding-bottom: 0.8mm; border-bottom: 1px dashed ${palette.primary200}; flex-wrap: wrap; }
     .hz-lang:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
-    .hz-lang > span:first-child { min-width: 0; overflow-wrap: break-word; color: #0f172a; font-weight: 600; }
+    .hz-lang > span:first-child { min-width: 0; overflow-wrap: normal; color: #0f172a; font-weight: 600; }
     .hz-lang .lvl { color: ${palette.primary700}; font-weight: 600; font-size: 7.8pt; flex-shrink: 0; }
     .hz-chips { display: flex; flex-wrap: wrap; gap: 1.1mm; }
-    .hz-chip { background: #ffffff; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
-    .hz-cert { font-size: 8.2pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.35; overflow-wrap: break-word; }
+    .hz-chip { background: #ffffff; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
+    .hz-cert { font-size: 8.2pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.35; overflow-wrap: normal; }
     .hz-cert:last-child { margin-bottom: 0; }
-    .hz-cert strong { color: #0f172a; display: block; font-weight: 700; overflow-wrap: break-word; }
-    .hz-cert .meta { color: ${palette.primary700}; font-size: 7.8pt; overflow-wrap: break-word; }
-    .hz-award { font-size: 8.2pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.35; overflow-wrap: break-word; }
+    .hz-cert strong { color: #0f172a; display: block; font-weight: 700; overflow-wrap: normal; }
+    .hz-cert .meta { color: ${palette.primary700}; font-size: 7.8pt; overflow-wrap: normal; }
+    .hz-award { font-size: 8.2pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.35; overflow-wrap: normal; }
     .hz-award:last-child { margin-bottom: 0; }
-    .hz-award strong { color: #0f172a; display: block; font-weight: 700; overflow-wrap: break-word; }
+    .hz-award strong { color: #0f172a; display: block; font-weight: 700; overflow-wrap: normal; }
     .hz-stats { display: grid; grid-template-columns: minmax(0, 1fr); gap: 1.4mm; }
     .hz-stat { background: #ffffff; border: 1px solid ${palette.primary100}; border-left: 2.5px solid ${palette.primary600}; padding: 1.4mm 2.2mm; border-radius: 0 2mm 2mm 0; min-width: 0; }
-    .hz-stat-value { font-size: 12pt; font-weight: 800; color: ${palette.primary800}; line-height: 1; letter-spacing: -0.3px; overflow-wrap: break-word; font-variant-numeric: tabular-nums; }
-    .hz-stat-label { font-size: 6.8pt; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; font-weight: 700; margin-top: 0.5mm; overflow-wrap: break-word; }
-    .hz-extra { font-size: 8pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.4; overflow-wrap: break-word; }
+    .hz-stat-value { font-size: 12pt; font-weight: 800; color: ${palette.primary800}; line-height: 1; letter-spacing: -0.3px; overflow-wrap: normal; font-variant-numeric: tabular-nums; }
+    .hz-stat-label { font-size: 6.8pt; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; font-weight: 700; margin-top: 0.5mm; overflow-wrap: normal; }
+    .hz-extra { font-size: 8pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.4; overflow-wrap: normal; }
     .hz-extra:last-child { margin-bottom: 0; }
-    .hz-extra strong { display: block; color: #0f172a; font-weight: 700; font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.3mm; overflow-wrap: break-word; }
+    .hz-extra strong { display: block; color: #0f172a; font-weight: 700; font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 0.3mm; overflow-wrap: normal; }
     .hz-section-head { font-size: 11pt; font-weight: 800; color: #0f172a; letter-spacing: -0.2px; margin: 4.8mm 0 2.4mm; display: flex; align-items: center; gap: 2.4mm; break-after: avoid; page-break-after: avoid; }
     .hz-summary-atom .hz-section-head { margin-top: 0; }
     .hz-section-head::before { content: ""; width: 2.6mm; height: 2.6mm; background: ${palette.primary600}; border-radius: 0.8mm; flex-shrink: 0; }
     .hz-section-head::after { content: ""; flex: 1 1 auto; height: 1px; background: linear-gradient(to right, ${palette.primary200}, transparent); }
-    .hz-summary { font-size: 9.4pt; line-height: 1.55; color: #1f2937; overflow-wrap: break-word; }
+    .hz-summary { font-size: 9.4pt; line-height: 1.55; color: #1f2937; overflow-wrap: normal; }
     .hz-summary-atom { margin-bottom: 3.6mm; }
     .hz-job { margin-bottom: 2.8mm; padding-left: 5mm; position: relative; page-break-inside: avoid; break-inside: avoid; }
     .hz-job::before { content: ""; position: absolute; left: 1.2mm; top: 3.2mm; bottom: 0.4mm; width: 1px; background: ${palette.primary200}; }
@@ -102,16 +102,16 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-job-head { margin-bottom: 0; }
     .hz-job-head::before { bottom: 0; }
     .hz-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
-    .hz-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .hz-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
     .hz-jobdates { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
-    .hz-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.1mm; overflow-wrap: break-word; }
+    .hz-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.1mm; overflow-wrap: normal; }
     .hz-jobco .loc { color: #6b7280; font-weight: 500; }
     .hz-job ul { list-style: none; padding: 0; margin: 0; }
-    .hz-job li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .hz-job li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: normal; }
     .hz-job li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 2mm; height: 1px; background: ${palette.primary600}; }
     .hz-ul-bullet { list-style: none; padding: 0 0 0 5mm; margin: 0; position: relative; }
     .hz-ul-bullet::before { content: ""; position: absolute; left: 1.2mm; top: 0; bottom: 0; width: 1px; background: ${palette.primary200}; }
-    .hz-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .hz-ul-bullet li { font-size: 9pt; line-height: 1.45; padding-left: 3.8mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: normal; }
     .hz-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 2mm; height: 1px; background: ${palette.primary600}; }
     .hz-ul-bullet-first { margin-top: 0; }
     .hz-ul-bullet-last { margin-bottom: 2.8mm; }
@@ -119,17 +119,17 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.6mm; gap: 4mm; flex-wrap: wrap; padding-bottom: 1.6mm; border-bottom: 1px solid ${palette.primary100}; page-break-inside: avoid; break-inside: avoid; }
     .hz-edu:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
     .hz-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .hz-edutitle { font-size: 9.6pt; font-weight: 700; color: #0f172a; overflow-wrap: break-word; }
-    .hz-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: break-word; }
-    .hz-edu-detail { font-size: 8pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .hz-edutitle { font-size: 9.6pt; font-weight: 700; color: #0f172a; overflow-wrap: normal; }
+    .hz-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: normal; }
+    .hz-edu-detail { font-size: 8pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: normal; }
     .hz-edumeta { font-size: 8.4pt; color: #6b7280; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
     .hz-proj { margin-bottom: 2.4mm; padding: 2.2mm 3mm 2.2mm 3.8mm; background: #ffffff; border: 1px solid ${palette.primary100}; border-radius: 2.5mm; position: relative; overflow: hidden; page-break-inside: avoid; break-inside: avoid; }
     .hz-proj::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 1.2mm; background: linear-gradient(to bottom, ${palette.primary400}, ${palette.primary600}); }
     .hz-proj:last-child { margin-bottom: 0; }
-    .hz-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.2mm; overflow-wrap: break-word; }
+    .hz-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.2mm; overflow-wrap: normal; }
     .hz-proj-label { font-size: 7.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 1mm 0 0.4mm; }
     .hz-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
-    .hz-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .hz-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: normal; }
     .hz-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .hz-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
   `;

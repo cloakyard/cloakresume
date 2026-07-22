@@ -12,6 +12,7 @@
  */
 
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
 import { OrientationLock } from "./components/OrientationLock.tsx";
@@ -30,13 +31,43 @@ import { Preview } from "./components/Preview.tsx";
 const AtsReviewModal = lazy(() =>
   import("./components/AtsReviewModal.tsx").then((m) => ({ default: m.AtsReviewModal })),
 );
-import { OnboardingScreen } from "./components/OnboardingScreen.tsx";
+
+function AtsReviewLoading({ open }: { open: boolean }) {
+  if (!open) return null;
+
+  return createPortal(
+    <div
+      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6 print:hidden"
+      role="presentation"
+    >
+      <div
+        className="cr-dialog cr-dialog-wide cr-sheet relative flex h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:h-[min(51.25rem,var(--dialog-max-block-size))] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:pb-0"
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+      >
+        <div className="flex h-16 shrink-0 items-center border-b border-(--line) px-5 min-[640px]:px-7">
+          <span className="text-base font-semibold text-(--ink-1)">ATS review</span>
+        </div>
+        <div className="grid min-h-0 flex-1 place-items-center px-6 text-center">
+          <div>
+            <p className="m-0 text-sm font-semibold text-(--ink-1)">Preparing your analysis…</p>
+            <p className="mt-1 text-sm text-(--ink-4)">
+              Loading the private, on-device review workspace.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  );
+}
+import { CloakWorkbenchLanding } from "./components/CloakWorkbenchLanding.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
 import { generateSampleResume } from "./data/sampleResume.ts";
 import { TEMPLATES } from "./templates/index.ts";
 import type { ResumeData, TemplateId } from "./types.ts";
 import { derivePalette } from "./utils/colors.ts";
-import { useApplyTheme } from "./utils/theme.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
@@ -70,10 +101,15 @@ interface Persisted {
   jobDescription: string;
   activeSection: SectionId;
   /** ISO timestamp of the most recent persistence write. Surfaced on
-   *  the onboarding "Resume editing" CTA as a "Saved 2h ago" caption.
+   *  the landing "Resume editing" CTA as a "Saved 2h ago" caption.
    *  Undefined on first run (no record yet) and on records written
    *  before this field was introduced. */
   savedAt?: string;
+}
+
+interface AppNotice {
+  title: string;
+  description: string;
 }
 
 type PersistedInput = Partial<Persisted>;
@@ -119,6 +155,11 @@ export function App() {
   const [jobDescription, setJobDescription] = useState<string>(initial.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.activeSection);
   const [mobileView, setMobileView] = useState<MobileView>("panel");
+  const [mobileSectionOpen, setMobileSectionOpen] = useState(true);
+  const handleSectionChange = useCallback((next: SectionId) => {
+    setActiveSection(next);
+    setMobileSectionOpen(true);
+  }, []);
   const [atsOpen, setAtsOpen] = useState(false);
   /** True once the user has opened the ATS review at least once — gates the
    *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
@@ -128,11 +169,11 @@ export function App() {
     setAtsOpen(true);
   }, []);
   /**
-   * Onboarding shows on every app load — users always land here first and
+   * The start landing shows on every app load — users always land here first and
    * pick "Resume editing" (when there's saved work) or one of the
    * fresh-start tiles. Mid-session "New" flow re-opens it with the same UI.
    */
-  const [showOnboarding, setShowOnboarding] = useState(true);
+  const [showLanding, setShowLanding] = useState(true);
   /**
    * True when the current résumé has any user-entered content — gates
    * the "Resume editing" tile on the welcome screen so it only shows
@@ -143,13 +184,15 @@ export function App() {
   const hasSavedWork = useMemo(() => resumeHasContent(resume), [resume]);
   /** Confirmation prompt before clearing the current work via the "New" button. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
+  /** Family notice used for recoverable file and export failures. */
+  const [notice, setNotice] = useState<AppNotice | null>(null);
 
-  // Persist everything on change (debounced via rAF to avoid thrash on keystroke).
-  // Suppressed while onboarding is visible — the default state is a placeholder
+  // Persist after a short idle window so a typing burst performs one write.
+  // Suppressed while the landing is visible — the default state is a placeholder
   // and shouldn't bypass the first-run screen by getting written to storage.
   useEffect(() => {
-    if (showOnboarding) return;
-    const frame = requestAnimationFrame(() => {
+    if (showLanding) return;
+    const timeout = window.setTimeout(() => {
       const payload: Persisted = {
         resume,
         templateId,
@@ -164,15 +207,12 @@ export function App() {
       } catch {
         // Quota exceeded (e.g. huge photo) — silently skip.
       }
-    });
-    return () => cancelAnimationFrame(frame);
-  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showOnboarding]);
+    }, 300);
+    return () => window.clearTimeout(timeout);
+  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showLanding]);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
-
-  /** Bind palette to CSS variables so editor chrome follows the theme. */
-  useApplyTheme(palette);
 
   /**
    * Grammar / spelling analysis runs in a Web Worker so the ~700 KB English
@@ -224,6 +264,7 @@ export function App() {
   const focusJdEditor = useCallback(() => {
     setAtsOpen(false);
     setActiveSection("jd");
+    setMobileSectionOpen(true);
   }, []);
 
   /**
@@ -246,8 +287,8 @@ export function App() {
               : null;
     if (!target) return;
     setActiveSection(target);
-    // On mobile the editor and preview are mutually exclusive — flip back
-    // to the editor so the highlighted field is actually on screen.
+    setMobileSectionOpen(true);
+    // On mobile the edit mode contains the split preview/editor workbench.
     setMobileView("panel");
     setAtsOpen(false);
     // Delay past the sheet's close animation + section mount so the field
@@ -258,15 +299,27 @@ export function App() {
   const TemplateComponent = TEMPLATES[templateId].component;
 
   const handleExportPdf = useCallback(async () => {
-    const root = document.querySelector<HTMLElement>(".resume-root");
-    if (!root) return;
+    const root = document.querySelector<HTMLElement>('.resume-root[data-template-ready="true"]');
+    if (!root) {
+      setNotice({
+        title: "Document is still preparing",
+        description:
+          "Wait a moment for the selected template to finish loading, then export again.",
+      });
+      return;
+    }
     try {
       // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
       // in the client after the user actually asks for an export.
       const { exportResumeToPdf } = await import("./utils/pdfExport.ts");
       await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"), paperSize);
     } catch (err) {
-      alert(`Couldn't generate the PDF. ${err instanceof Error ? err.message : "Unknown error."}`);
+      setNotice({
+        title: "PDF export failed",
+        description: `CloakResume couldn't generate the PDF. ${
+          err instanceof Error ? err.message : "Please try again."
+        }`,
+      });
     }
   }, [resume.profile.name, paperSize]);
 
@@ -282,9 +335,14 @@ export function App() {
       setPrimary(payload.primary);
       setPaperSize(payload.paperSize);
       setJobDescription(payload.jobDescription);
-      setShowOnboarding(false);
+      setShowLanding(false);
     } catch (err) {
-      alert(`Couldn't load that file. ${err instanceof Error ? err.message : "Unknown error."}`);
+      setNotice({
+        title: "Resume file couldn't be opened",
+        description: `CloakResume couldn't load that file. ${
+          err instanceof Error ? err.message : "Choose another CloakResume file and try again."
+        }`,
+      });
     }
   }, []);
 
@@ -293,7 +351,7 @@ export function App() {
     setResume(data);
     setJobDescription("");
     setTemplateId(DEFAULT_TEMPLATE_ID);
-    setShowOnboarding(false);
+    setShowLanding(false);
   }, []);
 
   /**
@@ -307,11 +365,11 @@ export function App() {
 
   const confirmNewResume = useCallback(() => {
     setNewConfirmOpen(false);
-    setShowOnboarding(true);
+    setShowLanding(true);
   }, []);
 
-  const dismissOnboarding = useCallback(() => {
-    setShowOnboarding(false);
+  const dismissLanding = useCallback(() => {
+    setShowLanding(false);
   }, []);
 
   return (
@@ -335,9 +393,9 @@ export function App() {
        * the editor's `body { overflow: hidden }` lock prevents the
        * document from scrolling, and iOS Safari only collapses its URL
        * bar when the *document* scrolls. By unmounting the editor while
-       * onboarding is shown, OnboardingScreen can let the document
+       * the landing is shown, CloakWorkbenchLanding can let the document
        * scroll naturally and the URL bar collapses to its slim pill. */}
-      {!showOnboarding && (
+      {!showLanding && (
         <Layout
           toolbarCenter={
             <ToolbarCenter
@@ -373,9 +431,11 @@ export function App() {
             </>
           }
           activeSection={activeSection}
-          onSectionChange={setActiveSection}
+          onSectionChange={handleSectionChange}
           mobileView={mobileView}
           onMobileViewChange={setMobileView}
+          mobileSectionOpen={mobileSectionOpen}
+          onMobileSectionOpenChange={setMobileSectionOpen}
           panel={
             <FieldIssuesProvider report={grammarReport}>
               <SectionPanel
@@ -385,6 +445,7 @@ export function App() {
                 jobDescription={jobDescription}
                 onJobDescriptionChange={setJobDescription}
                 onAnalyze={openAts}
+                onClose={() => setMobileSectionOpen(false)}
               />
             </FieldIssuesProvider>
           }
@@ -399,9 +460,9 @@ export function App() {
         />
       )}
 
-      {atsMounted && !showOnboarding && (
+      {atsMounted && !showLanding && (
         <ErrorBoundary title="ATS review hit a snag">
-          <Suspense fallback={null}>
+          <Suspense fallback={<AtsReviewLoading open={atsOpen} />}>
             <AtsReviewModal
               open={atsOpen}
               onClose={() => setAtsOpen(false)}
@@ -419,13 +480,13 @@ export function App() {
         </ErrorBoundary>
       )}
 
-      {showOnboarding && (
-        <OnboardingScreen
+      {showLanding && (
+        <CloakWorkbenchLanding
           onStartBlank={() => startWithResume(blankResume)}
           onLoadSample={() => startWithResume(generateSampleResume())}
           onLoadFile={handleLoadFile}
-          onDismiss={hasSavedWork ? dismissOnboarding : undefined}
-          onResumeEditing={hasSavedWork ? dismissOnboarding : undefined}
+          onDismiss={hasSavedWork ? dismissLanding : undefined}
+          onResumeEditing={hasSavedWork ? dismissLanding : undefined}
           lastSavedAt={hasSavedWork ? initial.savedAt : undefined}
         />
       )}
@@ -439,6 +500,17 @@ export function App() {
         tone="danger"
         onConfirm={confirmNewResume}
         onCancel={() => setNewConfirmOpen(false)}
+      />
+
+      <ConfirmDialog
+        open={notice !== null}
+        title={notice?.title ?? "Action couldn't be completed"}
+        description={notice?.description}
+        confirmLabel="Dismiss"
+        variant="notice"
+        tone="danger"
+        onConfirm={() => setNotice(null)}
+        onCancel={() => setNotice(null)}
       />
     </>
   );

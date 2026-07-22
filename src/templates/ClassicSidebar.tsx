@@ -42,14 +42,14 @@ const SIDEBAR_CONTENT_WIDTH_MM = SIDEBAR_WIDTH_MM - SIDEBAR_PAD_H * 2;
 export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .cs-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.2pt; line-height: 1.4; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .cs-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #1f2937; font-size: 9.2pt; line-height: 1.4; overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .cs-sidebar { color: #1f2937; min-width: 0; }
     .cs-photo { width: 28mm; height: 28mm; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 4mm; border: 2px solid ${palette.primary600}; }
     .cs-logo { width: 14mm; height: 14mm; border-radius: 4mm; background: ${palette.primary600}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; margin: 0 auto 3mm; }
-    .cs-name { font-size: 17pt; font-weight: 700; color: #111827; line-height: 1.1; text-align: center; letter-spacing: 0.3px; overflow-wrap: break-word; }
-    .cs-role { font-size: 9.5pt; color: ${palette.primary600}; font-weight: 600; margin-top: 3mm; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; overflow-wrap: break-word; }
+    .cs-name { font-size: 17pt; font-weight: 700; color: #111827; line-height: 1.1; text-align: center; letter-spacing: 0.3px; overflow-wrap: normal; }
+    .cs-role { font-size: 9.5pt; color: ${palette.primary600}; font-weight: 600; margin-top: 3mm; letter-spacing: 0.5px; text-transform: uppercase; text-align: center; overflow-wrap: normal; }
     .cs-divider { height: 2px; background: ${palette.primary600}; width: 18mm; margin: 5mm auto 6mm; border-radius: 2px; }
-    .cs-cont-name { font-size: 10.5pt; font-weight: 700; color: #111827; letter-spacing: 0.3px; padding-bottom: 2mm; border-bottom: 1px solid ${palette.primary200}; margin-bottom: 4mm; overflow-wrap: break-word; }
+    .cs-cont-name { font-size: 10.5pt; font-weight: 700; color: #111827; letter-spacing: 0.3px; padding-bottom: 2mm; border-bottom: 1px solid ${palette.primary200}; margin-bottom: 4mm; overflow-wrap: normal; }
     .cs-cont-name small { display: block; font-size: 7.6pt; color: ${palette.primary600}; font-weight: 600; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 1mm; }
     .cs-h3 { font-size: 8.5pt; text-transform: uppercase; letter-spacing: 1.1px; color: ${palette.primary600}; margin-bottom: 2.8mm; font-weight: 700; border-bottom: 1px solid ${palette.primary200}; padding-bottom: 1.4mm; }
     .cs-sb-atom { margin-bottom: 6mm; min-width: 0; }
@@ -58,57 +58,57 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
     .cs-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
     .cs-skill-group { margin-bottom: 2mm; }
     .cs-skill-group:last-child { margin-bottom: 0; }
-    .cs-skill-label { font-size: 8pt; font-weight: 700; color: #111827; margin-bottom: 0.5mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: break-word; }
+    .cs-skill-label { font-size: 8pt; font-weight: 700; color: #111827; margin-bottom: 0.5mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: normal; }
     .cs-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .cs-skill-list { font-size: 7.8pt; color: #1e293b; line-height: 1.4; overflow-wrap: anywhere; word-break: break-word; }
     .cs-section-head { font-size: 10.5pt; color: #27272a; text-transform: uppercase; letter-spacing: 1.3px; font-weight: 700; margin: 5mm 0 2.5mm; padding-bottom: 1mm; border-bottom: 2px solid #27272a; position: relative; break-after: avoid; page-break-after: avoid; }
     .cs-summary-atom .cs-section-head { margin-top: 0; }
     .cs-section-head::after { content: ""; position: absolute; left: 0; bottom: -2px; width: 12mm; height: 2px; background: ${palette.primary600}; }
-    .cs-summary { font-size: 9pt; line-height: 1.55; color: #1e293b; text-align: justify; hyphens: auto; overflow-wrap: break-word; }
+    .cs-summary { font-size: 9pt; line-height: 1.55; color: #1e293b; text-align: justify; hyphens: manual; overflow-wrap: normal; }
     .cs-summary-atom { margin-bottom: 4mm; }
     .cs-job { margin-bottom: 2.8mm; page-break-inside: avoid; break-inside: avoid; }
     .cs-job-head { margin-bottom: 0; }
     .cs-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
-    .cs-jobtitle { font-size: 9.6pt; font-weight: 700; color: #27272a; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .cs-jobtitle { font-size: 9.6pt; font-weight: 700; color: #27272a; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
     .cs-jobmeta { font-size: 8.2pt; color: #6b7280; font-style: italic; flex-shrink: 0; font-variant-numeric: tabular-nums; }
-    .cs-jobco { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .cs-jobco { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; margin-bottom: 1.2mm; overflow-wrap: normal; }
     .cs-job ul { list-style: none; padding: 0; margin: 0; }
-    .cs-job li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .cs-job li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: normal; }
     .cs-job li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .cs-ul-bullet { list-style: none; padding: 0; margin: 0; }
-    .cs-ul-bullet li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: break-word; }
+    .cs-ul-bullet li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; overflow-wrap: normal; }
     .cs-ul-bullet li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .cs-ul-bullet-first { margin-top: 0; }
     .cs-ul-bullet-last { margin-bottom: 2.8mm; }
     .cs-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 1.5mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .cs-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .cs-edutitle { font-size: 9.4pt; font-weight: 700; color: #27272a; overflow-wrap: break-word; }
-    .cs-eduschool { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; overflow-wrap: break-word; }
+    .cs-edutitle { font-size: 9.4pt; font-weight: 700; color: #27272a; overflow-wrap: normal; }
+    .cs-eduschool { font-size: 8.8pt; color: ${palette.primary600}; font-weight: 600; overflow-wrap: normal; }
     .cs-edumeta { font-size: 8.4pt; color: #6b7280; font-style: italic; flex-shrink: 0; text-align: right; }
     .cs-proj { border: 1px solid #e5e7eb; border-left: 3px solid ${palette.primary600}; border-radius: 3px; padding: 2.4mm 3mm; background: #fafbfc; margin-bottom: 2.4mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
     .cs-proj:last-child { margin-bottom: 0; }
-    .cs-projname { font-size: 9.2pt; font-weight: 700; color: #27272a; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .cs-projname { font-size: 9.2pt; font-weight: 700; color: #27272a; margin-bottom: 1.2mm; overflow-wrap: normal; }
     .cs-proj-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary600}; margin: 1mm 0 0.6mm; }
     .cs-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
-    .cs-proj-bullets li { font-size: 8.4pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.6mm; color: #1e293b; overflow-wrap: break-word; }
+    .cs-proj-bullets li { font-size: 8.4pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.6mm; color: #1e293b; overflow-wrap: normal; }
     .cs-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .cs-chips { display: flex; flex-wrap: wrap; gap: 1mm; }
-    .cs-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.2mm 1.4mm; border-radius: 6px; font-size: 7.2pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
-    .cs-cert { font-size: 8.2pt; margin-bottom: 1.6mm; overflow-wrap: break-word; }
+    .cs-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.2mm 1.4mm; border-radius: 6px; font-size: 7.2pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
+    .cs-cert { font-size: 8.2pt; margin-bottom: 1.6mm; overflow-wrap: normal; }
     .cs-cert:last-child { margin-bottom: 0; }
-    .cs-cert strong { color: #111827; display: block; overflow-wrap: break-word; }
-    .cs-award { font-size: 8.2pt; margin-bottom: 1.6mm; overflow-wrap: break-word; }
+    .cs-cert strong { color: #111827; display: block; overflow-wrap: normal; }
+    .cs-award { font-size: 8.2pt; margin-bottom: 1.6mm; overflow-wrap: normal; }
     .cs-award:last-child { margin-bottom: 0; }
-    .cs-award strong { color: #111827; display: block; overflow-wrap: break-word; }
+    .cs-award strong { color: #111827; display: block; overflow-wrap: normal; }
     .cs-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.3pt; margin-bottom: 1mm; flex-wrap: wrap; }
     .cs-lang:last-child { margin-bottom: 0; }
-    .cs-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
+    .cs-lang > span:first-child { min-width: 0; overflow-wrap: normal; }
     .cs-lang .lvl { color: ${palette.primary600}; font-size: 7.8pt; flex-shrink: 0; }
     .cs-interests { display: flex; flex-wrap: wrap; gap: 1.5mm; }
-    .cs-extrakv { font-size: 8.2pt; margin-bottom: 1.5mm; overflow-wrap: break-word; }
+    .cs-extrakv { font-size: 8.2pt; margin-bottom: 1.5mm; overflow-wrap: normal; }
     .cs-extrakv:last-child { margin-bottom: 0; }
-    .cs-extrakv strong { color: #111827; display: block; overflow-wrap: break-word; }
-    .cs-stats p { line-height: 1.7; font-size: 8.3pt; overflow-wrap: break-word; }
+    .cs-extrakv strong { color: #111827; display: block; overflow-wrap: normal; }
+    .cs-stats p { line-height: 1.7; font-size: 8.3pt; overflow-wrap: normal; }
     .cs-stats strong { color: #111827; }
   `;
 

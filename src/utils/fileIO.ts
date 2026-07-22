@@ -81,7 +81,7 @@ export function normalizeResumeData(data: unknown): ResumeData {
 }
 
 /** Sanitise a candidate filename — strip anything filesystem-hostile. */
-export function safeFilename(input: string): string {
+function safeFilename(input: string): string {
   const cleaned = input
     .trim()
     .replace(/[^\w\s.-]/g, "")
@@ -146,7 +146,7 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
     savedAt: typeof obj.savedAt === "string" ? obj.savedAt : new Date().toISOString(),
     resume: normalizeResumeData(obj.resume),
     templateId: obj.templateId as TemplateId,
-    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#059669",
+    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#047857",
     paperSize: resolvePaperSize(obj.paperSize),
     jobDescription: typeof obj.jobDescription === "string" ? obj.jobDescription : "",
   };

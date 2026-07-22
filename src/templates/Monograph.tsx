@@ -42,14 +42,14 @@ const SIDEBAR_CONTENT_WIDTH_MM = SIDEBAR_WIDTH_MM - SIDEBAR_PAD_H * 2;
 export const Monograph = memo(function Monograph({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .mg-root { font-family: 'Geist', 'Inter', sans-serif; color: #1c1917; font-size: 9.3pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .mg-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #1c1917; font-size: 9.3pt; line-height: 1.5; overflow-wrap: normal; word-break: normal; hyphens: manual; }
     .mg-sidebar { background: ${palette.primary50}; color: #1c1917; border-right: 1px solid ${palette.primary200}; min-width: 0; }
     .mg-photo { width: 30mm; height: 30mm; border-radius: 50%; object-fit: cover; display: block; margin: 0 auto 4mm; border: 1px solid ${palette.primary700}; }
     .mg-logo { width: 16mm; height: 16mm; border-radius: 50%; background: transparent; color: ${palette.primary700}; display: flex; align-items: center; justify-content: center; margin: 0 auto 3mm; border: 1px solid ${palette.primary700}; }
-    .mg-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 21pt; font-weight: 400; color: #1c1917; line-height: 1.05; text-align: center; letter-spacing: 0.2px; margin: 0; overflow-wrap: break-word; }
-    .mg-role { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.5pt; color: #57534e; font-weight: 400; font-style: italic; margin-top: 2.4mm; text-align: center; overflow-wrap: break-word; }
+    .mg-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 21pt; font-weight: 400; color: #1c1917; line-height: 1.05; text-align: center; letter-spacing: 0.2px; margin: 0; overflow-wrap: normal; }
+    .mg-role { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 10.5pt; color: #57534e; font-weight: 400; font-style: italic; margin-top: 2.4mm; text-align: center; overflow-wrap: normal; }
     .mg-orn { height: 1px; background: ${palette.primary700}; width: 14mm; margin: 5mm auto 0; }
-    .mg-cont-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 13pt; font-weight: 400; color: #1c1917; text-align: center; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid ${palette.primary300}; overflow-wrap: break-word; }
+    .mg-cont-name { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 13pt; font-weight: 400; color: #1c1917; text-align: center; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid ${palette.primary300}; overflow-wrap: normal; }
     .mg-cont-name small { display: block; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 9pt; color: #57534e; font-weight: 400; font-style: italic; margin-top: 1mm; }
     .mg-h3 { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; font-style: italic; color: #1c1917; margin-bottom: 3mm; padding-bottom: 1.4mm; border-bottom: 1px solid ${palette.primary300}; }
     .mg-sb-atom { margin-bottom: 6.5mm; min-width: 0; }
@@ -58,57 +58,57 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
     .mg-skill-group { margin-bottom: 2.2mm; }
     .mg-skill-group:last-child { margin-bottom: 0; }
-    .mg-skill-label { font-size: 8.6pt; font-weight: 700; color: #1c1917; display: flex; align-items: center; gap: 1.5mm; margin-bottom: 0.6mm; overflow-wrap: break-word; }
+    .mg-skill-label { font-size: 8.6pt; font-weight: 700; color: #1c1917; display: flex; align-items: center; gap: 1.5mm; margin-bottom: 0.6mm; overflow-wrap: normal; }
     .mg-skill-icon { width: 1em; height: 1em; color: ${palette.primary700}; flex-shrink: 0; }
     .mg-skill-list { font-size: 8.2pt; color: #292524; line-height: 1.5; overflow-wrap: anywhere; word-break: break-word; }
     .mg-section-head { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 15pt; font-weight: 400; color: #1c1917; margin: 6mm 0 3mm; padding-bottom: 1.5mm; border-bottom: 1px solid ${palette.primary300}; break-after: avoid; page-break-after: avoid; }
     .mg-summary-atom .mg-section-head { margin-top: 0; }
-    .mg-summary { font-size: 9.5pt; line-height: 1.65; color: #292524; text-align: justify; hyphens: auto; overflow-wrap: break-word; }
+    .mg-summary { font-size: 9.5pt; line-height: 1.65; color: #292524; text-align: justify; hyphens: manual; overflow-wrap: normal; }
     .mg-summary-atom { margin-bottom: 5mm; }
     .mg-job { margin-bottom: 3.5mm; page-break-inside: avoid; break-inside: avoid; }
     .mg-job-head { margin-bottom: 0; }
     .mg-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; flex-wrap: wrap; }
-    .mg-jobtitle { font-size: 10pt; font-weight: 700; color: #1c1917; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .mg-jobtitle { font-size: 10pt; font-weight: 700; color: #1c1917; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
     .mg-jobmeta { font-size: 8.4pt; color: #78716c; font-style: italic; flex-shrink: 0; font-variant-numeric: tabular-nums; }
-    .mg-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.2mm; font-style: italic; overflow-wrap: break-word; }
+    .mg-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.2mm; font-style: italic; overflow-wrap: normal; }
     .mg-job ul { list-style: none; padding: 0; margin: 0; }
-    .mg-job li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: break-word; }
+    .mg-job li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: normal; }
     .mg-job li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; font-weight: 700; }
     .mg-ul-bullet { list-style: none; padding: 0; margin: 0; }
-    .mg-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: break-word; }
+    .mg-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4.5mm; position: relative; margin-bottom: 0.8mm; color: #292524; overflow-wrap: normal; }
     .mg-ul-bullet li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; font-weight: 700; }
     .mg-ul-bullet-first { margin-top: 0; }
     .mg-ul-bullet-last { margin-bottom: 3.5mm; }
     .mg-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .mg-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .mg-edutitle { font-size: 9.6pt; font-weight: 700; color: #1c1917; overflow-wrap: break-word; }
-    .mg-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-style: italic; overflow-wrap: break-word; }
+    .mg-edutitle { font-size: 9.6pt; font-weight: 700; color: #1c1917; overflow-wrap: normal; }
+    .mg-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-style: italic; overflow-wrap: normal; }
     .mg-edumeta { font-size: 8.4pt; color: #78716c; font-style: italic; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
     .mg-proj { margin-bottom: 3mm; padding-bottom: 2.5mm; border-bottom: 1px dashed ${palette.primary200}; page-break-inside: avoid; break-inside: avoid; }
     .mg-proj:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
-    .mg-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11.2pt; font-weight: 400; color: #1c1917; margin-bottom: 0.6mm; overflow-wrap: break-word; }
-    .mg-proj-label { font-family: 'Geist', 'Inter', sans-serif; font-size: 7.8pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1px; margin: 1mm 0 0.4mm; }
+    .mg-projname { font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11.2pt; font-weight: 400; color: #1c1917; margin-bottom: 0.6mm; overflow-wrap: normal; }
+    .mg-proj-label { font-family: 'Geist Variable', 'Inter', sans-serif; font-size: 7.8pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1px; margin: 1mm 0 0.4mm; }
     .mg-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.8mm; }
-    .mg-proj-bullets li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #292524; overflow-wrap: break-word; }
+    .mg-proj-bullets li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #292524; overflow-wrap: normal; }
     .mg-proj-bullets li::before { content: "•"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .mg-projstack { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.6mm; overflow-wrap: anywhere; }
-    .mg-cert { font-size: 8.3pt; margin-bottom: 1.6mm; line-height: 1.4; overflow-wrap: break-word; }
+    .mg-cert { font-size: 8.3pt; margin-bottom: 1.6mm; line-height: 1.4; overflow-wrap: normal; }
     .mg-cert:last-child { margin-bottom: 0; }
-    .mg-cert strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: break-word; }
-    .mg-cert .meta { color: #78716c; font-style: italic; font-size: 7.8pt; overflow-wrap: break-word; }
-    .mg-award { font-size: 8.3pt; margin-bottom: 1.6mm; line-height: 1.4; overflow-wrap: break-word; }
+    .mg-cert strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: normal; }
+    .mg-cert .meta { color: #78716c; font-style: italic; font-size: 7.8pt; overflow-wrap: normal; }
+    .mg-award { font-size: 8.3pt; margin-bottom: 1.6mm; line-height: 1.4; overflow-wrap: normal; }
     .mg-award:last-child { margin-bottom: 0; }
-    .mg-award strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: break-word; }
+    .mg-award strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: normal; }
     .mg-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.4pt; margin-bottom: 1mm; flex-wrap: wrap; }
     .mg-lang:last-child { margin-bottom: 0; }
-    .mg-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
+    .mg-lang > span:first-child { min-width: 0; overflow-wrap: normal; }
     .mg-lang .lvl { color: ${palette.primary700}; font-size: 8pt; font-style: italic; flex-shrink: 0; }
     .mg-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
-    .mg-chip { background: #ffffff; border: 1px solid ${palette.primary300}; color: #1c1917; padding: 0.3mm 1.6mm; border-radius: 2px; font-size: 7.8pt; font-weight: 500; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
-    .mg-extra { font-size: 8.3pt; margin-bottom: 1.5mm; line-height: 1.45; overflow-wrap: break-word; }
+    .mg-chip { background: #ffffff; border: 1px solid ${palette.primary300}; color: #1c1917; padding: 0.3mm 1.6mm; border-radius: 2px; font-size: 7.8pt; font-weight: 500; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
+    .mg-extra { font-size: 8.3pt; margin-bottom: 1.5mm; line-height: 1.45; overflow-wrap: normal; }
     .mg-extra:last-child { margin-bottom: 0; }
-    .mg-extra strong { color: #1c1917; display: block; font-weight: 700; font-size: 8.4pt; margin-bottom: 0.4mm; overflow-wrap: break-word; }
-    .mg-stats p { line-height: 1.75; font-size: 8.3pt; margin: 0; overflow-wrap: break-word; }
+    .mg-extra strong { color: #1c1917; display: block; font-weight: 700; font-size: 8.4pt; margin-bottom: 0.4mm; overflow-wrap: normal; }
+    .mg-stats p { line-height: 1.75; font-size: 8.3pt; margin: 0; overflow-wrap: normal; }
     .mg-stats strong { color: #1c1917; font-family: 'Instrument Serif', 'Iowan Old Style', Georgia, serif; font-size: 11pt; font-weight: 400; }
   `;
 

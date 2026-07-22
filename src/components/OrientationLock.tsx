@@ -21,7 +21,8 @@
 // the overlay.
 
 import { Smartphone } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { useModalDialog } from "../utils/useModalDialog.ts";
 
 // `ScreenOrientation.lock` is non-standard on some platforms (iOS Safari
 // just doesn't expose it) and TypeScript's lib.dom types vary by version.
@@ -47,6 +48,7 @@ function isPhoneLandscape(): boolean {
 
 export function OrientationLock() {
   const [showOverlay, setShowOverlay] = useState(() => isPhoneLandscape());
+  const overlayRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Best-effort native lock for installed PWAs. Wrapped in try/catch
@@ -74,26 +76,61 @@ export function OrientationLock() {
     };
   }, []);
 
+  useEffect(() => {
+    if (!showOverlay) return;
+    const overlay = overlayRef.current;
+    const parent = overlay?.parentElement;
+    if (!overlay || !parent) return;
+    const siblings = Array.from(parent.children).filter(
+      (element): element is HTMLElement => element instanceof HTMLElement && element !== overlay,
+    );
+    const previous = siblings.map((element) => ({
+      element,
+      inert: element.inert,
+      ariaHidden: element.getAttribute("aria-hidden"),
+    }));
+    for (const { element } of previous) {
+      element.inert = true;
+      element.setAttribute("aria-hidden", "true");
+    }
+    return () => {
+      for (const { element, inert, ariaHidden } of previous) {
+        element.inert = inert;
+        if (ariaHidden === null) element.removeAttribute("aria-hidden");
+        else element.setAttribute("aria-hidden", ariaHidden);
+      }
+    };
+  }, [showOverlay]);
+
+  // Register after the sibling-inert effect so cleanup restores sibling
+  // interactivity before the shared modal lifecycle returns focus.
+  const dialogRef = useModalDialog<HTMLDivElement>({
+    open: showOverlay,
+    dialogRef: overlayRef,
+  });
+
   if (!showOverlay) return null;
 
   return (
     <div
+      ref={dialogRef}
       role="dialog"
       aria-modal="true"
       aria-label="Rotate your device"
+      tabIndex={-1}
       // Top-level overlay — must outrank the editor's own modals and
       // toasts so the user never sees a half-rotated UI.
-      className="fixed inset-0 z-[1000] flex flex-col items-center justify-center gap-5 bg-(--surface-2) px-8 text-center text-(--ink-1)"
+      className="fixed inset-0 z-(--z-system-overlay) flex flex-col items-center justify-center gap-5 bg-(--surface-2) px-8 text-center text-(--ink-1)"
     >
-      <div
-        className="relative grid h-16 w-16 place-items-center rounded-2xl bg-(--brand-50) text-(--brand)"
-        style={{ animation: "cr-rotate-hint 2.4s ease-in-out infinite" }}
-      >
-        <Smartphone size={32} strokeWidth={1.75} />
-      </div>
+      <Smartphone
+        aria-hidden="true"
+        className="h-12 w-12 text-(--brand)"
+        strokeWidth={1.75}
+        style={{ animation: "cr-rotate-hint 2.4s var(--ease-standard) infinite" }}
+      />
       <div className="flex flex-col gap-2">
         <div className="text-[18px] font-semibold tracking-tight">Rotate your phone</div>
-        <div className="max-w-xs text-[13.5px] leading-relaxed text-(--ink-4)">
+        <div className="max-w-xs text-sm leading-relaxed text-(--ink-4)">
           CloakResume is designed for portrait mode on phones — there's more room for the editor and
           preview that way. Turn your device upright to keep editing.
         </div>

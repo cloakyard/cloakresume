@@ -3,8 +3,8 @@
  *
  *   • `rail` (default, desktop) — icon-only vertical column pinned to
  *     the left of the shell.
- *   • `drawer` (mobile) — a full-width list with icon + label + short
- *     description, rendered inside the bottom-sheet section picker.
+ *   • `picker` (mobile) — a full-width list with icon + label + short
+ *     description, rendered in the lower half of the mobile workbench.
  *
  * Keeping both surfaces in a single component avoids the list and the
  * rail drifting as sections are added or relabelled.
@@ -133,8 +133,8 @@ export const SECTIONS: SectionMeta[] = [
 interface Props {
   active: SectionId;
   onChange: (id: SectionId) => void;
-  /** Layout: condensed icon rail (default) or full list for the mobile drawer. */
-  variant?: "rail" | "drawer";
+  /** Layout: condensed icon rail (default) or full list for the mobile picker. */
+  variant?: "rail" | "picker";
 }
 
 /**
@@ -143,9 +143,9 @@ interface Props {
  * fully own bg/text without fighting Tailwind's compiled-rule ordering.
  */
 const railButtonBase = [
-  "relative grid place-items-center w-10 h-10 rounded-md",
-  "border-0 cursor-pointer",
-  "transition-[background-color,color,box-shadow] duration-150",
+  "relative grid place-items-center w-11 h-11 shrink-0 rounded-md",
+  "border border-transparent cursor-pointer",
+  "transition-[background-color,border-color,color] duration-160",
   "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
 ].join(" ");
 
@@ -160,21 +160,19 @@ const railButtonInactive = [
  *   • soft brand-tinted background with the brand-coloured glyph (icon
  *     stays readable, tile doesn't turn into a solid block)
  *   • 1px inset brand ring for a crisp edge
- *   • thicker (4px) left accent bar extending further top/bottom
- *     so the selected row is scannable from the far edge of the rail
+ *   • one-pixel edge marker shared with the CloakPDF rail
  */
 const railButtonActive = [
-  "bg-(--brand-50) text-(--brand)",
-  "[box-shadow:inset_0_0_0_1px_var(--brand-100)]",
+  "bg-(--brand-50) text-(--brand) border-(--brand-100)",
   "hover:bg-(--brand-100) hover:text-(--brand-700)",
-  "before:content-[''] before:absolute before:left-[-10px] before:top-1 before:bottom-1",
-  "before:w-[4px] before:rounded-r-[4px] before:bg-(--brand)",
+  "before:content-[''] before:absolute before:left-[-14px] before:inset-y-0",
+  "before:w-px before:bg-(--brand)",
 ].join(" ");
 
 export function SectionRail({ active, onChange, variant = "rail" }: Props) {
   const [privacyOpen, setPrivacyOpen] = useState(false);
 
-  if (variant === "drawer") {
+  if (variant === "picker") {
     return (
       <nav className="flex flex-col gap-1" aria-label="Resume sections">
         {SECTIONS.map((s) => {
@@ -188,22 +186,16 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
               aria-current={isActive ? "page" : undefined}
               className={[
                 "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-15",
-                "border-0 rounded-lg text-left cursor-pointer",
-                "transition-[background-color,box-shadow] duration-150",
+                "border border-transparent rounded-md text-left cursor-pointer",
+                "transition-[background-color,border-color] duration-160",
                 isActive
-                  ? "bg-(--brand-50)/85 [box-shadow:inset_0_0_0_1px_var(--brand-100)]"
+                  ? "bg-(--brand-50)/85 border-(--brand-100)"
                   : "bg-transparent hover:bg-(--ink-1)/4 active:bg-(--ink-1)/6",
               ].join(" ")}
             >
               <span
                 aria-hidden="true"
-                className={[
-                  "grid place-items-center w-10 h-10 shrink-0 rounded-lg",
-                  "transition-[background-color,color,box-shadow] duration-150",
-                  isActive
-                    ? "bg-(--brand) text-white [box-shadow:0_4px_10px_-2px_rgba(5,150,105,0.35)]"
-                    : "bg-(--brand-50)/80 text-(--brand)",
-                ].join(" ")}
+                className="grid h-10 w-7 shrink-0 place-items-center text-(--brand)"
               >
                 <Icon className="w-4.5 h-4.5" strokeWidth={2} />
               </span>
@@ -216,13 +208,13 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
                 >
                   {s.label}
                 </span>
-                <span className="text-[12px] text-(--ink-4) leading-[1.4] truncate">
+                <span className="truncate text-sm leading-[1.4] text-(--ink-4)">
                   {s.description}
                 </span>
               </span>
               <ChevronRight
                 className={[
-                  "w-4 h-4 shrink-0 transition-[color,transform] duration-150",
+                  "w-4 h-4 shrink-0 transition-[color,transform] duration-160",
                   isActive ? "text-(--brand) translate-x-0.5" : "text-(--ink-5)",
                 ].join(" ")}
                 aria-hidden="true"
@@ -236,7 +228,7 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
 
   return (
     <nav
-      className="flex flex-col items-center gap-0.5 w-full h-full print:hidden"
+      className="cr-scroll flex h-full w-full flex-col items-center gap-0.5 overflow-y-auto print:hidden"
       aria-label="Resume sections"
     >
       {SECTIONS.map((s) => {

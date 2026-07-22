@@ -1,13 +1,13 @@
 /**
  * Section panel: the middle column that hosts a single section's
- * editor body, with chrome (icon tile + title + subtitle) at the top.
+ * editor body, with section identity and context at the top.
  *
  * The rail picks the active section; this panel owns rendering it.
- * Self-contained as a full-height flex column so it works identically
- * whether the parent is the desktop grid `<aside>` or the mobile
- * absolute-positioned view.
+ * Self-contained as a full-height flex column in both desktop and the
+ * mobile 50:50 workbench.
  */
 
+import { X } from "lucide-react";
 import type { ResumeData } from "../types.ts";
 import { Editor } from "./Editor.tsx";
 import { SECTIONS, type SectionId } from "./SectionRail.tsx";
@@ -19,6 +19,8 @@ interface Props {
   jobDescription: string;
   onJobDescriptionChange: (v: string) => void;
   onAnalyze?: () => void;
+  /** Mobile-only: close this editor and reveal the inline section picker. */
+  onClose?: () => void;
 }
 
 export function SectionPanel({
@@ -28,6 +30,7 @@ export function SectionPanel({
   jobDescription,
   onJobDescriptionChange,
   onAnalyze,
+  onClose,
 }: Props) {
   const meta = SECTIONS.find((s) => s.id === active) ?? SECTIONS[0];
   const Icon = meta.icon;
@@ -35,51 +38,38 @@ export function SectionPanel({
   return (
     <section
       aria-label={`${meta.label} editor`}
-      className="flex flex-col w-full min-w-0 bg-(--surface) print:hidden lg:h-full lg:overflow-hidden"
+      className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-(--surface) print:hidden"
     >
-      {/*
-       * Section-identity tile + label.
-       *
-       * On mobile the panel is part of the document scroll (no inner
-       * `overflow-y-auto` — see the body class below), so the header
-       * is `sticky top-14` to stay pinned just below the layout's
-       * 56px sticky app-header as the user scrolls through fields.
-       * On desktop the panel has its own internal scroll, so the
-       * header is plain static.
-       */}
-      <header className="sticky top-14 z-30 bg-(--surface) flex items-start gap-3 px-4 pt-4 pb-3.5 border-b border-(--line-soft) lg:static lg:top-auto lg:px-5">
+      <header className="flex shrink-0 items-start gap-3 border-b border-(--line) bg-(--surface) px-4 py-3 lg:px-5 lg:py-4">
         <span
           aria-hidden="true"
-          className="grid place-items-center w-11 h-11 shrink-0 rounded-md bg-(--brand-100) text-(--brand-700) ring-1 ring-(--brand-200)"
+          className="grid h-10 w-6 shrink-0 place-items-center text-(--brand)"
         >
           <Icon className="w-5 h-5" strokeWidth={1.8} />
         </span>
         <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">
+          <h2 className="m-0 flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">
             <span>{meta.label}</span>
             {meta.id === "jd" && (
-              <span className="inline-block font-mono text-[10.5px] font-semibold tracking-[0.04em] text-(--brand-700) bg-(--brand-50) border border-(--brand-200) px-1.5 py-px rounded-full uppercase">
+              <span className="inline-block rounded-sm border border-(--brand-200) bg-(--brand-50) px-1.5 py-px font-mono text-[10.5px] font-semibold uppercase tracking-[0.04em] text-(--brand-700)">
                 Optional
               </span>
             )}
-          </div>
-          <div className="text-[12.5px] text-(--ink-4) mt-0.5 leading-[1.45]">
-            {meta.description}
-          </div>
+          </h2>
+          <div className="mt-0.5 text-sm leading-[1.45] text-(--ink-4)">{meta.description}</div>
         </div>
+        {onClose && (
+          <button
+            type="button"
+            onClick={onClose}
+            aria-label={`Close ${meta.label} editor and choose another section`}
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-(--line) bg-(--surface) text-(--ink-4) transition-colors duration-160 hover:border-(--brand) hover:text-(--ink-1) lg:hidden"
+          >
+            <X aria-hidden="true" className="h-4 w-4" />
+          </button>
+        )}
       </header>
-      {/*
-       * Editor body.
-       *
-       * Mobile: no `flex-1`/`overflow-y-auto` — the form renders at
-       * its natural height and the document scrolls. This is what
-       * lets iOS Safari collapse its URL bar (it only triggers on
-       * document scroll, not inner-container scroll).
-       *
-       * Desktop: `lg:flex-1 lg:overflow-y-auto` — the panel's own
-       * scroll inside the fixed app-shell grid, as before.
-       */}
-      <div className="px-3.5 pt-4 pb-32 cr-scroll lg:flex-1 lg:overflow-y-auto lg:px-5 lg:pt-4.5 lg:pb-20">
+      <div className="cr-scroll min-h-0 flex-1 overflow-y-auto px-3.5 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 lg:px-5 lg:pb-20 lg:pt-4.5">
         <Editor
           active={active}
           resume={resume}

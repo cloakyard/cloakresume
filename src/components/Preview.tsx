@@ -8,18 +8,14 @@
  * Zoom starts at a fit-to-width factor calculated from the scroll
  * container's available width (A4 = 210mm ≈ 794px at 96dpi, plus
  * breathing room). The fit factor keeps the preview readable on
- * phones; users can fine-tune via the floating dock or — on touch —
- * by pinching directly on the preview. Pinch is the only surface in
- * the app that opts back into multi-touch zoom (every other screen is
- * locked down by the viewport meta + the global `pan-x pan-y`
- * `touch-action`); the gesture writes into the same `zoom` state the
+ * phones; users can fine-tune via the compact dock or — on touch —
+ * by pinching directly on the preview. The gesture writes into the same `zoom` state the
  * dock controls, so dock and pinch stay in sync. Print styles reset
  * the transform so the PDF always prints at 1:1 A4.
  */
 
 import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
-import type { ComponentType } from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Suspense, useCallback, useEffect, useRef, useState, type ComponentType } from "react";
 import { PaperSizeContext } from "./PaginatedCanvas.tsx";
 import type { TemplateProps } from "../templates/index.ts";
 import type { ResumeData } from "../types.ts";
@@ -43,10 +39,31 @@ function clampZoom(z: number): number {
   return clamp(Number(z.toFixed(2)), MIN_ZOOM, MAX_ZOOM);
 }
 
+function TemplateLoadingPage() {
+  return (
+    <div className="resume-page grid place-items-center bg-(--color-proof-paper)">
+      <span className="font-mono text-xs text-(--color-proof-ink-2)" role="status">
+        Preparing document…
+      </span>
+    </div>
+  );
+}
+
+function ReadyTemplate({
+  TemplateComponent,
+  resume,
+  palette,
+  onReady,
+}: Pick<PreviewProps, "TemplateComponent" | "resume" | "palette"> & { onReady: () => void }) {
+  useEffect(() => onReady(), [onReady]);
+  return <TemplateComponent resume={resume} palette={palette} />;
+}
+
 export function Preview({ resume, palette, paperSize, TemplateComponent }: PreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(0.75);
+  const [readyTemplate, setReadyTemplate] = useState<ComponentType<TemplateProps> | null>(null);
   /** Unscaled layout height of the resume — used to size the outer frame so
    *  vertical scroll reflects the *visual* height, not the layout height. */
   const [innerHeight, setInnerHeight] = useState(0);
@@ -59,6 +76,10 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
    *  re-binding on every render. */
   const zoomRef = useRef(zoom);
   zoomRef.current = zoom;
+  const markTemplateReady = useCallback(
+    () => setReadyTemplate(() => TemplateComponent),
+    [TemplateComponent],
+  );
 
   const { widthMm: pageWidthMm, heightMm: pageHeightMm } = PAPER_SIZES[paperSize];
   const pageWidthPx = pageWidthMm * PX_PER_MM;
@@ -98,11 +119,9 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
     return () => observer.disconnect();
   }, []);
 
-  /** Two-finger pinch zoom on touch devices. The viewport meta blocks
-   *  the browser's own pinch everywhere in the app, and the global
-   *  `touch-action: pan-x pan-y` keeps it that way for every other
-   *  surface; this listener is what re-enables it for the preview by
-   *  driving the same `zoom` state the floating dock controls. We
+  /** Two-finger document zoom on the proof surface. Browser page zoom
+   *  remains available elsewhere; this gesture drives the same scale as
+   *  the dock so the rendered document and percentage stay in sync. We
    *  attach via `addEventListener` (not the React handler) so we can
    *  pass `{ passive: false }` and `preventDefault` the move while two
    *  fingers are down — otherwise iOS will hijack the gesture into a
@@ -185,6 +204,7 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
         <div
           ref={innerRef}
           className="resume-root"
+          data-template-ready={readyTemplate === TemplateComponent ? "true" : undefined}
           style={{
             transform: `scale(${zoom})`,
             transformOrigin: "top left",
@@ -196,27 +216,35 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
           }}
         >
           <PaperSizeContext.Provider value={paperSize}>
-            <TemplateComponent resume={resume} palette={palette} />
+            <Suspense fallback={<TemplateLoadingPage />}>
+              <ReadyTemplate
+                TemplateComponent={TemplateComponent}
+                resume={resume}
+                palette={palette}
+                onReady={markTemplateReady}
+              />
+            </Suspense>
           </PaperSizeContext.Provider>
         </div>
       </div>
 
       <div className="print-hide sticky bottom-5 z-30 w-fit mx-auto">
-        <div className="surface-glass-dark rounded-full p-1.25 inline-flex items-center gap-0.5">
+        <div className="cr-preview-tools inline-flex items-center gap-0.5 rounded-md p-1">
           <button
             type="button"
             onClick={onZoomOut}
             aria-label="Zoom out"
             title="Zoom out"
-            className="w-9 h-9 sm:w-7.5 sm:h-7.5 rounded-full grid place-items-center text-white/80 bg-transparent border-0 cursor-pointer transition-colors duration-120 hover:bg-white/10 hover:text-white"
+            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
           >
-            <ZoomOut className="w-4 h-4" />
+            <ZoomOut aria-hidden="true" className="h-4 w-4" />
           </button>
           <button
             type="button"
             onClick={onReset}
+            aria-label={`Reset zoom to 100 percent. Current zoom ${Math.round(zoom * 100)} percent`}
             title="Reset to 100%"
-            className="min-w-11.5 text-center font-mono text-[12.5px] font-medium text-white tabular-nums px-1 bg-transparent border-0 cursor-pointer"
+            className="min-h-10 min-w-12 cursor-pointer rounded-md border-0 bg-transparent px-1 text-center font-mono text-xs font-medium tabular-nums text-(--color-night-ink) hover:bg-(--color-night-2)"
           >
             {Math.round(zoom * 100)}%
           </button>
@@ -225,19 +253,19 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
             onClick={onZoomIn}
             aria-label="Zoom in"
             title="Zoom in"
-            className="w-9 h-9 sm:w-7.5 sm:h-7.5 rounded-full grid place-items-center text-white/80 bg-transparent border-0 cursor-pointer transition-colors duration-120 hover:bg-white/10 hover:text-white"
+            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
           >
-            <ZoomIn className="w-4 h-4" />
+            <ZoomIn aria-hidden="true" className="h-4 w-4" />
           </button>
-          <span className="w-px h-4.5 bg-white/15 mx-0.5" aria-hidden="true" />
+          <span className="mx-0.5 h-5 w-px bg-(--color-night-rule)" aria-hidden="true" />
           <button
             type="button"
             onClick={onFit}
             aria-label="Fit preview"
             title="Fit preview"
-            className="w-9 h-9 sm:w-7.5 sm:h-7.5 rounded-full grid place-items-center text-white/80 bg-transparent border-0 cursor-pointer transition-colors duration-120 hover:bg-white/10 hover:text-white"
+            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
           >
-            <Maximize2 className="w-4 h-4" />
+            <Maximize2 aria-hidden="true" className="h-4 w-4" />
           </button>
         </div>
       </div>

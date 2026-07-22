@@ -1,237 +1,146 @@
 <div align="center">
 
-  <img src="public/icons/og-image.png" alt="CloakResume — Private Resume Builder with ATS Score" width="800" />
+  <p><strong>A complete résumé workbench. Nothing uploaded.</strong></p>
+  <p>Build, tailor, review, and export a serious résumé in one browser tab.</p>
 
-  <p>A fast, modern, and privacy-focused resume builder that runs entirely in your browser.<br>
-  No uploads, no servers, no tracking — your resume never leaves your device.</p>
-
-  <p><strong>Try it here →</strong> <a href="https://resume.cloakyard.com/">resume.cloakyard.com</a></p>
+  <p><a href="https://resume.cloakyard.com/">resume.cloakyard.com</a></p>
 
   <p>
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="MIT License" /></a>
-    <img src="https://img.shields.io/badge/deploy-Cloudflare%20Workers-F38020?logo=cloudflare&logoColor=white" alt="Deployed on Cloudflare Workers" />
-    <img src="https://img.shields.io/badge/platform-Web%20%7C%20PWA-blue" alt="Platform: Web & PWA" />
-  </p>
-  <p>
-    <img src="https://img.shields.io/badge/privacy-100%25%20client--side-brightgreen" alt="100% client-side" />
+    <img src="https://img.shields.io/badge/platform-Web%20%7C%20PWA-blue" alt="Platform: Web and PWA" />
+    <img src="https://img.shields.io/badge/privacy-local--first-047857" alt="Local-first privacy" />
   </p>
 
 </div>
 
----
-
-## ✨ Features
-
-CloakResume is a full-featured resume builder, all running 100% client-side:
-
-### 🎨 Templates
-
-_Fifteen hand-crafted layouts across five design families_
-
-| Category     | Templates                                                                                                                                                                                                                                                                                           |
-| ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **ATS-Safe** | **ATS Professional** · single column with subtle accent. **ATS Plain** · pure black & white for the strictest parsers                                                                                                                                                                               |
-| **Classic**  | **Classic Sidebar** · tinted rail with detail-rich content. **Executive Serif** · serif headings for leadership roles. **Monograph** · editorial serif with a warm sidebar                                                                                                                          |
-| **Modern**   | **Modern Minimal** · clean single column. **Aurora** · mesh-gradient hero with a glass card. **Prism** · solid accent sidebar with crisp sans. **Horizon** · light sidebar with pill headers and timeline. **Minimalist** · pure type with hairline accents. **Compact Timeline** · dense one-pager |
-| **Creative** | **Typographic** · Swiss-style numbered sections. **Bauhaus** · geometric colour-block editorial. **Gradient Header** · coloured banner with personality                                                                                                                                             |
-| **Academic** | **Academic CV** · scholarly layout for researchers and faculty                                                                                                                                                                                                                                      |
-
-Switch between any template with a single click — your content stays, only the layout changes.
-
-### 📝 Editor
-
-_Edit every section with live inline previews_
-
-| Feature                  | Description                                                                                          |
-| ------------------------ | ---------------------------------------------------------------------------------------------------- |
-| **Profile & Headline**   | Name, role tagline, and rich-text summary with bold, italic, and inline link support                 |
-| **Contact Links**        | Email, phone, location, website, LinkedIn, GitHub, Twitter, Medium — each with the right icon        |
-| **Experience**           | Unlimited roles with company, location, dates, and rich-text bullets                                 |
-| **Education**            | Degrees, schools, dates, and free-form detail fields (e.g., CGPA, honours)                           |
-| **Projects**             | Name, description, role, and tech-stack chips                                                        |
-| **Skills**               | Grouped into categories with optional Lucide icons per group                                         |
-| **Certifications**       | Issuer, name, and year — ordered as you like                                                         |
-| **Awards**               | Recognition with year and supporting detail                                                          |
-| **Languages**            | Name and proficiency level                                                                           |
-| **Interests & Tools**    | Free-form chip lists for quick personality and stack signals                                         |
-| **Quick Stats & Extras** | Sidebar stat blocks (e.g., "15+ years") and free-form extras (e.g., Visa status)                     |
-| **Custom Sections**      | Add your own sections with a custom heading and rich-text bullets (e.g., Volunteering, Publications) |
-| **Reorder Sections**     | Drag sections to change the resume's narrative order                                                 |
-| **Rich Text**            | Bold, italic, and links anywhere multi-line content is allowed                                       |
-| **Inline Spellcheck**    | Native browser spelling underlines on every prose field — zero dependencies, zero network            |
-
-### 🧭 Résumé Review
-
-_Know how your resume will be parsed and read before you send it_
-
-| Feature                   | Description                                                                                                                        |
-| ------------------------- | ---------------------------------------------------------------------------------------------------------------------------------- |
-| **Two scores, one tap**   | Separate **ATS** score (structure, contact, keywords) and **Writing** score (spelling, grammar, style, readability) — each 0–100   |
-| **ATS scorecard**         | Earned-vs-max points across content quality, formatting, keyword coverage, and impact & metrics                                    |
-| **Writing scorecard**     | Spelling, grammar, style, and readability each scored independently via Harper (Rust grammar engine compiled to WebAssembly)       |
-| **Keyword Matching**      | Paste a job description to see which keywords match and which are missing                                                          |
-| **Writing details**       | Every Harper finding shown with the field it came from and the suggested fix — spot a typo, see which bullet it's in               |
-| **Issues & Wins**         | Actionable suggestions alongside a summary of what you're already doing well                                                       |
-| **Progress on first run** | Harper's ~7 MB WASM engine downloads once with a visible progress bar; cached forever afterwards, then every scan is instantaneous |
-
-### 🎨 Design Controls
-
-_Make it yours without fighting the layout_
-
-| Feature                      | Description                                                                                                                           |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
-| **Primary Colour**           | Pick any colour — the app derives a full palette (tints, borders, text) automatically                                                 |
-| **Dark Mode**                | Follows your OS `prefers-color-scheme` and can be toggled manually. Resume pages stay paper-white (for print fidelity) but get dimmed |
-| **Live A4 / Letter Preview** | Pixel-accurate page rendered at 210 × 297 mm (or 216 × 279 mm for Letter) with pagination across multiple pages                       |
-| **Scaled Thumbnails**        | Template picker shows every layout with your actual content rendered to scale                                                         |
-| **Section Rail & Pills**     | Jump between sections from a floating rail on desktop or a pill bar on mobile                                                         |
-| **Bottom Sheet on Mobile**   | Native-feeling drag-to-dismiss editor sheet for touch devices                                                                         |
-
-### 📤 Export & Persistence
-
-_Your resume is always within reach_
-
-| Feature                | Description                                                                                                       |
-| ---------------------- | ----------------------------------------------------------------------------------------------------------------- |
-| **Export PDF**         | One-click export to a selectable, ATS-parseable PDF at A4 or US Letter — every link stays clickable in the output |
-| **Print to PDF**       | Browser-native print dialog also produces a pixel-perfect PDF with correct page breaks as a fallback              |
-| **JSON Import/Export** | Save your resume as JSON, edit externally, or re-import later — your single source of truth                       |
-| **Autosave**           | Every keystroke is saved to local storage — close the tab and come back anytime                                   |
-| **Start from Sample**  | Kick off with a fully-populated lorem-ipsum resume that showcases the layout                                      |
-| **Start Fresh**        | Or begin with a blank canvas — previews use sample data until you add your own                                    |
+<p align="center">
+  <img src="public/screenshots/iPad.png" alt="CloakResume résumé editor and live document proof on a tablet" width="800" />
+</p>
 
 ---
 
-## 🔒 Privacy First
+## What it does
 
-|                               |                                                         |
-| ----------------------------- | ------------------------------------------------------- |
-| **No uploads**                | Everything is processed locally in your browser         |
-| **No server-side processing** | Zero network requests for your resume data              |
-| **No data collection**        | No analytics, no tracking, no cookies                   |
-| **Strict CSP**                | Content Security Policy blocks any unintended egress    |
-| **Fully offline capable**     | Works without an internet connection after initial load |
+CloakResume is a browser-native editor for the complete résumé workflow:
 
----
+- **Build** — edit profile, contact, experience, education, projects, skills, certifications, awards, languages, interests, tools, stats, extras, and custom sections.
+- **Tailor** — keep a target job description beside the draft, review structure and keyword coverage, and run local writing checks with Harper.
+- **Design** — choose from 15 live résumé layouts, set the template colour, reorder sections, and preview A4 or US Letter pages.
+- **Carry** — export PDF, save or load editable JSON, start with realistic sample content, and return to a browser-saved local draft.
 
-## 🛠️ Tech Stack
+The application chrome follows the same technical-editorial language as
+[CloakPDF](https://github.com/cloakyard/cloakpdf): Archivo and JetBrains Mono,
+cool paper, slate rules, compact geometry, and solid overlays. CloakResume keeps its
+own Emerald `#047857` identity. Résumé templates remain document outputs and preserve
+their individual typography, palettes, and pagination behavior.
 
-| Category      | Technology                                                                                                                                                                   |
-| ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Framework     | [React 19](https://react.dev/)                                                                                                                                               |
-| Styling       | [Tailwind CSS 4](https://tailwindcss.com/)                                                                                                                                   |
-| Build Tool    | [Vite+](https://vite.dev/) (Vite + Rolldown unified toolchain)                                                                                                               |
-| Language      | [TypeScript 6](https://www.typescriptlang.org/)                                                                                                                              |
-| Icons         | [Lucide React](https://lucide.dev/)                                                                                                                                          |
-| PWA / Offline | [Workbox](https://developer.chrome.com/docs/workbox) via [vite-plugin-pwa](https://vite-pwa-org.netlify.app/)                                                                |
-| Writing Check | [Harper](https://writewithharper.com/) — a Rust grammar checker compiled to WebAssembly, running in a dedicated worker                                                       |
-| PDF Export    | [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) + [jsPDF](https://github.com/parallax/jsPDF) — raster fidelity plus an invisible text layer for ATS parsers |
-| Toolchain CLI | [Vite+ (`vp`)](https://viteplus.dev/)                                                                                                                                        |
+## Portable files
 
----
+**Save** writes a versioned `.cloakresume.json` file containing the résumé, selected
+template, document colour, paper size, and optional job description. **Load** checks
+the CloakResume discriminator, normalises older or partial top-level résumé data, and
+restores that workbench state. The JSON workflow was verified with a real browser
+save→load round trip.
 
-## 🚀 Getting Started
+**Export PDF** renders the selected A4 or US Letter document locally. Exported pages
+retain the template's visual layout while adding selectable text and link annotations.
+Ordinary prose keeps natural word boundaries; emergency wrapping is reserved for
+unbroken values such as URLs. The final A4 sample export was visually inspected across
+all five pages and checked with independent PDF text and link extraction tools.
 
-### Prerequisites
+## Privacy and offline behavior
 
-- **Node.js** ≥ 24.x (LTS recommended)
-- **Vite+ (`vp`)** — install globally via `npm i -g vite-plus`
+Résumé and job-description content is processed in the browser. The app has no résumé
+upload endpoint, required account, analytics, or tracking integration. Drafts use
+`localStorage`; JSON and PDF files are read or written directly on the user's device.
 
-### Installation
+The browser still downloads static application assets from the site. A Content
+Security Policy limits connections and executable resources to the application
+origin. The installable PWA caches the application shell after it has loaded. Harper's
+language engine is fetched on the first writing review and cached for later use,
+subject to the browser's storage and eviction policies. A cold first visit therefore
+still requires a network connection.
+
+See [SECURITY.md](SECURITY.md) for the security boundary and disclosure guidance.
+
+## Technology
+
+| Area              | Technology                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| Application       | [React 19](https://react.dev/) + [TypeScript 7](https://www.typescriptlang.org/)                              |
+| Styling           | [Tailwind CSS 4](https://tailwindcss.com/) + app-wide design tokens                                           |
+| Build and tooling | [Vite+ (`vp`)](https://viteplus.dev/)                                                                         |
+| Writing review    | [Harper](https://writewithharper.com/) WebAssembly in a dedicated worker                                      |
+| PDF export        | [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) + [jsPDF](https://github.com/parallax/jsPDF) |
+| PWA               | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) + Workbox                                                |
+
+## Getting started
+
+Requires Node.js 24 or newer and the Vite+ CLI.
 
 ```bash
-# Clone the repository
-git clone https://github.com/sumitsahoo/cloakresume.git
+npm install --global vite-plus
+git clone https://github.com/cloakyard/cloakresume.git
 cd cloakresume
-
-# Install dependencies
 vp install
-
-# Start the development server
 vp dev
 ```
 
-### Available Commands
+| Command                       | Purpose                                                      |
+| ----------------------------- | ------------------------------------------------------------ |
+| `vp install`                  | Install the locked dependency graph                          |
+| `vp dev`                      | Start the development server                                 |
+| `vp check`                    | Format, lint, and type-check with TypeScript 7               |
+| `vp test`                     | Run the test suite                                           |
+| `vp build`                    | Create the production bundle                                 |
+| `vp preview`                  | Preview a production build                                   |
+| `vp outdated`                 | Report packages with newer releases                          |
+| `vp pm audit`                 | Audit the installed dependency graph                         |
+| `vp run generate-og`          | Capture the 1200×630 social image from the live landing page |
+| `vp run generate-screenshots` | Capture the narrow and wide PWA screenshots                  |
 
-| Command      | Description                               |
-| ------------ | ----------------------------------------- |
-| `vp dev`     | Start the Vite dev server with hot reload |
-| `vp build`   | TypeScript check + production build       |
-| `vp preview` | Preview the production build locally      |
-| `vp check`   | Run format, lint, and type checks         |
-| `vp test`    | Run tests                                 |
+## Project map
 
----
-
-## 📁 Project Structure
-
-```
+```text
 cloakresume/
-├── public/                  # Static assets (icons, manifest, OG image)
+├── public/
+│   ├── icons/                 # Favicons, install icons, and Open Graph image
+│   └── screenshots/           # Narrow and wide PWA/README captures
 ├── src/
-│   ├── main.tsx             # App entry point
-│   ├── App.tsx              # Root component & state wiring
-│   ├── index.css            # Global styles & Tailwind theme tokens
-│   ├── types.ts             # ResumeData, TemplateId, AtsReport types
-│   ├── assets/              # Brand assets & logo
-│   ├── components/          # Editor, preview, toolbar, ATS panel, modals
-│   │   ├── editor/          # Per-section editors (experience, skills, …)
-│   │   └── ats/             # ATS insight panes & keyword matching
-│   ├── templates/           # One component per resume template
-│   ├── data/
-│   │   ├── sampleResume.ts  # Populated starter (lorem ipsum showcase)
-│   │   └── blankResume.ts   # Empty starter for "Start fresh"
-│   └── utils/               # Colour palette, ATS scoring, Harper grammar hook, rich text, storage
-├── index.html               # HTML entry point + meta/OG tags + CSP
-├── vite.config.ts           # Vite + Tailwind + PWA configuration
-├── tsconfig.json            # TypeScript configuration
+│   ├── components/            # Landing, editor chrome, controls, overlays, and review UI
+│   │   ├── ats/               # ATS and writing-review panes
+│   │   └── editor/            # Editors for every résumé section
+│   ├── data/                  # Blank and realistic sample résumé generators
+│   ├── templates/             # 15 output layouts and shared pagination helpers
+│   ├── utils/                 # ATS, grammar, export, colour, storage, and rich-text logic
+│   ├── App.tsx                # State and workflow composition
+│   ├── cloak-family.css       # CloakPDF-family application language
+│   └── index.css              # Base styles and Tailwind theme bridge
+├── DESIGN.md                  # Authoritative layout and interaction contract
+├── tokens.css                 # Runtime design-token source of truth
+├── tokens.json                # Portable DTCG token export
+├── docs/
+│   ├── brand-assets.md        # Social/PWA asset source and regeneration workflow
+│   └── design-audit.md        # Full app and component coverage audit
+├── index.html                 # Metadata and CSP
+├── vite.config.ts             # Vite+, PWA manifest, and Workbox configuration
 └── package.json
 ```
 
----
+## Design and asset references
 
-## ⚙️ How It Works
+- [DESIGN.md](DESIGN.md) defines the shared CloakPDF-family design language, Emerald identity, geometry, overlays, responsive behavior, and résumé-output boundary.
+- [tokens.css](tokens.css) is normative at runtime; [tokens.json](tokens.json) is its portable token inventory.
+- [docs/design-audit.md](docs/design-audit.md) records the complete 71-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
+- [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
+- [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.
 
-CloakResume is a single-page React app that keeps every resume entirely in memory and in `localStorage`.
+## Contributing and license
 
-- **Templates as components** — every layout is a plain React component that consumes the same template-agnostic `ResumeData` shape, so switching templates never rewrites your content.
-- **Palette derivation** — the user picks a single primary colour, and [src/utils/colors.ts](src/utils/colors.ts) computes a full tonal palette (tints, borders, hover states) so every template stays visually coherent.
-- **Live A4 pagination** — `PaginatedCanvas` measures rendered content and slices it into 210 × 297 mm pages, matching exactly what the browser will print to PDF.
-- **Scaled previews** — the template picker renders each layout at full width with a CSS transform scale, using your actual resume content (or sample content when the resume is empty).
-- **ATS scoring** — [src/utils/ats.ts](src/utils/ats.ts) inspects the resume shape, checks for missing sections, and matches keywords against a pasted job description — entirely client-side.
-- **Writing quality** — the review modal shows a second score alongside ATS, powered by [Harper](https://writewithharper.com/) ([src/utils/grammar.ts](src/utils/grammar.ts)). Harper is a Rust grammar engine compiled to WebAssembly, running in a dedicated worker (spawned by `WorkerLinter`). On the first scan, we fetch the ~7 MB WASM with a streaming reader so the UI can show byte-level download progress, then feed Harper a blob URL so the worker can bootstrap without a second round-trip. Subsequent scans reuse the cached linter — zero network, zero re-init.
-- **PDF export** — [src/utils/pdfExport.ts](src/utils/pdfExport.ts) renders each resume page through [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) for pixel fidelity, then uses [jsPDF](https://github.com/parallax/jsPDF) to assemble a multi-page document. A second pass walks the DOM and writes every text node back onto the page as _invisible_ PDF text (rendering mode 3) — so the raster stays crisp while ATS parsers, screen readers, and `pdftotext` still get a clean text stream in reading order. Every `<a href>` is emitted as a real PDF link annotation so contact URLs stay clickable. The ~200 kB html2canvas + jsPDF bundle is code-split and only lands in the client when you first click **Export PDF**.
-- **Dark mode** — the chrome follows your OS `prefers-color-scheme` out of the box (via a `@media` query on every theme token) and can be toggled manually via the sun/moon button in the header. The resume pages themselves stay paper-white regardless, so the exported PDF always looks the way it was designed for paper; only a subtle `filter: brightness()` dims them against the dark canvas, and print/export strip the filter automatically.
-
-All operations happen in-memory. The strict Content Security Policy in [index.html](index.html) blocks any outbound network requests for user content — it is architecturally impossible for your resume to leave your device.
-
----
-
-## 🚢 Deployment
-
-CloakResume is deployed to a static host via a CI/CD workflow on every push to `main`.
-
-The deployment pipeline:
-
-1. Checks out the code
-2. Installs dependencies with `vp install`
-3. Builds the production bundle with Vite
-4. Deploys the `dist/` folder to the host
-
----
-
-## 🤝 Contributing
-
-Contributions are welcome — new templates, ATS improvements, and accessibility fixes especially. Open an issue or a pull request to get started.
-
----
-
-## 📄 License
-
-This project is licensed under the **MIT License** — feel free to use it for both personal and commercial purposes. See the [LICENSE](LICENSE) file for details.
-
----
+Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing
+application chrome or résumé templates. CloakResume is licensed under the
+[MIT License](LICENSE).
 
 <p align="center">
-  Built with ❤️ by <a href="https://github.com/sumitsahoo">Sumit Sahoo</a>
+  Built with care by <a href="https://github.com/sumitsahoo">Sumit Sahoo</a>
 </p>

@@ -17,12 +17,13 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
-import { ChevronDown, ChevronUp, GripVertical, Trash2 } from "lucide-react";
+import { Check, ChevronDown, ChevronUp, GripVertical, Trash2 } from "lucide-react";
 import { moveItem } from "../utils/arrayMove.ts";
 
 interface DragListContextValue {
@@ -102,15 +103,22 @@ export function DragItem({
 }: DragItemProps) {
   const ctx = useDragList();
   const rowRef = useRef<HTMLDivElement>(null);
+  const [pendingDelete, setPendingDelete] = useState(false);
   const isDragging = ctx.dragIndex === index;
   const isOver = ctx.overIndex === index && ctx.dragIndex !== null && ctx.dragIndex !== index;
 
-  const handleSize = compact ? "p-1" : "p-1.5";
   const iconSize = compact ? "w-3.5 h-3.5" : "w-4 h-4";
   const arrowIconSize = compact ? "w-3 h-3" : "w-3.5 h-3.5";
-  const arrowBtnClass = `${handleSize} inline-flex items-center justify-center rounded-md text-slate-400 hover:text-primary-600 hover:bg-primary-50 transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-slate-400`;
+  const targetClass = "min-w-11 min-h-11 md:min-w-10 md:min-h-10";
+  const arrowBtnClass = `${targetClass} inline-flex items-center justify-center rounded-md text-(--ink-5) hover:text-(--brand) hover:bg-(--brand-50) transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-(--ink-5)`;
   const isFirst = index === 0;
   const isLast = index === ctx.total - 1;
+
+  useEffect(() => {
+    if (!pendingDelete) return;
+    const timeout = window.setTimeout(() => setPendingDelete(false), 4000);
+    return () => window.clearTimeout(timeout);
+  }, [pendingDelete]);
 
   const handle = (
     <button
@@ -138,7 +146,7 @@ export function DragItem({
       }}
       title="Drag to reorder"
       aria-label="Drag to reorder"
-      className={`${handleSize} inline-flex items-center justify-center rounded-md text-slate-400 hover:text-primary-600 hover:bg-primary-50 cursor-grab active:cursor-grabbing transition-colors select-none`}
+      className={`${targetClass} inline-flex items-center justify-center rounded-md text-(--ink-5) hover:text-(--brand) hover:bg-(--brand-50) cursor-grab active:cursor-grabbing transition-colors select-none`}
     >
       <GripVertical className={iconSize} />
     </button>
@@ -176,11 +184,26 @@ export function DragItem({
   const deleteBtn = (
     <button
       type="button"
-      onClick={onDelete}
-      aria-label="Remove"
-      className={`${handleSize} inline-flex items-center justify-center rounded-md text-slate-400 hover:text-red-600 hover:bg-red-50 transition-colors`}
+      onClick={() => {
+        if (pendingDelete) {
+          onDelete();
+          setPendingDelete(false);
+          return;
+        }
+        setPendingDelete(true);
+      }}
+      onKeyDown={(event) => {
+        if (event.key === "Escape") setPendingDelete(false);
+      }}
+      aria-label={pendingDelete ? "Confirm removal" : "Remove"}
+      title={pendingDelete ? "Press again to confirm removal" : "Remove"}
+      className={`${targetClass} inline-flex items-center justify-center rounded-md transition-colors ${
+        pendingDelete
+          ? "text-(--color-status-danger) bg-(--color-status-danger-soft)"
+          : "text-(--ink-5) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft)"
+      }`}
     >
-      <Trash2 className={iconSize} />
+      {pendingDelete ? <Check className={iconSize} /> : <Trash2 className={iconSize} />}
     </button>
   );
 
@@ -204,9 +227,9 @@ export function DragItem({
         ctx.setDragIndex(null);
         ctx.setOverIndex(null);
       }}
-      className={`transition-all ${
+      className={`transition-opacity duration-160 ${
         isDragging ? "opacity-40" : ""
-      } ${isOver ? "ring-2 ring-primary-400 ring-offset-2 ring-offset-slate-50 rounded-lg" : ""}`}
+      } ${isOver ? "ring-2 ring-(--brand) ring-offset-2 ring-offset-(--surface-2) rounded-md" : ""}`}
     >
       {children(handle, deleteBtn, moveBtns)}
     </div>

@@ -1,6 +1,6 @@
 // ReloadPrompt.tsx — PWA service-worker update banner.
 //
-// Renders a frosted-glass card pinned to the bottom-right of the
+// Renders a solid token-based card pinned to the bottom-right of the
 // viewport when one of two things happens:
 //
 //   • A new service-worker version becomes available — shows an
@@ -15,7 +15,7 @@
 // reload from the user.
 
 import { RefreshCw, ShieldCheck, X } from "lucide-react";
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect, useId, useRef } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
@@ -26,6 +26,8 @@ export function ReloadPrompt() {
   // `useRegisterSW`'s onRegisteredSW callback fires once outside React's
   // lifecycle, so we need our own ref to plumb the timer ID back out.
   const updateIntervalRef = useRef<number | null>(null);
+  const titleId = useId();
+  const descriptionId = useId();
 
   const {
     needRefresh: [needRefresh, setNeedRefresh],
@@ -81,38 +83,50 @@ export function ReloadPrompt() {
   if (!offlineReady && !needRefresh) return null;
 
   const Icon = needRefresh ? RefreshCw : ShieldCheck;
-  const title = needRefresh ? "Update available" : "Ready offline";
+  const title = needRefresh ? "Update Available" : "Ready Offline";
   const body = needRefresh
     ? "A new version of CloakResume is ready to install."
     : "CloakResume is now installed for offline use.";
 
   return (
     <div
-      className="fixed right-4 bottom-4 left-4 z-100 flex justify-center sm:right-6 sm:bottom-6 sm:left-auto sm:justify-end print:hidden"
+      className="fixed right-4 bottom-4 left-4 flex justify-center sm:right-6 sm:bottom-6 sm:left-auto sm:justify-end print:hidden"
       role="status"
       aria-live="polite"
+      aria-atomic="true"
+      aria-labelledby={titleId}
+      aria-describedby={descriptionId}
+      style={{ zIndex: "var(--z-toast)" }}
     >
       <div
-        className="surface-glass relative flex w-full max-w-sm items-start gap-3 overflow-hidden rounded-2xl p-4 sm:w-auto sm:min-w-80"
+        className="cr-popover relative flex w-full max-w-sm items-start gap-3 overflow-hidden rounded-md p-4 sm:w-auto sm:min-w-80"
         style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
       >
-        <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-(--brand-50) text-(--brand)">
-          <Icon className="w-4 h-4" />
-        </div>
+        <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center text-(--brand)">
+          <Icon aria-hidden="true" className="w-4 h-4" />
+        </span>
         <div className="min-w-0 flex-1 pt-0.5">
-          <p className="text-[13px] font-semibold tracking-tight text-(--ink-1)">{title}</p>
-          <p className="mt-0.5 text-[12px] leading-[1.45] text-(--ink-4)">{body}</p>
+          <p id={titleId} className="text-sm font-semibold tracking-tight text-(--ink-1)">
+            {title}
+          </p>
+          <p id={descriptionId} className="mt-0.5 text-sm leading-[1.5] text-(--ink-4)">
+            {body}
+          </p>
           {needRefresh && (
             <div className="mt-3 flex items-center justify-end gap-2">
-              <button type="button" onClick={close} className="tb ghost h-8! min-h-8! lg:h-8!">
+              <button
+                type="button"
+                onClick={close}
+                className="tb ghost h-11! min-h-11! min-[640px]:h-10! min-[640px]:min-h-10!"
+              >
                 Later
               </button>
               <button
                 type="button"
                 onClick={handleUpdate}
-                className="tb primary h-8! min-h-8! lg:h-8!"
+                className="tb primary h-11! min-h-11! min-[640px]:h-10! min-[640px]:min-h-10!"
               >
-                <RefreshCw className="w-3.5 h-3.5" />
+                <RefreshCw aria-hidden="true" className="w-3.5 h-3.5" />
                 Update
               </button>
             </div>
@@ -121,10 +135,10 @@ export function ReloadPrompt() {
         <button
           type="button"
           onClick={close}
-          aria-label="Dismiss"
-          className="-mt-1 -mr-1 inline-flex h-7 w-7 shrink-0 cursor-pointer items-center justify-center rounded-lg border-none bg-transparent text-(--ink-4) transition-colors hover:bg-[color-mix(in_oklab,var(--ink-1)_6%,transparent)] hover:text-(--ink-1)"
+          aria-label={`Dismiss ${title.toLowerCase()} notice`}
+          className="-mt-2 -mr-2 inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-(--ink-4) transition-colors hover:bg-(--surface-2) hover:text-(--ink-1)"
         >
-          <X className="w-3.5 h-3.5" />
+          <X aria-hidden="true" className="w-3.5 h-3.5" />
         </button>
       </div>
     </div>

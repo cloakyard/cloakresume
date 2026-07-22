@@ -1,7 +1,7 @@
 /** Skills: groups of related skills as comma-separated lists. */
 
 import { Sparkles } from "lucide-react";
-import { TextField } from "../fields.tsx";
+import { TextArea, TextField } from "../fields.tsx";
 import { LogoPicker } from "../LogoPicker.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
 import {
@@ -81,20 +81,18 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
                       }}
                     />
                   </div>
-                  <label className="cr-field">
-                    <span className="cr-field-label">Skills (comma-separated)</span>
-                    <textarea
-                      value={g.items}
-                      rows={4}
-                      placeholder="AWS, Google Cloud, Azure…"
-                      onChange={(e) => {
-                        const next = [...resume.skills];
-                        next[i] = { ...g, items: e.target.value };
-                        patch("skills", next);
-                      }}
-                      className="cr-input resize-y"
-                    />
-                  </label>
+                  <TextArea
+                    label="Skills (comma-separated)"
+                    name={`skills-${i}-items`}
+                    value={g.items}
+                    rows={4}
+                    placeholder="AWS, Google Cloud, Azure…"
+                    onChange={(value) => {
+                      const next = [...resume.skills];
+                      next[i] = { ...g, items: value };
+                      patch("skills", next);
+                    }}
+                  />
                 </div>
               </div>
             )}

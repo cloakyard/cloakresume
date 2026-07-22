@@ -1,20 +1,15 @@
 /**
- * Shared card primitives used by the ATS review panes.
- *
- * By default, on mobile the cards render as transparent sections (content
- * flows directly into the scroll body); sm+ adds the white card chrome so
- * each pane reads as an individual surface. Pass `boxed` to force the
- * chrome on mobile too — useful when the card content (scorecards,
- * stat grids) needs visual containment even on small screens.
- * Kept together because `CardHead` is only ever placed inside a `Card`.
+ * Shared ruled-section primitives used by the ATS review panes.
+ * The modal is already the containing surface, so panes use ledger rules
+ * instead of stacking rounded cards inside a card.
  */
 
 import type { ReactNode } from "react";
 
 export function CardHead({ title, sub }: { title: string; sub: string }) {
   return (
-    <div className="flex items-baseline justify-between gap-3 mb-2.5 pb-2 border-b border-(--line-soft) sm:mb-4 sm:pb-3">
-      <h3 className="m-0 text-[14px] font-semibold text-(--ink-1) tracking-[-0.01em] sm:text-[15px]">
+    <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-(--line) pb-2.5">
+      <h3 className="m-0 text-sm font-semibold tracking-[-0.01em] text-(--ink-1) sm:text-[15px]">
         {title}
       </h3>
       <span className="font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em] tabular-nums whitespace-nowrap">
@@ -27,18 +22,14 @@ export function CardHead({ title, sub }: { title: string; sub: string }) {
 export function Card({
   children,
   className = "",
-  boxed = false,
 }: {
   children: ReactNode;
   className?: string;
   /** Force white card chrome on mobile. Default = transparent on mobile, chrome at sm+. */
   boxed?: boolean;
 }) {
-  const mobileChrome = boxed ? "bg-(--surface-raised) border border-(--line) rounded-xl p-3.5" : "";
   return (
-    <section
-      className={`min-w-0 ${mobileChrome} sm:bg-(--surface-raised) sm:border sm:border-(--line) sm:rounded-xl sm:shadow-(--sh-xs) sm:p-4 min-[900px]:p-5 ${className}`}
-    >
+    <section className={`min-w-0 border-t border-(--line) pt-3.5 sm:pt-4 ${className}`}>
       {children}
     </section>
   );

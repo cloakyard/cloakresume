@@ -100,7 +100,7 @@ export function contactIcon(kind: ContactLink["kind"], size: number = 12) {
  *   URL-ish kinds → `https://<value>` (adds the scheme when missing)
  *   malformed values → `null`
  */
-export function contactHref(kind: ContactLink["kind"], value: string): string | null {
+function contactHref(kind: ContactLink["kind"], value: string): string | null {
   const v = value.trim();
   if (!v) return null;
   switch (kind) {

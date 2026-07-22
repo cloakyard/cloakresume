@@ -1,0 +1,11 @@
+[
+  {
+    "date": "2026-07-22",
+    "scope": "app",
+    "macrostructure": "Workbench",
+    "theme": "studied-DNA (source: sibling CloakPDF repository) / CloakResume Emerald #047857",
+    "variation": "Resume start-load-preview instrument with Build/Tailor/Carry ledgers",
+    "enrichment": "Real local resume start-load-preview instrument",
+    "brief": "Unify CloakResume landing, editor chrome, common components, overlays, and content surfaces with the CloakPDF family signature while preserving Emerald #047857 and keeping user resume templates visually independent."
+  }
+]

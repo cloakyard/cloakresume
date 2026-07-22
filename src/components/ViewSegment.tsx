@@ -15,7 +15,7 @@ interface ViewSegmentProps {
 
 export function ViewSegment({ view, onChange }: ViewSegmentProps) {
   return (
-    <fieldset className="inline-flex items-stretch border border-(--line) bg-(--surface-2) rounded-md p-0.5 m-0 min-w-0 shrink-0">
+    <fieldset className="cr-view-segment m-0 inline-flex h-11 min-w-0 shrink-0 items-center rounded-md bg-(--surface-2) p-0">
       <legend className="sr-only">View</legend>
       <SegmentButton
         active={view === "panel"}
@@ -53,13 +53,10 @@ function SegmentButton({
       aria-pressed={active}
       aria-label={ariaLabel}
       className={[
-        "grid place-items-center appearance-none bg-transparent border-0",
-        "rounded-md px-2.5 min-h-[30px] min-w-[36px] cursor-pointer",
-        "transition-[background-color,color] duration-100",
-        active
-          ? "bg-(--surface) text-(--brand) shadow-(--sh-xs)"
-          : "text-(--ink-4) hover:text-(--ink-1)",
-        "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
+        "grid h-11 min-h-11 min-w-11 place-items-center appearance-none border-0 bg-transparent",
+        "rounded-md px-2.5 cursor-pointer",
+        "transition-[background-color,color] duration-160",
+        active ? "bg-(--brand-50) text-(--brand)" : "text-(--ink-4) hover:text-(--ink-1)",
       ].join(" ")}
     >
       {children}

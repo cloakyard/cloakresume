@@ -43,7 +43,7 @@ export function ToolbarActions({
         title="Scan résumé for ATS and writing issues"
         aria-label="Scan résumé for ATS and writing issues"
       >
-        <ScanSearch className="w-4 h-4 text-(--ink-4)" />
+        <ScanSearch aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
         <span className="hidden 2xl:inline">Scan résumé</span>
       </button>
 
@@ -57,7 +57,7 @@ export function ToolbarActions({
           title="Start a new blank resume"
           aria-label="Start a new blank resume"
         >
-          <FilePlus2 className="w-4 h-4 text-(--ink-4)" />
+          <FilePlus2 aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
           <span className="hidden 2xl:inline">New</span>
         </button>
         <button
@@ -67,7 +67,7 @@ export function ToolbarActions({
           title="Save resume data as JSON file"
           aria-label="Save resume data as JSON file"
         >
-          <Save className="w-4 h-4 text-(--ink-4)" />
+          <Save aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
           <span className="hidden 2xl:inline">Save</span>
         </button>
         <button
@@ -77,7 +77,7 @@ export function ToolbarActions({
           title="Load a previously saved resume file"
           aria-label="Load a previously saved resume file"
         >
-          <Upload className="w-4 h-4 text-(--ink-4)" />
+          <Upload aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
           <span className="hidden 2xl:inline">Load</span>
         </button>
       </div>
@@ -87,6 +87,7 @@ export function ToolbarActions({
       <input
         ref={loadInputRef}
         type="file"
+        name="resume-file"
         accept="application/json,.json"
         className="hidden"
         onChange={(e) => {
@@ -103,7 +104,7 @@ export function ToolbarActions({
         aria-label="Export to PDF"
         title="Export to PDF"
       >
-        <Download className="w-4 h-4" />
+        <Download aria-hidden="true" className="w-4 h-4" />
         <span className="hidden 2xl:inline">Export PDF</span>
       </button>
     </>

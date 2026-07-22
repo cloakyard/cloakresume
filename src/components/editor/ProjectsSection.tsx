@@ -81,6 +81,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                           <FormatToolbar compact />
                         </div>
                         <RichTextArea
+                          ariaLabel="Project description"
                           fieldId={`projects.${i}.description`}
                           value={p.description}
                           rows={5}
@@ -103,14 +104,14 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                                 next[i] = { ...p, roles: [...roles, ""] };
                                 patch("projects", next);
                               }}
-                              className="inline-flex items-center gap-1 h-6 px-2 rounded-md text-[11.5px] text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
+                              className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
                             >
                               <Plus className="w-3 h-3" /> Bullet
                             </button>
                           </div>
                         </div>
                         {roles.length === 0 ? (
-                          <p className="text-[11.5px] text-(--c-muted) leading-snug">
+                          <p className="text-sm text-(--ink-4) leading-[1.5]">
                             Add bullets to describe your ownership, responsibilities, or impact on
                             this project.
                           </p>
@@ -146,6 +147,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                                     <div className="mt-2">{rHandle}</div>
                                     <div className="flex-1 min-w-0">
                                       <RichTextArea
+                                        ariaLabel={`Project role bullet ${ri + 1}`}
                                         fieldId={`projects.${i}.roles.${ri}`}
                                         value={r}
                                         rows={3}

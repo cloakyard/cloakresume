@@ -1,0 +1,181 @@
+/* CloakResume · CloakPDF-family workbench tokens.
+ * This file is the single normative source for product chrome. */
+:root {
+  color-scheme: light dark;
+
+  /* Cool paper and slate ink are shared with CloakPDF. */
+  --color-paper: oklch(0.975 0.009 255);
+  --color-paper-2: oklch(0.947 0.014 255);
+  --color-surface: oklch(0.992 0.004 255);
+  --color-surface-strong: oklch(0.925 0.019 255);
+  --color-ink: oklch(0.225 0.031 255);
+  --color-ink-2: oklch(0.43 0.035 255);
+  --color-ink-3: oklch(0.48 0.03 255);
+  --color-rule: oklch(0.865 0.022 255);
+  --color-rule-strong: oklch(0.72 0.032 255);
+
+  /* CloakResume owns Emerald 700. Do not substitute the CloakPDF blue. */
+  --color-accent: oklch(0.508 0.118 165.612);
+  --color-accent-hover: oklch(0.432 0.095 166.913);
+  --color-accent-active: oklch(0.378 0.077 168.94);
+  --color-accent-soft: oklch(0.95 0.052 163.051);
+  --color-accent-ink: oklch(0.985 0.004 255);
+  --color-accent-label: var(--color-accent);
+  --color-accent-night: oklch(0.765 0.151 163.223);
+  --color-focus: oklch(0.596 0.145 163.225);
+
+  --color-night: oklch(0.185 0.027 255);
+  --color-night-2: oklch(0.235 0.03 255);
+  --color-night-ink: oklch(0.96 0.012 255);
+  --color-night-muted: oklch(0.735 0.024 255);
+  --color-night-rule: oklch(0.34 0.034 255);
+  --color-overlay: color-mix(in oklab, var(--color-night) 58%, transparent);
+
+  --color-status-danger: oklch(0.505 0.213 27.518);
+  --color-status-danger-soft: oklch(0.965 0.025 25);
+  --color-status-warning: oklch(0.473 0.137 46.201);
+  --color-status-warning-soft: oklch(0.974 0.032 80);
+  --color-status-success: oklch(0.508 0.118 165.612);
+  --color-status-success-soft: oklch(0.966 0.03 150);
+
+  /* Document proofs stay print-white in either OS appearance. */
+  --color-proof-paper: oklch(0.998 0.002 255);
+  --color-proof-ink: oklch(0.225 0.031 255);
+  --color-proof-ink-2: oklch(0.43 0.035 255);
+  --color-proof-rule: oklch(0.79 0.022 255);
+  --color-footer: oklch(0.145 0.025 255);
+
+  --font-display: "Archivo", "Arial Narrow", sans-serif;
+  --font-body: "Archivo", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Shared 4px-based family rhythm: 4, 8, 12, 16, 24, 32, 48, 72, 112, 160. */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+  --space-9: 7rem;
+  --space-10: 10rem;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-md: 1rem;
+  --text-lg: 1.25rem;
+  --text-xl: 1.75rem;
+  --text-display: clamp(2.75rem, 6.4vw, 6.75rem);
+
+  --duration-fast: 160ms;
+  --duration-base: 220ms;
+  --duration-slow: 260ms;
+  --duration-long: 400ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --rule-thin: 1px;
+  --radius-card: 0.5rem;
+  --radius-control: 0.375rem;
+  --radius-pill: 999px;
+  --shadow-popover: 0 0.75rem 2rem color-mix(in oklab, var(--color-night) 14%, transparent);
+  --shadow-overlay: 0 1.5rem 4rem color-mix(in oklab, var(--color-night) 22%, transparent);
+
+  --page-max: 88rem;
+  --page-gutter: 1rem;
+  --page-gutter-wide: 1.5rem;
+  --header-height: 4.5rem;
+  --editor-header-height: 4rem;
+  --editor-rail-width: 4.5rem;
+  --editor-panel-width: 20.5rem;
+  --editor-panel-width-wide: 24rem;
+  --logo-size: 2.5rem;
+  --logo-size-footer: 2.125rem;
+  --logo-wordmark-gap: 0.6rem;
+  --dialog-max: 36rem;
+  --dialog-wide-max: 68.75rem;
+  --dialog-viewport-gutter: 1.5rem;
+  --dialog-max-block-size: calc(100dvh - 3rem);
+  --sheet-max-block-size: 92dvh;
+  --popover-max: 24rem;
+  --popover-safe-edge: 1rem;
+
+  --z-sticky: 30;
+  --z-sticky-nav: 50;
+  --z-navigation: 50;
+  --z-editor: 100;
+  --z-toast: 100;
+  --z-dialog: 200;
+  --z-popover: 900;
+  --z-system-overlay: 1000;
+  --z-system: 1000;
+
+  /* Compatibility aliases consumed by existing editor components. They
+   * intentionally resolve back to the canonical tokens above. The chosen
+   * résumé palette is passed to templates as data and never mutates these. */
+  --brand: var(--color-accent-label);
+  --brand-hover: var(--color-accent-hover);
+  --brand-50: var(--color-accent-soft);
+  --brand-100: color-mix(in oklab, var(--color-accent) 14%, var(--color-surface));
+  --brand-200: color-mix(in oklab, var(--color-accent) 26%, var(--color-surface));
+  --brand-300: color-mix(in oklab, var(--color-accent) 46%, var(--color-surface));
+  --brand-700: var(--color-accent-label);
+  --ink-1: var(--color-ink);
+  --ink-2: var(--color-ink-2);
+  --ink-3: var(--color-ink-2);
+  --ink-4: var(--color-ink-3);
+  --ink-5: color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper));
+  --ink-6: var(--color-rule-strong);
+  --line: var(--color-rule);
+  --line-soft: color-mix(in oklab, var(--color-rule) 72%, var(--color-paper));
+  --surface: var(--color-surface);
+  --surface-2: var(--color-paper);
+  --surface-3: var(--color-paper-2);
+  --surface-raised: var(--color-surface);
+  --preview-bg: var(--color-paper-2);
+  --backdrop-bg: var(--color-overlay);
+  --ok: var(--color-status-success);
+  --ok-bg: var(--color-status-success-soft);
+  --ok-border: color-mix(in oklab, var(--color-status-success) 42%, var(--color-surface));
+  --warn: var(--color-status-warning);
+  --warn-bg: var(--color-status-warning-soft);
+  --warn-border: color-mix(in oklab, var(--color-status-warning) 42%, var(--color-surface));
+  --danger: var(--color-status-danger);
+  --danger-bg: var(--color-status-danger-soft);
+  --danger-border: color-mix(in oklab, var(--color-status-danger) 36%, var(--color-surface));
+  --sh-focus: 0 0 0 2px color-mix(in oklab, var(--color-focus) 48%, transparent);
+  --lightness-thumb-bg: var(--color-surface);
+  --lightness-thumb-border: var(--color-ink);
+}
+
+/* The standard desktop keeps a compact properties panel. Widescreens can
+ * spend another 56px on data entry without compromising the proof stage. */
+@media (min-width: 80rem) {
+  :root {
+    --editor-panel-width: var(--editor-panel-width-wide);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-paper: oklch(0.175 0.025 255);
+    --color-paper-2: oklch(0.205 0.028 255);
+    --color-surface: oklch(0.225 0.028 255);
+    --color-surface-strong: oklch(0.27 0.03 255);
+    --color-ink: oklch(0.96 0.012 255);
+    --color-ink-2: oklch(0.76 0.023 255);
+    --color-ink-3: oklch(0.65 0.025 255);
+    --color-rule: oklch(0.33 0.033 255);
+    --color-rule-strong: oklch(0.45 0.036 255);
+    --color-accent-soft: oklch(0.26 0.052 165.612);
+    --color-accent-label: var(--color-accent-night);
+    --color-overlay: color-mix(in oklab, black 66%, transparent);
+    --color-status-danger: oklch(0.704 0.191 22.216);
+    --color-status-danger-soft: oklch(0.26 0.055 27);
+    --color-status-warning: oklch(0.795 0.163 86.047);
+    --color-status-warning-soft: oklch(0.28 0.05 70);
+    --color-status-success: oklch(0.765 0.177 163.223);
+    --color-status-success-soft: oklch(0.26 0.045 150);
+  }
+}

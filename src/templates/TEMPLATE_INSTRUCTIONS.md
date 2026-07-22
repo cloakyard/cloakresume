@@ -1,12 +1,12 @@
 # Template Instructions
 
-Rules every template in `src/templates/*.tsx` must follow. If you add or redesign a template, this is the contract.
+Rules every registered résumé template component in `src/templates/` must follow. If you add or redesign a template, this is the contract.
 
 ## 1. Section coverage is non-negotiable
 
 Every template **must** render every section in `ResumeData` when that section is non-empty. Hiding a section because the design "looks cleaner" without it is not acceptable.
 
-Required references (the audit in `README` / CI greps for these):
+Required data references (use the self-check below when reviewing a template):
 
 - `resume.profile.summary`
 - `resume.experience`
@@ -26,9 +26,9 @@ Always gate each section by `.length > 0` / truthiness so a template with empty 
 Quick self-check:
 
 ```bash
-for f in src/templates/*.tsx; do
+for f in src/templates/{Academic,AtsPlain,AtsProfessional,Aurora,Bauhaus,ClassicSidebar,CompactTimeline,ExecutiveSerif,GradientHeader,Horizon,Minimalist,ModernMinimal,Monograph,Prism,Typographic}.tsx; do
   for field in profile.summary experience education skills projects certifications awards languages interests tools extras custom; do
-    grep -q "resume\.${field}" "$f" || echo "MISSING $field in $f"
+    rg -q "resume\.${field}" "$f" || echo "MISSING $field in $f"
   done
 done
 ```
@@ -37,7 +37,7 @@ done
 
 Long CVs must flow across multiple A4 pages. The shared `PaginatedCanvas` does the work — call it from every new template.
 
-**Mandatory rule for every template: never leave a large white gap at the bottom of a page just because the next section, sub-section, or bullet won't fit whole.** Sections, sub-sections, and bullet points **can and must** be allowed to divide across page boundaries to keep pages densely packed. A page that is 70% full with empty space trailing into a gutter is a layout bug, not a design choice. Split the section and continue it on the next page.
+**Mandatory rule for every template: never leave a conspicuous white gap at the bottom of a page just because the next section, sub-section, or bullet will not fit whole.** Sections, sub-sections, and bullet points **can and must** divide at safe boundaries so pages remain usefully packed. When unused space dominates the page ending, split the content and continue it on the next page.
 
 The rules `PaginatedCanvas` enforces:
 
@@ -213,6 +213,6 @@ When you group two sections into one atom (e.g. `Credentials` containing both Ce
 ## Why these rules exist
 
 - **"Display all sections"**: the user pays for a resume that represents _all_ their experience. A template that silently hides a sidebar section because the candidate has many skills is sabotaging the user.
-- **"Never split mid-section"**: PDF output is read sequentially. A bullet cut in half across pages looks broken; a job that fits on page 2 instead of bleeding across the page gutter reads cleanly.
-- **"ATS-safe"**: 70%+ of applications pass through ATS parsers before a human sees them. A beautiful template that ATS can't read is a liability.
-- **"Restraint"**: recruiters spend under 10 seconds per resume. Loud design burns that budget on decoration instead of content.
+- **"Split at safe boundaries"**: PDF output is read sequentially. Prefer item and bullet boundaries, keep headings with their first item, and allow intra-bullet wrapping only when it prevents a worse page break.
+- **"ATS-safe"**: many hiring workflows extract résumé text automatically. A beautiful template that loses reading order, headings, or selectable text is a liability.
+- **"Restraint"**: readers scan résumés quickly. Decoration must support hierarchy instead of competing with the candidate's content.

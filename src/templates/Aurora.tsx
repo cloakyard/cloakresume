@@ -41,7 +41,7 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
   const initials = extractInitials(resume.profile.name);
 
   const css = `
-    .au-root { font-family: 'Geist', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: break-word; word-break: break-word; hyphens: auto; }
+    .au-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #1f2937; font-size: 9.4pt; line-height: 1.5; overflow-wrap: normal; word-break: normal; hyphens: manual; }
 
     .au-hero { position: relative; padding: 11mm 14mm 8mm; overflow: hidden; margin: -8mm -14mm 5mm;
       background:
@@ -53,8 +53,8 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-avatar { width: 20mm; height: 20mm; border-radius: 50%; background: ${palette.primary700}; color: ${palette.primaryText}; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 12pt; font-weight: 800; letter-spacing: -0.4px; overflow: hidden; }
     .au-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .au-headbody { flex: 1; min-width: 0; }
-    .au-name { font-size: 22pt; font-weight: 800; color: #0a0a0a; line-height: 1.05; letter-spacing: -0.6px; margin: 0; overflow-wrap: break-word; }
-    .au-title { font-size: 9.6pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; margin-top: 1.4mm; overflow-wrap: break-word; }
+    .au-name { font-size: 22pt; font-weight: 800; color: #0a0a0a; line-height: 1.05; letter-spacing: -0.6px; margin: 0; overflow-wrap: normal; }
+    .au-title { font-size: 9.6pt; color: ${palette.primary700}; font-weight: 700; text-transform: uppercase; letter-spacing: 1.8px; margin-top: 1.4mm; overflow-wrap: normal; }
     .au-contact { display: flex; flex-wrap: wrap; gap: 1.4mm 4mm; margin-top: 2.8mm; font-size: 8.6pt; color: #374151; }
     .au-contact span { display: inline-flex; align-items: center; gap: 1.4mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
     .au-contact svg { color: ${palette.primary600}; flex-shrink: 0; }
@@ -62,7 +62,7 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-h2 { display: flex; align-items: center; gap: 2.2mm; font-size: 9pt; text-transform: uppercase; letter-spacing: 2px; color: ${palette.primary800}; font-weight: 700; margin: 5mm 0 2.8mm; padding-bottom: 1.4mm; border-bottom: 1px solid ${palette.primary200}; break-after: avoid; page-break-after: avoid; }
     .au-h2::before { content: ""; width: 1.8mm; height: 1.8mm; border-radius: 50%; background: ${palette.primary600}; flex-shrink: 0; }
 
-    .au-summary { font-size: 9.6pt; line-height: 1.6; color: #1e293b; overflow-wrap: break-word; }
+    .au-summary { font-size: 9.6pt; line-height: 1.6; color: #1e293b; overflow-wrap: normal; }
 
     .au-job { position: relative; padding: 0 0 2.8mm 6mm; margin-bottom: 2.2mm; page-break-inside: avoid; break-inside: avoid; }
     .au-job::before { content: ""; position: absolute; left: 0; top: 2.4mm; bottom: 0.4mm; width: 1.2px; background: ${palette.primary300}; }
@@ -73,19 +73,19 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-job-head { margin-bottom: 0; padding-bottom: 0; }
     .au-job-head::before { bottom: 0; }
     .au-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.6mm; flex-wrap: wrap; }
-    .au-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.15px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .au-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0a0a0a; letter-spacing: -0.15px; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
     .au-jobdates { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 700; white-space: nowrap; font-variant-numeric: tabular-nums; flex-shrink: 0; }
-    .au-jobco { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.2mm; overflow-wrap: break-word; }
+    .au-jobco { font-size: 9.2pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.2mm; overflow-wrap: normal; }
     .au-jobco .loc { color: #6b7280; font-weight: 500; }
     .au-job ul { list-style: none; padding: 0; margin: 0; }
-    .au-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: normal; }
     .au-job li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-job-bullet { position: relative; padding: 0 0 0 6mm; margin: 0; list-style: none; }
-    .au-job-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-job-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: normal; }
     .au-job-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-job-bullet-last { margin-bottom: 2.2mm; }
     .au-ul-bullet { list-style: none; padding: 0; margin: 0; }
-    .au-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.7mm; color: #1f2937; overflow-wrap: normal; }
     .au-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 2mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-ul-bullet-first { margin-top: 0; }
     .au-ul-bullet-last { margin-bottom: 2.2mm; }
@@ -93,45 +93,45 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-skills { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2.5mm 4mm; margin-bottom: 2.5mm; }
     .au-skills:last-child { margin-bottom: 0; }
     .au-skill { background: #ffffff; border: 1px solid #e5e7eb; border-left: 2.5px solid ${palette.primary600}; border-radius: 2mm; padding: 2.2mm 3mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
-    .au-skill-label { font-size: 8.8pt; font-weight: 700; color: #0a0a0a; margin-bottom: 0.9mm; display: flex; align-items: center; gap: 1.6mm; overflow-wrap: break-word; }
+    .au-skill-label { font-size: 8.8pt; font-weight: 700; color: #0a0a0a; margin-bottom: 0.9mm; display: flex; align-items: center; gap: 1.6mm; overflow-wrap: normal; }
     .au-skill-icon { width: 1em; height: 1em; color: ${palette.primary600}; flex-shrink: 0; }
     .au-skill-chips { display: flex; flex-wrap: wrap; gap: 1mm; }
-    .au-skill-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.3mm 1.6mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .au-skill-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.3mm 1.6mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
 
     .au-proj-card { background: #ffffff; border: 1px solid #e5e7eb; border-left: 2.5px solid ${palette.primary600}; border-radius: 2mm; padding: 2.6mm 3.2mm; margin-bottom: 2.4mm; min-width: 0; page-break-inside: avoid; break-inside: avoid; }
     .au-proj-card:last-child { margin-bottom: 0; }
-    .au-proj-name { font-size: 9.8pt; font-weight: 700; color: #0a0a0a; overflow-wrap: break-word; }
+    .au-proj-name { font-size: 9.8pt; font-weight: 700; color: #0a0a0a; overflow-wrap: normal; }
     .au-proj-label { font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.8px; font-weight: 700; color: ${palette.primary700}; margin: 1.2mm 0 0.5mm; }
     .au-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
-    .au-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: break-word; }
+    .au-proj-bullets li { font-size: 8.7pt; line-height: 1.45; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1f2937; overflow-wrap: normal; }
     .au-proj-bullets li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.4mm; height: 1.4mm; background: ${palette.primary600}; border-radius: 50%; }
     .au-proj-stack { display: flex; flex-wrap: wrap; gap: 1mm; margin-top: 1.3mm; }
-    .au-proj-stackchip { background: ${palette.primary50}; color: ${palette.primary800}; padding: 0.2mm 1.4mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; border: 1px solid ${palette.primary200}; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .au-proj-stackchip { background: ${palette.primary50}; color: ${palette.primary800}; padding: 0.2mm 1.4mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; border: 1px solid ${palette.primary200}; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
 
     .au-edu { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; padding: 1.3mm 0; border-bottom: 1px dashed #e5e7eb; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; }
     .au-edu:last-child { border-bottom: 0; }
     .au-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .au-edu-title { font-size: 9.6pt; font-weight: 700; color: #0a0a0a; overflow-wrap: break-word; }
-    .au-edu-school { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .au-edu-title { font-size: 9.6pt; font-weight: 700; color: #0a0a0a; overflow-wrap: normal; }
+    .au-edu-school { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: normal; }
     .au-edu-meta { font-size: 8.4pt; color: #6b7280; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
-    .au-edu-detail { font-size: 8.2pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .au-edu-detail { font-size: 8.2pt; color: #6b7280; font-style: italic; margin-top: 0.3mm; overflow-wrap: normal; }
 
     .au-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 5mm; }
     .au-two > div { min-width: 0; }
-    .au-item { font-size: 8.8pt; margin-bottom: 1.2mm; color: #1f2937; line-height: 1.45; overflow-wrap: break-word; }
-    .au-item strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
+    .au-item { font-size: 8.8pt; margin-bottom: 1.2mm; color: #1f2937; line-height: 1.45; overflow-wrap: normal; }
+    .au-item strong { color: #0a0a0a; font-weight: 700; overflow-wrap: normal; }
     .au-item .meta { color: ${palette.primary700}; font-weight: 600; font-variant-numeric: tabular-nums; }
 
     .au-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
-    .au-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.4mm 1.8mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .au-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.4mm 1.8mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
 
     .au-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(26mm, 1fr)); gap: 2.2mm; margin-top: 3mm; }
     .au-stat { background: rgba(255,255,255,0.85); border: 1px solid ${palette.primary200}; border-radius: 2mm; padding: 2mm 2.5mm; text-align: center; min-width: 0; }
-    .au-stat-value { font-size: 13pt; font-weight: 800; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; overflow-wrap: break-word; }
-    .au-stat-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 1.2px; color: #6b7280; font-weight: 700; margin-top: 0.8mm; overflow-wrap: break-word; }
+    .au-stat-value { font-size: 13pt; font-weight: 800; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; overflow-wrap: normal; }
+    .au-stat-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 1.2px; color: #6b7280; font-weight: 700; margin-top: 0.8mm; overflow-wrap: normal; }
 
-    .au-kv { font-size: 8.6pt; margin-bottom: 1.1mm; color: #1f2937; overflow-wrap: break-word; }
-    .au-kv strong { color: #0a0a0a; font-weight: 700; overflow-wrap: break-word; }
+    .au-kv { font-size: 8.6pt; margin-bottom: 1.1mm; color: #1f2937; overflow-wrap: normal; }
+    .au-kv strong { color: #0a0a0a; font-weight: 700; overflow-wrap: normal; }
   `;
 
   const atoms: React.ReactNode[] = [];

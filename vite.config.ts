@@ -28,16 +28,22 @@ export default defineConfig({
       // chunk graph mid-edit; the explicit prompt keeps the user in
       // control, and the prompt itself self-checks every 10 minutes.
       registerType: "prompt",
-      includeAssets: ["icons/favicon.svg", "icons/favicon.ico", "icons/apple-touch-icon.png"],
+      includeAssets: [
+        "icons/favicon.svg",
+        "icons/favicon.ico",
+        "icons/apple-touch-icon.png",
+        "icons/safari-pinned-tab.svg",
+      ],
       manifest: {
         name: "CloakResume",
         short_name: "CloakResume",
         description:
-          "Private, ATS-friendly resume builder that runs entirely in your browser. Pick a template, choose a colour, export to PDF. 100% private — nothing uploaded.",
-        theme_color: "#059669",
-        background_color: "#F0F4FA",
+          "A private résumé workbench for building, tailoring, reviewing, and exporting in your browser. Résumé content stays on your device.",
+        theme_color: "#047857",
+        // Hex equivalent of the Paper token: oklch(0.975 0.009 255).
+        background_color: "#F3F7FD",
         display: "standalone",
-        orientation: "portrait",
+        orientation: "any",
         scope: process.env.VITE_APP_BASE_PATH || "/",
         start_url: process.env.VITE_APP_BASE_PATH || "/",
         icons: [
@@ -64,27 +70,44 @@ export default defineConfig({
           },
         ],
         screenshots: [
-          // Screenshots taken from Chrome Dev Tools. Actual resolution may vary.
-          // iPhone 14 Pro Max (Portrait)
           {
             src: "screenshots/iPhone.png",
             sizes: "1290x2796",
             type: "image/png",
             form_factor: "narrow",
-            label: "CloakResume App on iPhone 14 Pro Max",
+            label: "CloakResume private résumé start workbench on a phone",
           },
-          // iPad Pro (Landscape)
           {
             src: "screenshots/iPad.png",
             sizes: "2732x2048",
             type: "image/png",
             form_factor: "wide",
-            label: "CloakResume App on iPad Pro Landscape",
+            label: "CloakResume résumé editor and live document proof on a tablet",
           },
         ],
       },
       workbox: {
-        globPatterns: ["**/*.{js,css,html,svg,png,woff2}"],
+        globPatterns: ["**/*.{js,css,html,svg,woff2}"],
+        // Social and store screenshots are presentation assets, not application-shell assets.
+        globIgnores: ["icons/og-image.png", "screenshots/**"],
+        runtimeCaching: [
+          {
+            // Harper is loaded only when writing review first runs. Its production filename is
+            // content-hashed, so CacheFirst preserves a completed download without making the
+            // 18 MB engine part of every install's cold-cache shell.
+            urlPattern: /\/assets\/harper_wasm(?:_slim)?_bg-[^/]+\.wasm$/,
+            handler: "CacheFirst",
+            options: {
+              cacheName: "cloakresume-language-engine",
+              cacheableResponse: { statuses: [0, 200] },
+              expiration: {
+                maxEntries: 2,
+                maxAgeSeconds: 60 * 60 * 24 * 365,
+                purgeOnQuotaError: true,
+              },
+            },
+          },
+        ],
         skipWaiting: false,
         cleanupOutdatedCaches: true,
       },
@@ -96,5 +119,11 @@ export default defineConfig({
   staged: {
     "*": "vp check --fix",
   },
-  lint: { options: { typeAware: true, typeCheck: true } },
+  // Local agent skill packages are development references, not application source.
+  // Keeping them outside product checks also avoids rewriting vendored documentation.
+  fmt: { ignorePatterns: ["dist/**", ".agents/**"] },
+  lint: {
+    ignorePatterns: ["dist/**", ".agents/**"],
+    options: { typeAware: true, typeCheck: true },
+  },
 });

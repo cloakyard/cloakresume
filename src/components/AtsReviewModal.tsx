@@ -9,9 +9,10 @@
  */
 
 import { AlertTriangle, FileText, Hash, LayoutGrid, RefreshCw, X } from "lucide-react";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { AtsReport, ResumeData } from "../types.ts";
 import { scoreBand } from "../utils/ats.ts";
+import { useModalDialog } from "../utils/useModalDialog.ts";
 import { AtsInsightsPane } from "./ats/AtsInsightsPane.tsx";
 import { AtsKeywordsPane } from "./ats/AtsKeywordsPane.tsx";
 import { AtsOverviewPane } from "./ats/AtsOverviewPane.tsx";
@@ -38,13 +39,18 @@ interface AtsReviewModalProps {
 }
 
 type TabId = "overview" | "keywords" | "insights" | "parse";
+const TAB_ORDER: TabId[] = ["overview", "keywords", "insights", "parse"];
+const TIMESTAMP_FORMATTER = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "medium",
+  timeStyle: "short",
+});
+const PERCENT_FORMATTER = new Intl.NumberFormat(undefined, {
+  style: "percent",
+  maximumFractionDigits: 0,
+});
 
 function formatTimestamp(d: Date): string {
-  const date = d
-    .toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
-    .toUpperCase();
-  const time = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true });
-  return `${date} · ${time}`;
+  return TIMESTAMP_FORMATTER.format(d).toLocaleUpperCase();
 }
 
 export function AtsReviewModal({
@@ -62,9 +68,21 @@ export function AtsReviewModal({
 }: AtsReviewModalProps) {
   const [tab, setTab] = useState<TabId>("overview");
   const [minDelayPassed, setMinDelayPassed] = useState(false);
+  const [scannedAt, setScannedAt] = useState<Date | null>(null);
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
-  const sheetRef = useRef<HTMLDivElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
+    overview: null,
+    keywords: null,
+    insights: null,
+    parse: null,
+  });
+  const titleId = useId();
+  const summaryId = useId();
+  const scanningStatusId = useId();
+  const tabSetId = useId();
+  const sheetRef = useModalDialog<HTMLDivElement>({ open, onClose, initialFocusRef: closeRef });
 
   // Keep the "Scanning locally…" hero visible for a brief minimum so the
   // UI doesn't flash on fast scans, but always wait for grammar before
@@ -73,20 +91,12 @@ export function AtsReviewModal({
     if (!open) return;
     setMinDelayPassed(false);
     setTab("overview");
+    setScannedAt(new Date());
     const t = window.setTimeout(() => setMinDelayPassed(true), 900);
     return () => window.clearTimeout(t);
   }, [open]);
 
   const scanning = !minDelayPassed || grammarScanning;
-
-  useEffect(() => {
-    if (!open) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") onClose();
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, onClose]);
 
   const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
@@ -115,35 +125,58 @@ export function AtsReviewModal({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
+  const onTabKeyDown = useCallback((event: React.KeyboardEvent, currentTab: TabId) => {
+    const currentIndex = TAB_ORDER.indexOf(currentTab);
+    let nextIndex: number | null = null;
+
+    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+      nextIndex = (currentIndex + 1) % TAB_ORDER.length;
+    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+      nextIndex = (currentIndex - 1 + TAB_ORDER.length) % TAB_ORDER.length;
+    } else if (event.key === "Home") {
+      nextIndex = 0;
+    } else if (event.key === "End") {
+      nextIndex = TAB_ORDER.length - 1;
+    }
+
+    if (nextIndex == null) return;
+    event.preventDefault();
+    const nextTab = TAB_ORDER[nextIndex];
+    setTab(nextTab);
+    tabRefs.current[nextTab]?.focus();
+  }, []);
+
   const atsBand = useMemo(() => scoreBand(report.atsScore), [report.atsScore]);
   const writingBand = useMemo(() => scoreBand(report.writingScore), [report.writingScore]);
-  const timestamp = open ? formatTimestamp(new Date()) : "";
   // Match the "Top fixes" list below — every entry in report.issues is a
   // surfaced fix (any severity), so the header should count the same set.
   const issueCount = report.issues.length;
   const kwTotal = report.keywords.matched.length + report.keywords.missing.length;
   const downloadingEngine = !engineReady && engineProgress > 0;
-  const progressPct = Math.round(engineProgress * 100);
+  const boundedEngineProgress = Math.min(1, Math.max(0, engineProgress));
+  const progressPct = Math.round(boundedEngineProgress * 100);
+  const progressLabel = PERCENT_FORMATTER.format(boundedEngineProgress);
+  const timestamp = scannedAt ? formatTimestamp(scannedAt) : "";
+  const timestampIso = scannedAt?.toISOString() ?? "";
 
   if (!open) return null;
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-end sm:items-center sm:p-6 backdrop print:hidden"
+      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6 print:hidden"
       role="presentation"
-      onClick={(e) => {
-        if (e.target === e.currentTarget) onClose();
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
       }}
     >
       <div
         ref={sheetRef}
-        className="surface-glass relative w-full flex flex-col overflow-hidden rounded-t-2xl h-[92svh] sm:rounded-2xl sm:w-[min(920px,100%)] sm:mx-auto sm:h-[min(820px,calc(100svh-48px))] min-[900px]:w-[min(1100px,100%)]"
-        style={{
-          animation: "ats-slide-up 0.3s cubic-bezier(0.32,0.72,0,1)",
-        }}
+        className="cr-dialog cr-dialog-wide cr-sheet relative flex h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:h-[min(51.25rem,var(--dialog-max-block-size))] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:pb-0 min-[640px]:animate-scale-in"
         role="dialog"
         aria-modal="true"
-        aria-label="ATS review"
+        aria-labelledby={titleId}
+        aria-describedby={scanning ? scanningStatusId : summaryId}
+        tabIndex={-1}
       >
         <div
           onTouchStart={onHandleTouchStart}
@@ -156,71 +189,83 @@ export function AtsReviewModal({
 
         <div className="flex items-center justify-between gap-3 px-4 pt-1 pb-3 border-b border-(--line-soft) shrink-0 sm:px-6 sm:py-3 sm:border-(--line)">
           <div className="flex items-baseline gap-2">
-            <h2 className="m-0 text-[15px] font-semibold leading-none tracking-[-0.005em] text-(--ink-1)">
+            <h2
+              id={titleId}
+              className="m-0 text-[15px] font-semibold leading-none tracking-[-0.005em] text-(--ink-1)"
+            >
               Résumé review
             </h2>
             <span
               aria-hidden="true"
               className="hidden sm:inline-block w-1 h-1 rounded-full bg-(--ink-6) -translate-y-0.5"
             />
-            <span className="hidden sm:inline font-mono text-[10.5px] leading-none text-(--ink-5) tracking-[0.03em]">
+            <time
+              dateTime={timestampIso}
+              className="hidden sm:inline font-mono text-[10.5px] leading-none text-(--ink-5) tracking-[0.03em]"
+            >
               {timestamp}
-            </span>
+            </time>
           </div>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close ATS review"
-            className="grid place-items-center w-9 h-9 rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+            className="grid h-11 w-11 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
           >
-            <X className="w-4 h-4" />
+            <X aria-hidden="true" className="w-4 h-4" />
           </button>
         </div>
 
         {scanning ? (
-          <div className="flex-1 grid place-items-center p-10">
+          <div
+            id={scanningStatusId}
+            className="flex-1 grid place-items-center p-10"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+            aria-busy="true"
+          >
             <div className="text-center">
-              <div className="w-16 h-16 rounded-full border-[3px] border-(--line) border-t-(--brand) animate-spin mx-auto mb-5 sm:w-20 sm:h-20" />
-              <div className="text-[18px] font-semibold tracking-[-0.015em] text-(--ink-1) mb-1.5 sm:text-[20px]">
+              <div
+                aria-hidden="true"
+                className="w-16 h-16 rounded-full border-[3px] border-(--line) border-t-(--brand) animate-spin mx-auto mb-5 sm:w-20 sm:h-20"
+              />
+              <h3 className="text-[18px] font-semibold tracking-[-0.015em] text-(--ink-1) mb-1.5 sm:text-[20px]">
                 {downloadingEngine ? (
                   <>
                     Downloading writing engine{" "}
-                    <em
-                      className="italic font-normal"
-                      style={{ fontFamily: "var(--font-serif)", color: "var(--brand)" }}
-                    >
-                      locally
-                    </em>
-                    …
+                    <span className="font-bold text-(--brand)">locally</span>…
                   </>
                 ) : (
                   <>
-                    Analysing résumé{" "}
-                    <em
-                      className="italic font-normal"
-                      style={{ fontFamily: "var(--font-serif)", color: "var(--brand)" }}
-                    >
-                      locally
-                    </em>
-                    …
+                    Analysing résumé <span className="font-bold text-(--brand)">locally</span>…
                   </>
                 )}
-              </div>
-              <div className="text-[13px] text-(--ink-4) max-w-[400px] mx-auto leading-normal">
+              </h3>
+              <div className="mx-auto max-w-[400px] text-sm leading-normal text-(--ink-4)">
                 {downloadingEngine
                   ? "Grammar check runs entirely in your browser. The ~7 MB WASM engine downloads once, then caches for every future scan."
                   : "Checking keywords, structure, parseability, and writing quality. Nothing leaves your browser."}
               </div>
               {downloadingEngine && (
                 <div className="mt-5 mx-auto max-w-[320px]">
-                  <div className="h-1.5 bg-(--line-soft) rounded-full overflow-hidden">
+                  <div
+                    className="h-1.5 bg-(--line-soft) rounded-full overflow-hidden"
+                    role="progressbar"
+                    aria-label="Writing engine download"
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    aria-valuenow={progressPct}
+                    aria-valuetext={progressLabel}
+                  >
                     <div
-                      className="h-full bg-(--brand) transition-[width] duration-150"
-                      style={{ width: `${progressPct}%` }}
+                      className="h-full origin-left bg-(--color-accent)"
+                      style={{ transform: `scaleX(${progressPct / 100})` }}
                     />
                   </div>
                   <div className="mt-1.5 font-mono text-[10.5px] text-(--ink-5) tabular-nums text-right tracking-[0.02em]">
-                    {progressPct}%
+                    {progressLabel}
                   </div>
                 </div>
               )}
@@ -231,38 +276,27 @@ export function AtsReviewModal({
             <header className="flex flex-col gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
               <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:gap-5">
                 <div className="flex-1 min-w-0 flex flex-col gap-1">
-                  <h1 className="text-[18px] font-bold tracking-[-0.025em] leading-[1.2] text-(--ink-1) m-0 sm:text-[22px] sm:mb-0.5 min-[900px]:text-[26px]">
+                  <h3
+                    id={summaryId}
+                    className="text-[18px] font-bold tracking-[-0.025em] leading-[1.2] text-(--ink-1) m-0 sm:text-[22px] sm:mb-0.5 min-[900px]:text-[26px]"
+                  >
                     Résumé scored{" "}
-                    <em
-                      style={{
-                        fontFamily: "var(--font-serif)",
-                        color: atsBand.color,
-                        fontStyle: "italic",
-                        fontWeight: 400,
-                      }}
-                    >
+                    <span className="font-extrabold" style={{ color: atsBand.color }}>
                       {atsBand.label.toLowerCase()}
-                    </em>
+                    </span>
                     {report.writingReady && (
                       <>
                         {" "}
                         on ATS,{" "}
-                        <em
-                          style={{
-                            fontFamily: "var(--font-serif)",
-                            color: writingBand.color,
-                            fontStyle: "italic",
-                            fontWeight: 400,
-                          }}
-                        >
+                        <span className="font-extrabold" style={{ color: writingBand.color }}>
                           {writingBand.label.toLowerCase()}
-                        </em>{" "}
+                        </span>{" "}
                         on writing
                       </>
                     )}
                     .
-                  </h1>
-                  <p className="m-0 text-[11.5px] leading-snug text-(--ink-3) sm:text-[13px] min-[900px]:text-[13.5px]">
+                  </h3>
+                  <p className="m-0 text-sm leading-[1.5] text-(--ink-3)">
                     {report.atsScore >= 85
                       ? "Passes Workday, Greenhouse, and Lever."
                       : report.atsScore >= 55
@@ -291,7 +325,7 @@ export function AtsReviewModal({
                       }}
                       aria-label="Re-scan"
                     >
-                      <RefreshCw className="w-3.5 h-3.5" />
+                      <RefreshCw aria-hidden="true" className="w-3.5 h-3.5" />
                       <span>Re-scan</span>
                     </button>
                   </div>
@@ -307,20 +341,32 @@ export function AtsReviewModal({
             </header>
 
             <div
-              className="mx-3 my-2 flex items-stretch p-0.5 border border-(--line) bg-(--surface-raised)/70 rounded-(--r-md) shrink-0 sm:mx-0 sm:my-0 sm:p-0 sm:border-0 sm:border-y sm:border-(--line) sm:rounded-none sm:bg-transparent sm:px-4 min-[900px]:px-9"
+              className="mx-3 my-2 flex items-stretch p-0.5 border border-(--line) bg-(--surface-raised)/70 rounded-(--radius-card) shrink-0 sm:mx-0 sm:my-0 sm:p-0 sm:border-0 sm:border-y sm:border-(--line) sm:rounded-none sm:bg-transparent sm:px-4 min-[900px]:px-9"
               role="tablist"
               aria-label="ATS review sections"
             >
               <TabButton
+                id={`${tabSetId}-tab-overview`}
+                panelId={`${tabSetId}-panel-overview`}
+                buttonRef={(element) => {
+                  tabRefs.current.overview = element;
+                }}
                 active={tab === "overview"}
                 onClick={() => setTab("overview")}
-                icon={<LayoutGrid className="w-4 h-4" />}
+                onKeyDown={(event) => onTabKeyDown(event, "overview")}
+                icon={<LayoutGrid aria-hidden="true" className="w-4 h-4" />}
                 label="Overview"
               />
               <TabButton
+                id={`${tabSetId}-tab-keywords`}
+                panelId={`${tabSetId}-panel-keywords`}
+                buttonRef={(element) => {
+                  tabRefs.current.keywords = element;
+                }}
                 active={tab === "keywords"}
                 onClick={() => setTab("keywords")}
-                icon={<Hash className="w-4 h-4" />}
+                onKeyDown={(event) => onTabKeyDown(event, "keywords")}
+                icon={<Hash aria-hidden="true" className="w-4 h-4" />}
                 label="Keywords"
                 count={
                   hasJobDescription && kwTotal > 0
@@ -329,9 +375,15 @@ export function AtsReviewModal({
                 }
               />
               <TabButton
+                id={`${tabSetId}-tab-insights`}
+                panelId={`${tabSetId}-panel-insights`}
+                buttonRef={(element) => {
+                  tabRefs.current.insights = element;
+                }}
                 active={tab === "insights"}
                 onClick={() => setTab("insights")}
-                icon={<AlertTriangle className="w-4 h-4" />}
+                onKeyDown={(event) => onTabKeyDown(event, "insights")}
+                icon={<AlertTriangle aria-hidden="true" className="w-4 h-4" />}
                 label="Insights"
                 count={
                   report.wins.length + report.issues.length > 0
@@ -340,32 +392,67 @@ export function AtsReviewModal({
                 }
               />
               <TabButton
+                id={`${tabSetId}-tab-parse`}
+                panelId={`${tabSetId}-panel-parse`}
+                buttonRef={(element) => {
+                  tabRefs.current.parse = element;
+                }}
                 active={tab === "parse"}
                 onClick={() => setTab("parse")}
-                icon={<FileText className="w-4 h-4" />}
+                onKeyDown={(event) => onTabKeyDown(event, "parse")}
+                icon={<FileText aria-hidden="true" className="w-4 h-4" />}
                 label="Parse"
               />
             </div>
 
-            <div
-              className="flex-1 overflow-y-auto overflow-x-hidden px-3 py-3 cr-scroll sm:px-6 sm:py-5 sm:[scrollbar-gutter:stable] min-[900px]:px-9 min-[900px]:py-6"
-              role="tabpanel"
-            >
-              {tab === "overview" && (
-                <AtsOverviewPane report={report} hasJobDescription={hasJobDescription} />
-              )}
-              {tab === "keywords" && (
-                <AtsKeywordsPane
-                  report={report}
-                  resume={resume}
-                  hasJobDescription={hasJobDescription}
-                  onOpenJdEditor={onOpenJdEditor}
-                />
-              )}
-              {tab === "insights" && (
-                <AtsInsightsPane report={report} onJumpToField={onJumpToField} />
-              )}
-              {tab === "parse" && <AtsParsePreview resume={resume} />}
+            <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-3 py-3 cr-scroll sm:px-6 sm:py-5 sm:[scrollbar-gutter:stable] min-[900px]:px-9 min-[900px]:py-6">
+              <div
+                id={`${tabSetId}-panel-overview`}
+                role="tabpanel"
+                aria-labelledby={`${tabSetId}-tab-overview`}
+                tabIndex={tab === "overview" ? 0 : -1}
+                hidden={tab !== "overview"}
+              >
+                {tab === "overview" ? (
+                  <AtsOverviewPane report={report} hasJobDescription={hasJobDescription} />
+                ) : null}
+              </div>
+              <div
+                id={`${tabSetId}-panel-keywords`}
+                role="tabpanel"
+                aria-labelledby={`${tabSetId}-tab-keywords`}
+                tabIndex={tab === "keywords" ? 0 : -1}
+                hidden={tab !== "keywords"}
+              >
+                {tab === "keywords" ? (
+                  <AtsKeywordsPane
+                    report={report}
+                    resume={resume}
+                    hasJobDescription={hasJobDescription}
+                    onOpenJdEditor={onOpenJdEditor}
+                  />
+                ) : null}
+              </div>
+              <div
+                id={`${tabSetId}-panel-insights`}
+                role="tabpanel"
+                aria-labelledby={`${tabSetId}-tab-insights`}
+                tabIndex={tab === "insights" ? 0 : -1}
+                hidden={tab !== "insights"}
+              >
+                {tab === "insights" ? (
+                  <AtsInsightsPane report={report} onJumpToField={onJumpToField} />
+                ) : null}
+              </div>
+              <div
+                id={`${tabSetId}-panel-parse`}
+                role="tabpanel"
+                aria-labelledby={`${tabSetId}-tab-parse`}
+                tabIndex={tab === "parse" ? 0 : -1}
+                hidden={tab !== "parse"}
+              >
+                {tab === "parse" ? <AtsParsePreview resume={resume} /> : null}
+              </div>
             </div>
           </>
         )}
@@ -395,7 +482,7 @@ function ScoreDuo({
   writingReady: boolean;
 }) {
   return (
-    <div className="self-stretch w-full flex items-stretch rounded-2xl border border-(--line) bg-(--surface-raised) shadow-(--sh-xs) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
+    <div className="self-stretch w-full flex items-stretch rounded-lg border border-(--line) bg-(--surface-raised) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
       <ScoreCell label="ATS" score={atsScore} band={atsBand} />
       <div aria-hidden="true" className="w-px bg-(--line-soft)" />
       <ScoreCell label="Writing" score={writingScore} band={writingBand} muted={!writingReady} />
@@ -436,31 +523,44 @@ function ScoreCell({
 }
 
 function TabButton({
+  id,
+  panelId,
+  buttonRef,
   active,
   onClick,
+  onKeyDown,
   icon,
   label,
   count,
 }: {
+  id: string;
+  panelId: string;
+  buttonRef: (element: HTMLButtonElement | null) => void;
   active: boolean;
   onClick: () => void;
+  onKeyDown: (event: React.KeyboardEvent<HTMLButtonElement>) => void;
   icon: React.ReactNode;
   label: string;
   count?: string;
 }) {
   return (
     <button
+      ref={buttonRef}
+      id={id}
       type="button"
       role="tab"
       aria-selected={active}
+      aria-controls={panelId}
+      tabIndex={active ? 0 : -1}
       className={[
-        "flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 text-[10px] font-medium rounded-md cursor-pointer transition-all duration-100 min-h-[34px]",
+        "flex-1 flex flex-col items-center justify-center gap-0.5 py-1.5 px-2 text-[10px] font-medium rounded-md cursor-pointer transition-[background-color,border-color,color] duration-160 min-h-11",
         "sm:flex-none sm:flex-row sm:gap-1.5 sm:py-3 sm:px-3 sm:text-[13px] sm:rounded-none sm:border-b-2 sm:-mb-px",
         active
-          ? "bg-white text-(--brand) shadow-(--sh-xs) sm:bg-transparent sm:shadow-none sm:border-b-(--brand)"
-          : "text-(--ink-4) hover:text-(--ink-1) hover:bg-white/60 sm:border-b-transparent sm:hover:bg-transparent",
+          ? "bg-(--surface) text-(--brand) sm:bg-transparent sm:border-b-(--brand)"
+          : "text-(--ink-4) hover:text-(--ink-1) hover:bg-(--surface) sm:border-b-transparent sm:hover:bg-transparent",
       ].join(" ")}
       onClick={onClick}
+      onKeyDown={onKeyDown}
     >
       {icon}
       {label}

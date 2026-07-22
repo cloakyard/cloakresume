@@ -13,15 +13,16 @@
  *   flush against the toolbar after `scrollIntoView`.
  */
 
-const MAX_POLL_FRAMES = 30; // ~0.5 s at 60 fps — covers animated transitions
-const GLOW_DURATION_MS = 4000; // keep in sync with @keyframes cr-field-glow
+const MAX_POLL_FRAMES = 30; // ~0.5 s at 60 fps — covers section mounting
+const GLOW_DURATION_MS = 400; // keep in sync with @keyframes cr-field-glow
 
 export function highlightField(segmentId: string): void {
   let frame = 0;
   const tick = () => {
     const el = document.querySelector<HTMLElement>(`[data-field-id="${CSS.escape(segmentId)}"]`);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "center" });
       // Re-trigger the animation if the class is already present.
       el.classList.remove("cr-field-glow");
       void el.offsetWidth;

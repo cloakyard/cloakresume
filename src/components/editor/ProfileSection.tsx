@@ -40,31 +40,30 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
       <div className="cr-stack">
         <div className="flex items-center gap-4 pb-2">
           <div
-            className="w-20 h-20 rounded-full grid place-items-center text-white font-semibold text-xl shrink-0"
+            className="w-20 h-20 rounded-full grid place-items-center text-(--color-accent-ink) font-semibold text-xl shrink-0"
             style={{
-              // Avatar placeholder gradient is derived live from the
-              // current brand primary so a colour-picker change in the
-              // toolbar instantly recolours the placeholder to match.
-              // Uses --color-primary-300 → --color-primary-500 so the
-              // initials stay legible against the band on every theme.
-              background: resume.profile.photoUrl
-                ? "transparent"
-                : "linear-gradient(135deg, var(--color-primary-300) 0%, var(--color-primary-500) 100%)",
-              border: "2px solid var(--line)",
+              background: resume.profile.photoUrl ? "transparent" : "var(--color-accent)",
+              border: "2px solid var(--color-rule)",
               overflow: "hidden",
             }}
           >
             {resume.profile.photoUrl ? (
-              <img src={resume.profile.photoUrl} alt="" className="w-full h-full object-cover" />
+              <img
+                src={resume.profile.photoUrl}
+                alt={`${resume.profile.name || "Profile"} portrait`}
+                width={80}
+                height={80}
+                className="w-full h-full object-cover"
+              />
             ) : (
-              <span className="text-white">{initials}</span>
+              <span className="text-(--color-accent-ink)">{initials}</span>
             )}
           </div>
           <div className="flex flex-col gap-1.5">
             <button
               type="button"
               onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md text-[12.5px] font-medium text-(--ink-1) bg-(--surface-2) border border-(--line) transition-colors"
+              className="inline-flex items-center gap-1.5 min-h-11 md:min-h-10 px-3 rounded-md text-sm font-medium text-(--ink-1) bg-(--surface-2) border border-(--line) transition-colors"
             >
               <Camera className="w-3.5 h-3.5 text-(--ink-4)" />
               {resume.profile.photoUrl ? "Change photo" : "Add photo"}
@@ -74,7 +73,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
               <button
                 type="button"
                 onClick={() => updateProfile({ photoUrl: undefined })}
-                className="text-[11px] text-(--ink-4) hover:text-(--danger) text-left"
+                className="min-h-11 md:min-h-10 px-2 rounded-md text-sm text-(--ink-4) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) text-left transition-colors"
               >
                 Remove photo
               </button>
@@ -82,7 +81,9 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/*"
+              name="profile-photo"
+              aria-label="Upload profile photo"
+              accept="image/jpeg,image/png"
               className="hidden"
               onChange={(e) => {
                 const f = e.target.files?.[0];
@@ -95,11 +96,15 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
 
         <TextField
           label="Full name"
+          name="profile-name"
+          autoComplete="name"
           value={resume.profile.name}
           onChange={(v) => updateProfile({ name: v })}
         />
         <TextField
           label="Title / headline"
+          name="profile-headline"
+          autoComplete="organization-title"
           value={resume.profile.title}
           onChange={(v) => updateProfile({ title: v })}
         />
@@ -118,12 +123,13 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             <FormatToolbar />
           </div>
           <RichTextArea
+            ariaLabel="Professional summary"
             fieldId="profile.summary"
             value={resume.profile.summary}
             onChange={(v) => updateProfile({ summary: v })}
             rows={8}
           />
-          <div className="text-[11px] text-(--ink-5) mt-2">
+          <div className="text-sm text-(--ink-4) mt-2">
             Tip: wrap text in **bold** or *italic* for emphasis.
           </div>
         </div>

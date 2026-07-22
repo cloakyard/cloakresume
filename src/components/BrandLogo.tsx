@@ -9,26 +9,28 @@
  *   CloakIMG header style.
  *
  * Sizing mirrors the CloakPDF / CloakIMG family verbatim — 40px mark,
- * 19px wordmark, -0.025em tracking, default leading — at every
- * viewport so the family reads the same everywhere. Do not introduce
- * `leading-none` or compact variants here; both siblings render the
- * wordmark at the inherited line-height and any tighter value pinches
- * the cap-height alignment relative to the 40px mark.
+ * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading — at
+ * every viewport so the family reads the same everywhere.
  */
 export function BrandLogo() {
   return (
     <a
       href="/"
       aria-label="CloakResume home"
-      className="inline-flex items-center gap-2.5 no-underline shrink-0"
+      className="cr-brand-logo inline-flex items-center no-underline shrink-0"
     >
       <img
         src="/icons/favicon.svg"
         alt=""
         aria-hidden="true"
-        className="w-10 h-10 shrink-0 drop-shadow-sm"
+        width="40"
+        height="40"
+        className="w-10 h-10 shrink-0"
       />
-      <span className="text-[19px] font-semibold tracking-tight text-(--ink-1) whitespace-nowrap">
+      <span
+        translate="no"
+        className="whitespace-nowrap text-[1.125rem] leading-none font-[800] tracking-[-0.02em] text-(--ink-1)"
+      >
         Cloak<span className="text-(--brand)">Resume</span>
       </span>
     </a>

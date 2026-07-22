@@ -1,0 +1,24 @@
+overrides:
+  vite: "catalog:"
+  sharp: 0.35.3
+catalog:
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.5
+  vite-plus: 0.2.5
+allowBuilds:
+  sharp: true
+  core-js: false
+minimumReleaseAgeExclude:
+  - "@vitejs/plugin-react"
+  - baseline-browser-mapping
+  - browserslist
+  - electron-to-chromium
+  - html2canvas-pro
+  - own-keys
+  - postcss
+  - react
+  - react-dom
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"

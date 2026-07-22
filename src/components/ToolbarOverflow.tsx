@@ -64,9 +64,9 @@ export function ToolbarOverflow({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center w-9 h-9 rounded-md text-(--ink-3) bg-transparent border-0 cursor-pointer transition-colors hover:bg-(--surface-3) hover:text-(--ink-1) focus-visible:outline-none focus-visible:shadow-(--sh-focus)"
+        className="inline-flex items-center justify-center min-w-11 min-h-11 md:min-w-10 md:min-h-10 rounded-md text-(--ink-3) bg-transparent border-0 cursor-pointer transition-colors hover:bg-(--surface-3) hover:text-(--ink-1)"
         aria-label="More options"
-        aria-haspopup="menu"
+        aria-haspopup="dialog"
       >
         <MoreVertical className="w-4.5 h-4.5" strokeWidth={2} />
       </button>
@@ -74,6 +74,8 @@ export function ToolbarOverflow({
       <input
         ref={fileRef}
         type="file"
+        name="resume-file"
+        aria-label="Load résumé JSON file"
         accept="application/json,.json"
         className="hidden"
         onChange={(e) => {
@@ -116,10 +118,13 @@ export function ToolbarOverflow({
             trailing={
               <span
                 className="w-4 h-4 rounded-full"
-                style={{ background: primary, border: "1px solid rgba(0,0,0,0.08)" }}
+                style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
               />
             }
-            onClick={() => setColorOpen(true)}
+            onClick={() => {
+              setOpen(false);
+              setColorOpen(true);
+            }}
           />
           <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
             <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} size="lg" />
@@ -164,9 +169,9 @@ export function ToolbarOverflow({
 
 const overflowItemClass = [
   "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-13",
-  "border-0 rounded-lg text-left cursor-pointer bg-transparent",
+  "border-0 rounded-md text-left cursor-pointer bg-transparent",
   "text-[14.5px] font-medium text-(--ink-1) no-underline",
-  "transition-[background-color] duration-150",
+  "transition-[background-color] duration-160",
   "hover:bg-(--ink-1)/4 active:bg-(--ink-1)/6",
 ].join(" ");
 
@@ -185,10 +190,7 @@ function OverflowItem({
 }) {
   const content = (
     <>
-      <span
-        aria-hidden="true"
-        className="grid place-items-center w-9 h-9 rounded-md shrink-0 bg-(--ink-1)/5 text-(--ink-2)"
-      >
+      <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
         {icon}
       </span>
       <span className="flex-1 min-w-0">{label}</span>
@@ -198,27 +200,21 @@ function OverflowItem({
 
   if (href) {
     return (
-      <a
-        href={href}
-        target="_blank"
-        rel="noopener noreferrer"
-        role="menuitem"
-        className={overflowItemClass}
-      >
+      <a href={href} target="_blank" rel="noopener noreferrer" className={overflowItemClass}>
         {content}
       </a>
     );
   }
 
   return (
-    <button type="button" onClick={onClick} role="menuitem" className={overflowItemClass}>
+    <button type="button" onClick={onClick} className={overflowItemClass}>
       {content}
     </button>
   );
 }
 
 function OverflowDivider() {
-  return <hr className="my-2 mx-2 border-0 border-t border-(--ink-1)/8 h-0" />;
+  return <hr className="my-2 mx-2 border-0 border-t border-(--line) h-0" />;
 }
 
 /**
@@ -236,11 +232,8 @@ function OverflowRow({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex items-center gap-3 w-full px-3 py-3 min-h-13 rounded-lg">
-      <span
-        aria-hidden="true"
-        className="grid place-items-center w-9 h-9 rounded-md shrink-0 bg-(--ink-1)/5 text-(--ink-2)"
-      >
+    <div className="flex items-center gap-3 w-full px-3 py-3 min-h-13 rounded-md">
+      <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
         {icon}
       </span>
       <span className="flex-1 min-w-0 text-[14.5px] font-medium text-(--ink-1)">{label}</span>

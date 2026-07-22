@@ -1,44 +1,50 @@
-# Security Policy
+# Security policy
 
-## Supported Versions
+## Supported version
 
-| Version | Supported |
-| ------- | --------- |
-| latest  | ✅        |
+Security fixes are applied to the latest code on `main` and the current deployment.
 
-## Reporting a Vulnerability
+## Report a vulnerability
 
-If you discover a security vulnerability in CloakResume, please **do not** open a public GitHub issue.
+Do not open a public issue containing vulnerability details. Private vulnerability
+reporting is not currently enabled on this repository. Use a contact method listed on
+[the maintainer's GitHub profile](https://github.com/sumitsahoo) to request a private
+channel, and send only a non-sensitive summary until that channel is established.
+Then include reproduction steps, affected browsers, impact, and any suggested
+mitigation. The maintainers will coordinate disclosure and credit when appropriate.
 
-Instead, report it privately via [GitHub Security Advisories](https://github.com/sumitsahoo/cloakresume/security/advisories/new).
+For a vulnerable third-party package, include the package name, installed version, and
+advisory identifier.
 
-You can expect:
+## Security boundary
 
-- **Acknowledgement** within 48 hours
-- **Status update** within 7 days
-- Credit in the advisory once the fix is released (if desired)
+CloakResume is a static, client-side application. Résumé editing, job-description
+matching, writing review, rendering, and export run in the browser. The application
+does not configure an account service, analytics service, or endpoint that receives
+résumé content.
 
-## Security Model
+That boundary does not mean the browser makes no network requests:
 
-CloakResume is a **client-side only** application — all resume editing, rendering, ATS scoring, and PDF export happen in your browser. No resume data is transmitted to any server. The attack surface is limited to:
+- The page, JavaScript, styles, fonts, icons, and service worker come from the app origin.
+- Harper's WebAssembly language engine is fetched from the app origin on first review
+  and may be cached by the service worker.
+- Hosting and browser infrastructure remain outside this repository's control.
 
-- Third-party npm dependencies (monitored via automated CI security audits and Dependabot)
-- Browser sandbox escape (out of scope — report to the browser vendor)
+Drafts in `localStorage` are not encrypted. Anyone with access to the same browser
+profile can read or delete them. Use **Save JSON**, then clear the local draft, when
+working on a shared device.
 
-## Dependency Vulnerabilities
+## Defence in depth
 
-Known dependency vulnerabilities are tracked automatically via:
+- The meta Content Security Policy in [index.html](index.html) limits scripts, workers,
+  fonts, images, forms, and connections to declared sources. It reduces exposure but
+  does not replace a deployment-level CSP header or make same-origin code trustworthy.
+- Production assets are bundled locally; the page does not execute third-party CDN scripts.
+- `object-src 'none'`, `base-uri 'self'`, and `form-action 'self'` reduce common injection paths.
+- No product analytics or tracking integration is present.
+- Dependency review can be run locally with `vp outdated` and `vp pm audit`.
 
-- **GitHub Dependabot** — daily checks against the GitHub Advisory Database
-- **OSV-Scanner** — weekly CI workflow against the Open Source Vulnerabilities database
+When deploying a fork, serve HTTPS, add security headers at the host, review any new
+network destination, and do not weaken the CSP without documenting why.
 
-If you spot one that has not been addressed, please follow the disclosure process above.
-
-## Defence-in-Depth Controls
-
-- **Content Security Policy** — declared via `<meta http-equiv="Content-Security-Policy">` in [`index.html`](./index.html). `connect-src` is restricted to the application origin, making it physically impossible for the page to upload user resume content elsewhere. `script-src` disallows remote scripts, `object-src` is `'none'`, and `form-action` is pinned to `'self'`.
-- **Subresource integrity** — all first-party JavaScript is bundled and served from the same origin under hashed filenames.
-- **Local-only persistence** — resume drafts are saved to `localStorage` on the user's device; nothing is sent over the wire.
-- **No tracking or analytics** — the page makes no third-party network requests at runtime.
-
-_Last reviewed: 2026-04-20._
+_Last reviewed: 2026-07-22._

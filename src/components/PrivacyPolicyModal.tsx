@@ -8,11 +8,16 @@
  * `document.body` so it overlays the landing screen cleanly.
  */
 
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ShieldCheck, X } from "lucide-react";
+import { useModalDialog } from "../utils/useModalDialog.ts";
 
-const LAST_UPDATED = "April 24, 2026";
+const LAST_UPDATED_ISO = "2026-04-24";
+const LAST_UPDATED = new Intl.DateTimeFormat(undefined, {
+  dateStyle: "long",
+  timeZone: "UTC",
+}).format(new Date(`${LAST_UPDATED_ISO}T00:00:00Z`));
 const REPO_URL = "https://github.com/cloakyard/cloakresume";
 const CLOAKYARD_URL = "https://github.com/cloakyard";
 
@@ -22,23 +27,12 @@ interface Props {
 }
 
 export function PrivacyPolicyModal({ open, onClose }: Props) {
-  const panelRef = useRef<HTMLDivElement>(null);
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
-
-  useEffect(() => {
-    if (!open) return;
-    const prevOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
-    };
-    window.addEventListener("keydown", onKey);
-    return () => {
-      document.body.style.overflow = prevOverflow;
-      window.removeEventListener("keydown", onKey);
-    };
-  }, [open, onClose]);
+  const closeRef = useRef<HTMLButtonElement>(null);
+  const titleId = useId();
+  const descriptionId = useId();
+  const panelRef = useModalDialog<HTMLDivElement>({ open, onClose, initialFocusRef: closeRef });
 
   /* Swipe-down-to-dismiss on the handle — matches BottomSheet / AtsReviewModal.
    * Threshold is 120px of downward travel, identical to the other sheets. */
@@ -73,21 +67,20 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
 
   return createPortal(
     <div
-      className="fixed inset-0 z-200 flex items-end sm:items-center justify-center sm:p-6 backdrop animate-[fade_0.2s_ease]"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="privacy-policy-title"
+      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
+      role="presentation"
+      onMouseDown={(event) => {
+        if (event.target === event.currentTarget) onClose();
+      }}
     >
-      <button
-        type="button"
-        onClick={onClose}
-        aria-label="Close"
-        className="absolute inset-0 bg-transparent border-0 cursor-default"
-      />
-
       <div
         ref={panelRef}
-        className="surface-glass relative w-full sm:w-[min(920px,100%)] min-[900px]:w-[min(1100px,100%)] max-h-[92svh] sm:max-h-[min(820px,calc(100svh-48px))] rounded-t-2xl sm:rounded-2xl overflow-hidden flex flex-col pb-[env(safe-area-inset-bottom,0px)] sm:pb-0 animate-sheet-rise sm:animate-scale-in"
+        className="cr-dialog cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:!w-[min(var(--dialog-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={titleId}
+        aria-describedby={descriptionId}
+        tabIndex={-1}
       >
         {/* Drag handle — mobile only, swipe down to dismiss. */}
         <div
@@ -98,37 +91,40 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
         >
           <span
             aria-hidden="true"
-            className="w-11 h-1 rounded-full bg-(--ink-5)/40 transition-colors duration-150 hover:bg-(--ink-5)/60"
+            className="w-11 h-1 rounded-full bg-(--ink-5)/40 transition-colors duration-160 hover:bg-(--ink-5)/60"
           />
         </div>
 
         {/* Header */}
         <div className="shrink-0 flex items-center gap-3 sm:gap-4 px-5 sm:px-7 pt-3 sm:pt-6 pb-4 border-b border-(--line-soft)">
-          <span className="w-11 h-11 rounded-xl grid place-items-center bg-(--brand-50) text-(--brand) shrink-0">
-            <ShieldCheck className="w-5 h-5" />
+          <span className="grid h-8 w-8 shrink-0 place-items-center text-(--brand)">
+            <ShieldCheck aria-hidden="true" className="w-5 h-5" />
           </span>
           <div className="flex-1 min-w-0">
             <h2
-              id="privacy-policy-title"
+              id={titleId}
               className="text-[17px] sm:text-[18px] font-semibold text-(--ink-1) tracking-[-0.01em] leading-tight"
             >
               Privacy Policy
             </h2>
-            <p className="text-[12.5px] text-(--ink-4) mt-0.5">Last updated: {LAST_UPDATED}</p>
+            <p id={descriptionId} className="text-[12.5px] text-(--ink-4) mt-0.5">
+              Last updated: <time dateTime={LAST_UPDATED_ISO}>{LAST_UPDATED}</time>
+            </p>
           </div>
           <button
+            ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close privacy policy"
-            className="w-9 h-9 rounded-md grid place-items-center text-(--ink-4) bg-transparent cursor-pointer transition-colors duration-100 hover:bg-(--ink-1)/5 hover:text-(--ink-1) shrink-0"
+            className="grid h-11 w-11 shrink-0 place-items-center rounded-md bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
           >
-            <X className="w-4 h-4" />
+            <X aria-hidden="true" className="w-4 h-4" />
           </button>
         </div>
 
         {/* Body */}
-        <div className="cr-scroll overflow-y-auto px-5 sm:px-7 py-5 sm:py-6">
-          <div className="space-y-6 text-[13.5px] leading-[1.65] text-(--ink-3)">
+        <div className="cr-scroll overflow-y-auto overscroll-contain px-5 sm:px-7 py-5 sm:py-6">
+          <div className="space-y-6 text-sm leading-[1.65] text-(--ink-3)">
             <Section title="Overview">
               <p>
                 CloakResume is a free, open-source résumé builder that runs entirely in your web
@@ -148,13 +144,14 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
 
             <Section title="Local storage">
               <p>
-                So your work survives between sessions, CloakResume saves your résumé, chosen
-                template, colour preference, and theme to your browser&apos;s{" "}
+                So your work survives between sessions, CloakResume saves your résumé, target job
+                description, chosen template, document colour, paper size, and current editor
+                section to your browser&apos;s{" "}
                 <code className="font-mono text-[12.5px] px-1 py-0.5 rounded bg-(--surface-3) text-(--ink-2)">
                   localStorage
                 </code>
                 . This data stays on your device and is never sent anywhere. Clear it any time via
-                your browser&apos;s settings or the &quot;New&quot; button in the toolbar.
+                your browser&apos;s settings or the “New” button in the toolbar.
               </p>
             </Section>
 

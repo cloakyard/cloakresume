@@ -205,7 +205,7 @@ function wordCount(resume: ResumeData): number {
 }
 
 /** Extract distinctive keywords from a free-form job description blob. */
-export function extractKeywords(jd: string): string[] {
+function extractKeywords(jd: string): string[] {
   if (!jd.trim()) return [];
   const stop = new Set([
     "the",
@@ -822,11 +822,34 @@ export function scoreBand(score: number): {
   bg: string;
   border: string;
 } {
-  if (score >= 85)
-    return { label: "Excellent", color: "#059669", bg: "#ecfdf5", border: "#a7f3d0" };
-  if (score >= 70) return { label: "Strong", color: "#0D9488", bg: "#f0fdfa", border: "#99f6e4" };
-  if (score >= 55) return { label: "Decent", color: "#D97706", bg: "#fffbeb", border: "#fde68a" };
-  if (score >= 40)
-    return { label: "Needs work", color: "#DC2626", bg: "#fef2f2", border: "#fecaca" };
-  return { label: "Critical", color: "#B91C1C", bg: "#fef2f2", border: "#fca5a5" };
+  if (score >= 85) {
+    return {
+      label: "Excellent",
+      color: "var(--color-status-success)",
+      bg: "var(--color-status-success-soft)",
+      border: "var(--ok-border)",
+    };
+  }
+  if (score >= 70) {
+    return {
+      label: "Strong",
+      color: "var(--color-accent-label)",
+      bg: "var(--color-accent-soft)",
+      border: "var(--brand-200)",
+    };
+  }
+  if (score >= 55) {
+    return {
+      label: "Decent",
+      color: "var(--color-status-warning)",
+      bg: "var(--color-status-warning-soft)",
+      border: "var(--warn-border)",
+    };
+  }
+  return {
+    label: score >= 40 ? "Needs work" : "Critical",
+    color: "var(--color-status-danger)",
+    bg: "var(--color-status-danger-soft)",
+    border: "var(--danger-border)",
+  };
 }
