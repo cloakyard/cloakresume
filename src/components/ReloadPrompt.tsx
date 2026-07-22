@@ -99,7 +99,7 @@ export function ReloadPrompt() {
       style={{ zIndex: "var(--z-toast)" }}
     >
       <div
-        className="cr-popover relative flex w-full max-w-sm items-start gap-3 overflow-hidden rounded-md p-4 sm:w-auto sm:min-w-80"
+        className="cr-popover cr-toast relative flex w-full max-w-sm items-start gap-3 overflow-hidden rounded-md p-4 sm:w-auto sm:min-w-80"
         style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
       >
         <span className="mt-1 grid h-5 w-5 shrink-0 place-items-center text-(--brand)">

@@ -71,22 +71,9 @@
   --radius-xl: var(--radius-card);
   --radius-2xl: var(--radius-card);
 
-  /* Custom animations — expose `animate-fade-in-up` / `animate-scale-in` / `animate-sheet-rise` */
-  --animate-fade-in-up: fade-in-up var(--duration-base) var(--ease-out) both;
-  --animate-scale-in: scale-in var(--duration-fast) var(--ease-out) both;
+  /* Contextual overlay motion used by every dialog and mobile sheet. */
+  --animate-scale-in: scale-in var(--duration-base) var(--ease-out) both;
   --animate-sheet-rise: sheet-rise var(--duration-base) var(--ease-out);
-  --animate-ats-slide-up: ats-slide-up var(--duration-slow) var(--ease-out);
-
-  @keyframes fade-in-up {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
   @keyframes scale-in {
     from {
       opacity: 0;
@@ -103,21 +90,6 @@
     }
     to {
       transform: translateY(0);
-    }
-  }
-  @keyframes ats-slide-up {
-    from {
-      transform: translateY(28px);
-      opacity: 0.7;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-  @keyframes fade {
-    from {
-      opacity: 0;
     }
   }
 }
@@ -146,24 +118,41 @@
   }
 }
 
-/* Brief field locator used after an ATS issue jump. */
+/* Brief field locator used after an ATS issue jump. The ring itself is a
+ * pseudo-element so the animation remains on the compositor. */
 @keyframes cr-field-glow {
   0% {
-    box-shadow: 0 0 0 0 color-mix(in oklab, var(--brand) 0%, transparent);
+    opacity: 0;
+    transform: scale(0.985);
   }
   35% {
-    box-shadow: 0 0 0 4px color-mix(in oklab, var(--brand) 24%, transparent);
+    opacity: 1;
+    transform: scale(1);
   }
   100% {
-    box-shadow: 0 0 0 0 transparent;
+    opacity: 0;
+    transform: scale(1.015);
   }
 }
 .cr-field-glow {
-  animation: cr-field-glow var(--duration-long) var(--ease-out);
   border-radius: var(--radius-control);
   scroll-margin: 5rem;
   position: relative;
   z-index: 1;
+}
+.cr-field-glow::after {
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  border: 2px solid color-mix(in oklab, var(--brand) 52%, transparent);
+  border-radius: calc(var(--radius-control) + 4px);
+  content: "";
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .cr-field-glow::after {
+    animation: cr-field-glow var(--duration-long) var(--ease-out) both;
+  }
 }
 
 /* Component-level dark overrides read theme-swapped surface, overlay,
@@ -249,14 +238,14 @@
     @apply inline-flex items-center gap-2 h-10 min-h-10 px-3
       rounded-md border border-(--line) bg-(--surface)
       text-[13px] font-medium text-(--ink-2) whitespace-nowrap
-      transition-[background-color,border-color,box-shadow,transform] duration-160
+      transition-[background-color,border-color,transform] duration-160
       cursor-pointer select-none
       hover:bg-(--surface-2) hover:border-(--color-rule-strong)
       focus-visible:outline-none focus-visible:shadow-(--sh-focus)
       active:translate-y-px;
   }
   .tb .caret {
-    @apply text-(--ink-5) ml-0.5;
+    @apply text-(--ink-5) ml-0.5 transition-transform duration-160;
   }
   .tb.ghost {
     @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
@@ -328,7 +317,7 @@
       text-(--ink-1) bg-(--surface)
       border border-(--line) rounded-md
       placeholder:text-(--ink-5)
-      transition-[border-color,box-shadow,background] duration-160
+      transition-[border-color,background-color] duration-160
       hover:border-(--color-rule-strong)
       focus:outline-none focus:border-(--brand) focus:shadow-(--sh-focus)
       lg:px-3 lg:py-2.5 lg:text-sm lg:leading-[1.5];
@@ -373,7 +362,7 @@
 
   /* Sub-card — a single entry within a list section (e.g. one role). */
   .sub-card {
-    @apply border-t border-(--line-soft) bg-transparent py-3;
+    @apply border border-(--line) bg-(--surface) p-3;
   }
 }
 

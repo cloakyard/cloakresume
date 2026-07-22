@@ -23,7 +23,6 @@ import { type PaperSize } from "../utils/paperSize.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { BottomSheet } from "./BottomSheet.tsx";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
-import { GithubIcon } from "./GithubIcon.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 
 interface ToolbarOverflowProps {
@@ -52,9 +51,14 @@ export function ToolbarOverflow({
   const [colorOpen, setColorOpen] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
 
-  const openTemplate = () => {
+  const closeThenOpen = (next: () => void) => {
     setOpen(false);
-    window.dispatchEvent(new Event("cr:open-template-picker"));
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.setTimeout(next, reduceMotion ? 0 : 200);
+  };
+
+  const openTemplate = () => {
+    closeThenOpen(() => window.dispatchEvent(new Event("cr:open-template-picker")));
   };
 
   if (!isMobile) return null;
@@ -64,7 +68,7 @@ export function ToolbarOverflow({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center min-w-11 min-h-11 md:min-w-10 md:min-h-10 rounded-md text-(--ink-3) bg-transparent border-0 cursor-pointer transition-colors hover:bg-(--surface-3) hover:text-(--ink-1)"
+        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border-0 bg-transparent text-(--ink-3) transition-colors hover:bg-(--surface-3) hover:text-(--ink-1)"
         aria-label="More options"
         aria-haspopup="dialog"
       >
@@ -101,10 +105,7 @@ export function ToolbarOverflow({
           <OverflowItem
             icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
             label="Scan résumé"
-            onClick={() => {
-              setOpen(false);
-              window.dispatchEvent(new Event("cr:scan-ats"));
-            }}
+            onClick={() => closeThenOpen(() => window.dispatchEvent(new Event("cr:scan-ats")))}
           />
           <OverflowDivider />
           <OverflowItem
@@ -121,10 +122,7 @@ export function ToolbarOverflow({
                 style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
               />
             }
-            onClick={() => {
-              setOpen(false);
-              setColorOpen(true);
-            }}
+            onClick={() => closeThenOpen(() => setColorOpen(true))}
           />
           <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
             <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} size="lg" />
@@ -133,10 +131,7 @@ export function ToolbarOverflow({
           <OverflowItem
             icon={<FilePlus2 className="w-4 h-4" />}
             label="New résumé"
-            onClick={() => {
-              setOpen(false);
-              onNewResume();
-            }}
+            onClick={() => closeThenOpen(onNewResume)}
           />
           <OverflowItem
             icon={<Save className="w-4 h-4" />}
@@ -151,12 +146,6 @@ export function ToolbarOverflow({
             label="Load from file"
             onClick={() => fileRef.current?.click()}
           />
-          <OverflowDivider />
-          <OverflowItem
-            icon={<GithubIcon className="w-4 h-4" />}
-            label="View on GitHub"
-            href="https://github.com/cloakyard/cloakresume"
-          />
         </div>
       </BottomSheet>
 
@@ -168,6 +157,7 @@ export function ToolbarOverflow({
 }
 
 const overflowItemClass = [
+  "cr-overflow-item",
   "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-13",
   "border-0 rounded-md text-left cursor-pointer bg-transparent",
   "text-[14.5px] font-medium text-(--ink-1) no-underline",
@@ -180,35 +170,19 @@ function OverflowItem({
   label,
   onClick,
   trailing,
-  href,
 }: {
   icon: React.ReactNode;
   label: string;
   onClick?: () => void;
   trailing?: React.ReactNode;
-  href?: string;
 }) {
-  const content = (
-    <>
+  return (
+    <button type="button" onClick={onClick} className={overflowItemClass}>
       <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
         {icon}
       </span>
       <span className="flex-1 min-w-0">{label}</span>
       {trailing && <span className="flex items-center shrink-0">{trailing}</span>}
-    </>
-  );
-
-  if (href) {
-    return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={overflowItemClass}>
-        {content}
-      </a>
-    );
-  }
-
-  return (
-    <button type="button" onClick={onClick} className={overflowItemClass}>
-      {content}
     </button>
   );
 }

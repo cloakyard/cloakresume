@@ -102,8 +102,9 @@ describe("CloakResume family contract", () => {
   });
 
   it("registers the same self-hosted UI fonts and wordmark metrics as CloakPDF", async () => {
-    const [indexCss, brandLogo] = await Promise.all([
+    const [indexCss, familyCss, brandLogo] = await Promise.all([
       source("src/index.css"),
+      source("src/cloak-family.css"),
       source("src/components/BrandLogo.tsx"),
     ]);
 
@@ -115,7 +116,48 @@ describe("CloakResume family contract", () => {
     );
     expect(indexCss).not.toMatch(/@fontsource-variable\/(?:archivo|jetbrains-mono|geist-mono)/);
     expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
+    expect(brandLogo).toContain('width="40"');
+    expect(brandLogo).toContain('height="40"');
+    expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
+    expect(familyCss).toMatch(
+      /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,
+    );
     expect(brandLogo).toContain('translate="no"');
+  });
+
+  it("matches CloakPDF footer provenance and privacy-document structure", async () => {
+    const [landing, privacy, familyCss, tokens, tokenJson] = await Promise.all([
+      source("src/components/CloakWorkbenchLanding.tsx"),
+      source("src/components/PrivacyPolicyModal.tsx"),
+      source("src/cloak-family.css"),
+      source("tokens.css"),
+      source("tokens.json"),
+    ]);
+    const footer = landing.match(
+      /<footer className="cr-statement-footer">([\s\S]*?)<\/footer>/,
+    )?.[1];
+    const portable = JSON.parse(tokenJson) as { size: Record<string, { $value: string }> };
+
+    expect(footer).toBeDefined();
+    expect(footer).toContain("CloakResume / Cloakyard");
+    expect(footer).toContain("Build a résumé.");
+    expect(footer).toContain("Keep it local.");
+    expect(footer).toContain("CloakResume v{__APP_VERSION__}");
+    expect(footer).toContain("Built by");
+    expect(footer).toContain("Sumit Sahoo");
+    expect(footer).toContain("MIT licensed");
+    expect(footer).not.toContain("<BrandLogo");
+
+    expect(privacy).toContain("cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog");
+    expect(privacy).toContain("The privacy promise has an architecture.");
+    expect(privacy).toContain("Document path");
+    expect(privacy).toContain("Routes not present");
+    expect(privacy).toContain("Upload server — none");
+    expect(privacy).toContain("Complete privacy policy");
+    expect(familyCss).toContain(".cr-privacy-dialog__architecture");
+    expect(familyCss).toContain(".cr-privacy-policy__section");
+    expect(tokens).not.toContain("--logo-size-footer");
+    expect(portable.size["logo-footer"]).toBeUndefined();
   });
 
   it("keeps the shared frame, logo, editor, and overlay geometry explicit", async () => {
@@ -146,9 +188,8 @@ describe("CloakResume family contract", () => {
       "grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)]",
     );
     expect(layout).not.toContain("grid-cols-[72px_328px_1fr]");
-    expect(layout).toContain(
-      'className="grid h-10 w-10 place-items-center rounded-md text-(--ink-4)',
-    );
+    expect(layout).not.toContain("100% Private · Open Source");
+    expect(layout).not.toContain("GithubIcon");
     expect(indexCss).toMatch(/\.tb\s*\{[\s\S]*?\bh-10\s+min-h-10\b/);
     expect(paperToggle).toContain("data-paper-size-control={size}");
     expect(paperToggle).toContain('size === "lg" ? "" : "h-10"');
@@ -171,7 +212,7 @@ describe("CloakResume family contract", () => {
 
     expect(viewSegment).toContain('className="cr-view-segment');
     expect(viewSegment).toContain("inline-flex h-11");
-    expect(viewSegment).toContain('"grid h-11 min-h-11 min-w-11');
+    expect(viewSegment).toContain("grid h-11 min-h-11 min-w-11");
     expect(familyCss).toContain(".cr-view-segment::after");
 
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
@@ -394,9 +435,17 @@ describe("CloakResume family contract", () => {
       tokenCss,
       tokenJson,
       indexCss,
+      familyCss,
       preview,
       app,
       panel,
+      layout,
+      rail,
+      viewSegment,
+      paperToggle,
+      templateModal,
+      reloadPrompt,
+      dragList,
       fields,
       emptyState,
       orientation,
@@ -407,9 +456,17 @@ describe("CloakResume family contract", () => {
       source("tokens.css"),
       source("tokens.json"),
       source("src/index.css"),
+      source("src/cloak-family.css"),
       source("src/components/Preview.tsx"),
       source("src/App.tsx"),
       source("src/components/SectionPanel.tsx"),
+      source("src/components/Layout.tsx"),
+      source("src/components/SectionRail.tsx"),
+      source("src/components/ViewSegment.tsx"),
+      source("src/components/PaperSizeToggle.tsx"),
+      source("src/components/TemplateModal.tsx"),
+      source("src/components/ReloadPrompt.tsx"),
+      source("src/components/DragList.tsx"),
       source("src/components/fields.tsx"),
       source("src/components/editor/shared.tsx"),
       source("src/components/OrientationLock.tsx"),
@@ -418,11 +475,39 @@ describe("CloakResume family contract", () => {
       source("src/components/editor/ProjectsSection.tsx"),
     ]);
     const portable = JSON.parse(tokenJson) as {
+      duration: Record<string, { $value: { value: number; unit: string } }>;
       easing: Record<string, { $value: number[] }>;
     };
 
+    expect(tokenCss).toContain("--duration-press: 100ms");
+    expect(tokenCss).toContain("--duration-stagger: 60ms");
+    expect(tokenCss).toContain("--ease-in: cubic-bezier(0.4, 0, 1, 1)");
     expect(tokenCss).toContain("--ease-standard: cubic-bezier(0.16, 1, 0.3, 1)");
+    expect(portable.duration.press.$value).toEqual({ value: 100, unit: "ms" });
+    expect(portable.duration.stagger.$value).toEqual({ value: 60, unit: "ms" });
+    expect(portable.easing.in.$value).toEqual([0.4, 0, 1, 1]);
     expect(portable.easing.standard.$value).toEqual([0.16, 1, 0.3, 1]);
+
+    expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
+    const fieldGlowKeyframes =
+      indexCss.match(/@keyframes cr-field-glow\s*\{([\s\S]*?)\n\}\n\.cr-field-glow/)?.[1] ?? "";
+    expect(fieldGlowKeyframes).not.toContain("box-shadow");
+    expect(fieldGlowKeyframes).toContain("opacity");
+    expect(fieldGlowKeyframes).toContain("transform");
+    expect(indexCss).toContain(".cr-field-glow::after");
+    expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
+    expect(familyCss).toContain(".cr-family-landing .cr-landing-hero__declaration");
+    expect(familyCss).toContain(".cr-overlay {");
+    expect(familyCss).toContain('.cr-dialog [role="tabpanel"]:not([hidden])');
+    expect(layout).toContain("cr-editor-shell");
+    expect(layout).toContain("cr-workspace-enter");
+    expect(panel).toContain("cr-section-enter");
+    expect(rail).toContain("cr-section-nav-button");
+    expect(viewSegment).toContain("cr-segment-button");
+    expect(paperToggle).toContain("cr-segment-button");
+    expect(templateModal).toContain("cr-template-card");
+    expect(reloadPrompt).toContain("cr-toast");
+    expect(dragList).toContain("data-dragging");
 
     const sourceFiles = [
       ...(await filesBelow("src", ".tsx")),
@@ -446,7 +531,9 @@ describe("CloakResume family contract", () => {
 
     const subCardRule = indexCss.match(/\.sub-card\s*\{([\s\S]*?)\}/)?.[1] ?? "";
     expect(indexCss).not.toMatch(/\.acc(?:[-.]|\s*\{)/);
-    expect(subCardRule).toContain("border-t");
+    expect(subCardRule).toContain("border border-(--line)");
+    expect(subCardRule).toContain("bg-(--surface)");
+    expect(subCardRule).toContain("p-3");
     expect(subCardRule).not.toContain("rounded-md");
     expect(subCardRule).not.toContain("bg-(--surface-2)");
 
@@ -459,6 +546,7 @@ describe("CloakResume family contract", () => {
     expect(app).toContain('role="status"');
     expect(orientation).toContain("useModalDialog<HTMLDivElement>");
     expect(orientation).toContain("tabIndex={-1}");
+    expect(orientation).toContain('<span\n        aria-hidden="true"');
     expect(logoPicker).toContain("window.visualViewport");
     expect(fieldIssues).toContain("window.visualViewport");
     expect(logoPicker).not.toContain("focus:outline-none");

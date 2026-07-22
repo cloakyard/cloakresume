@@ -143,7 +143,7 @@ interface Props {
  * fully own bg/text without fighting Tailwind's compiled-rule ordering.
  */
 const railButtonBase = [
-  "relative grid place-items-center w-11 h-11 shrink-0 rounded-md",
+  "cr-section-nav-button relative grid place-items-center w-11 h-11 shrink-0 rounded-md",
   "border border-transparent cursor-pointer",
   "transition-[background-color,border-color,color] duration-160",
   "focus-visible:outline-none focus-visible:shadow-(--sh-focus)",
@@ -185,7 +185,7 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
               onClick={() => onChange(s.id)}
               aria-current={isActive ? "page" : undefined}
               className={[
-                "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-15",
+                "cr-section-nav-button appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-15",
                 "border border-transparent rounded-md text-left cursor-pointer",
                 "transition-[background-color,border-color] duration-160",
                 isActive

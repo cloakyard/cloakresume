@@ -12,6 +12,7 @@ import { AlertTriangle, FileText, Hash, LayoutGrid, RefreshCw, X } from "lucide-
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import type { AtsReport, ResumeData } from "../types.ts";
 import { scoreBand } from "../utils/ats.ts";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 import { AtsInsightsPane } from "./ats/AtsInsightsPane.tsx";
 import { AtsKeywordsPane } from "./ats/AtsKeywordsPane.tsx";
@@ -82,7 +83,12 @@ export function AtsReviewModal({
   const summaryId = useId();
   const scanningStatusId = useId();
   const tabSetId = useId();
-  const sheetRef = useModalDialog<HTMLDivElement>({ open, onClose, initialFocusRef: closeRef });
+  const presence = useAnimatedPresence(open);
+  const sheetRef = useModalDialog<HTMLDivElement>({
+    open: presence.mounted,
+    onClose,
+    initialFocusRef: closeRef,
+  });
 
   // Keep the "Scanning locally…" hero visible for a brief minimum so the
   // UI doesn't flash on fast scans, but always wait for grammar before
@@ -159,11 +165,12 @@ export function AtsReviewModal({
   const timestamp = scannedAt ? formatTimestamp(scannedAt) : "";
   const timestampIso = scannedAt?.toISOString() ?? "";
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
 
   return (
     <div
       className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6 print:hidden"
+      data-state={presence.state}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();

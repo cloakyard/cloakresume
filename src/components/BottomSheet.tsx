@@ -13,6 +13,7 @@
 import { useCallback, useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 
 interface BottomSheetProps {
@@ -41,7 +42,12 @@ export function BottomSheet({
   const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
-  const sheetRef = useModalDialog<HTMLDivElement>({ open, onClose, initialFocusRef: closeRef });
+  const presence = useAnimatedPresence(open);
+  const sheetRef = useModalDialog<HTMLDivElement>({
+    open: presence.mounted,
+    onClose,
+    initialFocusRef: closeRef,
+  });
 
   const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
     touchStartY.current = e.touches[0].clientY;
@@ -70,11 +76,12 @@ export function BottomSheet({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
 
   return createPortal(
     <div
       role="presentation"
+      data-state={presence.state}
       className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6 print:hidden"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();

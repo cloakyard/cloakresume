@@ -28,6 +28,7 @@ import {
 import { createPortal } from "react-dom";
 import { AlertCircle, BookOpen, SpellCheck, Sparkles } from "lucide-react";
 import type { GrammarIssue, GrammarIssueKind, GrammarReport } from "../types.ts";
+import { useAnimatedPresence } from "./useAnimatedPresence.ts";
 
 type FieldIssuesMap = Record<string, GrammarIssue[]>;
 
@@ -123,6 +124,7 @@ export function FieldIssuesBadge({
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
   const dialogId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
@@ -246,12 +248,13 @@ export function FieldIssuesBadge({
           <span className="font-mono">{issues.length}</span>
         </span>
       </button>
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
             id={dialogId}
             ref={popoverRef}
+            data-state={presence.state}
             role="dialog"
             tabIndex={-1}
             aria-label="Writing hints"

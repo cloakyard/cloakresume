@@ -25,7 +25,7 @@ export function BrandLogo() {
         aria-hidden="true"
         width="40"
         height="40"
-        className="w-10 h-10 shrink-0"
+        className="cr-brand-logo__mark shrink-0"
       />
       <span
         translate="no"

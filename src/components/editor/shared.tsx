@@ -120,8 +120,8 @@ export function SubCardHead({
 
   return (
     <div className="flex items-center gap-2 mb-2">
-      {drag}
-      <span className="font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] tabular-nums">
+      {drag && <span className="hidden sm:inline-flex">{drag}</span>}
+      <span className="min-w-0 truncate font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] tabular-nums">
         {prefix} #{index + 1}
       </span>
       <div className="ml-auto flex items-center gap-1">

@@ -227,7 +227,9 @@ export function DragItem({
         ctx.setDragIndex(null);
         ctx.setOverIndex(null);
       }}
-      className={`transition-opacity duration-160 ${
+      data-dragging={isDragging ? "true" : undefined}
+      data-drop-target={isOver ? "true" : undefined}
+      className={`cr-drag-item transition-[opacity,transform] duration-160 ${
         isDragging ? "opacity-40" : ""
       } ${isOver ? "ring-2 ring-(--brand) ring-offset-2 ring-offset-(--surface-2) rounded-md" : ""}`}
     >

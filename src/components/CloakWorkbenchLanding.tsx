@@ -18,6 +18,7 @@ import {
   FileText,
   FolderOpen,
   LockKeyhole,
+  Scale,
   ScanSearch,
   ShieldCheck,
   Sparkles,
@@ -31,6 +32,7 @@ import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
 const LICENSE_URL = `${GITHUB_URL}/blob/main/LICENSE`;
 const CLOAKYARD_URL = "https://github.com/cloakyard";
+const AUTHOR_URL = "https://github.com/sumitsahoo";
 
 interface Props {
   onStartBlank: () => void;
@@ -196,7 +198,9 @@ export function CloakWorkbenchLanding({
           <a className="cr-source-link" href={GITHUB_URL} target="_blank" rel="noreferrer">
             <GithubIcon className="cr-source-link__github" />
             <span>Source</span>
-            <ArrowUpRight aria-hidden="true" />
+            <span className="cr-motion-icon" aria-hidden="true">
+              <ArrowUpRight />
+            </span>
           </a>
         </div>
       </header>
@@ -222,7 +226,9 @@ export function CloakWorkbenchLanding({
                   onClick={onResumeEditing}
                 >
                   Resume editing
-                  <ArrowRight aria-hidden="true" />
+                  <span className="cr-motion-icon" aria-hidden="true">
+                    <ArrowRight />
+                  </span>
                 </button>
               ) : (
                 <button
@@ -231,7 +237,9 @@ export function CloakWorkbenchLanding({
                   onClick={onStartBlank}
                 >
                   Start a résumé
-                  <ArrowRight aria-hidden="true" />
+                  <span className="cr-motion-icon" aria-hidden="true">
+                    <ArrowRight />
+                  </span>
                 </button>
               )}
               <a className="cr-text-link" href="#start">
@@ -296,7 +304,9 @@ export function CloakWorkbenchLanding({
                         <strong>Resume editing</strong>
                         <small>{savedLabel}</small>
                       </span>
-                      <ArrowRight aria-hidden="true" />
+                      <span className="cr-motion-icon" aria-hidden="true">
+                        <ArrowRight />
+                      </span>
                     </button>
                   )}
                   <button type="button" className="cr-start-action" onClick={onStartBlank}>
@@ -307,7 +317,9 @@ export function CloakWorkbenchLanding({
                       <strong>Start blank</strong>
                       <small>Open the full editor</small>
                     </span>
-                    <ArrowRight aria-hidden="true" />
+                    <span className="cr-motion-icon" aria-hidden="true">
+                      <ArrowRight />
+                    </span>
                   </button>
                   <button type="button" className="cr-start-action" onClick={onLoadSample}>
                     <span className="cr-start-action__icon">
@@ -317,7 +329,9 @@ export function CloakWorkbenchLanding({
                       <strong>Load sample</strong>
                       <small>Explore a completed draft</small>
                     </span>
-                    <ArrowRight aria-hidden="true" />
+                    <span className="cr-motion-icon" aria-hidden="true">
+                      <ArrowRight />
+                    </span>
                   </button>
                   <button type="button" className="cr-start-action" onClick={chooseFile}>
                     <span className="cr-start-action__icon">
@@ -327,7 +341,9 @@ export function CloakWorkbenchLanding({
                       <strong>Load saved file</strong>
                       <small>Continue from JSON</small>
                     </span>
-                    <ArrowRight aria-hidden="true" />
+                    <span className="cr-motion-icon" aria-hidden="true">
+                      <ArrowRight />
+                    </span>
                   </button>
                   <input
                     ref={fileRef}
@@ -417,7 +433,9 @@ export function CloakWorkbenchLanding({
               </p>
               <button type="button" className="cr-night-link" onClick={() => setPrivacyOpen(true)}>
                 Read the privacy policy
-                <ArrowRight aria-hidden="true" />
+                <span className="cr-motion-icon" aria-hidden="true">
+                  <ArrowRight />
+                </span>
               </button>
             </div>
 
@@ -463,35 +481,47 @@ export function CloakWorkbenchLanding({
 
       <footer className="cr-statement-footer">
         <div className="cr-frame">
-          <div className="cr-footer-statement">
-            <BrandLogo />
-            <p>Build the résumé. Keep the data.</p>
-          </div>
-          <div className="cr-footer-index">
+          <div className="cr-footer-primary">
             <div>
-              <span>PRODUCT</span>
+              <p className="cr-footer-kicker">CloakResume / Cloakyard</p>
+              <p className="cr-footer-statement">
+                Build a résumé. <span>Keep it local.</span>
+              </p>
+            </div>
+            <div className="cr-footer-index">
               <a href="#start">Start building</a>
-              <a href="#capabilities">Capabilities</a>
+              <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
               <button type="button" onClick={() => setPrivacyOpen(true)}>
                 Privacy policy
               </button>
-            </div>
-            <div>
-              <span>PROJECT</span>
-              <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-                Source code
-              </a>
-              <a href={LICENSE_URL} target="_blank" rel="noreferrer">
-                MIT license
-              </a>
               <a href={CLOAKYARD_URL} target="_blank" rel="noreferrer">
-                Cloakyard family
+                Cloakyard <ArrowUpRight aria-hidden="true" />
               </a>
             </div>
           </div>
           <div className="cr-footer-meta">
-            <span>PRIVATE BY ARCHITECTURE</span>
-            <span>OPEN SOURCE · BROWSER NATIVE</span>
+            <div className="cr-footer-meta__identity">
+              <span translate="no">CloakResume v{__APP_VERSION__}</span>
+              <span aria-hidden="true">/</span>
+              <span>
+                Built by{" "}
+                <a href={AUTHOR_URL} target="_blank" rel="noreferrer">
+                  Sumit Sahoo
+                </a>
+              </span>
+            </div>
+            <div className="cr-footer-meta__links">
+              <button type="button" onClick={() => setPrivacyOpen(true)}>
+                <ShieldCheck aria-hidden="true" />
+                Privacy
+              </button>
+              <a href={LICENSE_URL} target="_blank" rel="noreferrer">
+                <Scale aria-hidden="true" />
+                MIT licensed
+              </a>
+            </div>
           </div>
         </div>
       </footer>

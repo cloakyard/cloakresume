@@ -9,6 +9,7 @@ import { createPortal } from "react-dom";
 import { generateSampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 import { TemplatePreview } from "./TemplatePreview.tsx";
 
@@ -37,6 +38,7 @@ function isResumeEmpty(r: ResumeData): boolean {
 }
 
 interface TemplateModalProps {
+  open: boolean;
   templateId: TemplateId;
   onChange: (id: TemplateId) => void;
   onClose: () => void;
@@ -45,6 +47,7 @@ interface TemplateModalProps {
 }
 
 export function TemplateModal({
+  open,
   templateId,
   onChange,
   onClose,
@@ -56,8 +59,9 @@ export function TemplateModal({
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+  const presence = useAnimatedPresence(open);
   const sheetRef = useModalDialog<HTMLDivElement>({
-    open: true,
+    open: presence.mounted,
     onClose,
     initialFocusRef: closeRef,
   });
@@ -114,9 +118,12 @@ export function TemplateModal({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
+  if (!presence.mounted) return null;
+
   return createPortal(
     <div
       className="cr-overlay print-hide fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
+      data-state={presence.state}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onClose();
@@ -218,7 +225,7 @@ export function TemplateModal({
                   return (
                     <article
                       key={t.id}
-                      className={`relative flex flex-col overflow-hidden rounded-lg border bg-(--surface) text-left transition-[border-color,box-shadow] duration-160 ${
+                      className={`cr-template-card relative flex flex-col overflow-hidden rounded-lg border bg-(--surface) text-left transition-[border-color,transform] duration-160 ${
                         active
                           ? "border-(--brand) shadow-[0_0_0_2px_var(--brand-100)]"
                           : "border-(--line)"
@@ -260,7 +267,7 @@ export function TemplateModal({
                         onClick={() => onChange(t.id)}
                         aria-label={`${t.name} template. ${t.description}. ${t.level}`}
                         aria-pressed={active}
-                        className="absolute inset-0 cursor-pointer rounded-lg border-2 border-transparent bg-transparent transition-[border-color,box-shadow] duration-160 hover:border-(--brand-300) focus-visible:border-(--brand) focus-visible:shadow-[0_0_0_3px_var(--brand-100)]"
+                        className="absolute inset-0 cursor-pointer rounded-lg border-2 border-transparent bg-transparent transition-[border-color] duration-160 hover:border-(--brand-300) focus-visible:border-(--brand) focus-visible:shadow-[0_0_0_3px_var(--brand-100)]"
                       />
                     </article>
                   );

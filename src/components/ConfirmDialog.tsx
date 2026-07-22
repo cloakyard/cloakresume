@@ -9,6 +9,7 @@
 import { useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { AlertTriangle, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 
 interface ConfirmDialogProps {
@@ -38,13 +39,14 @@ export function ConfirmDialog({
   const confirmRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+  const presence = useAnimatedPresence(open);
   const dialogRef = useModalDialog<HTMLDivElement>({
-    open,
+    open: presence.mounted,
     onClose: onCancel,
     initialFocusRef: variant === "notice" ? confirmRef : cancelRef,
   });
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
 
   const confirmStyles =
     tone === "danger"
@@ -56,6 +58,7 @@ export function ConfirmDialog({
   return createPortal(
     <div
       className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
+      data-state={presence.state}
       role="presentation"
       onMouseDown={(event) => {
         if (event.target === event.currentTarget) onCancel();

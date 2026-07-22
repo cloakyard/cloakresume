@@ -10,6 +10,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { ChevronDown, Search, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { LOGO_ICONS, findLogoIcon, searchLogoIcons } from "../utils/logoIcons.ts";
 
 interface LogoPickerProps {
@@ -26,6 +27,7 @@ type PopoverPlacement = "above" | "below";
 
 export function LogoPicker({ value, onChange }: LogoPickerProps) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
   const [query, setQuery] = useState("");
   const dialogId = useId();
   const searchId = useId();
@@ -147,12 +149,13 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
         )}
       </div>
 
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
             id={dialogId}
             ref={popoverRef}
+            data-state={presence.state}
             role="dialog"
             aria-label="Choose a logo icon"
             className="cr-popover popover fixed overscroll-contain"

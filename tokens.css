@@ -68,11 +68,15 @@
   --text-xl: 1.75rem;
   --text-display: clamp(2.75rem, 6.4vw, 6.75rem);
 
+  --duration-press: 100ms;
+  --duration-stagger: 60ms;
   --duration-fast: 160ms;
   --duration-base: 220ms;
   --duration-slow: 260ms;
   --duration-long: 400ms;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
 
   --rule-thin: 1px;
@@ -91,7 +95,6 @@
   --editor-panel-width: 20.5rem;
   --editor-panel-width-wide: 24rem;
   --logo-size: 2.5rem;
-  --logo-size-footer: 2.125rem;
   --logo-wordmark-gap: 0.6rem;
   --dialog-max: 36rem;
   --dialog-wide-max: 68.75rem;

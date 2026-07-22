@@ -122,12 +122,13 @@ export function OrientationLock() {
       // toasts so the user never sees a half-rotated UI.
       className="fixed inset-0 z-(--z-system-overlay) flex flex-col items-center justify-center gap-5 bg-(--surface-2) px-8 text-center text-(--ink-1)"
     >
-      <Smartphone
+      <span
         aria-hidden="true"
-        className="h-12 w-12 text-(--brand)"
-        strokeWidth={1.75}
+        className="inline-flex text-(--brand)"
         style={{ animation: "cr-rotate-hint 2.4s var(--ease-standard) infinite" }}
-      />
+      >
+        <Smartphone className="h-12 w-12" strokeWidth={1.75} />
+      </span>
       <div className="flex flex-col gap-2">
         <div className="text-[18px] font-semibold tracking-tight">Rotate your phone</div>
         <div className="max-w-xs text-sm leading-relaxed text-(--ink-4)">

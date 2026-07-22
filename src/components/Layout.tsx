@@ -19,7 +19,6 @@
 import { useCallback, type MouseEvent, type ReactNode } from "react";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { BrandLogo } from "./BrandLogo.tsx";
-import { GithubIcon } from "./GithubIcon.tsx";
 import { SectionRail, type SectionId } from "./SectionRail.tsx";
 import { ViewSegment, type MobileView } from "./ViewSegment.tsx";
 
@@ -103,8 +102,8 @@ export function Layout({
 
   // Both modes are viewport instruments; only their internal regions scroll.
   const shellClass = isMobile
-    ? "bg-(--surface-2) h-[100dvh] flex flex-col overflow-hidden"
-    : "grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[var(--editor-header-height)_minmax(0,1fr)] grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
+    ? "cr-editor-shell bg-(--surface-2) h-[100dvh] flex flex-col overflow-hidden"
+    : "cr-editor-shell grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[var(--editor-header-height)_minmax(0,1fr)] grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
 
   return (
     <div className={shellClass} data-mobile-view={mobileView}>
@@ -139,25 +138,6 @@ export function Layout({
         {isMobile && <ViewSegment view={mobileView} onChange={onMobileViewChange} />}
 
         <div className="flex items-center gap-1.5 shrink-0 lg:gap-2">{toolbarRight}</div>
-
-        {!isMobile && (
-          <>
-            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
-            <div className="hidden 2xl:inline-flex items-center gap-2 text-[11.5px] font-normal text-(--ink-4) tracking-[0.02em] whitespace-nowrap">
-              <span>100% Private · Open Source</span>
-            </div>
-            <span aria-hidden="true" className="hidden 2xl:block w-px h-5 bg-(--line)" />
-            <a
-              href="https://github.com/cloakyard/cloakresume"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="View source on GitHub"
-              className="grid h-10 w-10 place-items-center rounded-md text-(--ink-4) transition-colors duration-160 hover:bg-(--surface-2) hover:text-(--ink-1)"
-            >
-              <GithubIcon className="w-4.5 h-4.5" />
-            </a>
-          </>
-        )}
       </header>
 
       {!isMobile && (
@@ -202,7 +182,7 @@ export function Layout({
                   {...editorTargetProps}
                   aria-label="Résumé editor"
                   data-panel-root
-                  className="cr-editor-panel relative flex min-h-0 min-w-0 flex-col overflow-hidden"
+                  className="cr-editor-panel cr-workspace-enter relative flex min-h-0 min-w-0 flex-col overflow-hidden"
                 >
                   {panel}
                 </aside>
@@ -210,7 +190,7 @@ export function Layout({
                 <aside
                   {...editorTargetProps}
                   aria-label="Résumé section picker"
-                  className="cr-editor-panel flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--surface)"
+                  className="cr-editor-panel cr-workspace-enter flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--surface)"
                 >
                   <header className="shrink-0 border-b border-(--line) px-4 py-3">
                     <h2 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">

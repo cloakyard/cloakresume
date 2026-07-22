@@ -46,7 +46,7 @@ export function PaperSizeToggle({ value, onChange, size = "md" }: Props) {
             onClick={() => onChange(opt)}
             aria-pressed={active}
             className={[
-              "appearance-none border-0 cursor-pointer rounded-md min-w-11 md:min-w-10",
+              "cr-segment-button appearance-none border-0 cursor-pointer rounded-md min-w-11 md:min-w-10",
               "font-semibold tabular-nums",
               "transition-[background-color,color] duration-160",
               btnHeight,

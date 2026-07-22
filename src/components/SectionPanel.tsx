@@ -69,7 +69,10 @@ export function SectionPanel({
           </button>
         )}
       </header>
-      <div className="cr-scroll min-h-0 flex-1 overflow-y-auto px-3.5 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 lg:px-5 lg:pb-20 lg:pt-4.5">
+      <div
+        key={active}
+        className="cr-scroll cr-section-enter min-h-0 flex-1 overflow-y-auto px-3.5 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 lg:px-5 lg:pb-20 lg:pt-4.5"
+      >
         <Editor
           active={active}
           resume={resume}

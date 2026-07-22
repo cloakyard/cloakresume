@@ -11,6 +11,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 
 interface MonthYearFieldProps {
   label: string;
@@ -84,6 +85,7 @@ export function MonthYearField({
   placeholder,
 }: MonthYearFieldProps) {
   const [open, setOpen] = useState(false);
+  const presence = useAnimatedPresence(open);
   const [showYearPicker, setShowYearPicker] = useState(false);
   const labelId = useId();
   const dialogId = useId();
@@ -203,11 +205,11 @@ export function MonthYearField({
 
   // Reset internal picker state whenever the popover closes.
   useEffect(() => {
-    if (!open) {
+    if (!presence.mounted) {
       setShowYearPicker(false);
       setCoords(null);
     }
-  }, [open]);
+  }, [presence.mounted]);
 
   useEffect(() => {
     if (!open || !coords || didFocusPopoverRef.current) return;
@@ -288,12 +290,13 @@ export function MonthYearField({
         )}
       </div>
 
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
             id={dialogId}
             ref={popoverRef}
+            data-state={presence.state}
             role="dialog"
             aria-labelledby={labelId}
             className="cr-popover popover fixed space-y-2 overscroll-contain"
@@ -351,9 +354,12 @@ export function MonthYearField({
                 }`}
               >
                 {yearCursor}
-                <ChevronDown
-                  className={`w-3 h-3 transition-transform ${showYearPicker ? "rotate-180" : ""}`}
-                />
+                <span
+                  aria-hidden="true"
+                  className={`inline-flex transition-transform ${showYearPicker ? "rotate-180" : ""}`}
+                >
+                  <ChevronDown className="h-3 w-3" />
+                </span>
               </button>
 
               <button

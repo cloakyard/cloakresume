@@ -13,6 +13,7 @@ import { TEMPLATE_LIST } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 import { PRESET_COLORS } from "../utils/colors.ts";
 import { type PaperSize } from "../utils/paperSize.ts";
+import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
@@ -48,6 +49,7 @@ export function ToolbarCenter({
   const isMobile = useMediaQuery(BP.mobile);
   const [templateOpen, setTemplateOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
+  const colorPresence = useAnimatedPresence(colorOpen);
   const colorRef = useRef<HTMLDivElement>(null);
   const colorButtonRef = useRef<HTMLButtonElement>(null);
   const [colorPopoverLayout, setColorPopoverLayout] = useState({
@@ -161,11 +163,14 @@ export function ToolbarCenter({
               <span className="hidden 2xl:inline">
                 <ColorName hex={primary} />
               </span>
-              <ChevronDown className="w-3.5 h-3.5 caret hidden 2xl:inline-block" />
+              <span aria-hidden="true" className="caret ml-0.5 hidden 2xl:inline-flex">
+                <ChevronDown className="h-3.5 w-3.5" />
+              </span>
             </button>
-            {colorOpen && (
+            {colorPresence.mounted && (
               <div
                 id={colorPopoverId}
+                data-state={colorPresence.state}
                 className={`cr-popover popover absolute right-0 w-[320px] max-w-[calc(100vw-32px)] overflow-y-auto overscroll-contain ${
                   colorPopoverLayout.placement === "below" ? "top-full mt-2" : "bottom-full mb-2"
                 }`}
@@ -185,18 +190,17 @@ export function ToolbarCenter({
         </>
       )}
 
-      {templateOpen && (
-        <TemplateModal
-          templateId={templateId}
-          onChange={(id) => {
-            onTemplateChange(id);
-            setTemplateOpen(false);
-          }}
-          onClose={() => setTemplateOpen(false)}
-          resume={resume}
-          primary={primary}
-        />
-      )}
+      <TemplateModal
+        open={templateOpen}
+        templateId={templateId}
+        onChange={(id) => {
+          onTemplateChange(id);
+          setTemplateOpen(false);
+        }}
+        onClose={() => setTemplateOpen(false)}
+        resume={resume}
+        primary={primary}
+      />
 
       <ToolbarCenterBridge
         onOpenTemplate={() => setTemplateOpen(true)}

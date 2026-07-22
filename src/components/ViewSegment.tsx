@@ -53,7 +53,7 @@ function SegmentButton({
       aria-pressed={active}
       aria-label={ariaLabel}
       className={[
-        "grid h-11 min-h-11 min-w-11 place-items-center appearance-none border-0 bg-transparent",
+        "cr-segment-button grid h-11 min-h-11 min-w-11 place-items-center appearance-none border-0 bg-transparent",
         "rounded-md px-2.5 cursor-pointer",
         "transition-[background-color,color] duration-160",
         active ? "bg-(--brand-50) text-(--brand)" : "text-(--ink-4) hover:text-(--ink-1)",
