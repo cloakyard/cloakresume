@@ -118,6 +118,7 @@ describe("CloakResume family contract", () => {
     expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
     expect(brandLogo).toContain('width="40"');
     expect(brandLogo).toContain('height="40"');
+    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
     expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
     expect(familyCss).toMatch(
       /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,

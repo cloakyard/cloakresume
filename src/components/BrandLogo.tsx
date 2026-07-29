@@ -1,12 +1,9 @@
 /**
- * The header brand mark uses /icons/favicon.svg rather than logo.svg.
+ * The header uses the canonical /cloakresume-mark.svg family asset.
  *
- * - logo.svg is full-bleed (a rect background gradient) so PWA
- *   launcher masks can crop it to circle / squircle without losing
- *   the brand surface.
- * - favicon.svg paints the same shield on a circular background, so
- *   it reads as a circular badge in chrome — matching the CloakPDF /
- *   CloakIMG header style.
+ * Its 64px canvas, circular field, diameter-42 glyph keyline, and
+ * 3px white stroke follow the Cloakyard / CloakPDF mark system.
+ * CloakResume retains its emerald palette and profile-led shield glyph.
  *
  * Sizing mirrors the CloakPDF / CloakIMG family verbatim — 40px mark,
  * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading — at
@@ -20,7 +17,7 @@ export function BrandLogo() {
       className="cr-brand-logo inline-flex items-center no-underline shrink-0"
     >
       <img
-        src="/icons/favicon.svg"
+        src="/cloakresume-mark.svg"
         alt=""
         aria-hidden="true"
         width="40"

@@ -29,7 +29,7 @@ export default defineConfig({
       // control, and the prompt itself self-checks every 10 minutes.
       registerType: "prompt",
       includeAssets: [
-        "icons/favicon.svg",
+        "cloakresume-mark.svg",
         "icons/favicon.ico",
         "icons/apple-touch-icon.png",
         "icons/safari-pinned-tab.svg",
