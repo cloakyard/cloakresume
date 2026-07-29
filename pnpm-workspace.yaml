@@ -1,9 +1,12 @@
 overrides:
   vite: "catalog:"
+  brace-expansion: 5.0.8
   sharp: 0.35.3
+  vitest: "catalog:"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.2.5
-  vite-plus: 0.2.5
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.6
+  vite-plus: 0.2.6
+  vitest: 4.1.10
 allowBuilds:
   sharp: true
   core-js: false
@@ -17,8 +20,11 @@ minimumReleaseAgeExclude:
   - postcss
   - react
   - react-dom
+  - harper.js@2.7.0
 peerDependencyRules:
   allowAny:
     - vite
+    - vitest
   allowedVersions:
     vite: "*"
+    vitest: "*"

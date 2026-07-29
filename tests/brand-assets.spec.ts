@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 import { readFile } from "node:fs/promises";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -101,13 +101,71 @@ describe("brand, social, and install asset contracts", () => {
     expect(screenshotScript).toContain("Math.random = () =>");
     expect(screenshotScript).toContain('.resume-root[data-template-ready="true"] .resume-page');
     expect(brandDocs).toContain("capture-only random seed");
-    for (const command of ["vp run generate-og", "vp run generate-screenshots"]) {
+    for (const command of [
+      "vp run generate-icons",
+      "vp run generate-og",
+      "vp run generate-screenshots",
+    ]) {
       expect(brandDocs).toContain(command);
       expect(readme).toContain(command);
     }
     expect(readme).toContain('src="public/screenshots/iPad.png"');
     expect(readme).toContain("[docs/brand-assets.md](docs/brand-assets.md)");
     expect(readme).not.toContain("github.com/sumitsahoo/cloakresume");
+  });
+
+  it("uses one named Cloakyard-family mark as the canonical brand source", async () => {
+    const [
+      mark,
+      favicon,
+      appIcon,
+      legacyLogo,
+      pinnedTab,
+      brandLogo,
+      html,
+      notFound,
+      pwaAssets,
+      viteConfig,
+      brandDocs,
+    ] = await Promise.all([
+      source("public/cloakresume-mark.svg"),
+      source("public/icons/favicon.svg"),
+      source("public/icons/cloakresume-app-icon.svg"),
+      source("public/icons/logo.svg"),
+      source("public/icons/safari-pinned-tab.svg"),
+      source("src/components/BrandLogo.tsx"),
+      source("index.html"),
+      source("public/404.html"),
+      source("pwa-assets.config.ts"),
+      source("vite.config.ts"),
+      source("docs/brand-assets.md"),
+    ]);
+
+    for (const svg of [mark, favicon, appIcon, legacyLogo]) {
+      expect(svg).toContain('viewBox="0 0 64 64"');
+      expect(svg).toContain('data-glyph-keyline="42"');
+      expect(svg).toContain('stroke-width="3"');
+      expect(svg).toContain("#047857");
+    }
+    for (const svg of [mark, favicon]) {
+      expect(svg).toContain('data-logo-spec="cloakyard-mark-v1"');
+    }
+    for (const svg of [appIcon, legacyLogo]) {
+      expect(svg).toContain('data-logo-spec="cloakyard-app-icon-v1"');
+    }
+    for (const svg of [mark, favicon, appIcon, legacyLogo, pinnedTab]) {
+      expect(svg).toContain("M24.4 37.5h15.2");
+      expect(svg).toContain("M25.2 42h9.8");
+      expect(svg).not.toContain("M23.9 44");
+    }
+    expect(mark).toContain('aria-labelledby="cloakresume-mark-title"');
+    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
+    expect(html).toContain('href="/cloakresume-mark.svg"');
+    expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(2);
+    expect(pwaAssets).toContain('images: ["public/icons/cloakresume-app-icon.svg"]');
+    expect(viteConfig).toContain('"cloakresume-mark.svg"');
+    expect(brandDocs).toContain("`public/cloakresume-mark.svg`");
+    expect(brandDocs).toContain("`public/icons/cloakresume-app-icon.svg`");
   });
 
   it("keeps PWA manifest declarations, generators, and documentation in agreement", async () => {

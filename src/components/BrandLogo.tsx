@@ -1,10 +1,13 @@
 /**
- * Sizing and artwork usage mirror CloakPDF verbatim: the full-bleed
- * /icons/logo.svg is rendered in a 40px circular clip, paired with an
- * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading.
+ * The header uses the canonical /cloakresume-mark.svg family asset.
  *
- * Do not substitute favicon.svg here. Its 128px circle is inset inside
- * the 144px canvas, so it appears only 35.6px wide in a 40px image box.
+ * Its 64px canvas, circular field, diameter-42 glyph keyline, and
+ * 3px white stroke follow the Cloakyard / CloakPDF mark system.
+ * CloakResume retains its emerald palette and profile-led shield glyph.
+ *
+ * Sizing mirrors the CloakPDF / CloakIMG family verbatim — 40px mark,
+ * 18px Archivo 800 wordmark, -0.02em tracking, and unit leading — at
+ * every viewport so the family reads the same everywhere.
  */
 export function BrandLogo() {
   return (
@@ -14,7 +17,7 @@ export function BrandLogo() {
       className="cr-brand-logo inline-flex items-center no-underline shrink-0"
     >
       <img
-        src="/icons/logo.svg"
+        src="/cloakresume-mark.svg"
         alt=""
         aria-hidden="true"
         width="40"

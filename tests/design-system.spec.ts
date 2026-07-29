@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 import { readFile, readdir } from "node:fs/promises";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -64,7 +64,8 @@ describe("CloakResume family contract", () => {
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
     expect(pkg.packageManager).toBe("pnpm@11.15.1");
-    expect(workspace).toContain("vite-plus: 0.2.5");
+    expect(workspace).toContain("vite-plus: 0.2.6");
+    expect(workspace).toContain("vitest: 4.1.10");
   });
 
   it("keeps every normative token value in tokens.css", async () => {
@@ -102,11 +103,10 @@ describe("CloakResume family contract", () => {
   });
 
   it("registers the same self-hosted UI fonts and wordmark metrics as CloakPDF", async () => {
-    const [indexCss, familyCss, brandLogo, fallback] = await Promise.all([
+    const [indexCss, familyCss, brandLogo] = await Promise.all([
       source("src/index.css"),
       source("src/cloak-family.css"),
       source("src/components/BrandLogo.tsx"),
-      source("public/404.html"),
     ]);
 
     expect(indexCss).toMatch(
@@ -119,15 +119,12 @@ describe("CloakResume family contract", () => {
     expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
     expect(brandLogo).toContain('width="40"');
     expect(brandLogo).toContain('height="40"');
-    expect(brandLogo).toContain('src="/icons/logo.svg"');
-    expect(brandLogo).not.toContain('src="/icons/favicon.svg"');
+    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
     expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
     expect(familyCss).toMatch(
       /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,
     );
     expect(brandLogo).toContain('translate="no"');
-    expect(fallback.match(/<img src="\/icons\/logo\.svg"/g)).toHaveLength(2);
-    expect(fallback).not.toContain('<img src="/icons/favicon.svg"');
   });
 
   it("matches CloakPDF footer provenance and privacy-document structure", async () => {

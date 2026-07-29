@@ -173,12 +173,12 @@ actions at end. It is never a floating pill. The shell is solid paper, 72px tall
 and bounded by a one-pixel rule. Mobile may collapse centre links while preserving
 logo and action alignment inside the 16px gutter.
 
-The circular mark is 40px in marketing and editor headers, paired with the wordmark
-at a `0.6rem` gap—the exact CloakPDF header geometry. Header lockups render the
-full-bleed `public/icons/logo.svg` inside the circular clip so the visible mark fills
-the 40px box; the inset `favicon.svg` is reserved for browser icon metadata. The Ft5
-statement footer does not repeat the lockup; it closes with the product/family kicker
-and provenance line. Never redraw, stretch, or independently resize the wordmark.
+The canonical circular mark is `public/cloakresume-mark.svg`: a 64×64 Cloakyard-family
+construction with a diameter-42 glyph keyline, 3px round stroke, emerald field, and
+profile-led résumé shield. It is 40px in marketing and editor headers, paired with the
+wordmark at a `0.6rem` gap—the exact CloakPDF header geometry. The Ft5 statement footer
+does not repeat the lockup; it closes with the product/family kicker and provenance
+line. Never redraw, crop, stretch, or independently resize the wordmark.
 
 ## Surfaces and common components
 

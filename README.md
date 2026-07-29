@@ -86,24 +86,26 @@ vp install
 vp dev
 ```
 
-| Command                       | Purpose                                                      |
-| ----------------------------- | ------------------------------------------------------------ |
-| `vp install`                  | Install the locked dependency graph                          |
-| `vp dev`                      | Start the development server                                 |
-| `vp check`                    | Format, lint, and type-check with TypeScript 7               |
-| `vp test`                     | Run the test suite                                           |
-| `vp build`                    | Create the production bundle                                 |
-| `vp preview`                  | Preview a production build                                   |
-| `vp outdated`                 | Report packages with newer releases                          |
-| `vp pm audit`                 | Audit the installed dependency graph                         |
-| `vp run generate-og`          | Capture the 1200×630 social image from the live landing page |
-| `vp run generate-screenshots` | Capture the narrow and wide PWA screenshots                  |
+| Command                       | Purpose                                                       |
+| ----------------------------- | ------------------------------------------------------------- |
+| `vp install`                  | Install the locked dependency graph                           |
+| `vp dev`                      | Start the development server                                  |
+| `vp check`                    | Format, lint, and type-check with TypeScript 7                |
+| `vp test`                     | Run the test suite                                            |
+| `vp build`                    | Create the production bundle                                  |
+| `vp preview`                  | Preview a production build                                    |
+| `vp outdated`                 | Report packages with newer releases                           |
+| `vp pm audit`                 | Audit the installed dependency graph                          |
+| `vp run generate-icons`       | Regenerate favicon and install icons from the app-icon source |
+| `vp run generate-og`          | Capture the 1200×630 social image from the live landing page  |
+| `vp run generate-screenshots` | Capture the narrow and wide PWA screenshots                   |
 
 ## Project map
 
 ```text
 cloakresume/
 ├── public/
+│   ├── cloakresume-mark.svg  # Canonical 64px product mark and favicon source
 │   ├── icons/                 # Favicons, install icons, and Open Graph image
 │   └── screenshots/           # Narrow and wide PWA/README captures
 ├── src/
