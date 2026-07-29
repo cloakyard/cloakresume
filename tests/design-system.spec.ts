@@ -1,7 +1,7 @@
 /// <reference types="node" />
 
 import { readFile, readdir } from "node:fs/promises";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "vite-plus/test";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -64,7 +64,8 @@ describe("CloakResume family contract", () => {
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
     expect(pkg.packageManager).toBe("pnpm@11.15.1");
-    expect(workspace).toContain("vite-plus: 0.2.5");
+    expect(workspace).toContain("vite-plus: 0.2.6");
+    expect(workspace).toContain("vitest: 4.1.10");
   });
 
   it("keeps every normative token value in tokens.css", async () => {
