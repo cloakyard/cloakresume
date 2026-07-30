@@ -216,11 +216,18 @@ describe("CloakResume family contract", () => {
     expect(viewSegment).toContain("inline-flex h-11");
     expect(viewSegment).toContain("grid h-11 min-h-11 min-w-11");
     expect(familyCss).toContain(".cr-view-segment::after");
+    expect(familyCss).toMatch(
+      /\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\]\s*\{[\s\S]*?display:\s*none/,
+    );
+    expect(familyCss).toMatch(
+      /@media \(min-width: 21\.25rem\)[\s\S]*?\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\][\s\S]*?display:\s*grid/,
+    );
 
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
     expect(layout).toContain('href="#editor-content"');
     expect(layout).toContain('id: "editor-content"');
     expect(layout).toContain('isMobile ? "px-2.5 py-2.5 gap-1.5"');
+    expect(layout).toContain("h-[100dvh] flex flex-col overflow-clip");
     expect(indexCss).toMatch(/html,\s*body,\s*#app\s*\{/);
     expect(indexCss).not.toContain("#root");
 
@@ -365,6 +372,15 @@ describe("CloakResume family contract", () => {
     expect(files.every((file) => file.includes("cr-overlay"))).toBe(true);
     expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
     expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
+    expect(files[1]).toContain("ref={resultsScrollRef}");
+    expect(files[1]).toContain("ref={tabAnchorRef}");
+    expect(files[1]).toContain("ref={tabPanelScrollRef}");
+    expect(files[1]).toContain('onClick={() => selectTab("overview")}');
+    expect(files[1]).not.toMatch(
+      /onClick=\{\(\) => setTab\("(?:overview|keywords|insights|parse)"\)\}/,
+    );
+    expect(files[1]).toContain("sticky top-0");
+    expect(files[1]).toContain("min-[640px]:overflow-hidden");
     expect(files[4]).toContain("createPortal(");
     expect(files[4]).toContain("document.body");
   });

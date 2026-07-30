@@ -73,6 +73,9 @@ export function AtsReviewModal({
   const touchStartY = useRef<number | null>(null);
   const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const resultsScrollRef = useRef<HTMLDivElement>(null);
+  const tabAnchorRef = useRef<HTMLSpanElement>(null);
+  const tabPanelScrollRef = useRef<HTMLDivElement>(null);
   const tabRefs = useRef<Record<TabId, HTMLButtonElement | null>>({
     overview: null,
     keywords: null,
@@ -90,6 +93,17 @@ export function AtsReviewModal({
     initialFocusRef: closeRef,
   });
 
+  const selectTab = useCallback((nextTab: TabId) => {
+    setTab(nextTab);
+    if (tabPanelScrollRef.current) tabPanelScrollRef.current.scrollTop = 0;
+
+    if (window.matchMedia("(max-width: 39.9375rem)").matches) {
+      const resultsScroller = resultsScrollRef.current;
+      const tabAnchor = tabAnchorRef.current;
+      if (resultsScroller && tabAnchor) resultsScroller.scrollTop = tabAnchor.offsetTop;
+    }
+  }, []);
+
   // Keep the "Scanning locally…" hero visible for a brief minimum so the
   // UI doesn't flash on fast scans, but always wait for grammar before
   // showing the real scorecard so the Writing dimension is populated.
@@ -97,6 +111,8 @@ export function AtsReviewModal({
     if (!open) return;
     setMinDelayPassed(false);
     setTab("overview");
+    if (resultsScrollRef.current) resultsScrollRef.current.scrollTop = 0;
+    if (tabPanelScrollRef.current) tabPanelScrollRef.current.scrollTop = 0;
     setScannedAt(new Date());
     const t = window.setTimeout(() => setMinDelayPassed(true), 900);
     return () => window.clearTimeout(t);
@@ -131,26 +147,29 @@ export function AtsReviewModal({
     dragDeltaRef.current = 0;
   }, [onClose]);
 
-  const onTabKeyDown = useCallback((event: React.KeyboardEvent, currentTab: TabId) => {
-    const currentIndex = TAB_ORDER.indexOf(currentTab);
-    let nextIndex: number | null = null;
+  const onTabKeyDown = useCallback(
+    (event: React.KeyboardEvent, currentTab: TabId) => {
+      const currentIndex = TAB_ORDER.indexOf(currentTab);
+      let nextIndex: number | null = null;
 
-    if (event.key === "ArrowRight" || event.key === "ArrowDown") {
-      nextIndex = (currentIndex + 1) % TAB_ORDER.length;
-    } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
-      nextIndex = (currentIndex - 1 + TAB_ORDER.length) % TAB_ORDER.length;
-    } else if (event.key === "Home") {
-      nextIndex = 0;
-    } else if (event.key === "End") {
-      nextIndex = TAB_ORDER.length - 1;
-    }
+      if (event.key === "ArrowRight" || event.key === "ArrowDown") {
+        nextIndex = (currentIndex + 1) % TAB_ORDER.length;
+      } else if (event.key === "ArrowLeft" || event.key === "ArrowUp") {
+        nextIndex = (currentIndex - 1 + TAB_ORDER.length) % TAB_ORDER.length;
+      } else if (event.key === "Home") {
+        nextIndex = 0;
+      } else if (event.key === "End") {
+        nextIndex = TAB_ORDER.length - 1;
+      }
 
-    if (nextIndex == null) return;
-    event.preventDefault();
-    const nextTab = TAB_ORDER[nextIndex];
-    setTab(nextTab);
-    tabRefs.current[nextTab]?.focus();
-  }, []);
+      if (nextIndex == null) return;
+      event.preventDefault();
+      const nextTab = TAB_ORDER[nextIndex];
+      selectTab(nextTab);
+      tabRefs.current[nextTab]?.focus();
+    },
+    [selectTab],
+  );
 
   const atsBand = useMemo(() => scoreBand(report.atsScore), [report.atsScore]);
   const writingBand = useMemo(() => scoreBand(report.writingScore), [report.writingScore]);
@@ -279,7 +298,10 @@ export function AtsReviewModal({
             </div>
           </div>
         ) : (
-          <>
+          <div
+            ref={resultsScrollRef}
+            className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain cr-scroll min-[640px]:overflow-hidden"
+          >
             <header className="flex flex-col gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
               <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:gap-5">
                 <div className="flex-1 min-w-0 flex flex-col gap-1">
@@ -347,8 +369,9 @@ export function AtsReviewModal({
               </div>
             </header>
 
+            <span ref={tabAnchorRef} aria-hidden="true" className="block h-0 shrink-0" />
             <div
-              className="mx-3 my-2 flex items-stretch p-0.5 border border-(--line) bg-(--surface-raised)/70 rounded-(--radius-card) shrink-0 sm:mx-0 sm:my-0 sm:p-0 sm:border-0 sm:border-y sm:border-(--line) sm:rounded-none sm:bg-transparent sm:px-4 min-[900px]:px-9"
+              className="sticky top-0 z-10 mx-3 my-2 flex shrink-0 items-stretch rounded-(--radius-card) border border-(--line) bg-(--surface-raised) p-0.5 sm:static sm:mx-0 sm:my-0 sm:rounded-none sm:border-0 sm:border-y sm:border-(--line) sm:bg-transparent sm:px-4 sm:p-0 min-[900px]:px-9"
               role="tablist"
               aria-label="ATS review sections"
             >
@@ -359,7 +382,7 @@ export function AtsReviewModal({
                   tabRefs.current.overview = element;
                 }}
                 active={tab === "overview"}
-                onClick={() => setTab("overview")}
+                onClick={() => selectTab("overview")}
                 onKeyDown={(event) => onTabKeyDown(event, "overview")}
                 icon={<LayoutGrid aria-hidden="true" className="w-4 h-4" />}
                 label="Overview"
@@ -371,7 +394,7 @@ export function AtsReviewModal({
                   tabRefs.current.keywords = element;
                 }}
                 active={tab === "keywords"}
-                onClick={() => setTab("keywords")}
+                onClick={() => selectTab("keywords")}
                 onKeyDown={(event) => onTabKeyDown(event, "keywords")}
                 icon={<Hash aria-hidden="true" className="w-4 h-4" />}
                 label="Keywords"
@@ -388,7 +411,7 @@ export function AtsReviewModal({
                   tabRefs.current.insights = element;
                 }}
                 active={tab === "insights"}
-                onClick={() => setTab("insights")}
+                onClick={() => selectTab("insights")}
                 onKeyDown={(event) => onTabKeyDown(event, "insights")}
                 icon={<AlertTriangle aria-hidden="true" className="w-4 h-4" />}
                 label="Insights"
@@ -405,14 +428,17 @@ export function AtsReviewModal({
                   tabRefs.current.parse = element;
                 }}
                 active={tab === "parse"}
-                onClick={() => setTab("parse")}
+                onClick={() => selectTab("parse")}
                 onKeyDown={(event) => onTabKeyDown(event, "parse")}
                 icon={<FileText aria-hidden="true" className="w-4 h-4" />}
                 label="Parse"
               />
             </div>
 
-            <div className="flex-1 overflow-y-auto overflow-x-hidden overscroll-contain px-3 py-3 cr-scroll sm:px-6 sm:py-5 sm:[scrollbar-gutter:stable] min-[900px]:px-9 min-[900px]:py-6">
+            <div
+              ref={tabPanelScrollRef}
+              className="shrink-0 overflow-visible px-3 py-3 min-[640px]:min-h-0 min-[640px]:flex-1 min-[640px]:shrink min-[640px]:overflow-y-auto min-[640px]:overflow-x-hidden min-[640px]:overscroll-contain min-[640px]:cr-scroll sm:px-6 sm:py-5 sm:[scrollbar-gutter:stable] min-[900px]:px-9 min-[900px]:py-6"
+            >
               <div
                 id={`${tabSetId}-panel-overview`}
                 role="tabpanel"
@@ -461,7 +487,7 @@ export function AtsReviewModal({
                 {tab === "parse" ? <AtsParsePreview resume={resume} /> : null}
               </div>
             </div>
-          </>
+          </div>
         )}
       </div>
     </div>

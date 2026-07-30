@@ -529,6 +529,19 @@ body {
   border-radius: var(--radius-control);
 }
 
+/* At the ultra-narrow content breakpoint, expose only the action that switches
+ * away from the current view. This preserves the full brand lockup and every
+ * 44px touch target without letting the header become horizontally scrollable. */
+.cr-editor-header .cr-view-segment .cr-segment-button[aria-pressed="true"] {
+  display: none;
+}
+
+@media (min-width: 21.25rem) {
+  .cr-editor-header .cr-view-segment .cr-segment-button[aria-pressed="true"] {
+    display: grid;
+  }
+}
+
 .cr-editor-rail,
 .cr-editor-panel {
   border-color: var(--color-rule);

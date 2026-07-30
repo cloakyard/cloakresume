@@ -102,7 +102,7 @@ export function Layout({
 
   // Both modes are viewport instruments; only their internal regions scroll.
   const shellClass = isMobile
-    ? "cr-editor-shell bg-(--surface-2) h-[100dvh] flex flex-col overflow-hidden"
+    ? "cr-editor-shell bg-(--surface-2) h-[100dvh] flex flex-col overflow-clip"
     : "cr-editor-shell grid bg-(--surface-2) overflow-hidden h-[100svh] grid-rows-[var(--editor-header-height)_minmax(0,1fr)] grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)] [grid-template-areas:'header_header_header'_'rail_panel_preview']";
 
   return (
