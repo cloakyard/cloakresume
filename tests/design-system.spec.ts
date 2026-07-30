@@ -216,11 +216,18 @@ describe("CloakResume family contract", () => {
     expect(viewSegment).toContain("inline-flex h-11");
     expect(viewSegment).toContain("grid h-11 min-h-11 min-w-11");
     expect(familyCss).toContain(".cr-view-segment::after");
+    expect(familyCss).toMatch(
+      /\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\]\s*\{[\s\S]*?display:\s*none/,
+    );
+    expect(familyCss).toMatch(
+      /@media \(min-width: 21\.25rem\)[\s\S]*?\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\][\s\S]*?display:\s*grid/,
+    );
 
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
     expect(layout).toContain('href="#editor-content"');
     expect(layout).toContain('id: "editor-content"');
     expect(layout).toContain('isMobile ? "px-2.5 py-2.5 gap-1.5"');
+    expect(layout).toContain("h-[100dvh] flex flex-col overflow-clip");
     expect(indexCss).toMatch(/html,\s*body,\s*#app\s*\{/);
     expect(indexCss).not.toContain("#root");
 
@@ -365,6 +372,15 @@ describe("CloakResume family contract", () => {
     expect(files.every((file) => file.includes("cr-overlay"))).toBe(true);
     expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
     expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
+    expect(files[1]).toContain("ref={resultsScrollRef}");
+    expect(files[1]).toContain("ref={tabAnchorRef}");
+    expect(files[1]).toContain("ref={tabPanelScrollRef}");
+    expect(files[1]).toContain('onClick={() => selectTab("overview")}');
+    expect(files[1]).not.toMatch(
+      /onClick=\{\(\) => setTab\("(?:overview|keywords|insights|parse)"\)\}/,
+    );
+    expect(files[1]).toContain("sticky top-0");
+    expect(files[1]).toContain("min-[640px]:overflow-hidden");
     expect(files[4]).toContain("createPortal(");
     expect(files[4]).toContain("document.body");
   });
@@ -396,6 +412,16 @@ describe("CloakResume family contract", () => {
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
     expect(reload).toContain("rounded-md p-4");
+    expect(reload).toContain(
+      'type ReloadNoticeState = "offline" | "update" | "updating" | "error"',
+    );
+    expect(reload).toContain("Update & Reload");
+    expect(reload).toContain("Updating…");
+    expect(reload).toContain("Check your connection, then try again.");
+    expect(reload).toContain("This version is cached and ready to use offline.");
+    expect(reload).toContain("disabled={isUpdating}");
+    expect(reload).toContain('aria-live={isError ? "assertive" : "polite"}');
+    expect(reload).not.toContain("now installed for offline use");
     expect(fieldIssues).toContain("divide-y divide-(--line)");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
     expect(notFound).toContain("font-size: clamp(2.75rem, 6.4vw, 6.75rem)");
