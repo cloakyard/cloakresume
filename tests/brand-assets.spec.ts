@@ -18,6 +18,15 @@ async function pngSize(path: string) {
   return { width: image.readUInt32BE(16), height: image.readUInt32BE(20) };
 }
 
+async function pngColourType(path: string) {
+  const image = await readFile(new URL(path, projectRoot));
+  const signature = image.subarray(0, 8).toString("hex");
+  if (signature !== "89504e470d0a1a0a" || image.subarray(12, 16).toString("ascii") !== "IHDR") {
+    throw new Error(`${path} is not a valid PNG with an IHDR header`);
+  }
+  return image[25];
+}
+
 function escapeRegExp(value: string) {
   return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 }
@@ -80,17 +89,22 @@ describe("brand, social, and install asset contracts", () => {
   });
 
   it("keeps package commands and capture scripts on the documented live-page workflow", async () => {
-    const [packageSource, ogScript, screenshotScript, brandDocs, readme] = await Promise.all([
-      source("package.json"),
-      source("scripts/build-og-image.mjs"),
-      source("scripts/build-pwa-screenshots.mjs"),
-      source("docs/brand-assets.md"),
-      source("README.md"),
-    ]);
+    const [packageSource, iconScript, ogScript, screenshotScript, brandDocs, readme] =
+      await Promise.all([
+        source("package.json"),
+        source("scripts/finalize-pwa-icons.mjs"),
+        source("scripts/build-og-image.mjs"),
+        source("scripts/build-pwa-screenshots.mjs"),
+        source("docs/brand-assets.md"),
+        source("README.md"),
+      ]);
     const pkg = JSON.parse(packageSource) as { scripts: Record<string, string> };
 
+    expect(pkg.scripts["generate-icons"]).toContain("node scripts/finalize-pwa-icons.mjs");
     expect(pkg.scripts["generate-og"]).toBe("node scripts/build-og-image.mjs");
     expect(pkg.scripts["generate-screenshots"]).toBe("node scripts/build-pwa-screenshots.mjs");
+    expect(iconScript).toContain("alpha.min !== 255");
+    expect(iconScript).toContain(".removeAlpha()");
     expect(ogScript).toContain(
       'const OUT_PATH = resolve(PROJECT_DIR, "public", "icons", "og-image.png")',
     );
@@ -153,6 +167,7 @@ describe("brand, social, and install asset contracts", () => {
     for (const svg of [appIcon, legacyLogo]) {
       expect(svg).toContain('data-logo-spec="cloakyard-app-icon-v1"');
     }
+    expect(appIcon).toContain('data-maskable-safe-zone="circle(32 32 25.6)"');
     for (const svg of [mark, favicon, appIcon, legacyLogo, pinnedTab]) {
       expect(svg).toContain("M24.4 37.5h15.2");
       expect(svg).toContain("M25.2 42h9.8");
@@ -163,9 +178,31 @@ describe("brand, social, and install asset contracts", () => {
     expect(html).toContain('href="/cloakresume-mark.svg"');
     expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(2);
     expect(pwaAssets).toContain('images: ["public/icons/cloakresume-app-icon.svg"]');
+    expect(pwaAssets).toContain("palette: false");
+    expect(pwaAssets).toContain("adaptiveFiltering: true");
     expect(viteConfig).toContain('"cloakresume-mark.svg"');
     expect(brandDocs).toContain("`public/cloakresume-mark.svg`");
     expect(brandDocs).toContain("`public/icons/cloakresume-app-icon.svg`");
+  });
+
+  it("keeps the Android launcher glyph inside the complete maskable safe zone", async () => {
+    const appIcon = await source("public/icons/cloakresume-app-icon.svg");
+    const safeZone = { x: 32, y: 32, radius: 25.6 };
+    const glyphExtrema = [
+      [32, 10.6],
+      [49.7, 18.7],
+      [49.7, 32.3],
+      [32, 54.2],
+      [14.3, 32.3],
+      [14.3, 18.7],
+    ] as const;
+
+    expect(appIcon).toContain(
+      "M32 12.1 48.2 18.7v13.6c0 8.6-5.4 15.2-16.2 20.4-10.8-5.2-16.2-11.8-16.2-20.4V18.7L32 12.1Z",
+    );
+    for (const [x, y] of glyphExtrema) {
+      expect(Math.hypot(x - safeZone.x, y - safeZone.y)).toBeLessThan(safeZone.radius);
+    }
   });
 
   it("keeps PWA manifest declarations, generators, and documentation in agreement", async () => {
@@ -243,5 +280,17 @@ describe("brand, social, and install asset contracts", () => {
     expect(apple).toEqual({ width: 180, height: 180 });
     expect(phone).toEqual({ width: 1290, height: 2796 });
     expect(tablet).toEqual({ width: 2732, height: 2048 });
+  });
+
+  it("keeps launcher PNGs in full-colour RGB instead of a dithered indexed palette", async () => {
+    for (const path of [
+      "public/icons/pwa-64x64.png",
+      "public/icons/pwa-192x192.png",
+      "public/icons/pwa-512x512.png",
+      "public/icons/maskable-icon-512x512.png",
+      "public/icons/apple-touch-icon.png",
+    ]) {
+      expect(await pngColourType(path)).toBe(2);
+    }
   });
 });

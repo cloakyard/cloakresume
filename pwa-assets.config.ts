@@ -11,6 +11,14 @@ const noPadding = {
 export default defineConfig({
   preset: {
     ...minimal2023Preset,
+    // Preserve smooth gradients and translucent résumé lines at Android launcher
+    // scale. Indexed PNG quantisation produces visible stippling on these details.
+    png: {
+      compressionLevel: 9,
+      adaptiveFiltering: true,
+      palette: false,
+      force: true,
+    },
     transparent: { ...minimal2023Preset.transparent, ...noPadding },
     maskable: { ...minimal2023Preset.maskable, ...noPadding },
     apple: { ...minimal2023Preset.apple, ...noPadding },

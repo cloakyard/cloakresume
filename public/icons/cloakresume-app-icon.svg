@@ -1,5 +1,5 @@
 <!-- Hallmark · pre-emit critique: P5 H5 E5 S5 R5 V4 -->
-<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cloakresume-app-icon-title" data-logo-spec="cloakyard-app-icon-v1" data-glyph-keyline="42">
+<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="cloakresume-app-icon-title" data-logo-spec="cloakyard-app-icon-v1" data-glyph-keyline="42" data-maskable-safe-zone="circle(32 32 25.6)">
   <title id="cloakresume-app-icon-title">CloakResume</title>
   <defs>
     <linearGradient id="cloakresume-app-fill" x1="6" y1="2" x2="56" y2="64" gradientUnits="userSpaceOnUse">
@@ -16,6 +16,7 @@
   <rect width="64" height="64" fill="url(#cloakresume-app-fill)"/>
   <rect width="64" height="64" fill="url(#cloakresume-app-light)"/>
 
+  <!-- W3C maskable safe zone: centre (32,32), radius 25.6. Every glyph extremum stays inside it. -->
   <!-- Family rule: glyph centre lines fit the diameter-42 keyline; the 3px stroke stays inside the PWA safe zone. -->
   <g stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
     <path d="M32 12.1 48.2 18.7v13.6c0 8.6-5.4 15.2-16.2 20.4-10.8-5.2-16.2-11.8-16.2-20.4V18.7L32 12.1Z"/>

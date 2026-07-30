@@ -10,8 +10,10 @@ The canonical vector is `public/cloakresume-mark.svg`. It follows the Cloakyard 
 circular construction, diameter-42 glyph keyline, 3px white stroke, highlight position, and inner
 rim. Its emerald field and profile-led shield remain specific to CloakResume. The dedicated
 `public/icons/cloakresume-app-icon.svg` uses the same glyph on a full-bleed field so OS launcher
-masks never expose transparent corners. `favicon.svg` and `logo.svg` remain compatibility copies
-for older saved links; new product references use the canonical filename.
+masks never expose transparent corners. Its complete shield and résumé glyph stay inside the W3C
+maskable safe-zone circle (40% radius), and launcher PNGs remain full-colour RGB so gradients and
+translucent rules do not acquire indexed-palette stippling. `favicon.svg` and `logo.svg` remain
+compatibility copies for older saved links; new product references use the canonical filename.
 
 ## Canonical assets
 
@@ -75,6 +77,9 @@ After regeneration:
 5. Confirm [`../vite.config.ts`](../vite.config.ts) labels the screenshots by content, uses `orientation:
 "any"`, and excludes social/store captures from the application-shell precache.
 6. Run `vp build`, install the generated PWA locally, and inspect the install surface.
+7. For Android, mask `maskable-icon-512x512.png` to the central 80% circle and confirm the entire
+   shield and résumé page remain visible. Also inspect circle, rounded-square, squircle, and
+   teardrop launcher masks at 64px and native resolution.
 
 The assets are intentionally live product captures rather than separate illustrations. A second
 visual system would drift from CloakPDF and from the application over time.
@@ -93,3 +98,12 @@ workbench; the tablet image shows the loaded editor and document proof. `index.h
 points both social-card formats at the 1200×630 asset with matching alt text, while the
 PWA manifest declares the phone and tablet files with their exact dimensions, form
 factors, and content-based labels.
+
+## Recorded Android inspection — 30 July 2026
+
+The dedicated 512px maskable asset was cropped to the specification’s minimum safe
+circle and previewed under circle, rounded-square, squircle, and teardrop launcher
+masks. The complete shield, profile dot, and four résumé rules remain visible with
+clear breathing room. The generic and maskable manifest entries use opaque,
+full-bleed colour fields, and all generated launcher PNGs use true-colour RGB rather
+than an indexed palette, eliminating dithering in the translucent résumé details.
