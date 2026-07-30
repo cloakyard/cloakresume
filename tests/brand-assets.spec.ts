@@ -169,8 +169,9 @@ describe("brand, social, and install asset contracts", () => {
   });
 
   it("keeps PWA manifest declarations, generators, and documentation in agreement", async () => {
-    const [config, screenshotScript, brandDocs] = await Promise.all([
+    const [config, html, screenshotScript, brandDocs] = await Promise.all([
       source("vite.config.ts"),
+      source("index.html"),
       source("scripts/build-pwa-screenshots.mjs"),
       source("docs/brand-assets.md"),
     ]);
@@ -181,6 +182,19 @@ describe("brand, social, and install asset contracts", () => {
 
     expect(config).toContain('orientation: "any"');
     expect(config).toContain('globIgnores: ["icons/og-image.png", "screenshots/**"]');
+    for (const size of [64, 192, 512]) {
+      expect(config).toMatch(
+        new RegExp(
+          `src:\\s*["']icons/pwa-${size}x${size}\\.png["'][\\s\\S]*?sizes:\\s*["']${size}x${size}["'][\\s\\S]*?purpose:\\s*["']any["']`,
+        ),
+      );
+    }
+    expect(config).toMatch(
+      /src:\s*["']icons\/maskable-icon-512x512\.png["'][\s\S]*?sizes:\s*["']512x512["'][\s\S]*?purpose:\s*["']maskable["']/,
+    );
+    expect(html).toMatch(
+      /<link rel="apple-touch-icon" sizes="180x180" href="\/icons\/apple-touch-icon\.png" \/>/,
+    );
     for (const [name, expectation] of Object.entries(expected)) {
       const manifest = manifestScreenshot(config, `${name}.png`);
       const capture = captureTarget(screenshotScript, name);
@@ -209,14 +223,24 @@ describe("brand, social, and install asset contracts", () => {
     expect(readme).toContain(`choose from ${registryCount} live résumé layouts`);
   });
 
-  it("ships the exact declared OG and PWA bitmap dimensions", async () => {
-    const [og, phone, tablet] = await Promise.all([
+  it("ships the exact declared OG, install icon, and PWA screenshot dimensions", async () => {
+    const [og, pwa64, pwa192, pwa512, maskable, apple, phone, tablet] = await Promise.all([
       pngSize("public/icons/og-image.png"),
+      pngSize("public/icons/pwa-64x64.png"),
+      pngSize("public/icons/pwa-192x192.png"),
+      pngSize("public/icons/pwa-512x512.png"),
+      pngSize("public/icons/maskable-icon-512x512.png"),
+      pngSize("public/icons/apple-touch-icon.png"),
       pngSize("public/screenshots/iPhone.png"),
       pngSize("public/screenshots/iPad.png"),
     ]);
 
     expect(og).toEqual({ width: 1200, height: 630 });
+    expect(pwa64).toEqual({ width: 64, height: 64 });
+    expect(pwa192).toEqual({ width: 192, height: 192 });
+    expect(pwa512).toEqual({ width: 512, height: 512 });
+    expect(maskable).toEqual({ width: 512, height: 512 });
+    expect(apple).toEqual({ width: 180, height: 180 });
     expect(phone).toEqual({ width: 1290, height: 2796 });
     expect(tablet).toEqual({ width: 2732, height: 2048 });
   });

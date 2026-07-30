@@ -396,6 +396,16 @@ describe("CloakResume family contract", () => {
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
     expect(reload).toContain("rounded-md p-4");
+    expect(reload).toContain(
+      'type ReloadNoticeState = "offline" | "update" | "updating" | "error"',
+    );
+    expect(reload).toContain("Update & Reload");
+    expect(reload).toContain("Updating…");
+    expect(reload).toContain("Check your connection, then try again.");
+    expect(reload).toContain("This version is cached and ready to use offline.");
+    expect(reload).toContain("disabled={isUpdating}");
+    expect(reload).toContain('aria-live={isError ? "assertive" : "polite"}');
+    expect(reload).not.toContain("now installed for offline use");
     expect(fieldIssues).toContain("divide-y divide-(--line)");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
     expect(notFound).toContain("font-size: clamp(2.75rem, 6.4vw, 6.75rem)");
