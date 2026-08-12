@@ -63,8 +63,8 @@ describe("CloakResume family contract", () => {
 
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
-    expect(pkg.packageManager).toBe("pnpm@11.15.1");
-    expect(workspace).toContain("vite-plus: 0.2.6");
+    expect(pkg.packageManager).toBe("pnpm@11.21.0");
+    expect(workspace).toContain("vite-plus: 0.2.9");
     expect(workspace).toContain("vitest: 4.1.10");
   });
 
