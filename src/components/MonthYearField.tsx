@@ -103,6 +103,7 @@ export function MonthYearField({
     left: number;
     width: number;
     maxHeight: number;
+    placement: "above" | "below";
   } | null>(null);
 
   const parsed = useMemo(() => parseValue(value), [value]);
@@ -146,7 +147,7 @@ export function MonthYearField({
       viewportLeft + SAFE_EDGE,
       Math.min(rect.left, viewportRight - width - SAFE_EDGE),
     );
-    setCoords({ top, left, width, maxHeight });
+    setCoords({ top, left, width, maxHeight, placement: flip ? "above" : "below" });
   }, []);
 
   useLayoutEffect(() => {
@@ -297,6 +298,8 @@ export function MonthYearField({
             id={dialogId}
             ref={popoverRef}
             data-state={presence.state}
+            data-placement={coords.placement}
+            data-align="start"
             role="dialog"
             aria-labelledby={labelId}
             className="cr-popover popover fixed space-y-2 overscroll-contain"
@@ -356,7 +359,7 @@ export function MonthYearField({
                 {yearCursor}
                 <span
                   aria-hidden="true"
-                  className={`inline-flex transition-transform ${showYearPicker ? "rotate-180" : ""}`}
+                  className={`inline-flex ${showYearPicker ? "rotate-180" : ""}`}
                 >
                   <ChevronDown className="h-3 w-3" />
                 </span>

@@ -6,11 +6,12 @@
  * routes, then the complete ruled policy.
  */
 
-import { useCallback, useId, useRef } from "react";
+import { useId, useRef } from "react";
 import { createPortal } from "react-dom";
 import { ShieldCheck, X } from "lucide-react";
 import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
+import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 
 const LAST_UPDATED_ISO = "2026-07-22";
 const LAST_UPDATED = new Intl.DateTimeFormat(undefined, {
@@ -44,8 +45,6 @@ interface Props {
 }
 
 export function PrivacyPolicyModal({ open, onClose }: Props) {
-  const touchStartY = useRef<number | null>(null);
-  const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
@@ -55,33 +54,7 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
     onClose,
     initialFocusRef: closeRef,
   });
-
-  const onHandleTouchStart = useCallback((event: React.TouchEvent) => {
-    touchStartY.current = event.touches[0].clientY;
-    dragDeltaRef.current = 0;
-  }, []);
-
-  const onHandleTouchMove = useCallback((event: React.TouchEvent) => {
-    if (touchStartY.current == null) return;
-    const delta = event.touches[0].clientY - touchStartY.current;
-    if (delta > 0 && panelRef.current) {
-      dragDeltaRef.current = delta;
-      panelRef.current.style.transform = `translateY(${delta}px)`;
-      panelRef.current.style.transition = "none";
-    }
-  }, []);
-
-  const onHandleTouchEnd = useCallback(() => {
-    touchStartY.current = null;
-    if (!panelRef.current) return;
-    panelRef.current.style.transition = "";
-    if (dragDeltaRef.current > 120) {
-      onClose();
-    } else {
-      panelRef.current.style.transform = "";
-    }
-    dragDeltaRef.current = 0;
-  }, [onClose]);
+  const swipeHandlers = useSwipeToDismiss(panelRef, onClose);
 
   if (!presence.mounted) return null;
 
@@ -96,20 +69,14 @@ export function PrivacyPolicyModal({ open, onClose }: Props) {
     >
       <div
         ref={panelRef}
-        className="cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        className="cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         tabIndex={-1}
       >
-        <div
-          onTouchStart={onHandleTouchStart}
-          onTouchMove={onHandleTouchMove}
-          onTouchEnd={onHandleTouchEnd}
-          className="cr-privacy-dialog__handle sm:hidden"
-          aria-hidden="true"
-        >
+        <div {...swipeHandlers} className="cr-privacy-dialog__handle sm:hidden" aria-hidden="true">
           <span />
         </div>
 

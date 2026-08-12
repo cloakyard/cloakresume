@@ -74,10 +74,14 @@
   --duration-base: 220ms;
   --duration-slow: 260ms;
   --duration-long: 400ms;
-  --ease-in: cubic-bezier(0.4, 0, 1, 1);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
   --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
+  --motion-distance-subtle: 2px;
+  --motion-distance-small: 4px;
+  --motion-distance-medium: 6px;
+  --motion-scale-press: 0.98;
+  --motion-scale-surface: 0.98;
 
   --rule-thin: 1px;
   --radius-card: 0.5rem;

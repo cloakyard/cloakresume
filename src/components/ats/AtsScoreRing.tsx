@@ -51,9 +51,6 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
           strokeDasharray={c}
           strokeDashoffset={offset}
           strokeLinecap="round"
-          style={{
-            transition: "stroke-dashoffset var(--duration-long) var(--ease-out)",
-          }}
         />
       </svg>
       <div className="absolute inset-0 flex flex-col items-center justify-center" style={{ gap }}>

@@ -133,6 +133,7 @@ body {
   border-radius: var(--radius-card) var(--radius-card) 0 0;
   box-shadow: var(--shadow-overlay);
   overscroll-behavior: contain;
+  transition: transform var(--duration-slow) var(--ease-out);
 }
 
 /* Privacy is a document, not a stack of generic modal cards. The dark
@@ -205,7 +206,7 @@ body {
   transition:
     color var(--duration-fast) var(--ease-standard),
     background-color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-press) var(--ease-in);
+    transform var(--duration-press) var(--ease-out);
 }
 
 .cr-privacy-dialog__close:hover {
@@ -452,13 +453,20 @@ body {
   color: var(--color-accent-hover);
 }
 
-.cr-dialog button:not(.absolute):active,
-.cr-popover button:not(.absolute):active,
-.cr-editor-rail button:active,
-[role="tab"]:active {
-  transform: translateY(1px);
+/* Shared press response. Absolutely positioned controls are excluded because
+ * many use transform for centering; scaling them would overwrite placement. */
+button:not(.absolute),
+.cr-button {
+  transition-property: color, background-color, border-color, opacity, transform;
+  transition-duration: var(--duration-fast);
+  transition-timing-function: var(--ease-standard);
+}
+
+button:not(.absolute):active:not(:disabled),
+.cr-button:active:not(:disabled) {
+  transform: scale(var(--motion-scale-press));
   transition-duration: var(--duration-press);
-  transition-timing-function: var(--ease-in);
+  transition-timing-function: var(--ease-out);
 }
 
 .cr-dialog button:disabled,
@@ -478,15 +486,11 @@ body {
   font-family: var(--font-mono);
   font-weight: 600;
   letter-spacing: 0.08em;
-  transform-origin: left center;
-  transition:
-    color var(--duration-fast) var(--ease-standard),
-    transform var(--duration-fast) var(--ease-out);
+  transition: color var(--duration-fast) var(--ease-standard);
 }
 
 .cr-field:focus-within > .cr-field-label {
   color: var(--brand);
-  transform: translateY(-1px);
 }
 
 .cr-field-hint {
@@ -617,7 +621,6 @@ body {
   font: 600 0.75rem/1 var(--font-mono);
   text-decoration: none;
   transform: translateY(-200%);
-  transition: transform var(--duration-fast) var(--ease-out);
 }
 
 .cr-skip-link:focus {
@@ -808,10 +811,6 @@ body {
 .cr-button--primary:hover {
   background: var(--color-accent-hover);
   border-color: var(--color-accent-hover);
-}
-
-.cr-button--primary:active {
-  transform: translateY(1px);
 }
 
 .cr-text-link {
@@ -1545,8 +1544,8 @@ body {
   height: 0.875rem;
 }
 
-/* Motion language: one staged reveal, one contextual reveal, and one
- * interaction response. Geometry stays fixed; only opacity and transforms
+/* Motion language: one staged reveal, one contextual surface transition, and
+ * one interaction response. Geometry stays fixed; only opacity and transforms
  * move, and reduced-motion users bypass every nonessential spatial effect. */
 .cr-section-nav-button,
 .cr-segment-button,
@@ -1556,22 +1555,13 @@ body {
   transition-timing-function: var(--ease-standard);
 }
 
-.cr-section-nav-button:active:not(:disabled),
-.cr-segment-button:active:not(:disabled),
-.cr-overflow-item:active:not(:disabled),
-.cr-start-action:active:not(:disabled) {
-  transform: translateY(1px);
-  transition-duration: var(--duration-press);
-  transition-timing-function: var(--ease-in);
-}
-
 .cr-drag-item {
   transform-origin: center;
   transition-timing-function: var(--ease-in-out);
 }
 
 .cr-drag-item[data-dragging="true"] {
-  transform: scale(0.985);
+  transform: scale(var(--motion-scale-press));
 }
 
 @keyframes cr-fade-in {
@@ -1589,35 +1579,109 @@ body {
 @keyframes cr-reveal-rise {
   from {
     opacity: 0;
-    transform: translateY(var(--cr-motion-distance, 0.5rem));
+    transform: translateY(var(--cr-motion-distance, var(--motion-distance-medium)));
   }
 }
 
-@keyframes cr-state-confirm {
+@keyframes cr-sheet-enter {
   from {
-    opacity: 0.68;
+    transform: translateY(100%);
+  }
+}
+
+@keyframes cr-dialog-enter {
+  from {
+    transform: scale(var(--motion-scale-surface));
   }
 }
 
 @keyframes cr-sheet-dismiss {
   to {
     opacity: 0;
-    transform: translateY(0.75rem);
+    transform: translateY(100%);
   }
 }
 
 @keyframes cr-dialog-dismiss {
   to {
     opacity: 0;
-    transform: scale(0.98);
+    transform: scale(var(--motion-scale-surface));
+  }
+}
+
+/* Anchored overlays compose placement and motion on the same transform so
+ * flipping a portalled popover never jumps its geometry. Transitions retarget
+ * cleanly if the trigger is toggled before the previous motion has settled. */
+.cr-popover {
+  --cr-popover-resting-y: 0px;
+  --cr-popover-motion-y: 0px;
+  --cr-popover-scale: 1;
+  opacity: 1;
+  transform: translateY(calc(var(--cr-popover-resting-y) + var(--cr-popover-motion-y)))
+    scale(var(--cr-popover-scale));
+  transform-origin: left top;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.cr-popover[data-placement="above"] {
+  transform-origin: left bottom;
+}
+
+.cr-popover[data-align="end"] {
+  transform-origin: right top;
+}
+
+.cr-popover[data-align="end"][data-placement="above"] {
+  transform-origin: right bottom;
+}
+
+.cr-popover[data-positioning="offset"][data-placement="above"] {
+  --cr-popover-resting-y: -100%;
+}
+
+.cr-popover[data-state="closing"] {
+  --cr-popover-motion-y: var(--motion-distance-small);
+  --cr-popover-scale: var(--motion-scale-surface);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cr-popover[data-state="closing"][data-placement="above"] {
+  --cr-popover-motion-y: calc(var(--motion-distance-small) * -1);
+}
+
+.cr-toast {
+  --cr-popover-scale: 1;
+  transform-origin: center bottom;
+  transition-duration: var(--duration-long);
+}
+
+.cr-toast[data-state="closing"] {
+  --cr-popover-motion-y: var(--motion-distance-medium);
+  --cr-popover-scale: 1;
+  transition-duration: var(--duration-fast);
+}
+
+@starting-style {
+  .cr-popover {
+    --cr-popover-motion-y: var(--motion-distance-small);
+    --cr-popover-scale: var(--motion-scale-surface);
+    opacity: 0;
+  }
+
+  .cr-popover[data-placement="above"] {
+    --cr-popover-motion-y: calc(var(--motion-distance-small) * -1);
+  }
+
+  .cr-toast {
+    --cr-popover-motion-y: var(--motion-distance-medium);
+    --cr-popover-scale: 1;
   }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .cr-editor-shell {
-    animation: cr-fade-in var(--duration-base) var(--ease-out) both;
-  }
-
   .cr-family-landing .cr-landing-hero__declaration,
   .cr-family-landing .cr-landing-hero__brief,
   .cr-family-landing .cr-start-instrument {
@@ -1632,49 +1696,21 @@ body {
     animation-delay: calc(var(--duration-stagger) * 2);
   }
 
-  .cr-workspace-enter,
-  .cr-section-enter {
-    --cr-motion-distance: 0.375rem;
-    animation: cr-reveal-rise var(--duration-base) var(--ease-out) both;
-  }
-
   .cr-overlay {
     animation: cr-fade-in var(--duration-base) var(--ease-out) both;
   }
 
+  .cr-overlay > .cr-dialog {
+    animation: cr-sheet-enter var(--duration-slow) var(--ease-out) both;
+  }
+
   .cr-overlay[data-state="closing"] {
-    animation: cr-fade-out var(--duration-fast) var(--ease-in) both;
+    animation: cr-fade-out var(--duration-fast) var(--ease-out) both;
     pointer-events: none;
   }
 
   .cr-overlay[data-state="closing"] > .cr-dialog {
-    animation: cr-sheet-dismiss var(--duration-fast) var(--ease-in) both;
-  }
-
-  .cr-popover {
-    animation: cr-fade-in var(--duration-fast) var(--ease-out) both;
-  }
-
-  .cr-popover[data-state="closing"] {
-    animation: cr-fade-out var(--duration-fast) var(--ease-in) both;
-    pointer-events: none;
-  }
-
-  .cr-toast {
-    --cr-motion-distance: 0.75rem;
-    animation: cr-reveal-rise var(--duration-long) var(--ease-out) both;
-    transform-origin: center;
-  }
-
-  .cr-dialog [role="tabpanel"]:not([hidden]) {
-    animation: cr-fade-in var(--duration-fast) var(--ease-out) both;
-  }
-
-  .cr-section-nav-button[aria-current="page"],
-  .cr-segment-button[aria-pressed="true"],
-  .cr-dialog [role="tab"][aria-selected="true"],
-  :where(.cr-dialog, .cr-popover) button[aria-pressed="true"] {
-    animation: cr-state-confirm var(--duration-fast) var(--ease-out) both;
+    animation: cr-sheet-dismiss var(--duration-fast) var(--ease-out) both;
   }
 
   .cr-template-card {
@@ -1683,6 +1719,10 @@ body {
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 40rem) {
+  .cr-overlay > .cr-dialog {
+    animation-name: cr-dialog-enter;
+  }
+
   .cr-overlay[data-state="closing"] > .cr-dialog {
     animation-name: cr-dialog-dismiss;
   }
@@ -1694,24 +1734,30 @@ body {
   }
 
   .cr-template-card:has(> button:active) {
-    transform: translateY(1px);
+    transform: none;
     transition-duration: var(--duration-press);
-    transition-timing-function: var(--ease-in);
+    transition-timing-function: var(--ease-out);
   }
 
   .cr-start-action:hover > .cr-motion-icon,
-  .cr-start-action:focus-visible > .cr-motion-icon,
   .cr-button:hover > .cr-motion-icon,
-  .cr-button:focus-visible > .cr-motion-icon,
   .cr-source-link:hover > .cr-motion-icon,
-  .cr-source-link:focus-visible > .cr-motion-icon,
-  .cr-night-link:hover > .cr-motion-icon,
-  .cr-night-link:focus-visible > .cr-motion-icon {
-    transform: translateX(2px);
+  .cr-night-link:hover > .cr-motion-icon {
+    transform: translateX(var(--motion-distance-subtle));
   }
 
   .cr-motion-icon {
     transition: transform var(--duration-fast) var(--ease-out);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cr-popover,
+  .cr-popover[data-placement="above"],
+  .cr-toast,
+  .cr-toast[data-state="closing"] {
+    --cr-popover-motion-y: 0px !important;
+    --cr-popover-scale: 1 !important;
   }
 }
 

@@ -214,8 +214,8 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
               </span>
               <ChevronRight
                 className={[
-                  "w-4 h-4 shrink-0 transition-[color,transform] duration-160",
-                  isActive ? "text-(--brand) translate-x-0.5" : "text-(--ink-5)",
+                  "w-4 h-4 shrink-0 transition-colors duration-160",
+                  isActive ? "text-(--brand)" : "text-(--ink-5)",
                 ].join(" ")}
                 aria-hidden="true"
               />

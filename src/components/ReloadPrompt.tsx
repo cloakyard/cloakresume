@@ -19,6 +19,7 @@
 import { CircleAlert, RefreshCw, ShieldCheck, X } from "lucide-react";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import { useAnimatedPresence, type PresenceState } from "../utils/useAnimatedPresence.ts";
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
 const RELOAD_FALLBACK_MS = 1500;
@@ -27,11 +28,17 @@ type ReloadNoticeState = "offline" | "update" | "updating" | "error";
 
 type ReloadPromptViewProps = {
   state: ReloadNoticeState;
+  presenceState?: PresenceState;
   onClose: () => void;
   onUpdate: () => void;
 };
 
-export function ReloadPromptView({ state, onClose, onUpdate }: ReloadPromptViewProps) {
+export function ReloadPromptView({
+  state,
+  presenceState = "open",
+  onClose,
+  onUpdate,
+}: ReloadPromptViewProps) {
   const titleId = useId();
   const descriptionId = useId();
   const isUpdating = state === "updating";
@@ -66,6 +73,7 @@ export function ReloadPromptView({ state, onClose, onUpdate }: ReloadPromptViewP
       style={{ zIndex: "var(--z-toast)" }}
     >
       <div
+        data-state={presenceState}
         className="cr-popover cr-toast relative flex w-full max-w-sm flex-col overflow-hidden rounded-md p-4 sm:w-auto sm:min-w-80"
         style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
       >
@@ -216,9 +224,23 @@ export function ReloadPrompt() {
     return () => clearTimeout(id);
   }, [offlineReady, close]);
 
-  if (!offlineReady && !needRefresh) return null;
+  const noticeState: ReloadNoticeState | null = needRefresh
+    ? updateState
+    : offlineReady
+      ? "offline"
+      : null;
+  const noticePresence = useAnimatedPresence(noticeState !== null);
+  const lastNoticeStateRef = useRef<ReloadNoticeState>("offline");
+  if (noticeState !== null) lastNoticeStateRef.current = noticeState;
 
-  const state: ReloadNoticeState = needRefresh ? updateState : "offline";
+  if (!noticePresence.mounted) return null;
 
-  return <ReloadPromptView state={state} onClose={close} onUpdate={handleUpdate} />;
+  return (
+    <ReloadPromptView
+      state={noticeState ?? lastNoticeStateRef.current}
+      presenceState={noticePresence.state}
+      onClose={close}
+      onUpdate={handleUpdate}
+    />
+  );
 }

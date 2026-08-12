@@ -10,11 +10,12 @@
  * move when the user drags inside the sheet.
  */
 
-import { useCallback, useId, useRef, type ReactNode } from "react";
+import { useId, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
+import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 
 interface BottomSheetProps {
   open: boolean;
@@ -38,8 +39,6 @@ export function BottomSheet({
   children,
   ariaLabel,
 }: BottomSheetProps) {
-  const touchStartY = useRef<number | null>(null);
-  const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const presence = useAnimatedPresence(open);
@@ -48,33 +47,7 @@ export function BottomSheet({
     onClose,
     initialFocusRef: closeRef,
   });
-
-  const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-    dragDeltaRef.current = 0;
-  }, []);
-
-  const onHandleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (touchStartY.current == null) return;
-    const delta = e.touches[0].clientY - touchStartY.current;
-    if (delta > 0 && sheetRef.current) {
-      dragDeltaRef.current = delta;
-      sheetRef.current.style.transform = `translateY(${delta}px)`;
-      sheetRef.current.style.transition = "none";
-    }
-  }, []);
-
-  const onHandleTouchEnd = useCallback(() => {
-    touchStartY.current = null;
-    if (!sheetRef.current) return;
-    sheetRef.current.style.transition = "";
-    if (dragDeltaRef.current > 120) {
-      onClose();
-    } else {
-      sheetRef.current.style.transform = "";
-    }
-    dragDeltaRef.current = 0;
-  }, [onClose]);
+  const swipeHandlers = useSwipeToDismiss(sheetRef, onClose);
 
   if (!presence.mounted) return null;
 
@@ -95,12 +68,10 @@ export function BottomSheet({
         aria-labelledby={title ? titleId : undefined}
         aria-label={title ? undefined : (ariaLabel ?? "Options")}
         tabIndex={-1}
-        className="cr-dialog cr-sheet relative flex w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:!w-[min(var(--dialog-max),calc(100vw-3rem))] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        className="cr-dialog cr-sheet relative flex w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:!w-[min(var(--dialog-max),calc(100vw-3rem))] min-[640px]:pb-0"
       >
         <div
-          onTouchStart={onHandleTouchStart}
-          onTouchMove={onHandleTouchMove}
-          onTouchEnd={onHandleTouchEnd}
+          {...swipeHandlers}
           className="grid place-items-center pt-2.5 pb-1.5 cursor-grab touch-none min-[640px]:hidden"
         >
           <span
