@@ -171,6 +171,8 @@ export function ToolbarCenter({
               <div
                 id={colorPopoverId}
                 data-state={colorPresence.state}
+                data-placement={colorPopoverLayout.placement}
+                data-align="end"
                 className={`cr-popover popover absolute right-0 w-[320px] max-w-[calc(100vw-32px)] overflow-y-auto overscroll-contain ${
                   colorPopoverLayout.placement === "below" ? "top-full mt-2" : "bottom-full mb-2"
                 }`}

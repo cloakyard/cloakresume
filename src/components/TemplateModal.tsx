@@ -4,13 +4,14 @@
  */
 
 import { Search, X } from "lucide-react";
-import { useCallback, useId, useMemo, useRef, useState } from "react";
+import { useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { generateSampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
 import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
+import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 import { TemplatePreview } from "./TemplatePreview.tsx";
 
 const COUNT_FORMATTER = new Intl.NumberFormat(undefined, {
@@ -54,8 +55,6 @@ export function TemplateModal({
   resume,
   primary,
 }: TemplateModalProps) {
-  const touchStartY = useRef<number | null>(null);
-  const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
@@ -65,6 +64,7 @@ export function TemplateModal({
     onClose,
     initialFocusRef: closeRef,
   });
+  const swipeHandlers = useSwipeToDismiss(sheetRef, onClose);
   const [query, setQuery] = useState("");
 
   const grouped = useMemo(() => {
@@ -91,33 +91,6 @@ export function TemplateModal({
     [resume],
   );
 
-  const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-    dragDeltaRef.current = 0;
-  }, []);
-
-  const onHandleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (touchStartY.current == null) return;
-    const delta = e.touches[0].clientY - touchStartY.current;
-    if (delta > 0 && sheetRef.current) {
-      dragDeltaRef.current = delta;
-      sheetRef.current.style.transform = `translateY(${delta}px)`;
-      sheetRef.current.style.transition = "none";
-    }
-  }, []);
-
-  const onHandleTouchEnd = useCallback(() => {
-    touchStartY.current = null;
-    if (!sheetRef.current) return;
-    sheetRef.current.style.transition = "";
-    if (dragDeltaRef.current > 120) {
-      onClose();
-    } else {
-      sheetRef.current.style.transform = "";
-    }
-    dragDeltaRef.current = 0;
-  }, [onClose]);
-
   if (!presence.mounted) return null;
 
   return createPortal(
@@ -131,7 +104,7 @@ export function TemplateModal({
     >
       <div
         ref={sheetRef}
-        className="cr-dialog cr-dialog-wide cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        className="cr-dialog cr-dialog-wide cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -139,9 +112,7 @@ export function TemplateModal({
         tabIndex={-1}
       >
         <div
-          onTouchStart={onHandleTouchStart}
-          onTouchMove={onHandleTouchMove}
-          onTouchEnd={onHandleTouchEnd}
+          {...swipeHandlers}
           className="grid place-items-center pt-2.5 pb-1 cursor-grab touch-none sm:hidden"
         >
           <span aria-hidden="true" className="w-11 h-1 rounded-full bg-(--ink-5)/40" />

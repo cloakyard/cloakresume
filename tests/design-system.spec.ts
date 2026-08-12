@@ -509,11 +509,13 @@ describe("CloakResume family contract", () => {
 
     expect(tokenCss).toContain("--duration-press: 100ms");
     expect(tokenCss).toContain("--duration-stagger: 60ms");
-    expect(tokenCss).toContain("--ease-in: cubic-bezier(0.4, 0, 1, 1)");
+    expect(tokenCss).toContain("--motion-distance-small: 4px");
+    expect(tokenCss).toContain("--motion-scale-surface: 0.98");
+    expect(tokenCss).not.toContain("--ease-in:");
     expect(tokenCss).toContain("--ease-standard: cubic-bezier(0.16, 1, 0.3, 1)");
     expect(portable.duration.press.$value).toEqual({ value: 100, unit: "ms" });
     expect(portable.duration.stagger.$value).toEqual({ value: 60, unit: "ms" });
-    expect(portable.easing.in.$value).toEqual([0.4, 0, 1, 1]);
+    expect(portable.easing.in).toBeUndefined();
     expect(portable.easing.standard.$value).toEqual([0.16, 1, 0.3, 1]);
 
     expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
@@ -526,10 +528,12 @@ describe("CloakResume family contract", () => {
     expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
     expect(familyCss).toContain(".cr-family-landing .cr-landing-hero__declaration");
     expect(familyCss).toContain(".cr-overlay {");
-    expect(familyCss).toContain('.cr-dialog [role="tabpanel"]:not([hidden])');
+    expect(familyCss).toContain('.cr-popover[data-state="closing"]');
+    expect(familyCss).toContain("@starting-style");
+    expect(familyCss).not.toContain('.cr-dialog [role="tabpanel"]:not([hidden])');
     expect(layout).toContain("cr-editor-shell");
-    expect(layout).toContain("cr-workspace-enter");
-    expect(panel).toContain("cr-section-enter");
+    expect(layout).not.toContain("cr-workspace-enter");
+    expect(panel).not.toContain("cr-section-enter");
     expect(rail).toContain("cr-section-nav-button");
     expect(viewSegment).toContain("cr-segment-button");
     expect(paperToggle).toContain("cr-segment-button");

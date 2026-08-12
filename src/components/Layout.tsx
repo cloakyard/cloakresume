@@ -182,7 +182,7 @@ export function Layout({
                   {...editorTargetProps}
                   aria-label="Résumé editor"
                   data-panel-root
-                  className="cr-editor-panel cr-workspace-enter relative flex min-h-0 min-w-0 flex-col overflow-hidden"
+                  className="cr-editor-panel relative flex min-h-0 min-w-0 flex-col overflow-hidden"
                 >
                   {panel}
                 </aside>
@@ -190,7 +190,7 @@ export function Layout({
                 <aside
                   {...editorTargetProps}
                   aria-label="Résumé section picker"
-                  className="cr-editor-panel cr-workspace-enter flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--surface)"
+                  className="cr-editor-panel flex min-h-0 min-w-0 flex-col overflow-hidden bg-(--surface)"
                 >
                   <header className="shrink-0 border-b border-(--line) px-4 py-3">
                     <h2 className="m-0 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">

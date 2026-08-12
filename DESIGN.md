@@ -217,8 +217,8 @@ transparency, or unscoped z-index.
 - Dialog title, description, close, scroll region, and actions occur in the same
   order. Escape/outside dismissal, focus containment/return, and scroll lock are
   consistent. Inner scroll uses `overscroll-behavior: contain`.
-- Scrim and panel enter together over 220ms. Dialogs, sheets, and popovers retain
-  their mounted focus/geometry state through a 160ms ease-in exit before unmounting.
+- Scrim and panel enter together over 220–260ms. Dialogs, sheets, and popovers retain
+  their mounted focus/geometry state through a responsive 160ms ease-out exit before unmounting.
 - Popovers/menus use 6px corners and `--shadow-popover`, flip before clipping, keep a
   16px safe viewport edge, and never exceed 24rem.
 - Toasts use solid surfaces/live-region semantics and do not cover modal actions.
@@ -228,15 +228,15 @@ Z-index is fixed: sticky 30, navigation 50, editor/toast 100, dialog 200, popove
 
 ## Motion
 
-- The product uses three motion primitives: 100ms press feedback, contextual
-  fade/rise reveals for panels and overlays, and a three-block staged landing entry.
-- Border, colour, tint, and 1–2px position changes are the default interaction.
-  Fast feedback is 160ms, touch/sheet movement 220ms, and slow UI 260ms. The 400ms
-  token is reserved for one-time structural reveals; landing delays use the 60ms
-  stagger token.
-- Entrances use `--ease-out`, exits/presses use `--ease-in`, and reversible state
-  changes may use `--ease-in-out`. Active controls move at most 1px and never
-  overshoot. Never use `transition: all` or animate a focus-ring shadow.
+- The product uses four motion primitives: 100ms press feedback, 160ms anchored
+  popovers, 220–260ms overlay surfaces, and a three-block staged landing entry.
+- Border and colour changes are the default interaction. Spatial movement is limited
+  to the shared 2px, 4px, and 6px distance tokens; press and surface scale both start
+  at 0.98. The 400ms token is reserved for the rare landing reveal, field locator,
+  and toast arrival; landing delays use the 60ms stagger token.
+- Entrances, exits, and presses use `--ease-out`; reversible on-screen movement may
+  use `--ease-in-out`. Motion never overshoots. Never use `transition: all`, animate
+  a focus-ring shadow, or replay motion for keyboard focus and frequent section/tab changes.
 - Spatial icon motion is applied to an HTML wrapper, never directly to an SVG. The
   ATS field locator animates a pseudo-element with opacity/scale rather than paint-
   heavy shadow interpolation.
@@ -244,8 +244,8 @@ Z-index is fixed: sticky 30, navigation 50, editor/toast 100, dialog 200, popove
   not animate every row. Decorative infinite motion is prohibited.
 - Functional progress, drag-over feedback, spinners, and live analysis remain.
 - Reduced-motion removes nonessential transforms/smooth scrolling while preserving
-  immediate state and progress communication. Popovers that own a positioning
-  transform use opacity-only entry so motion cannot alter placement.
+  immediate state and progress communication. Anchored popovers compose their
+  positioning and 4px motion offsets so placement never jumps.
 
 Never animate editor dimensions, dialog width, or the mobile editor's 50:50 split.
 

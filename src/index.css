@@ -70,28 +70,6 @@
   --radius-lg: var(--radius-card);
   --radius-xl: var(--radius-card);
   --radius-2xl: var(--radius-card);
-
-  /* Contextual overlay motion used by every dialog and mobile sheet. */
-  --animate-scale-in: scale-in var(--duration-base) var(--ease-out) both;
-  --animate-sheet-rise: sheet-rise var(--duration-base) var(--ease-out);
-  @keyframes scale-in {
-    from {
-      opacity: 0;
-      transform: scale(0.96);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-  @keyframes sheet-rise {
-    from {
-      transform: translateY(100%);
-    }
-    to {
-      transform: translateY(0);
-    }
-  }
 }
 
 /* "Rotate your phone" hint — a quarter-rotation hold-and-release
@@ -241,11 +219,10 @@
       transition-[background-color,border-color,transform] duration-160
       cursor-pointer select-none
       hover:bg-(--surface-2) hover:border-(--color-rule-strong)
-      focus-visible:outline-none focus-visible:shadow-(--sh-focus)
-      active:translate-y-px;
+      focus-visible:outline-none focus-visible:shadow-(--sh-focus);
   }
   .tb .caret {
-    @apply text-(--ink-5) ml-0.5 transition-transform duration-160;
+    @apply text-(--ink-5) ml-0.5;
   }
   .tb.ghost {
     @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;

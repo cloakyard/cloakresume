@@ -255,6 +255,9 @@ export function FieldIssuesBadge({
             id={dialogId}
             ref={popoverRef}
             data-state={presence.state}
+            data-placement={coords.placement}
+            data-align="end"
+            data-positioning="offset"
             role="dialog"
             tabIndex={-1}
             aria-label="Writing hints"
@@ -264,7 +267,6 @@ export function FieldIssuesBadge({
               left: coords.left,
               width: coords.width,
               maxHeight: coords.maxHeight,
-              transform: coords.placement === "above" ? "translateY(-100%)" : undefined,
               overflowY: "auto",
             }}
           >

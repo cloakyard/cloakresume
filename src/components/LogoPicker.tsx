@@ -156,6 +156,9 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
             id={dialogId}
             ref={popoverRef}
             data-state={presence.state}
+            data-placement={coords.placement}
+            data-align="start"
+            data-positioning="offset"
             role="dialog"
             aria-label="Choose a logo icon"
             className="cr-popover popover fixed overscroll-contain"
@@ -164,7 +167,6 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
               left: coords.left,
               width: coords.width,
               maxHeight: coords.maxHeight,
-              transform: coords.placement === "above" ? "translateY(-100%)" : undefined,
               overflowY: "auto",
             }}
           >

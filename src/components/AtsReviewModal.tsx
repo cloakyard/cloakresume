@@ -14,6 +14,7 @@ import type { AtsReport, ResumeData } from "../types.ts";
 import { scoreBand } from "../utils/ats.ts";
 import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
+import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 import { AtsInsightsPane } from "./ats/AtsInsightsPane.tsx";
 import { AtsKeywordsPane } from "./ats/AtsKeywordsPane.tsx";
 import { AtsOverviewPane } from "./ats/AtsOverviewPane.tsx";
@@ -70,8 +71,6 @@ export function AtsReviewModal({
   const [tab, setTab] = useState<TabId>("overview");
   const [minDelayPassed, setMinDelayPassed] = useState(false);
   const [scannedAt, setScannedAt] = useState<Date | null>(null);
-  const touchStartY = useRef<number | null>(null);
-  const dragDeltaRef = useRef(0);
   const closeRef = useRef<HTMLButtonElement>(null);
   const resultsScrollRef = useRef<HTMLDivElement>(null);
   const tabAnchorRef = useRef<HTMLSpanElement>(null);
@@ -92,6 +91,7 @@ export function AtsReviewModal({
     onClose,
     initialFocusRef: closeRef,
   });
+  const swipeHandlers = useSwipeToDismiss(sheetRef, onClose);
 
   const selectTab = useCallback((nextTab: TabId) => {
     setTab(nextTab);
@@ -119,33 +119,6 @@ export function AtsReviewModal({
   }, [open]);
 
   const scanning = !minDelayPassed || grammarScanning;
-
-  const onHandleTouchStart = useCallback((e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
-    dragDeltaRef.current = 0;
-  }, []);
-
-  const onHandleTouchMove = useCallback((e: React.TouchEvent) => {
-    if (touchStartY.current == null) return;
-    const delta = e.touches[0].clientY - touchStartY.current;
-    if (delta > 0 && sheetRef.current) {
-      dragDeltaRef.current = delta;
-      sheetRef.current.style.transform = `translateY(${delta}px)`;
-      sheetRef.current.style.transition = "none";
-    }
-  }, []);
-
-  const onHandleTouchEnd = useCallback(() => {
-    touchStartY.current = null;
-    if (!sheetRef.current) return;
-    sheetRef.current.style.transition = "";
-    if (dragDeltaRef.current > 120) {
-      onClose();
-    } else {
-      sheetRef.current.style.transform = "";
-    }
-    dragDeltaRef.current = 0;
-  }, [onClose]);
 
   const onTabKeyDown = useCallback(
     (event: React.KeyboardEvent, currentTab: TabId) => {
@@ -197,7 +170,7 @@ export function AtsReviewModal({
     >
       <div
         ref={sheetRef}
-        className="cr-dialog cr-dialog-wide cr-sheet relative flex h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] animate-sheet-rise min-[640px]:h-[min(51.25rem,var(--dialog-max-block-size))] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:pb-0 min-[640px]:animate-scale-in"
+        className="cr-dialog cr-dialog-wide cr-sheet relative flex h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:h-[min(51.25rem,var(--dialog-max-block-size))] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:pb-0"
         role="dialog"
         aria-modal="true"
         aria-labelledby={titleId}
@@ -205,9 +178,7 @@ export function AtsReviewModal({
         tabIndex={-1}
       >
         <div
-          onTouchStart={onHandleTouchStart}
-          onTouchMove={onHandleTouchMove}
-          onTouchEnd={onHandleTouchEnd}
+          {...swipeHandlers}
           className="grid place-items-center pt-2 pb-1 cursor-grab touch-none sm:hidden"
         >
           <span aria-hidden="true" className="w-10 h-1 rounded-full bg-(--ink-6)" />
