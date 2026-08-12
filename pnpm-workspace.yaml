@@ -1,11 +1,12 @@
 overrides:
   vite: "catalog:"
-  brace-expansion: 5.0.8
+  brace-expansion: 5.0.9
+  fast-uri: 3.1.5
   sharp: 0.35.3
   vitest: "catalog:"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@0.2.6
-  vite-plus: 0.2.6
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.9
+  vite-plus: 0.2.9
   vitest: 4.1.10
 allowBuilds:
   sharp: true
@@ -18,9 +19,21 @@ minimumReleaseAgeExclude:
   - html2canvas-pro
   - own-keys
   - postcss
+  - puppeteer-core
   - react
   - react-dom
   - harper.js@2.7.0
+  - "@voidzero-dev/vite-plus-core@0.2.9"
+  - "@voidzero-dev/vite-plus-darwin-arm64@0.2.9"
+  - "@voidzero-dev/vite-plus-darwin-x64@0.2.9"
+  - "@voidzero-dev/vite-plus-linux-arm64-gnu@0.2.9"
+  - "@voidzero-dev/vite-plus-linux-arm64-musl@0.2.9"
+  - "@voidzero-dev/vite-plus-linux-x64-gnu@0.2.9"
+  - "@voidzero-dev/vite-plus-linux-x64-musl@0.2.9"
+  - "@voidzero-dev/vite-plus-win32-arm64-msvc@0.2.9"
+  - "@voidzero-dev/vite-plus-win32-x64-msvc@0.2.9"
+  - vite-plus@0.2.9
+  - "@puppeteer/browsers@3.2.0"
 peerDependencyRules:
   allowAny:
     - vite

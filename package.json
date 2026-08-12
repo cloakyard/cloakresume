@@ -17,21 +17,21 @@
     "@fontsource/instrument-serif": "^5.3.0",
     "@fontsource/lora": "^5.3.0",
     "harper.js": "^2.7.0",
-    "html2canvas-pro": "^2.3.2",
+    "html2canvas-pro": "^2.3.4",
     "jspdf": "^4.2.1",
-    "lucide-react": "^1.27.0",
+    "lucide-react": "^1.31.0",
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "workbox-window": "^7.4.1"
   },
   "devDependencies": {
     "@tailwindcss/vite": "^4.3.3",
-    "@types/node": "^26.1.2",
-    "@types/react": "^19.2.17",
-    "@types/react-dom": "^19.2.3",
+    "@types/node": "^26.2.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
     "@vite-pwa/assets-generator": "^1.0.2",
-    "@vitejs/plugin-react": "^6.0.4",
-    "puppeteer-core": "^25.4.0",
+    "@vitejs/plugin-react": "^6.0.5",
+    "puppeteer-core": "^25.6.0",
     "sharp": "0.35.3",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2",
@@ -40,5 +40,5 @@
     "vite-plus": "catalog:",
     "vitest": "catalog:"
   },
-  "packageManager": "pnpm@11.15.1"
+  "packageManager": "pnpm@11.21.0"
 }
