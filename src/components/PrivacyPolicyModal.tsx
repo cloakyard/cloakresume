@@ -19,7 +19,7 @@ const LAST_UPDATED = new Intl.DateTimeFormat(undefined, {
   timeZone: "UTC",
 }).format(new Date(`${LAST_UPDATED_ISO}T00:00:00Z`));
 const REPO_URL = "https://github.com/cloakyard/cloakresume";
-const CLOAKYARD_URL = "https://github.com/cloakyard";
+const CLOAKYARD_URL = "https://cloakyard.com";
 
 const DOCUMENT_PATH = [
   {
