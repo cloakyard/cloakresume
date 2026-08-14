@@ -120,13 +120,13 @@ export function TemplateModal({
         <div className="flex flex-col gap-3 px-4 md:px-7 pt-2 sm:pt-5 md:pt-5.5 pb-3.5 border-b border-(--line-soft)/70">
           <div className="flex items-start gap-3">
             <div className="flex-1">
-              <h2
-                id={titleId}
-                className="text-base md:text-lg font-semibold tracking-[-0.01em] text-(--ink-1)"
-              >
+              <p className="cr-dialog__eyebrow">
+                Template library / {COUNT_FORMATTER.format(Object.keys(TEMPLATES).length)} layouts
+              </p>
+              <h2 id={titleId} className="cr-dialog__title md:text-lg">
                 Choose a template
               </h2>
-              <p id={descriptionId} className="mt-0.5 text-sm text-(--ink-4)">
+              <p id={descriptionId} className="cr-dialog__description text-sm">
                 Your content stays — only the layout changes
               </p>
             </div>
@@ -134,7 +134,7 @@ export function TemplateModal({
               ref={closeRef}
               type="button"
               onClick={onClose}
-              className="grid h-11 w-11 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              className="cr-dialog__close"
               aria-label="Close"
             >
               <X aria-hidden="true" className="w-4 h-4" />

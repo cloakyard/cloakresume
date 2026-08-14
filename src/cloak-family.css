@@ -125,6 +125,65 @@ body {
   width: min(var(--dialog-wide-max), calc(100vw - (var(--dialog-viewport-gutter) * 2)));
 }
 
+.cr-dialog__eyebrow {
+  margin: 0;
+  color: var(--ink-4);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.cr-dialog__title {
+  margin: 0.2rem 0 0;
+  color: var(--ink-1);
+  font-size: 1rem;
+  font-weight: 680;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.cr-dialog__description {
+  margin: 0.25rem 0 0;
+  color: var(--ink-4);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.cr-dialog__close {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  padding: 0;
+  place-items: center;
+  color: var(--ink-4);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cr-dialog__close:hover:not(:disabled) {
+  color: var(--ink-1);
+  background: color-mix(in oklab, var(--ink-1) 5%, transparent);
+}
+
+.cr-dialog__footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
 .cr-sheet {
   color: var(--ink-1);
   background: var(--surface);

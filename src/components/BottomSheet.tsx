@@ -83,12 +83,12 @@ export function BottomSheet({
         {(title || showCloseButton) && (
           <header className="flex items-center justify-between gap-3 px-4 pt-1 pb-3 border-b border-(--line-soft)/70 sm:px-5">
             {title && (
-              <h2
-                id={titleId}
-                className="m-0 text-[15.5px] font-semibold tracking-[-0.01em] text-(--ink-1)"
-              >
-                {title}
-              </h2>
+              <div>
+                <p className="cr-dialog__eyebrow">Workbench controls</p>
+                <h2 id={titleId} className="cr-dialog__title">
+                  {title}
+                </h2>
+              </div>
             )}
             {showCloseButton && (
               <button
@@ -96,7 +96,7 @@ export function BottomSheet({
                 type="button"
                 onClick={onClose}
                 aria-label={title ? `Close ${title.toLowerCase()}` : "Close sheet"}
-                className="grid h-11 w-11 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+                className="cr-dialog__close"
               >
                 <X aria-hidden="true" className="w-4 h-4" />
               </button>
