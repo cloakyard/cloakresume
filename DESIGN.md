@@ -101,7 +101,7 @@ are outside this system and are not shipped as fallback components.
 
 ## Typography
 
-- Hero display: Archivo 760, `clamp(2.75rem, 6.4vw, 6.75rem)`, 0.91 line-height,
+- Hero display: Archivo 760, `clamp(2.75rem, 5.5vw, 5.6rem)`, 0.91 line-height,
   `-0.065em` tracking, and a compact editorial measure.
 - Section display: Archivo 720, `clamp(2.15rem, 4.7vw, 4.9rem)`, 0.98 line-height.
 - Editor/dialog titles: Archivo 720–760, 1.05–1.15 line-height.

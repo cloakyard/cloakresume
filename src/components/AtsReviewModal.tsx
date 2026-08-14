@@ -185,30 +185,30 @@ export function AtsReviewModal({
         </div>
 
         <div className="flex items-center justify-between gap-3 px-4 pt-1 pb-3 border-b border-(--line-soft) shrink-0 sm:px-6 sm:py-3 sm:border-(--line)">
-          <div className="flex items-baseline gap-2">
-            <h2
-              id={titleId}
-              className="m-0 text-[15px] font-semibold leading-none tracking-[-0.005em] text-(--ink-1)"
-            >
-              Résumé review
-            </h2>
-            <span
-              aria-hidden="true"
-              className="hidden sm:inline-block w-1 h-1 rounded-full bg-(--ink-6) -translate-y-0.5"
-            />
-            <time
-              dateTime={timestampIso}
-              className="hidden sm:inline font-mono text-[10.5px] leading-none text-(--ink-5) tracking-[0.03em]"
-            >
-              {timestamp}
-            </time>
+          <div>
+            <p className="cr-dialog__eyebrow">Résumé analysis / local execution</p>
+            <div className="flex items-baseline gap-2">
+              <h2 id={titleId} className="cr-dialog__title">
+                Résumé review
+              </h2>
+              <span
+                aria-hidden="true"
+                className="hidden sm:inline-block w-1 h-1 rounded-full bg-(--ink-6) -translate-y-0.5"
+              />
+              <time
+                dateTime={timestampIso}
+                className="hidden sm:inline font-mono text-[10.5px] leading-none text-(--ink-5) tracking-[0.03em]"
+              >
+                {timestamp}
+              </time>
+            </div>
           </div>
           <button
             ref={closeRef}
             type="button"
             onClick={onClose}
             aria-label="Close ATS review"
-            className="grid h-11 w-11 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+            className="cr-dialog__close"
           >
             <X aria-hidden="true" className="w-4 h-4" />
           </button>

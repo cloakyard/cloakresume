@@ -81,11 +81,14 @@ export function ConfirmDialog({
               <AlertTriangle aria-hidden="true" className="w-5 h-5" />
             </span>
             <div className="flex-1 min-w-0">
-              <h2 id={titleId} className="text-base font-semibold text-(--ink-1) tracking-tight">
+              <p className="cr-dialog__eyebrow">
+                {variant === "notice" ? "Workbench notice" : "Confirm action"}
+              </p>
+              <h2 id={titleId} className="cr-dialog__title">
                 {title}
               </h2>
               {description && (
-                <p id={descriptionId} className="text-sm text-(--ink-3) mt-1.5 leading-relaxed">
+                <p id={descriptionId} className="cr-dialog__description text-sm">
                   {description}
                 </p>
               )}
@@ -94,14 +97,14 @@ export function ConfirmDialog({
               type="button"
               onClick={onCancel}
               aria-label="Close"
-              className="grid h-11 w-11 shrink-0 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+              className="cr-dialog__close"
             >
               <X aria-hidden="true" className="w-4 h-4" />
             </button>
           </div>
         </div>
 
-        <div className="flex flex-col-reverse items-stretch justify-end gap-2 border-t border-(--line) bg-(--surface-2) px-6 py-4 min-[640px]:flex-row min-[640px]:items-center">
+        <div className="cr-dialog__footer flex-col-reverse items-stretch px-6 py-4 min-[640px]:flex-row min-[640px]:items-center">
           {variant === "confirm" ? (
             <button
               ref={cancelRef}

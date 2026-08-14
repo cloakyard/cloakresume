@@ -125,6 +125,65 @@ body {
   width: min(var(--dialog-wide-max), calc(100vw - (var(--dialog-viewport-gutter) * 2)));
 }
 
+.cr-dialog__eyebrow {
+  margin: 0;
+  color: var(--ink-4);
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.cr-dialog__title {
+  margin: 0.2rem 0 0;
+  color: var(--ink-1);
+  font-size: 1rem;
+  font-weight: 680;
+  letter-spacing: -0.015em;
+  line-height: 1.25;
+}
+
+.cr-dialog__description {
+  margin: 0.25rem 0 0;
+  color: var(--ink-4);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.cr-dialog__close {
+  display: grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  flex: none;
+  padding: 0;
+  place-items: center;
+  color: var(--ink-4);
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-control);
+  cursor: pointer;
+  transition:
+    color var(--duration-fast) var(--ease-standard),
+    background-color var(--duration-fast) var(--ease-standard);
+}
+
+.cr-dialog__close:hover:not(:disabled) {
+  color: var(--ink-1);
+  background: color-mix(in oklab, var(--ink-1) 5%, transparent);
+}
+
+.cr-dialog__footer {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  border-top: 1px solid var(--line);
+  background: var(--surface-2);
+}
+
 .cr-sheet {
   color: var(--ink-1);
   background: var(--surface);
@@ -668,7 +727,7 @@ button:not(.absolute):active:not(:disabled),
 .cr-marketing-nav a {
   display: inline-flex;
   align-items: center;
-  min-height: 2.75rem;
+  min-height: 2.5rem;
   color: var(--color-ink-2);
   text-decoration: none;
 }
@@ -687,7 +746,7 @@ button:not(.absolute):active:not(:disabled),
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  min-height: 2.75rem;
+  min-height: 2.5rem;
   padding-inline: 0.75rem;
   color: var(--color-ink);
   border: 1px solid var(--color-rule-strong);
@@ -743,7 +802,7 @@ button:not(.absolute):active:not(:disabled),
   max-width: 14ch;
   margin: 0;
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 6.4vw, 6.75rem);
+  font-size: clamp(2.75rem, 5.5vw, 5.6rem);
   font-weight: 760;
   line-height: 0.91;
   letter-spacing: -0.064em;
@@ -1865,6 +1924,7 @@ button:not(.absolute):active:not(:disabled),
 
   .cr-landing-hero h1 {
     max-width: 13ch;
+    font-size: clamp(3.4rem, 9vw, 4.8rem);
   }
 
   .cr-instrument-grid {
@@ -1900,6 +1960,7 @@ button:not(.absolute):active:not(:disabled),
 
 @media (max-width: 39.9375rem) {
   .cr-source-link {
+    min-height: 2.75rem;
     padding-inline: 0.5rem;
   }
 
@@ -1913,7 +1974,7 @@ button:not(.absolute):active:not(:disabled),
   }
 
   .cr-landing-hero h1 {
-    font-size: clamp(2.75rem, 6.4vw, 6.75rem);
+    font-size: clamp(2.75rem, 14vw, 4.4rem);
   }
 
   .cr-hero-actions {
@@ -2027,6 +2088,11 @@ button:not(.absolute):active:not(:disabled),
 }
 
 @media (hover: none) and (pointer: coarse) {
+  .cr-marketing-nav a,
+  .cr-source-link {
+    min-height: 2.75rem;
+  }
+
   input,
   textarea,
   select {
