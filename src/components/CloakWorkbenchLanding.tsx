@@ -31,7 +31,7 @@ import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
 const LICENSE_URL = `${GITHUB_URL}/blob/main/LICENSE`;
-const CLOAKYARD_URL = "https://github.com/cloakyard";
+const CLOAKYARD_URL = "https://cloakyard.com";
 const AUTHOR_URL = "https://github.com/sumitsahoo";
 
 interface Props {
