@@ -132,13 +132,11 @@ function ErrorDialog({
             <AlertTriangle aria-hidden="true" className="h-5 w-5" />
           </span>
           <div className="flex-1 min-w-0">
-            <h2
-              id={titleId}
-              className="text-[17px] sm:text-[18px] font-semibold text-(--ink-1) tracking-[-0.01em] leading-tight"
-            >
+            <p className="cr-dialog__eyebrow">Recovery / local session</p>
+            <h2 id={titleId} className="cr-dialog__title">
               {title}
             </h2>
-            <p id={descriptionId} className="mt-1 text-sm leading-[1.5] text-(--ink-3)">
+            <p id={descriptionId} className="cr-dialog__description">
               Your résumé data is still safe in this browser — we never uploaded it anywhere. Return
               to the app to keep editing, or send us the details below so we can fix the bug.
             </p>
@@ -147,9 +145,7 @@ function ErrorDialog({
 
         <div className="cr-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain px-5 py-4 sm:px-7 sm:py-5">
           <div className="flex items-center justify-between gap-2 shrink-0">
-            <span className="font-mono text-[10.5px] font-semibold tracking-[0.08em] uppercase text-(--ink-5)">
-              Error details
-            </span>
+            <span className="cr-dialog__eyebrow">Error details</span>
             <button
               type="button"
               onClick={onCopy}
@@ -171,18 +167,18 @@ function ErrorDialog({
           </div>
           <pre
             id="cr-error-details"
-            className="m-0 font-mono text-[11.5px] leading-[1.55] text-(--ink-2) bg-(--surface-2) border border-(--line) rounded-lg p-3 whitespace-pre-wrap break-words"
+            className="m-0 font-mono text-[11.5px] leading-[1.55] text-(--ink-2) bg-(--surface-2) border border-(--line) rounded-md p-3 whitespace-pre-wrap break-words"
           >
             {details}
           </pre>
         </div>
 
-        <div className="flex shrink-0 flex-col-reverse gap-2 border-t border-(--line) bg-(--surface-2) px-5 py-3 sm:flex-row sm:items-center sm:justify-end sm:px-7 sm:py-4">
+        <div className="cr-dialog__footer flex-col-reverse items-stretch px-5 py-3 sm:flex-row sm:items-center sm:px-7 sm:py-4">
           <a
             href={issueUrl}
             target="_blank"
             rel="noreferrer noopener"
-            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-md border border-(--line) bg-(--surface-raised) px-4 py-2 text-sm font-medium text-(--ink-2) transition-colors hover:border-(--ink-5) hover:bg-(--surface-3)"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md border border-(--line) bg-(--surface-raised) px-4 py-2 text-sm font-medium text-(--ink-2) transition-colors hover:border-(--ink-5) hover:bg-(--surface-3) sm:w-auto"
           >
             <GithubIcon aria-hidden="true" className="w-4 h-4" />
             Report on GitHub
@@ -191,7 +187,7 @@ function ErrorDialog({
             ref={homeRef}
             type="button"
             onClick={onGoHome}
-            className="inline-flex min-h-11 items-center justify-center gap-1.5 rounded-md bg-(--color-accent) px-4 py-2 text-sm font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover)"
+            className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md bg-(--color-accent) px-4 py-2 text-sm font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover) sm:w-auto"
           >
             <Home aria-hidden="true" className="w-4 h-4" />
             Go Home

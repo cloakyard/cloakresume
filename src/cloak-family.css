@@ -1960,6 +1960,7 @@ button:not(.absolute):active:not(:disabled),
 
 @media (max-width: 39.9375rem) {
   .cr-source-link {
+    min-height: 2.75rem;
     padding-inline: 0.5rem;
   }
 
