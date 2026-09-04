@@ -1,6 +1,6 @@
 overrides:
   brace-expansion: 5.0.9
-  fast-uri: 3.1.5
+  fast-uri: 3.1.7
   sharp: 0.35.4
   vite@*: "catalog:"
   vitest@*: "catalog:"
@@ -33,7 +33,7 @@ minimumReleaseAgeExclude:
   - "@voidzero-dev/vite-plus-win32-arm64-msvc@0.3.0"
   - "@voidzero-dev/vite-plus-win32-x64-msvc@0.3.0"
   - vite-plus@0.3.0
-  - "@puppeteer/browsers@3.2.0"
+  - "@puppeteer/browsers@3.2.0 || 3.2.2"
 peerDependencyRules:
   allowAny:
     - vite
