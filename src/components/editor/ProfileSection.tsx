@@ -155,7 +155,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           onChange={(v) => updateProfile({ title: v })}
         />
 
-        <div>
+        <div className="cr-field">
           <span className="cr-field-label">Header logo (optional)</span>
           <LogoPicker
             value={resume.profile.logoIconName}
@@ -163,7 +163,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           />
         </div>
 
-        <div>
+        <div className="cr-field">
           <div className="cr-field-row">
             <span className="cr-field-label">Professional summary</span>
             <FormatToolbar />

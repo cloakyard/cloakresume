@@ -75,7 +75,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                           patch("projects", next);
                         }}
                       />
-                      <div>
+                      <div className="cr-field">
                         <div className="cr-field-row">
                           <span className="cr-field-label">Description</span>
                           <FormatToolbar compact />
@@ -92,7 +92,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                           }}
                         />
                       </div>
-                      <div>
+                      <div className="cr-field">
                         <div className="cr-field-row">
                           <span className="cr-field-label">Role (optional)</span>
                           <div className="flex items-center gap-1">

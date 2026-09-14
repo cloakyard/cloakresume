@@ -70,7 +70,7 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
                       patch("skills", next);
                     }}
                   />
-                  <div>
+                  <div className="cr-field">
                     <span className="cr-field-label">Icon (optional)</span>
                     <LogoPicker
                       value={g.iconName}

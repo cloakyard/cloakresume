@@ -105,7 +105,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                         patch("contact", next);
                       }}
                       aria-label="Contact kind"
-                      className="w-28 min-w-0 shrink-0 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
+                      className="cr-control w-28 min-w-0 shrink-0 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
                     >
                       {CONTACT_KINDS.map((k) => (
                         <option key={k} value={k}>
@@ -114,34 +114,33 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                       ))}
                     </select>
                   </div>
-                  <input
-                    name={`contact-${c.id}-value`}
-                    autoComplete={
-                      c.kind === "email"
-                        ? "email"
-                        : c.kind === "phone"
-                          ? "tel"
-                          : c.kind === "location"
-                            ? "address-level2"
-                            : "url"
-                    }
-                    type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
-                    value={c.value}
-                    aria-label={`${c.kind} contact value`}
-                    onChange={(e) => {
-                      const next = [...resume.contact];
-                      next[i] = { ...c, value: e.target.value };
-                      patch("contact", next);
-                    }}
-                    placeholder={PLACEHOLDER_BY_KIND[c.kind]}
-                    aria-invalid={issue ? true : undefined}
-                    aria-describedby={issue ? issueId : undefined}
-                    className={`col-span-full row-start-2 w-full min-w-0 min-h-11 border-t border-(--line-soft) px-3 py-2 text-sm bg-transparent placeholder:text-(--ink-5) @min-[36rem]/contacts:col-span-1 @min-[36rem]/contacts:col-start-2 @min-[36rem]/contacts:row-start-1 @min-[36rem]/contacts:border-t-0 @min-[36rem]/contacts:border-x ${
-                      issue
-                        ? "text-(--color-status-danger) placeholder:text-(--color-status-danger)/40"
-                        : ""
-                    }`}
-                  />
+                  <div className="col-span-full row-start-2 min-w-0 border-t border-(--line-soft) p-1 @min-[36rem]/contacts:col-span-1 @min-[36rem]/contacts:col-start-2 @min-[36rem]/contacts:row-start-1 @min-[36rem]/contacts:border-t-0 @min-[36rem]/contacts:border-x">
+                    <input
+                      name={`contact-${c.id}-value`}
+                      autoComplete={
+                        c.kind === "email"
+                          ? "email"
+                          : c.kind === "phone"
+                            ? "tel"
+                            : c.kind === "location"
+                              ? "address-level2"
+                              : "url"
+                      }
+                      type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
+                      value={c.value}
+                      spellCheck={c.kind === "location"}
+                      aria-label={`${c.kind} contact value`}
+                      onChange={(e) => {
+                        const next = [...resume.contact];
+                        next[i] = { ...c, value: e.target.value };
+                        patch("contact", next);
+                      }}
+                      placeholder={PLACEHOLDER_BY_KIND[c.kind]}
+                      aria-invalid={issue ? true : undefined}
+                      aria-describedby={issue ? issueId : undefined}
+                      className={`cr-input min-w-0 min-h-11 h-full py-2 md:min-h-10 lg:py-2 ${issue ? "cr-input--invalid" : ""}`}
+                    />
+                  </div>
                   <div className="col-start-2 row-start-1 flex items-center gap-0.5 bg-(--surface-2) p-1 @min-[36rem]/contacts:col-start-3">
                     {moveBtns}
                     {deleteBtn}

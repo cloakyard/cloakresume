@@ -196,13 +196,13 @@ export function TemplateModal({
                   return (
                     <article
                       key={t.id}
-                      className={`cr-template-card relative flex flex-col overflow-hidden rounded-lg border bg-(--surface) text-left transition-[border-color,transform] duration-160 ${
+                      className={`cr-template-card relative flex flex-col rounded-lg border bg-(--surface) text-left transition-[border-color,transform] duration-160 ${
                         active
                           ? "border-(--brand) shadow-[0_0_0_2px_var(--brand-100)]"
                           : "border-(--line)"
                       }`}
                     >
-                      <div aria-hidden="true">
+                      <div aria-hidden="true" className="overflow-hidden rounded-lg">
                         <div className="aspect-8.5/11 bg-(--surface-2) overflow-hidden relative border-b border-(--line)">
                           <TemplatePreview
                             TemplateComponent={t.component}

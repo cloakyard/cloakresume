@@ -585,6 +585,167 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).contact).toEqual([]);
     });
 
+    it.each([
+      [1920, "light"],
+      [320, "light"],
+      [1920, "dark"],
+      [320, "dark"],
+    ] as const)(
+      "keeps a complete, consistent contact focus ring at %ipx in %s mode",
+      async (width, theme) => {
+        await page.emulateMediaFeatures([
+          { name: "prefers-color-scheme", value: theme },
+          { name: "prefers-reduced-motion", value: "reduce" },
+        ]);
+        await openDraft({
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Focus audit" },
+          contact: [{ id: "focus", kind: "email", value: "name@example.com" }],
+        });
+        await page.focus('input[name="profile-name"]');
+        const expectedRing = await page.$eval('input[name="profile-name"]', (element) => {
+          const style = getComputedStyle(element);
+          return { outline: style.outline, offset: style.outlineOffset, shadow: style.boxShadow };
+        });
+        await page.click('nav button[aria-label="Contact"]');
+        await page.setViewport({ width, height: 1000 });
+        for (const selector of [
+          'select[aria-label="Contact kind"]',
+          'input[aria-label="email contact value"]',
+          '.cr-editor-panel button[aria-label="Remove"]',
+        ]) {
+          await page.keyboard.press("Tab");
+          await page.$eval(selector, (element) => {
+            element.scrollIntoView({ block: "center" });
+            (element as HTMLElement).focus({ preventScroll: true });
+          });
+          const result = await page.$eval(selector, (element) => {
+            const style = getComputedStyle(element);
+            const rect = element.getBoundingClientRect();
+            const extent = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+            const clipped: string[] = [];
+            for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+              const bounds = parent.getBoundingClientRect();
+              const parentStyle = getComputedStyle(parent);
+              if (
+                parentStyle.overflowX !== "visible" &&
+                (rect.left - extent < bounds.left - 0.5 || rect.right + extent > bounds.right + 0.5)
+              )
+                clipped.push("horizontal");
+              if (
+                parentStyle.overflowY !== "visible" &&
+                (rect.top - extent < bounds.top - 0.5 || rect.bottom + extent > bounds.bottom + 0.5)
+              )
+                clipped.push("vertical");
+            }
+            return {
+              ring: {
+                outline: style.outline,
+                offset: style.outlineOffset,
+                shadow: style.boxShadow,
+              },
+              clipped,
+            };
+          });
+          expect(result.ring).toEqual(expectedRing);
+          expect(result.clipped).toEqual([]);
+        }
+        const input = 'input[aria-label="email contact value"]';
+        await page.$eval(input, (element) => (element as HTMLInputElement).select());
+        await page.type(input, "invalid");
+        expect(await page.$eval(input, (element) => element.getAttribute("aria-invalid"))).toBe(
+          "true",
+        );
+        await page.waitForFunction(
+          (selector) => {
+            const element = document.querySelector(selector)!;
+            const token = document.createElement("span");
+            token.style.color = "var(--danger)";
+            document.body.append(token);
+            const matches = getComputedStyle(element).borderColor === getComputedStyle(token).color;
+            token.remove();
+            return matches;
+          },
+          {},
+          input,
+        );
+        await page.$eval(input, (element) => (element as HTMLInputElement).select());
+        await page.type(input, "correct@example.com");
+        expect(
+          await page.$eval(input, (element) => element.getAttribute("aria-invalid")),
+        ).toBeNull();
+        expect((await savedResume()).contact[0].value).toBe("correct@example.com");
+      },
+    );
+
+    it.each([1920, 320])(
+      "keeps focus rings inside scrolling icon and year grids at %ipx",
+      async (width) => {
+        await openDraft({
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Picker focus audit" },
+          education: [
+            {
+              id: "focus",
+              degree: "Degree",
+              school: "School",
+              location: "",
+              detail: "",
+              start: "2020",
+              end: "2024",
+            },
+          ],
+        });
+        await page.setViewport({ width, height: 1000 });
+        await page.locator('button[aria-label="Logo icon: none"]').click();
+        await page.waitForSelector('[aria-label="Choose a logo icon"] .cr-scroll button');
+        async function checkEdges(selector: string) {
+          await page.evaluate(
+            () =>
+              new Promise<void>((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+              ),
+          );
+          const buttons = await page.$$(selector);
+          for (const index of [0, buttons.length - 1]) {
+            await page.keyboard.press("Tab");
+            await buttons[index].evaluate((element) => {
+              element.scrollIntoView({ block: "center" });
+              (element as HTMLElement).focus({ preventScroll: true });
+            });
+            const space = await buttons[index].evaluate((element) => {
+              const style = getComputedStyle(element);
+              const extent = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
+              const rect = element.getBoundingClientRect();
+              const grid = element.closest(".cr-scroll")!.getBoundingClientRect();
+              return {
+                extent,
+                gaps: [
+                  rect.left - grid.left,
+                  grid.right - rect.right,
+                  rect.top - grid.top,
+                  grid.bottom - rect.bottom,
+                ],
+              };
+            });
+            expect(space.extent).toBe(4);
+            for (const gap of space.gaps)
+              expect(gap, JSON.stringify({ selector, index, space })).toBeGreaterThanOrEqual(
+                space.extent - 0.5,
+              );
+          }
+        }
+        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button');
+        await page.keyboard.press("Escape");
+        await page.setViewport({ width: 1920, height: 1000 });
+        await page.click('nav button[aria-label="Education"]');
+        await page.setViewport({ width, height: 1000 });
+        await page.locator('.cr-editor-panel button[aria-haspopup="dialog"]').click();
+        await page.locator('button[aria-label="Select year"]').click();
+        await checkEdges('[role="dialog"] .cr-scroll button');
+      },
+    );
+
     it("selects and clears a logo and an education month/year", async () => {
       await openDraft();
       await page.click('button[aria-label="Logo icon: none"]');

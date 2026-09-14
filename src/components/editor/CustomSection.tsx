@@ -78,7 +78,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                         patch("custom", next);
                       }}
                     />
-                    <div>
+                    <div className="cr-field">
                       <div className="cr-field-row">
                         <span className="cr-field-label">Bullets</span>
                         <div className="flex items-center gap-1">
