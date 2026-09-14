@@ -124,7 +124,7 @@ export const Ledger = memo(function Ledger({ resume, palette }: TemplateProps) {
       atoms.push(
         <div className="ld-stats-row" data-stat-row="true" key={`stats-${i}`}>
           {resume.quickStats.slice(i, i + 4).map((stat) => (
-            <div className="ld-stat" key={stat.id}>
+            <div className="ld-stat" key={stat.id} data-stat-card="true">
               <strong className="ld-stat-value">{stat.value}</strong>
               <span className="ld-stat-label">{stat.label}</span>
             </div>

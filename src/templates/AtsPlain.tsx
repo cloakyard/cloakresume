@@ -56,7 +56,7 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
     .ats-ul-bullet-last { margin-bottom: 3.5mm; }
     .ats-row { display: flex; justify-content: space-between; gap: 6mm; font-size: 10.5pt; flex-wrap: wrap; }
     .ats-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
-    .ats-row > span:last-child { flex-shrink: 0; }
+    .ats-row > span:last-child:not(:first-child) { flex-shrink: 0; max-width: 100%; }
     .ats-strong { font-weight: 700; color: #000; overflow-wrap: break-word; }
     .ats-italic { font-style: italic; color: #000; overflow-wrap: break-word; }
     .ats-ul { margin: 1mm 0 0; padding-left: 5mm; list-style: disc; }

@@ -2,6 +2,8 @@
 
 Verified on 14 September 2026 using local Chrome and the real application. This change includes the four-column stats fix from PR #32.
 
+The subsequent [template container audit](template-container-audit-2026-09-14.md) records the Bauhaus preview reproduction, additional wrapping/stat-pair corrections, and the latest 217-test suite and 170-scenario production matrix.
+
 ## Delivered behavior
 
 - The desktop editor remains 328px wide below 1280px. At larger widths it grows from 384px to 736px, giving spare preview space to text entry while keeping a full-size A4/Letter preview where space permits. At 1920px, the text field grows from approximately 343px to 695px.

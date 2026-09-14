@@ -102,8 +102,8 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
     .mg-award strong { color: #1c1917; display: block; font-weight: 700; overflow-wrap: break-word; }
     .mg-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.4pt; margin-bottom: 1mm; flex-wrap: wrap; }
     .mg-lang:last-child { margin-bottom: 0; }
-    .mg-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
-    .mg-lang .lvl { color: ${palette.primary700}; font-size: 8pt; font-style: italic; flex-shrink: 0; }
+    .mg-lang > span:first-child { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+    .mg-lang .lvl { color: ${palette.primary700}; font-size: 8pt; font-style: italic; flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .mg-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
     .mg-chip { background: #ffffff; border: 1px solid ${palette.primary300}; color: #1c1917; padding: 0.3mm 1.6mm; border-radius: 2px; font-size: 7.8pt; font-weight: 500; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .mg-extra { font-size: 8.3pt; margin-bottom: 1.5mm; line-height: 1.45; overflow-wrap: break-word; }
@@ -255,7 +255,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
         <div className="mg-stats">
           <p>
             {resume.quickStats.map((s, i) => (
-              <span key={s.id}>
+              <span key={s.id} data-stat-card="true">
                 <strong>{s.value}</strong> {s.label}
                 {i < resume.quickStats.length - 1 ? <br /> : null}
               </span>

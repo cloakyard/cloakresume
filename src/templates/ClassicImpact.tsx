@@ -209,7 +209,7 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
       mainAtoms.push(
         <div className="ci-stats-row" data-stat-row="true" key={`stats-${i}`}>
           {resume.quickStats.slice(i, i + 4).map((stat) => (
-            <div className="ci-stat" key={stat.id}>
+            <div className="ci-stat" key={stat.id} data-stat-card="true">
               <strong className="ci-stat-value">{stat.value}</strong>
               <span className="ci-stat-label">{stat.label}</span>
             </div>

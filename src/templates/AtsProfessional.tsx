@@ -51,7 +51,7 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
     .atp-entry-end { margin-bottom: 3.5mm; }
     .atp-row { display: flex; justify-content: space-between; gap: 6mm; align-items: baseline; flex-wrap: wrap; }
     .atp-row > span:first-child { min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
-    .atp-row > span:last-child { flex-shrink: 0; overflow-wrap: break-word; }
+    .atp-row > span:last-child:not(:first-child) { flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .atp-role { font-size: 11pt; font-weight: 600; color: #111827; overflow-wrap: break-word; }
     .atp-company { font-size: 10.5pt; color: ${palette.primary700}; font-weight: 500; overflow-wrap: break-word; }
     .atp-dates { font-size: 9.8pt; color: #6b7280; white-space: nowrap; font-variant-numeric: tabular-nums; }

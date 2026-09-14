@@ -103,8 +103,8 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
     .cs-award strong { color: #111827; display: block; overflow-wrap: break-word; }
     .cs-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.3pt; margin-bottom: 1mm; flex-wrap: wrap; }
     .cs-lang:last-child { margin-bottom: 0; }
-    .cs-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
-    .cs-lang .lvl { color: ${palette.primary600}; font-size: 7.8pt; flex-shrink: 0; }
+    .cs-lang > span:first-child { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+    .cs-lang .lvl { color: ${palette.primary600}; font-size: 7.8pt; flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .cs-interests { display: flex; flex-wrap: wrap; gap: 1.5mm; }
     .cs-extrakv { font-size: 8.2pt; margin-bottom: 1.5mm; overflow-wrap: break-word; }
     .cs-extrakv:last-child { margin-bottom: 0; }
@@ -263,7 +263,7 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
         <div className="cs-stats">
           <p>
             {resume.quickStats.map((s, i) => (
-              <span key={s.id}>
+              <span key={s.id} data-stat-card="true">
                 <strong>{s.value}</strong> {s.label}
                 {i < resume.quickStats.length - 1 ? <br /> : null}
               </span>

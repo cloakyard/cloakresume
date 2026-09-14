@@ -96,8 +96,8 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
     .ct-kv strong { color: #111827; overflow-wrap: break-word; }
     .ct-pill { display: inline-block; background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.5mm; margin: 0.3mm; border-radius: 4px; font-size: 7.4pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .ct-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 0.6mm; flex-wrap: wrap; }
-    .ct-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
-    .ct-lang .lvl { color: ${palette.primary600}; font-size: 7.6pt; flex-shrink: 0; }
+    .ct-lang > span:first-child { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+    .ct-lang .lvl { color: ${palette.primary600}; font-size: 7.6pt; flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .ct-proj-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 2mm 3mm; }
   `;
 

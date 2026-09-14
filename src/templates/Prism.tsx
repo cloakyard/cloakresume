@@ -69,8 +69,8 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     .pr-skill-list { font-size: 8pt; color: #cbd5e1; line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; }
     .pr-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 1mm; color: #cbd5e1; padding-bottom: 0.8mm; border-bottom: 1px dotted rgba(255,255,255,0.18); flex-wrap: wrap; }
     .pr-lang:last-child { border-bottom: 0; }
-    .pr-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
-    .pr-lang .lvl { color: ${palette.primary200}; font-weight: 700; font-size: 7.8pt; flex-shrink: 0; }
+    .pr-lang > span:first-child { min-width: 0; max-width: 100%; overflow-wrap: break-word; }
+    .pr-lang .lvl { color: ${palette.primary200}; font-weight: 700; font-size: 7.8pt; flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .pr-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
     .pr-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #e2e8f0; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .pr-cert { font-size: 8.2pt; margin-bottom: 1.6mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: break-word; }
@@ -182,7 +182,7 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
         <div className="pr-h3">At a Glance</div>
         <div className="pr-stats">
           {resume.quickStats.map((s) => (
-            <div className="pr-stat" key={s.id}>
+            <div className="pr-stat" key={s.id} data-stat-card="true">
               <div className="pr-stat-value">{s.value}</div>
               <div className="pr-stat-label">{s.label}</div>
             </div>

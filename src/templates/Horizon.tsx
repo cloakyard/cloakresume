@@ -72,8 +72,8 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
     .hz-skill-list { font-size: 8.1pt; color: #374151; line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; }
     .hz-lang { break-inside: avoid; page-break-inside: avoid; display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 0.9mm; color: #374151; padding-bottom: 0.8mm; border-bottom: 1px dashed ${palette.primary200}; flex-wrap: wrap; }
     .hz-lang:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
-    .hz-lang > span:first-child { min-width: 0; overflow-wrap: break-word; color: #0f172a; font-weight: 600; }
-    .hz-lang .lvl { color: ${palette.primary700}; font-weight: 600; font-size: 7.8pt; flex-shrink: 0; }
+    .hz-lang > span:first-child { min-width: 0; max-width: 100%; overflow-wrap: break-word; color: #0f172a; font-weight: 600; }
+    .hz-lang .lvl { color: ${palette.primary700}; font-weight: 600; font-size: 7.8pt; flex-shrink: 0; max-width: 100%; overflow-wrap: break-word; }
     .hz-chips { display: flex; flex-wrap: wrap; gap: 1.1mm; }
     .hz-chip { background: #ffffff; border: 1px solid ${palette.primary200}; color: ${palette.primary900}; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
     .hz-cert { font-size: 8.2pt; margin-bottom: 1.4mm; color: #374151; line-height: 1.35; overflow-wrap: break-word; }
@@ -192,7 +192,7 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
         <div className="hz-h3">At a Glance</div>
         <div className="hz-stats">
           {resume.quickStats.map((s) => (
-            <div className="hz-stat" key={s.id}>
+            <div className="hz-stat" key={s.id} data-stat-card="true">
               <div className="hz-stat-value">{s.value}</div>
               <div className="hz-stat-label">{s.label}</div>
             </div>

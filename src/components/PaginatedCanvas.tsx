@@ -90,7 +90,12 @@ const PX_PER_MM = 96 / 25.4;
 
 function renderFragment(fragment: PageFragment, blocks: ReactNode[], key: string): ReactNode {
   return fragment.html === undefined ? (
-    <div key={key} data-pagination-atom style={{ display: "flow-root" }}>
+    <div
+      key={key}
+      data-pagination-atom
+      data-pagination-source-index={fragment.index}
+      style={{ display: "flow-root" }}
+    >
       {blocks[fragment.index]}
     </div>
   ) : (
@@ -98,6 +103,7 @@ function renderFragment(fragment: PageFragment, blocks: ReactNode[], key: string
       key={key}
       data-pagination-atom
       data-pagination-fragment
+      data-pagination-source-index={fragment.index}
       style={{ display: "flow-root" }}
       dangerouslySetInnerHTML={{ __html: fragment.html }}
     />
@@ -264,6 +270,7 @@ export function PaginatedCanvas({
           the packer doesn't underestimate by the margin gaps. */}
       <div
         ref={measureRef}
+        data-pagination-measure="main"
         aria-hidden="true"
         className={pageClassName}
         style={{
@@ -304,6 +311,7 @@ export function PaginatedCanvas({
       {sidebarBlocks.length > 0 && (
         <div
           ref={sidebarMeasureRef}
+          data-pagination-measure="sidebar"
           aria-hidden="true"
           className={`${pageClassName ?? ""} ${sidebarClassName ?? ""}`}
           style={{
