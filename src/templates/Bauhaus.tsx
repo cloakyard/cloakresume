@@ -116,9 +116,10 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
     .bh-chip { background: #ffffff; border: 1.5px solid #0a0a0a; color: #0a0a0a; padding: 0.4mm 2.2mm; font-size: 7.8pt; font-weight: 700; letter-spacing: 0.1px; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
     .bh-chip.accent { background: ${palette.primary600}; color: ${palette.primaryText}; border-color: ${palette.primary600}; }
 
-    .bh-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(28mm, 1fr)); gap: 0; border: 2px solid #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
-    .bh-stat { padding: 2.5mm 3mm; text-align: center; border-right: 2px solid #0a0a0a; min-width: 0; }
-    .bh-stat:last-child { border-right: 0; }
+    .bh-stats { display: grid; grid-template-columns: repeat(${Math.max(1, Math.min(resume.quickStats.length, 4))}, minmax(0, 1fr)); gap: 0; border: 2px solid #0a0a0a; page-break-inside: avoid; break-inside: avoid; }
+    .bh-stat { padding: 2.5mm 3mm; text-align: center; border-right: 2px solid #0a0a0a; border-bottom: 2px solid #0a0a0a; min-width: 0; }
+    .bh-stat:nth-child(4n), .bh-stat:last-child:nth-child(-n + 4) { border-right: 0; }
+    .bh-stat:nth-last-child(-n + ${resume.quickStats.length % 4 || 4}) { border-bottom: 0; }
     .bh-stat:nth-child(odd) { background: ${palette.primary50}; }
     .bh-stat-value { font-size: 14pt; font-weight: 900; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; overflow-wrap: normal; }
     .bh-stat-label { font-size: 7.2pt; text-transform: uppercase; letter-spacing: 1.6px; color: #0a0a0a; font-weight: 800; margin-top: 1mm; overflow-wrap: normal; }

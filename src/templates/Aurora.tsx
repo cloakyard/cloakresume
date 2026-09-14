@@ -125,7 +125,7 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
     .au-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
     .au-chip { background: ${palette.primary50}; border: 1px solid ${palette.primary200}; color: ${palette.primary800}; padding: 0.4mm 1.8mm; border-radius: 999px; font-size: 7.8pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
 
-    .au-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(26mm, 1fr)); gap: 2.2mm; margin-top: 3mm; }
+    .au-stats { display: grid; grid-template-columns: repeat(${Math.max(1, Math.min(resume.quickStats.length, 4))}, minmax(0, 1fr)); gap: 2.2mm; margin-top: 3mm; }
     .au-stat { background: rgba(255,255,255,0.85); border: 1px solid ${palette.primary200}; border-radius: 2mm; padding: 2mm 2.5mm; text-align: center; min-width: 0; }
     .au-stat-value { font-size: 13pt; font-weight: 800; color: ${palette.primary700}; letter-spacing: -0.4px; line-height: 1; overflow-wrap: normal; }
     .au-stat-label { font-size: 7.4pt; text-transform: uppercase; letter-spacing: 1.2px; color: #6b7280; font-weight: 700; margin-top: 0.8mm; overflow-wrap: normal; }
