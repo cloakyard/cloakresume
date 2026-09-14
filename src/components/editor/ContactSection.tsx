@@ -71,7 +71,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
   }
 
   return (
-    <div className="space-y-2">
+    <div className="@container/contacts space-y-2">
       <DragList items={resume.contact} onReorder={(next) => patch("contact", next)}>
         {resume.contact.map((c, i) => {
           const issue = validateContact(c.kind, c.value);
@@ -89,10 +89,10 @@ export function ContactSection({ resume, onChange }: SectionProps) {
               }
             >
               {(handle, deleteBtn, moveBtns) => (
-                <div className="rounded-md border border-(--line) bg-(--surface) overflow-hidden">
-                  <div className="flex items-center gap-1.5 px-1 py-1 bg-(--surface-2) border-b border-(--line-soft)">
-                    <span className="hidden sm:inline-flex">{handle}</span>
-                    <div className="hidden sm:flex w-6 h-6 items-center justify-center text-(--ink-4) shrink-0">
+                <div className="grid grid-cols-[minmax(0,1fr)_auto] rounded-md border border-(--line) bg-(--surface) overflow-hidden @min-[36rem]/contacts:grid-cols-[auto_minmax(0,1fr)_auto]">
+                  <div className="flex min-w-0 items-center gap-1.5 p-1 bg-(--surface-2)">
+                    <span className="hidden @min-[22rem]/contacts:inline-flex">{handle}</span>
+                    <div className="hidden @min-[19rem]/contacts:flex w-6 h-6 items-center justify-center text-(--ink-4) shrink-0">
                       {contactIcon(c.kind, 14)}
                     </div>
                     <select
@@ -105,7 +105,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                         patch("contact", next);
                       }}
                       aria-label="Contact kind"
-                      className="min-w-0 flex-1 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
+                      className="cr-control w-28 min-w-0 shrink-0 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
                     >
                       {CONTACT_KINDS.map((k) => (
                         <option key={k} value={k}>
@@ -113,43 +113,42 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="ml-auto flex shrink-0 items-center gap-0.5">
-                      {moveBtns}
-                      {deleteBtn}
-                    </div>
                   </div>
-                  <input
-                    name={`contact-${c.id}-value`}
-                    autoComplete={
-                      c.kind === "email"
-                        ? "email"
-                        : c.kind === "phone"
-                          ? "tel"
-                          : c.kind === "location"
-                            ? "address-level2"
-                            : "url"
-                    }
-                    type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
-                    value={c.value}
-                    aria-label={`${c.kind} contact value`}
-                    onChange={(e) => {
-                      const next = [...resume.contact];
-                      next[i] = { ...c, value: e.target.value };
-                      patch("contact", next);
-                    }}
-                    placeholder={PLACEHOLDER_BY_KIND[c.kind]}
-                    aria-invalid={issue ? true : undefined}
-                    aria-describedby={issue ? issueId : undefined}
-                    className={`w-full min-h-11 px-3 py-2 text-sm bg-transparent placeholder:text-(--ink-5) ${
-                      issue
-                        ? "text-(--color-status-danger) placeholder:text-(--color-status-danger)/40"
-                        : ""
-                    }`}
-                  />
+                  <div className="col-span-full row-start-2 min-w-0 border-t border-(--line-soft) p-1 @min-[36rem]/contacts:col-span-1 @min-[36rem]/contacts:col-start-2 @min-[36rem]/contacts:row-start-1 @min-[36rem]/contacts:border-t-0 @min-[36rem]/contacts:border-x">
+                    <input
+                      name={`contact-${c.id}-value`}
+                      autoComplete={
+                        c.kind === "email"
+                          ? "email"
+                          : c.kind === "phone"
+                            ? "tel"
+                            : c.kind === "location"
+                              ? "address-level2"
+                              : "url"
+                      }
+                      type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
+                      value={c.value}
+                      spellCheck={c.kind === "location"}
+                      aria-label={`${c.kind} contact value`}
+                      onChange={(e) => {
+                        const next = [...resume.contact];
+                        next[i] = { ...c, value: e.target.value };
+                        patch("contact", next);
+                      }}
+                      placeholder={PLACEHOLDER_BY_KIND[c.kind]}
+                      aria-invalid={issue ? true : undefined}
+                      aria-describedby={issue ? issueId : undefined}
+                      className={`cr-input min-w-0 min-h-11 h-full py-2 md:min-h-10 lg:py-2 ${issue ? "cr-input--invalid" : ""}`}
+                    />
+                  </div>
+                  <div className="col-start-2 row-start-1 flex items-center gap-0.5 bg-(--surface-2) p-1 @min-[36rem]/contacts:col-start-3">
+                    {moveBtns}
+                    {deleteBtn}
+                  </div>
                   {issue && (
                     <div
                       id={issueId}
-                      className="flex items-center gap-1.5 px-3 py-1.5 text-sm text-(--color-status-danger) bg-(--color-status-danger-soft) border-t border-(--color-status-danger)"
+                      className="col-span-full flex items-center gap-1.5 px-3 py-1.5 text-sm text-(--color-status-danger) bg-(--color-status-danger-soft) border-t border-(--color-status-danger)"
                       aria-live="polite"
                     >
                       <AlertCircle className="w-3 h-3 shrink-0" strokeWidth={2.25} />

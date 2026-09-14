@@ -271,9 +271,7 @@ export function MonthYearField({
           aria-expanded={open && !disabled}
           aria-controls={open && !disabled ? dialogId : undefined}
           aria-labelledby={`${labelId} ${valueId}`}
-          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue && !disabled ? "pr-12" : ""} ${
-            open && !disabled ? "border-(--brand)! shadow-(--sh-focus)!" : ""
-          }`}
+          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue && !disabled ? "pr-12" : ""}`}
         >
           <Calendar className="w-4 h-4 text-(--brand) shrink-0" />
           <span
@@ -389,7 +387,7 @@ export function MonthYearField({
             </div>
 
             {showYearPicker ? (
-              <div className="cr-scroll grid grid-cols-4 gap-1 max-h-44 overflow-y-auto overscroll-contain py-0.5 pr-1">
+              <div className="cr-scroll grid grid-cols-4 gap-1 max-h-44 overflow-y-auto overscroll-contain p-1 scroll-p-1">
                 {yearList.map((year) => (
                   <button
                     key={year}

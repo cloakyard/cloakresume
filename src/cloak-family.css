@@ -29,9 +29,16 @@ body {
   background: var(--surface-2);
 }
 
+/* Keep the ring colour stable before focus too, so controls with colour
+ * transitions do not briefly animate a grey outline into the accent. */
+:where(a, button, input, textarea, select, [tabindex]) {
+  outline-color: var(--color-focus);
+}
+
 :where(a, button, input, textarea, select, [tabindex]):focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
+  box-shadow: none;
 }
 
 /* Shared editor chrome */
@@ -548,7 +555,8 @@ button:not(.absolute):active:not(:disabled),
   transition: color var(--duration-fast) var(--ease-standard);
 }
 
-.cr-field:focus-within > .cr-field-label {
+.cr-field:focus-within > .cr-field-label,
+.cr-field:focus-within > .cr-field-row > .cr-field-label {
   color: var(--brand);
 }
 
@@ -566,9 +574,37 @@ button:not(.absolute):active:not(:disabled),
   border-color: var(--color-rule-strong);
 }
 
-.cr-input:focus {
+.cr-control {
+  transition-property: color, background-color, border-color;
+}
+
+/* Fields use the same visible ring as keyboard-focused actions. Keep it
+ * independent of validation colour, and avoid stacking a second halo. */
+.cr-input:focus,
+.cr-control:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
   border-color: var(--brand);
-  box-shadow: 0 0 0 2px color-mix(in oklab, var(--brand) 24%, transparent);
+  box-shadow: none;
+}
+
+.cr-input[aria-expanded="true"],
+.cr-control[aria-expanded="true"] {
+  border-color: var(--brand);
+}
+
+/* These overrides follow the shared border rules so errors and writing hints
+ * remain visible while hovering or editing, in either appearance. */
+.cr-input--invalid,
+.cr-input--invalid:hover,
+.cr-input--invalid:focus {
+  border-color: var(--danger);
+}
+
+.cr-input--has-issues:not(.cr-input--invalid),
+.cr-input--has-issues:not(.cr-input--invalid):hover,
+.cr-input--has-issues:not(.cr-input--invalid):focus {
+  border-color: var(--warn);
 }
 
 .cr-editor-header {

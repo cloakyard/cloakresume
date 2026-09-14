@@ -148,7 +148,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                       />
                       Current job
                     </label>
-                    <div>
+                    <div className="cr-field">
                       <div className="cr-field-row">
                         <span className="cr-field-label">Bullets</span>
                         <div className="flex items-center gap-1">

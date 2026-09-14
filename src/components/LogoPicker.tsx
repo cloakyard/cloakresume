@@ -123,7 +123,7 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
           aria-expanded={open}
           aria-controls={open ? dialogId : undefined}
           aria-label={`Logo icon: ${selected?.name ?? "none"}`}
-          className="min-w-0 flex-1 min-h-11 md:min-h-10 flex items-center gap-2 px-3 text-sm border border-(--line) rounded-md bg-(--surface) hover:border-(--color-rule-strong) transition-colors"
+          className="cr-control min-w-0 flex-1 min-h-11 md:min-h-10 flex items-center gap-2 px-3 text-sm border border-(--line) rounded-md bg-(--surface) hover:border-(--color-rule-strong) transition-colors"
         >
           <span className="w-6 h-6 flex items-center justify-center text-(--brand) shrink-0">
             {selected ? (
@@ -182,11 +182,11 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 placeholder="Search icons…"
-                className="w-full min-h-11 md:min-h-10 pl-8 pr-3 text-sm border border-(--line) rounded-md bg-(--surface) text-(--ink-1) placeholder:text-(--ink-5) focus:border-(--brand) transition-colors"
+                className="cr-input min-h-11 md:min-h-10 pl-8 lg:pl-8"
                 autoFocus
               />
             </div>
-            <div className="grid grid-cols-5 min-[360px]:grid-cols-6 gap-1 max-h-65 overflow-y-auto overscroll-contain cr-scroll">
+            <div className="grid grid-cols-5 min-[360px]:grid-cols-6 gap-1 p-1 scroll-p-1 max-h-65 overflow-y-auto overscroll-contain cr-scroll">
               {results.map((e) => {
                 const active = e.name === value;
                 return (
