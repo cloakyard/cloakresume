@@ -91,8 +91,8 @@ export function ContactSection({ resume, onChange }: SectionProps) {
               {(handle, deleteBtn, moveBtns) => (
                 <div className="rounded-md border border-(--line) bg-(--surface) overflow-hidden">
                   <div className="flex items-center gap-1.5 px-1 py-1 bg-(--surface-2) border-b border-(--line-soft)">
-                    {handle}
-                    <div className="w-6 h-6 flex items-center justify-center text-(--ink-4) shrink-0">
+                    <span className="hidden sm:inline-flex">{handle}</span>
+                    <div className="hidden sm:flex w-6 h-6 items-center justify-center text-(--ink-4) shrink-0">
                       {contactIcon(c.kind, 14)}
                     </div>
                     <select
@@ -105,7 +105,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                         patch("contact", next);
                       }}
                       aria-label="Contact kind"
-                      className="min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
+                      className="min-w-0 flex-1 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
                     >
                       {CONTACT_KINDS.map((k) => (
                         <option key={k} value={k}>
@@ -113,7 +113,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
                         </option>
                       ))}
                     </select>
-                    <div className="ml-auto flex items-center gap-0.5">
+                    <div className="ml-auto flex shrink-0 items-center gap-0.5">
                       {moveBtns}
                       {deleteBtn}
                     </div>

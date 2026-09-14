@@ -9,26 +9,51 @@
  */
 
 import { blankResume } from "../data/blankResume.ts";
-import type { ProjectItem, ResumeData, TemplateId } from "../types.ts";
+import type { ContactLink, ResumeData, TemplateId } from "../types.ts";
 import { resolvePaperSize, type PaperSize } from "./paperSize.ts";
+import { normalizePrimaryColor } from "./colors.ts";
 
-/**
- * Convert legacy `project.role: string` (pre-bullets) into `project.roles:
- * string[]`. Save files and localStorage written before this change still
- * carry the old shape, so we lift the single string into a one-item array
- * and drop empties so the editor doesn't open on a blank bullet.
- */
-function migrateProject(p: unknown): ProjectItem {
-  const project = (p ?? {}) as Partial<ProjectItem> & { role?: unknown };
-  if (Array.isArray(project.roles)) {
-    return project as ProjectItem;
-  }
-  if (typeof project.role === "string") {
-    const trimmed = project.role.trim();
-    const { role: _legacy, ...rest } = project as ProjectItem & { role?: string };
-    return { ...rest, roles: trimmed ? [project.role] : [] } as ProjectItem;
-  }
-  return { ...project, roles: [] } as ProjectItem;
+function record(value: unknown): Record<string, unknown> {
+  return value !== null && typeof value === "object" && !Array.isArray(value)
+    ? (value as Record<string, unknown>)
+    : {};
+}
+
+function text(value: unknown, fallback = ""): string {
+  return typeof value === "string"
+    ? value
+    : typeof value === "number" && Number.isFinite(value)
+      ? String(value)
+      : fallback;
+}
+
+function optionalText(value: unknown): string | undefined {
+  return typeof value === "string" ? value : undefined;
+}
+
+function strings(value: unknown): string[] {
+  return Array.isArray(value)
+    ? value.filter((item): item is string => typeof item === "string")
+    : [];
+}
+
+/** Recover usable rows, assigning stable, unique IDs when an imported file lacks them. */
+function rows<T extends { id: string }>(
+  value: unknown,
+  prefix: string,
+  normalize: (row: Record<string, unknown>, id: string) => T,
+): T[] {
+  if (!Array.isArray(value)) return [];
+  const used = new Set<string>();
+  return value.flatMap((item, index) => {
+    if (!item || typeof item !== "object" || Array.isArray(item)) return [];
+    const row = record(item);
+    const base = text(row.id).trim() || `${prefix}-${index}`;
+    let id = base;
+    for (let suffix = 1; used.has(id); suffix++) id = `${base}-${suffix}`;
+    used.add(id);
+    return [normalize(row, id)];
+  });
 }
 
 export interface ResumeSaveFile {
@@ -42,41 +67,112 @@ export interface ResumeSaveFile {
   jobDescription: string;
 }
 
-/**
- * Fill in any missing top-level fields from the blank baseline.
- *
- * Guards the render path from partial or slightly-outdated JSON — e.g. a
- * file saved before a new section existed, or one hand-edited to remove
- * an array. Array item shape isn't deep-checked: the save-file format is
- * owned by this app, so we trust inner shapes once the discriminator
- * matches.
- */
+/** Normalize file/storage data at the boundary so every editor and template gets a safe shape. */
 export function normalizeResumeData(data: unknown): ResumeData {
-  if (!data || typeof data !== "object") return blankResume;
-  const src = data as Partial<ResumeData>;
-  const profile =
-    src.profile && typeof src.profile === "object"
-      ? { ...blankResume.profile, ...src.profile }
-      : blankResume.profile;
-  const arr = <T>(value: unknown, fallback: T[]): T[] =>
-    Array.isArray(value) ? (value as T[]) : fallback;
+  const src = record(data);
+  const profile = record(src.profile);
+  const contactKinds = new Set([
+    "email",
+    "phone",
+    "location",
+    "website",
+    "linkedin",
+    "github",
+    "twitter",
+    "medium",
+    "other",
+  ]);
   return {
-    profile,
-    contact: arr(src.contact, blankResume.contact),
-    skills: arr(src.skills, blankResume.skills),
-    experience: arr(src.experience, blankResume.experience),
-    education: arr(src.education, blankResume.education),
-    projects: arr<ProjectItem>(src.projects, blankResume.projects).map(migrateProject),
-    certifications: arr(src.certifications, blankResume.certifications),
-    awards: arr(src.awards, blankResume.awards),
-    languages: arr(src.languages, blankResume.languages),
-    interests: arr(src.interests, blankResume.interests),
-    tools: arr(src.tools, blankResume.tools),
-    interestsLabel: typeof src.interestsLabel === "string" ? src.interestsLabel : undefined,
-    toolsLabel: typeof src.toolsLabel === "string" ? src.toolsLabel : undefined,
-    quickStats: arr(src.quickStats, blankResume.quickStats),
-    extras: arr(src.extras, blankResume.extras),
-    custom: arr(src.custom, blankResume.custom),
+    profile: {
+      name: text(profile.name, blankResume.profile.name),
+      title: text(profile.title, blankResume.profile.title),
+      summary: text(profile.summary),
+      // The upload UI stores local JPEG/PNG data only. Imported remote images
+      // would make requests outside the app's private document workflow.
+      photoUrl:
+        typeof profile.photoUrl === "string" &&
+        /^data:image\/(?:jpeg|png);base64,[a-z0-9+/=\s]+$/i.test(profile.photoUrl)
+          ? profile.photoUrl
+          : undefined,
+      logoIconName: optionalText(profile.logoIconName),
+    },
+    contact: rows(src.contact, "contact", (row, id) => ({
+      id,
+      kind: contactKinds.has(text(row.kind)) ? (row.kind as ContactLink["kind"]) : "other",
+      value: text(row.value),
+    })),
+    skills: rows(src.skills, "skill", (row, id) => ({
+      id,
+      label: text(row.label),
+      items: text(row.items),
+      iconName: optionalText(row.iconName),
+    })),
+    experience: rows(src.experience, "experience", (row, id) => ({
+      id,
+      title: text(row.title),
+      company: text(row.company),
+      location: text(row.location),
+      start: text(row.start),
+      end: text(row.end),
+      bullets: strings(row.bullets),
+    })),
+    education: rows(src.education, "education", (row, id) => ({
+      id,
+      degree: text(row.degree),
+      school: text(row.school),
+      location: text(row.location),
+      start: text(row.start),
+      end: text(row.end),
+      detail: text(row.detail),
+    })),
+    projects: rows(src.projects, "project", (row, id) => ({
+      id,
+      name: text(row.name),
+      description: text(row.description),
+      stack: strings(row.stack),
+      roles: Array.isArray(row.roles)
+        ? strings(row.roles)
+        : typeof row.role === "string" && row.role.trim()
+          ? [row.role]
+          : [],
+    })),
+    certifications: rows(src.certifications, "certification", (row, id) => ({
+      id,
+      issuer: text(row.issuer),
+      name: text(row.name),
+      year: text(row.year),
+      url: optionalText(row.url),
+    })),
+    awards: rows(src.awards, "award", (row, id) => ({
+      id,
+      title: text(row.title),
+      year: text(row.year),
+      detail: text(row.detail),
+    })),
+    languages: rows(src.languages, "language", (row, id) => ({
+      id,
+      name: text(row.name),
+      level: text(row.level),
+    })),
+    interests: strings(src.interests),
+    tools: strings(src.tools),
+    interestsLabel: optionalText(src.interestsLabel),
+    toolsLabel: optionalText(src.toolsLabel),
+    quickStats: rows(src.quickStats, "stat", (row, id) => ({
+      id,
+      value: text(row.value),
+      label: text(row.label),
+    })),
+    extras: rows(src.extras, "extra", (row, id) => ({
+      id,
+      label: text(row.label),
+      value: text(row.value),
+    })),
+    custom: rows(src.custom, "custom", (row, id) => ({
+      id,
+      header: text(row.header),
+      bullets: strings(row.bullets),
+    })),
   };
 }
 
@@ -128,14 +224,14 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
   } catch {
     throw new Error("This file is not valid JSON.");
   }
-  if (!parsed || typeof parsed !== "object") {
+  if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) {
     throw new Error("Unexpected file shape — expected a CloakResume JSON object.");
   }
   const obj = parsed as Partial<ResumeSaveFile>;
   if (obj.kind !== "cloakresume.v1") {
     throw new Error("This doesn't look like a CloakResume save file.");
   }
-  if (!obj.resume || typeof obj.resume !== "object") {
+  if (!obj.resume || typeof obj.resume !== "object" || Array.isArray(obj.resume)) {
     throw new Error("Save file is missing resume data.");
   }
   if (typeof obj.templateId !== "string") {
@@ -146,7 +242,7 @@ export async function readResumeFile(file: File): Promise<ResumeSaveFile> {
     savedAt: typeof obj.savedAt === "string" ? obj.savedAt : new Date().toISOString(),
     resume: normalizeResumeData(obj.resume),
     templateId: obj.templateId as TemplateId,
-    primary: typeof obj.primary === "string" && obj.primary ? obj.primary : "#047857",
+    primary: normalizePrimaryColor(obj.primary),
     paperSize: resolvePaperSize(obj.paperSize),
     jobDescription: typeof obj.jobDescription === "string" ? obj.jobDescription : "",
   };

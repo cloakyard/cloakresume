@@ -158,7 +158,7 @@ export function certificationLink(c: Certification, content: ReactNode): ReactNo
  * projects so the separator stays consistent.
  */
 export function formatDateRange(start: string, end?: string): string {
-  return end ? `${start} – ${end}` : start;
+  return [start, end].filter((value) => value?.trim()).join(" – ");
 }
 
 /**

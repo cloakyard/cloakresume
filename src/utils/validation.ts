@@ -31,7 +31,7 @@ export function isValidPhone(value: string): boolean {
   const v = value.trim();
   if (!v) return false;
   const digits = v.replace(/[^\d]/g, "");
-  return digits.length >= 7 && /^[+\d][\d\s().-]*$/.test(v);
+  return digits.length >= 7 && /^[+(\d][\d\s().-]*$/.test(v);
 }
 
 /** Return a canonical https:// URL for any value that parses as URL-ish. */

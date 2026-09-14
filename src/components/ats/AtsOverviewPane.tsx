@@ -82,9 +82,10 @@ function buildWritingDimensions(report: AtsReport): Dimension[] {
 interface AtsOverviewPaneProps {
   report: AtsReport;
   hasJobDescription: boolean;
+  grammarError?: string | null;
 }
 
-export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPaneProps) {
+export function AtsOverviewPane({ report, hasJobDescription, grammarError }: AtsOverviewPaneProps) {
   const atsDimensions = buildAtsDimensions(report, hasJobDescription);
   const writingDimensions = buildWritingDimensions(report);
   const topFixes = report.issues.slice(0, 3);
@@ -101,15 +102,24 @@ export function AtsOverviewPane({ report, hasJobDescription }: AtsOverviewPanePr
           <CardHead
             title="Writing scorecard"
             sub={
-              report.writingReady ? `${writingDimensions.length} dimensions` : "waiting for scan…"
+              report.writingReady
+                ? `${writingDimensions.length} dimensions`
+                : grammarError
+                  ? "scan unavailable"
+                  : report.grammar
+                    ? `${report.grammar.wordsChecked} words checked`
+                    : "waiting for scan…"
             }
           />
           {report.writingReady ? (
             <DimensionList dimensions={writingDimensions} />
           ) : (
             <div className="py-2 text-sm leading-[1.5] text-(--ink-4)">
-              Writing analysis hasn't completed yet. Once the scan finishes, spelling, grammar,
-              style, and readability each get their own score.
+              {grammarError
+                ? "Choose Re-scan to retry the writing review."
+                : report.grammar
+                  ? "Scan complete. Add at least 20 words of summary, bullets, or other prose to receive a writing score."
+                  : "Writing analysis hasn't completed yet. Once the scan finishes, spelling, grammar, style, and readability each get their own score."}
             </div>
           )}
         </Card>

@@ -12,6 +12,7 @@ import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 
 interface ToolbarActionsProps {
   onExportPdf: () => void;
+  exporting?: boolean;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
   onNewResume: () => void;
@@ -24,6 +25,7 @@ function ToolbarDivider() {
 
 export function ToolbarActions({
   onExportPdf,
+  exporting = false,
   onSaveFile,
   onLoadFile,
   onNewResume,
@@ -100,12 +102,14 @@ export function ToolbarActions({
       <button
         type="button"
         onClick={onExportPdf}
+        disabled={exporting}
+        aria-busy={exporting}
         className="tb primary"
         aria-label="Export to PDF"
-        title="Export to PDF"
+        title={exporting ? "Exporting PDF…" : "Export to PDF"}
       >
         <Download aria-hidden="true" className="w-4 h-4" />
-        <span className="hidden 2xl:inline">Export PDF</span>
+        <span className="hidden 2xl:inline">{exporting ? "Exporting…" : "Export PDF"}</span>
       </button>
     </>
   );

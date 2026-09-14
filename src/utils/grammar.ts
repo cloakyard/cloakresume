@@ -13,16 +13,10 @@
  * bundled at build time.
  */
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useLayoutEffect, useRef, useState } from "react";
 import type { GrammarIssue, GrammarIssueKind, GrammarReport, ResumeData } from "../types.ts";
 
-/** Strip markdown emphasis so the linter doesn't flag `**`/`*`/backticks as prose errors. */
-function stripMarkdown(text: string): string {
-  return text
-    .replace(/\*\*([^*]+)\*\*/g, "$1")
-    .replace(/(^|[^\\])\*([^*]+)\*/g, "$1$2")
-    .replace(/`([^`]+)`/g, "$1");
-}
+import { plainText } from "./richText.tsx";
 
 /**
  * Flatten the résumé into labelled prose segments. Only free-form writing
@@ -36,7 +30,7 @@ function buildGrammarSegments(resume: ResumeData) {
     out.push({
       id: "profile.summary",
       label: "Professional summary",
-      text: stripMarkdown(summary),
+      text: plainText(summary),
     });
   }
   resume.experience.forEach((role, i) => {
@@ -47,7 +41,7 @@ function buildGrammarSegments(resume: ResumeData) {
       out.push({
         id: `experience.${i}.bullets.${bi}`,
         label: `${roleLabel} · bullet ${bi + 1}`,
-        text: stripMarkdown(trimmed),
+        text: plainText(trimmed),
       });
     });
   });
@@ -58,7 +52,7 @@ function buildGrammarSegments(resume: ResumeData) {
       out.push({
         id: `projects.${i}.description`,
         label: `${projLabel} · description`,
-        text: stripMarkdown(desc),
+        text: plainText(desc),
       });
     }
     (p.roles ?? []).forEach((r, ri) => {
@@ -67,7 +61,7 @@ function buildGrammarSegments(resume: ResumeData) {
       out.push({
         id: `projects.${i}.roles.${ri}`,
         label: `${projLabel} · role ${ri + 1}`,
-        text: stripMarkdown(trimmed),
+        text: plainText(trimmed),
       });
     });
   });
@@ -77,9 +71,19 @@ function buildGrammarSegments(resume: ResumeData) {
       out.push({
         id: `awards.${i}.detail`,
         label: `${a.title.trim() || `Award #${i + 1}`} · detail`,
-        text: stripMarkdown(detail),
+        text: plainText(detail),
       });
     }
+  });
+  resume.custom.forEach((section, i) => {
+    section.bullets.forEach((bullet, bi) => {
+      if (bullet.trim())
+        out.push({
+          id: `custom.${i}.bullets.${bi}`,
+          label: `${section.header.trim() || "Custom section"} · bullet ${bi + 1}`,
+          text: plainText(bullet.trim()),
+        });
+    });
   });
   return out;
 }
@@ -174,8 +178,7 @@ const PERSONAL_DICTIONARY = [
 /**
  * Fetch Harper's WASM with a streaming reader so callers can render
  * byte-level progress, then hand it to a WorkerLinter as a blob URL.
- * The blob is document-scoped and survives until the tab closes, so
- * repeat scans reuse the cached linter instance.
+ * Release the blob after setup; repeat scans reuse the initialized worker.
  */
 async function loadLinter(onProgress: (pct: number) => void): Promise<HarperLinter> {
   // Importing `harper.js/binary` makes Vite fingerprint + emit the .wasm
@@ -215,9 +218,13 @@ async function loadLinter(onProgress: (pct: number) => void): Promise<HarperLint
     binary: customBinary,
     dialect: Dialect.American,
   }) as unknown as HarperLinter;
-  await linter.setup();
-  await linter.importWords(PERSONAL_DICTIONARY);
-  return linter;
+  try {
+    await linter.setup();
+    await linter.importWords(PERSONAL_DICTIONARY);
+    return linter;
+  } finally {
+    URL.revokeObjectURL(blobUrl);
+  }
 }
 
 /**
@@ -233,6 +240,7 @@ function isProperNoun(actual: string): boolean {
 export interface UseGrammarScan {
   /** Latest completed report, or null if nothing has been scanned yet. */
   report: GrammarReport | null;
+  error: string | null;
   /** True while a scan is in flight (includes first-time engine download). */
   scanning: boolean;
   /** True once the Harper WASM is loaded and the linter is ready. */
@@ -244,8 +252,12 @@ export interface UseGrammarScan {
 }
 
 export function useGrammarScan(resume: ResumeData): UseGrammarScan {
-  const [report, setReport] = useState<GrammarReport | null>(null);
-  const [scanning, setScanning] = useState(false);
+  const [result, setResult] = useState<{
+    resume: ResumeData;
+    report: GrammarReport | null;
+    scanning: boolean;
+    error: string | null;
+  } | null>(null);
   const [engineReady, setEngineReady] = useState(false);
   const [engineProgress, setEngineProgress] = useState(0);
   const linterRef = useRef<HarperLinter | null>(null);
@@ -253,24 +265,33 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
   const latestRequestRef = useRef(0);
   const resumeRef = useRef(resume);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     resumeRef.current = resume;
+    // A report belongs to one document revision, including while a scan is running.
+    latestRequestRef.current++;
   }, [resume]);
 
   const scan = useCallback(() => {
     const requestId = ++latestRequestRef.current;
-    setScanning(true);
+    const scannedResume = resumeRef.current;
+    setResult({ resume: scannedResume, report: null, scanning: true, error: null });
 
     const ensureLinter = async (): Promise<HarperLinter> => {
       if (linterRef.current) return linterRef.current;
       if (!linterPromiseRef.current) {
+        setEngineProgress(0);
         linterPromiseRef.current = loadLinter((pct) => {
           setEngineProgress(pct);
-        }).then((linter) => {
-          linterRef.current = linter;
-          setEngineReady(true);
-          return linter;
-        });
+        })
+          .then((linter) => {
+            linterRef.current = linter;
+            setEngineReady(true);
+            return linter;
+          })
+          .catch((failure: unknown) => {
+            linterPromiseRef.current = null;
+            throw failure;
+          });
       }
       return linterPromiseRef.current;
     };
@@ -278,10 +299,11 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
     void (async () => {
       try {
         const linter = await ensureLinter();
-        const segments = buildGrammarSegments(resumeRef.current);
+        const segments = buildGrammarSegments(scannedResume);
         const issues: GrammarIssue[] = [];
         let wordsChecked = 0;
         for (const seg of segments) {
+          if (requestId !== latestRequestRef.current) return;
           wordsChecked += countWords(seg.text);
           const lints = await linter.lint(seg.text, { language: "plaintext" });
           for (const lint of lints) {
@@ -305,17 +327,34 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
           }
         }
         if (requestId !== latestRequestRef.current) return;
-        setReport({ issues, wordsChecked });
-        setScanning(false);
+        setResult({
+          resume: scannedResume,
+          report: { issues, wordsChecked },
+          scanning: false,
+          error: null,
+        });
       } catch {
         if (requestId !== latestRequestRef.current) return;
-        // Engine failures degrade silently — the ATS score just omits the
-        // writing dimension rather than breaking the entire review.
-        setReport({ issues: [], wordsChecked: 0 });
-        setScanning(false);
+        setResult({
+          resume: scannedResume,
+          report: null,
+          scanning: false,
+          error:
+            "Writing review could not finish. Check your connection if the engine has not downloaded, then choose Re-scan. Your résumé stays on this device.",
+        });
       }
     })();
   }, []);
 
-  return { report, scanning, engineReady, engineProgress, scan };
+  // Invalidate stale results during render without scheduling another update on
+  // every keystroke. Only actual scan progress writes to state.
+  const current = result?.resume === resume ? result : null;
+  return {
+    report: current?.report ?? null,
+    scanning: current?.scanning ?? false,
+    engineReady,
+    engineProgress,
+    error: current?.error ?? null,
+    scan,
+  };
 }

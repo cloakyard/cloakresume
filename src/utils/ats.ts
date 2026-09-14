@@ -172,7 +172,7 @@ function tokenize(text: string): string[] {
 }
 
 /** Collapse the whole resume into a single searchable lowercase string. */
-function flatten(resume: ResumeData): string {
+export function flattenResumeText(resume: ResumeData): string {
   const parts: string[] = [];
   parts.push(resume.profile.name, resume.profile.title, resume.profile.summary);
   for (const c of resume.contact) parts.push(c.value);
@@ -191,6 +191,8 @@ function flatten(resume: ResumeData): string {
   for (const a of resume.awards) parts.push(a.title, a.detail);
   for (const l of resume.languages) parts.push(l.name, l.level);
   parts.push(...resume.interests, ...resume.tools);
+  for (const section of resume.custom) parts.push(section.header, ...section.bullets);
+  for (const item of [...resume.quickStats, ...resume.extras]) parts.push(item.label, item.value);
   return parts.join(" ").toLowerCase();
 }
 
@@ -199,6 +201,7 @@ function wordCount(resume: ResumeData): number {
   const text = [
     resume.profile.summary,
     ...resume.experience.flatMap((e) => e.bullets),
+    ...resume.custom.flatMap((section) => section.bullets),
     ...resume.projects.map((p) => `${p.description} ${(p.roles ?? []).join(" ")}`),
   ].join(" ");
   return tokenize(text).length;
@@ -738,7 +741,7 @@ export function computeAts(
     });
   } else {
     const keywords = extractKeywords(jobDescription);
-    const haystack = flatten(resume);
+    const haystack = flattenResumeText(resume);
     for (const kw of keywords) {
       if (haystack.includes(kw)) matched.push(kw);
       else missing.push(kw);

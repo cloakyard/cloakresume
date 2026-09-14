@@ -21,7 +21,7 @@ import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
 import { ToolbarOverflow } from "./components/ToolbarOverflow.tsx";
 import { SectionPanel } from "./components/SectionPanel.tsx";
-import type { SectionId } from "./components/SectionRail.tsx";
+import { SECTIONS, type SectionId } from "./components/SectionRail.tsx";
 import type { MobileView } from "./components/ViewSegment.tsx";
 import { Preview } from "./components/Preview.tsx";
 
@@ -67,7 +67,8 @@ import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
 import { generateSampleResume } from "./data/sampleResume.ts";
 import { TEMPLATES } from "./templates/index.ts";
 import type { ResumeData, TemplateId } from "./types.ts";
-import { derivePalette } from "./utils/colors.ts";
+import { derivePalette, normalizePrimaryColor } from "./utils/colors.ts";
+import { useAutosave } from "./utils/useAutosave.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
@@ -87,7 +88,7 @@ const DEFAULT_PRIMARY = "#047857";
 
 /** Accept only known template ids; fall back silently so a removed template can't crash the preview. */
 function resolveTemplateId(candidate: unknown): TemplateId {
-  if (typeof candidate === "string" && candidate in TEMPLATES) {
+  if (typeof candidate === "string" && Object.hasOwn(TEMPLATES, candidate)) {
     return candidate as TemplateId;
   }
   return DEFAULT_TEMPLATE_ID;
@@ -131,11 +132,11 @@ function loadPersisted(): Persisted {
         return {
           resume: normalizeResumeData(parsed.resume),
           templateId: resolveTemplateId(parsed.templateId),
-          primary:
-            typeof parsed.primary === "string" && parsed.primary ? parsed.primary : DEFAULT_PRIMARY,
+          primary: normalizePrimaryColor(parsed.primary),
           paperSize: resolvePaperSize(parsed.paperSize),
           jobDescription: typeof parsed.jobDescription === "string" ? parsed.jobDescription : "",
-          activeSection: (parsed.activeSection ?? "profile") as SectionId,
+          activeSection:
+            SECTIONS.find((section) => section.id === parsed.activeSection)?.id ?? "profile",
           savedAt: typeof parsed.savedAt === "string" ? parsed.savedAt : undefined,
         };
       }
@@ -181,35 +182,23 @@ export function App() {
    * dismiss (since dismissing would otherwise drop the user into a blank
    * editor with no clear way back).
    */
-  const hasSavedWork = useMemo(() => resumeHasContent(resume), [resume]);
+  const hasSavedWork = useMemo(
+    () => resumeHasContent(resume) || jobDescription.trim().length > 0,
+    [resume, jobDescription],
+  );
   /** Confirmation prompt before clearing the current work via the "New" button. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
   /** Family notice used for recoverable file and export failures. */
   const [notice, setNotice] = useState<AppNotice | null>(null);
 
-  // Persist after a short idle window so a typing burst performs one write.
-  // Suppressed while the landing is visible — the default state is a placeholder
-  // and shouldn't bypass the first-run screen by getting written to storage.
+  const persisted = useMemo(
+    () => ({ resume, templateId, primary, paperSize, jobDescription, activeSection }),
+    [resume, templateId, primary, paperSize, jobDescription, activeSection],
+  );
+  const { error: saveError, savedAt } = useAutosave(LS_KEY, persisted, !showLanding);
   useEffect(() => {
-    if (showLanding) return;
-    const timeout = window.setTimeout(() => {
-      const payload: Persisted = {
-        resume,
-        templateId,
-        primary,
-        paperSize,
-        jobDescription,
-        activeSection,
-        savedAt: new Date().toISOString(),
-      };
-      try {
-        localStorage.setItem(LS_KEY, JSON.stringify(payload));
-      } catch {
-        // Quota exceeded (e.g. huge photo) — silently skip.
-      }
-    }, 300);
-    return () => window.clearTimeout(timeout);
-  }, [resume, templateId, primary, paperSize, jobDescription, activeSection, showLanding]);
+    if (saveError) setNotice({ title: "Draft not saved", description: saveError });
+  }, [saveError]);
 
   /** Change-in-one-place: derive palette from primary, memoised. */
   const palette = useMemo(() => derivePalette(primary), [primary]);
@@ -221,6 +210,7 @@ export function App() {
    */
   const {
     report: grammarReport,
+    error: grammarError,
     scanning: grammarScanning,
     engineReady: grammarEngineReady,
     engineProgress: grammarEngineProgress,
@@ -238,33 +228,20 @@ export function App() {
     if (atsOpen) runGrammarScan();
   }, [atsOpen, runGrammarScan]);
 
-  /**
-   * Live in-field writing feedback. Once the Harper engine has been
-   * loaded (i.e. the user has opened the ATS review at least once), any
-   * resume edit schedules a debounced re-scan so the badges next to each
-   * prose field stay in sync with the latest text. Before the engine is
-   * ready we stay silent — the ~7 MB WASM payload is deferred to the
-   * first intentional scan. We also skip the first engine-ready
-   * transition so the initial [atsOpen] scan isn't shadowed by a
-   * second scan firing ~800 ms later, which caused the "Scanning
-   * locally…" hero to briefly reappear after content first rendered.
-   */
-  const sawEngineReadyRef = useRef(false);
+  // Only the current document revision needs a background scan. An edit made
+  // during the initial engine download must also be scanned when it becomes ready.
   useEffect(() => {
-    if (!grammarEngineReady) return;
-    if (!sawEngineReadyRef.current) {
-      sawEngineReadyRef.current = true;
-      return;
-    }
-    const id = window.setTimeout(() => runGrammarScan(), 800);
+    if (!grammarEngineReady || grammarScanning || grammarReport || grammarError) return;
+    const id = window.setTimeout(runGrammarScan, 800);
     return () => window.clearTimeout(id);
-  }, [resume, grammarEngineReady, runGrammarScan]);
+  }, [resume, grammarEngineReady, grammarScanning, grammarReport, grammarError, runGrammarScan]);
 
   /** Switch the rail to the JD section when the user clicks "add JD" in the panel. */
   const focusJdEditor = useCallback(() => {
     setAtsOpen(false);
     setActiveSection("jd");
     setMobileSectionOpen(true);
+    setMobileView("panel");
   }, []);
 
   /**
@@ -284,7 +261,9 @@ export function App() {
             ? "projects"
             : prefix === "awards"
               ? "awards"
-              : null;
+              : prefix === "custom"
+                ? "custom"
+                : null;
     if (!target) return;
     setActiveSection(target);
     setMobileSectionOpen(true);
@@ -297,8 +276,11 @@ export function App() {
   }, []);
 
   const TemplateComponent = TEMPLATES[templateId].component;
+  const exportInFlight = useRef(false);
+  const [exporting, setExporting] = useState(false);
 
   const handleExportPdf = useCallback(async () => {
+    if (exportInFlight.current) return;
     const root = document.querySelector<HTMLElement>('.resume-root[data-template-ready="true"]');
     if (!root) {
       setNotice({
@@ -308,6 +290,8 @@ export function App() {
       });
       return;
     }
+    exportInFlight.current = true;
+    setExporting(true);
     try {
       // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
       // in the client after the user actually asks for an export.
@@ -320,6 +304,9 @@ export function App() {
           err instanceof Error ? err.message : "Please try again."
         }`,
       });
+    } finally {
+      exportInFlight.current = false;
+      setExporting(false);
     }
   }, [resume.profile.name, paperSize]);
 
@@ -335,6 +322,9 @@ export function App() {
       setPrimary(payload.primary);
       setPaperSize(payload.paperSize);
       setJobDescription(payload.jobDescription);
+      setActiveSection("profile");
+      setMobileSectionOpen(true);
+      setMobileView("panel");
       setShowLanding(false);
     } catch (err) {
       setNotice({
@@ -350,6 +340,9 @@ export function App() {
   const startWithResume = useCallback((data: ResumeData) => {
     setResume(data);
     setJobDescription("");
+    setActiveSection("profile");
+    setMobileSectionOpen(true);
+    setMobileView("panel");
     setTemplateId(DEFAULT_TEMPLATE_ID);
     setShowLanding(false);
   }, []);
@@ -413,6 +406,7 @@ export function App() {
             <>
               <ToolbarActions
                 onExportPdf={handleExportPdf}
+                exporting={exporting}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
                 onNewResume={handleNewResume}
@@ -424,6 +418,7 @@ export function App() {
                 paperSize={paperSize}
                 onPaperSizeChange={setPaperSize}
                 onExportPdf={handleExportPdf}
+                exporting={exporting}
                 onNewResume={handleNewResume}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
@@ -471,6 +466,7 @@ export function App() {
               hasJobDescription={jobDescription.trim().length > 0}
               onOpenJdEditor={focusJdEditor}
               grammarScanning={grammarScanning}
+              grammarError={grammarError}
               engineReady={grammarEngineReady}
               engineProgress={grammarEngineProgress}
               onRescan={runGrammarScan}
@@ -487,7 +483,7 @@ export function App() {
           onLoadFile={handleLoadFile}
           onDismiss={hasSavedWork ? dismissLanding : undefined}
           onResumeEditing={hasSavedWork ? dismissLanding : undefined}
-          lastSavedAt={hasSavedWork ? initial.savedAt : undefined}
+          lastSavedAt={hasSavedWork ? (savedAt ?? initial.savedAt) : undefined}
         />
       )}
 

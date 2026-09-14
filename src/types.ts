@@ -124,6 +124,8 @@ export interface ResumeData {
 
 export type TemplateId =
   | "classic-sidebar"
+  | "classic-impact"
+  | "ledger"
   | "modern-minimal"
   | "executive-serif"
   | "compact-timeline"

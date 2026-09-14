@@ -30,6 +30,7 @@ interface AtsReviewModalProps {
   onOpenJdEditor: () => void;
   /** True while the Harper worker is linting the current résumé. */
   grammarScanning: boolean;
+  grammarError?: string | null;
   /** True after Harper's WASM has been downloaded and instantiated. */
   engineReady: boolean;
   /** 0…1 progress of the Harper WASM download (only meaningful before `engineReady`). */
@@ -63,6 +64,7 @@ export function AtsReviewModal({
   hasJobDescription,
   onOpenJdEditor,
   grammarScanning,
+  grammarError,
   engineReady,
   engineProgress,
   onRescan,
@@ -273,6 +275,11 @@ export function AtsReviewModal({
             ref={resultsScrollRef}
             className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain cr-scroll min-[640px]:overflow-hidden"
           >
+            {grammarError && (
+              <p role="alert" className="mx-4 mt-3 cr-field-hint cr-field-hint--error">
+                {grammarError}
+              </p>
+            )}
             <header className="flex flex-col gap-3 px-4 pt-3 pb-3 shrink-0 border-b border-(--line) sm:gap-5 sm:px-6 sm:py-5 min-[900px]:px-9 min-[900px]:py-6">
               <div className="flex flex-col-reverse gap-3 sm:flex-row sm:items-start sm:gap-5">
                 <div className="flex-1 min-w-0 flex flex-col gap-1">
@@ -298,7 +305,7 @@ export function AtsReviewModal({
                   </h3>
                   <p className="m-0 text-sm leading-[1.5] text-(--ink-3)">
                     {report.atsScore >= 85
-                      ? "Passes Workday, Greenhouse, and Lever."
+                      ? "The résumé has clear structure for automated parsing."
                       : report.atsScore >= 55
                         ? "Parses reliably — a few tweaks will push it into the green."
                         : "Fundamentals need work before most ATS pipelines will rank this well."}{" "}
@@ -336,6 +343,9 @@ export function AtsReviewModal({
                   writingScore={report.writingScore}
                   writingBand={writingBand}
                   writingReady={report.writingReady}
+                  writingStatus={
+                    grammarError ? "Unavailable" : report.grammar ? "Add text" : "Pending"
+                  }
                 />
               </div>
             </header>
@@ -418,7 +428,11 @@ export function AtsReviewModal({
                 hidden={tab !== "overview"}
               >
                 {tab === "overview" ? (
-                  <AtsOverviewPane report={report} hasJobDescription={hasJobDescription} />
+                  <AtsOverviewPane
+                    report={report}
+                    hasJobDescription={hasJobDescription}
+                    grammarError={grammarError}
+                  />
                 ) : null}
               </div>
               <div
@@ -478,18 +492,26 @@ function ScoreDuo({
   writingScore,
   writingBand,
   writingReady,
+  writingStatus,
 }: {
   atsScore: number;
   atsBand: Band;
   writingScore: number;
   writingBand: Band;
   writingReady: boolean;
+  writingStatus: string;
 }) {
   return (
     <div className="self-stretch w-full flex items-stretch rounded-lg border border-(--line) bg-(--surface-raised) overflow-hidden sm:shrink-0 sm:self-start sm:w-auto sm:inline-flex">
       <ScoreCell label="ATS" score={atsScore} band={atsBand} />
       <div aria-hidden="true" className="w-px bg-(--line-soft)" />
-      <ScoreCell label="Writing" score={writingScore} band={writingBand} muted={!writingReady} />
+      <ScoreCell
+        label="Writing"
+        score={writingScore}
+        band={writingBand}
+        muted={!writingReady}
+        pendingLabel={writingStatus}
+      />
     </div>
   );
 }
@@ -499,11 +521,13 @@ function ScoreCell({
   score,
   band,
   muted = false,
+  pendingLabel = "Pending",
 }: {
   label: string;
   score: number;
   band: Band;
   muted?: boolean;
+  pendingLabel?: string;
 }) {
   const displayColor = muted ? "var(--ink-5)" : band.color;
   return (
@@ -511,7 +535,7 @@ function ScoreCell({
       <span className="font-mono text-[9.5px] font-semibold text-(--ink-5) tracking-[0.1em] uppercase leading-none">
         {label}
       </span>
-      <AtsScoreRing score={muted ? 0 : score} color={displayColor} size={64} />
+      <AtsScoreRing score={muted ? null : score} color={displayColor} size={64} />
       <span
         className="font-mono text-[9px] font-bold tracking-[0.08em] px-2 py-0.5 rounded-full border uppercase leading-none sm:text-[9.5px] sm:px-2.5"
         style={
@@ -520,7 +544,7 @@ function ScoreCell({
             : { color: band.color, background: band.bg, borderColor: band.border }
         }
       >
-        {muted ? "Pending" : band.label}
+        {muted ? pendingLabel : band.label}
       </span>
     </div>
   );

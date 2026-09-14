@@ -8,11 +8,11 @@ import type { ReactNode } from "react";
 
 export function CardHead({ title, sub }: { title: string; sub: string }) {
   return (
-    <div className="mb-3 flex items-baseline justify-between gap-3 border-b border-(--line) pb-2.5">
-      <h3 className="m-0 text-sm font-semibold tracking-[-0.01em] text-(--ink-1) sm:text-[15px]">
+    <div className="mb-3 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1 border-b border-(--line) pb-2.5">
+      <h3 className="m-0 min-w-0 max-w-full break-words text-sm font-semibold tracking-[-0.01em] text-(--ink-1) sm:text-[15px]">
         {title}
       </h3>
-      <span className="font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em] tabular-nums whitespace-nowrap">
+      <span className="min-w-0 max-w-full break-words font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em] tabular-nums">
         {sub}
       </span>
     </div>

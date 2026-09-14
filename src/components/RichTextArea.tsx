@@ -69,19 +69,57 @@ export function RichTextArea({
     registration.setHandler();
   });
 
-  // Coalesce height reads and writes into the next frame. This avoids
-  // forcing layout synchronously for every keystroke while preserving
-  // the auto-growing editor behaviour.
+  // Measure a hidden copy instead of collapsing the live field to `height: auto`.
+  // Collapsing a long field clamps its scroll container back toward the top,
+  // even if its original height is restored in the same animation frame.
   useEffect(() => {
-    if (!autoGrow) return;
     const el = ref.current;
     if (!el) return;
-    const frame = requestAnimationFrame(() => {
-      el.style.height = "auto";
-      el.style.height = `${el.scrollHeight}px`;
+    if (!autoGrow) return;
+    let frame = 0;
+    let measuredWidth = 0;
+    const resize = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (!el.isConnected || el.offsetWidth === 0) return;
+        const mirror = el.cloneNode() as HTMLTextAreaElement;
+        mirror.removeAttribute("id");
+        mirror.removeAttribute("name");
+        mirror.removeAttribute("data-field-id");
+        mirror.removeAttribute("aria-label");
+        mirror.setAttribute("aria-hidden", "true");
+        mirror.tabIndex = -1;
+        mirror.inert = true;
+        Object.assign(mirror.style, {
+          position: "absolute",
+          visibility: "hidden",
+          pointerEvents: "none",
+          top: "0",
+          left: "0",
+          height: "auto",
+          maxHeight: "none",
+          width: `${el.offsetWidth}px`,
+        });
+        mirror.value = el.value;
+        el.parentElement?.appendChild(mirror);
+        const height = `${mirror.scrollHeight + mirror.offsetHeight - mirror.clientHeight}px`;
+        mirror.remove();
+        measuredWidth = el.offsetWidth;
+        if (el.style.height !== height) el.style.height = height;
+      });
+    };
+    const observer = new ResizeObserver(() => {
+      if (el.offsetWidth !== measuredWidth) resize();
     });
-    return () => cancelAnimationFrame(frame);
-  }, [value, autoGrow]);
+    observer.observe(el);
+    document.fonts.addEventListener("loadingdone", resize);
+    resize();
+    return () => {
+      cancelAnimationFrame(frame);
+      observer.disconnect();
+      document.fonts.removeEventListener("loadingdone", resize);
+    };
+  }, [value, autoGrow, rows]);
 
   const applyInline = (marker: string) => {
     const el = ref.current;
@@ -90,7 +128,7 @@ export function RichTextArea({
     onChange(next);
     requestAnimationFrame(() => {
       if (!ref.current) return;
-      ref.current.focus();
+      ref.current.focus({ preventScroll: true });
       ref.current.setSelectionRange(start, end);
       scope?.refreshFormat();
     });

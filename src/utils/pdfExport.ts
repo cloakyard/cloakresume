@@ -18,6 +18,7 @@
  * So the export is raster for fidelity + vector text for accessibility.
  */
 
+import { renderedTextLines } from "./pagination.ts";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "./paperSize.ts";
@@ -33,6 +34,61 @@ const RENDER_SCALE = 3;
 
 /** Elements we never want to pull text from — decoration, not content. */
 const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
+
+/** Fail visibly if a future template regression would otherwise crop its PDF. */
+export function assertExportFits(source: HTMLElement, paperSize: PaperSize): void {
+  const paper = PAPER_SIZES[paperSize];
+  const pages = source.querySelectorAll<HTMLElement>(".resume-page");
+  if (!pages.length) throw new Error("The resume preview is still loading. Please try again.");
+  pages.forEach((page, index) => {
+    const pageRect = page.getBoundingClientRect();
+    const scale = pageRect.width / (paper.widthMm * PX_PER_MM);
+    const bottom = pageRect.top + paper.heightMm * PX_PER_MM * scale;
+    const tolerance = 2 * scale;
+    const walker = document.createTreeWalker(page, NodeFilter.SHOW_TEXT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      if (
+        !node.textContent?.trim() ||
+        !node.parentElement ||
+        node.parentElement.closest("style,script,svg")
+      )
+        continue;
+      const range = document.createRange();
+      range.selectNodeContents(node);
+      for (const rect of range.getClientRects()) {
+        if (!rect.width || !rect.height) continue;
+        let clipped =
+          rect.bottom > bottom + tolerance ||
+          rect.top < pageRect.top - tolerance ||
+          rect.left < pageRect.left - tolerance ||
+          rect.right > pageRect.right + tolerance;
+        for (
+          let parent: HTMLElement | null = node.parentElement;
+          !clipped && parent && parent !== page;
+          parent = parent.parentElement
+        ) {
+          const style = getComputedStyle(parent);
+          const box = parent.getBoundingClientRect();
+          if (
+            ["hidden", "clip"].includes(style.overflowY) &&
+            (rect.bottom > box.bottom + tolerance || rect.top < box.top - tolerance)
+          )
+            clipped = true;
+          if (
+            ["hidden", "clip"].includes(style.overflowX) &&
+            (rect.right > box.right + tolerance || rect.left < box.left - tolerance)
+          )
+            clipped = true;
+        }
+        if (clipped)
+          throw new Error(
+            `Page ${index + 1} could not be laid out completely. Please retry after the preview updates.`,
+          );
+      }
+    }
+  });
+}
 
 /**
  * Walk every `<a href>` inside `pageEl` and register it as a PDF link
@@ -57,18 +113,14 @@ function addLinkAnnotations(
     const href = a.getAttribute("href");
     if (!href) continue;
     if (!/^(https?:|mailto:|tel:)/i.test(href)) continue;
-    const rect = a.getBoundingClientRect();
-    if (rect.width <= 0 || rect.height <= 0) continue;
-    const xMm = (rect.left - pageRect.left) / PX_PER_MM;
-    const yMm = (rect.top - pageRect.top) / PX_PER_MM;
-    const wMm = rect.width / PX_PER_MM;
-    const hMm = rect.height / PX_PER_MM;
-    // Skip anchors that lie outside the page box (rare, but guards
-    // against accidental off-screen clones).
-    if (xMm > widthMm + 2 || yMm > heightMm + 2 || xMm + wMm < -2 || yMm + hMm < -2) {
-      continue;
+    for (const rect of a.getClientRects()) {
+      if (rect.width <= 0 || rect.height <= 0) continue;
+      const xMm = Math.max(0, (rect.left - pageRect.left) / PX_PER_MM);
+      const yMm = Math.max(0, (rect.top - pageRect.top) / PX_PER_MM);
+      const wMm = Math.min(rect.width / PX_PER_MM, widthMm - xMm);
+      const hMm = Math.min(rect.height / PX_PER_MM, heightMm - yMm);
+      if (wMm > 0 && hMm > 0) pdf.link(xMm, yMm, wMm, hMm, { url: href });
     }
-    pdf.link(xMm, yMm, wMm, hMm, { url: href });
   }
 }
 
@@ -90,7 +142,7 @@ function addInvisibleTextLayer(
   const walker = document.createTreeWalker(pageEl, NodeFilter.SHOW_TEXT, {
     acceptNode(node) {
       const text = node.nodeValue;
-      if (!text?.trim()) return NodeFilter.FILTER_REJECT;
+      if (!text) return NodeFilter.FILTER_REJECT;
       let ancestor: HTMLElement | null = node.parentElement;
       while (ancestor) {
         if (SKIP_TAGS.has(ancestor.tagName)) return NodeFilter.FILTER_REJECT;
@@ -104,44 +156,39 @@ function addInvisibleTextLayer(
   // a numeric font-size (shouldn't happen, but keep defensive).
   const DEFAULT_PT = 9.75;
 
+  let pendingSpace: DOMRect | null = null;
   let node = walker.nextNode();
   while (node) {
     const parent = node.parentElement;
-    const raw = node.nodeValue ?? "";
-    // Collapse whitespace the way browsers render it — otherwise we emit
-    // long runs of newlines/tabs from pretty-printed JSX into the PDF.
-    const text = raw.replace(/\s+/g, " ").trim();
-    if (parent && text) {
-      const range = document.createRange();
-      range.selectNodeContents(node);
-      const rect = range.getBoundingClientRect();
-      range.detach?.();
-
-      if (rect.width > 0 && rect.height > 0) {
-        const xMm = (rect.left - pageRect.left) / PX_PER_MM;
+    if (parent && node instanceof Text) {
+      if (!node.data.trim()) {
+        const range = document.createRange();
+        range.selectNodeContents(node);
+        const rect = range.getBoundingClientRect();
+        if (rect.width && rect.height) pendingSpace = rect;
+      }
+      for (const line of renderedTextLines(node)) {
+        const { rect } = line;
+        const hasSeparator =
+          pendingSpace &&
+          rect.top < pendingSpace.bottom &&
+          rect.bottom > pendingSpace.top &&
+          rect.left >= pendingSpace.left - 1;
+        const text = hasSeparator ? ` ${line.text}` : line.text;
+        const left = hasSeparator ? pendingSpace!.left : rect.left;
+        pendingSpace = null;
+        const xMm = (left - pageRect.left) / PX_PER_MM;
         const topMm = (rect.top - pageRect.top) / PX_PER_MM;
-        // Drop anything that lies outside the page box — covers
-        // hidden/off-screen bits the walker accepted.
         if (xMm >= -2 && xMm <= widthMm + 2 && topMm >= -2 && topMm <= heightMm + 2) {
-          const cs = window.getComputedStyle(parent);
-          const fontSizePx = Number.parseFloat(cs.fontSize);
+          const fontSizePx = Number.parseFloat(window.getComputedStyle(parent).fontSize);
           const fontSizePt =
             Number.isFinite(fontSizePx) && fontSizePx > 0 ? fontSizePx / PX_PER_PT : DEFAULT_PT;
-          // Nudge to the glyph baseline — roughly 80% of the line-box
-          // height from the top. Good enough for text extraction; exact
-          // baseline alignment isn't required when the text is invisible.
           const baselineMm = topMm + (rect.height / PX_PER_MM) * 0.8;
-
           try {
             pdf.setFontSize(fontSizePt);
-            pdf.text(text, xMm, baselineMm, {
-              renderingMode: "invisible",
-              baseline: "alphabetic",
-            });
+            pdf.text(text, xMm, baselineMm, { renderingMode: "invisible", baseline: "alphabetic" });
           } catch {
-            // jsPDF's core font can't encode some Unicode code points
-            // (e.g. rare symbols). Skip the offending node rather than
-            // failing the whole export — the raster is unaffected.
+            // The raster still represents Unicode unsupported by jsPDF's core font.
           }
         }
       }
@@ -160,6 +207,16 @@ export async function exportResumeToPdf(
   filename: string,
   paperSize: PaperSize = DEFAULT_PAPER_SIZE,
 ): Promise<void> {
+  await document.fonts.ready;
+  await Promise.all(
+    Array.from(source.querySelectorAll("img"), (img) => img.decode().catch(() => undefined)),
+  );
+  // Font/image completion schedules pagination in a layout effect/observer.
+  // Wait for that live DOM to settle before making the export snapshot.
+  await new Promise<void>((resolve) =>
+    requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+  );
+  assertExportFits(source, paperSize);
   const { widthMm, heightMm, pdfFormat } = PAPER_SIZES[paperSize];
   const pageHeightPx = heightMm * PX_PER_MM;
 
@@ -213,6 +270,8 @@ export async function exportResumeToPdf(
       throw new Error("No resume pages found to export.");
     }
 
+    assertExportFits(clone, paperSize);
+
     const pdf = new jsPDF({
       unit: "mm",
       format: pdfFormat,
@@ -235,13 +294,11 @@ export async function exportResumeToPdf(
         useCORS: true,
         allowTaint: true,
         logging: false,
-        // Lock the capture to the logical paper page size so content that
-        // overflows (rare — templates pack into pages already) doesn't
-        // stretch the PDF page. Height is clamped to the selected size.
-        width: pageEl.offsetWidth,
-        height: Math.min(pageEl.offsetHeight, pageHeightPx),
-        windowWidth: pageEl.offsetWidth,
-        windowHeight: Math.min(pageEl.offsetHeight, pageHeightPx),
+        // Exact paper dimensions, validated above before rasterisation.
+        width: widthMm * PX_PER_MM,
+        height: pageHeightPx,
+        windowWidth: Math.ceil(widthMm * PX_PER_MM),
+        windowHeight: Math.ceil(pageHeightPx),
       });
 
       // PNG at full quality — text (especially serif headings) stays crisp

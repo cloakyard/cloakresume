@@ -31,6 +31,7 @@ interface ToolbarOverflowProps {
   paperSize: PaperSize;
   onPaperSizeChange: (size: PaperSize) => void;
   onExportPdf: () => void;
+  exporting?: boolean;
   onNewResume: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
@@ -42,6 +43,7 @@ export function ToolbarOverflow({
   paperSize,
   onPaperSizeChange,
   onExportPdf,
+  exporting = false,
   onNewResume,
   onSaveFile,
   onLoadFile,
@@ -96,7 +98,8 @@ export function ToolbarOverflow({
         <div className="flex flex-col gap-0.5">
           <OverflowItem
             icon={<Download className="w-4 h-4" style={{ color: "var(--brand)" }} />}
-            label="Export PDF"
+            label={exporting ? "Exporting PDF…" : "Export PDF"}
+            disabled={exporting}
             onClick={() => {
               setOpen(false);
               onExportPdf();
@@ -170,14 +173,21 @@ function OverflowItem({
   label,
   onClick,
   trailing,
+  disabled = false,
 }: {
   icon: React.ReactNode;
   label: string;
   onClick?: () => void;
   trailing?: React.ReactNode;
+  disabled?: boolean;
 }) {
   return (
-    <button type="button" onClick={onClick} className={overflowItemClass}>
+    <button
+      type="button"
+      disabled={disabled}
+      onClick={onClick}
+      className={`${overflowItemClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+    >
       <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
         {icon}
       </span>
