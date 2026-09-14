@@ -25,7 +25,7 @@ CloakResume is a browser-native editor for the complete résumé workflow:
 
 - **Build** — edit profile, contact, experience, education, projects, skills, certifications, awards, languages, interests, tools, stats, extras, and custom sections.
 - **Tailor** — keep a target job description beside the draft, review structure and keyword coverage, and run local writing checks with Harper.
-- **Design** — choose from 15 live résumé layouts, set the template colour, reorder sections, and preview A4 or US Letter pages.
+- **Design** — choose from 17 live résumé layouts, set the template colour, reorder sections, and preview A4 or US Letter pages.
 - **Carry** — export PDF, save or load editable JSON, start with realistic sample content, and return to a browser-saved local draft.
 
 The application chrome follows the same technical-editorial language as
@@ -113,7 +113,7 @@ cloakresume/
 │   │   ├── ats/               # ATS and writing-review panes
 │   │   └── editor/            # Editors for every résumé section
 │   ├── data/                  # Blank and realistic sample résumé generators
-│   ├── templates/             # 15 output layouts and shared pagination helpers
+│   ├── templates/             # 17 output layouts and shared pagination helpers
 │   ├── utils/                 # ATS, grammar, export, colour, storage, and rich-text logic
 │   ├── App.tsx                # State and workflow composition
 │   ├── cloak-family.css       # CloakPDF-family application language
@@ -133,7 +133,7 @@ cloakresume/
 
 - [DESIGN.md](DESIGN.md) defines the shared CloakPDF-family design language, Emerald identity, geometry, overlays, responsive behavior, and résumé-output boundary.
 - [tokens.css](tokens.css) is normative at runtime; [tokens.json](tokens.json) is its portable token inventory.
-- [docs/design-audit.md](docs/design-audit.md) records the complete 71-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
+- [docs/design-audit.md](docs/design-audit.md) records the complete 73-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
 - [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
 - [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.
 

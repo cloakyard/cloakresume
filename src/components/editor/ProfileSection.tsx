@@ -1,6 +1,6 @@
 /** Profile section: avatar/photo + name + headline + logo + summary. */
 
-import { useRef } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
 import type { ResumeData } from "../../types.ts";
 import { TextField } from "../fields.tsx";
@@ -12,16 +12,52 @@ import { usePatch, type SectionProps } from "./shared.tsx";
 export function ProfileSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const readerRef = useRef<FileReader | null>(null);
+  const photoRequest = useRef(0);
+  const [photoError, setPhotoError] = useState<string | null>(null);
 
   const updateProfile = (partial: Partial<ResumeData["profile"]>) =>
     patch("profile", { ...resume.profile, ...partial });
+  const updateProfileRef = useRef(updateProfile);
+  useLayoutEffect(() => {
+    updateProfileRef.current = updateProfile;
+  });
+  useEffect(
+    () => () => {
+      photoRequest.current++;
+      readerRef.current?.abort();
+    },
+    [],
+  );
 
   const handlePhotoUpload = (file: File) => {
+    const request = ++photoRequest.current;
+    readerRef.current?.abort();
+    setPhotoError(null);
+    if (!["image/jpeg", "image/png"].includes(file.type)) {
+      setPhotoError("Choose a JPG or PNG image.");
+      return;
+    }
+    if (file.size > 2 * 1024 * 1024) {
+      setPhotoError("This photo exceeds 2 MB. Choose a smaller JPG or PNG image.");
+      return;
+    }
     const reader = new FileReader();
+    readerRef.current = reader;
+    const fail = () => {
+      if (request === photoRequest.current)
+        setPhotoError("This image could not be opened. Choose another JPG or PNG.");
+    };
+    reader.onerror = fail;
     reader.onload = () => {
       const result = reader.result;
       if (typeof result === "string") {
-        updateProfile({ photoUrl: result });
+        const image = new Image();
+        image.onload = () => {
+          if (request === photoRequest.current) updateProfileRef.current({ photoUrl: result });
+        };
+        image.onerror = fail;
+        image.src = result;
       }
     };
     reader.readAsDataURL(file);
@@ -72,7 +108,12 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             {resume.profile.photoUrl && (
               <button
                 type="button"
-                onClick={() => updateProfile({ photoUrl: undefined })}
+                onClick={() => {
+                  photoRequest.current++;
+                  readerRef.current?.abort();
+                  setPhotoError(null);
+                  updateProfile({ photoUrl: undefined });
+                }}
                 className="min-h-11 md:min-h-10 px-2 rounded-md text-sm text-(--ink-4) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) text-left transition-colors"
               >
                 Remove photo
@@ -91,6 +132,11 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
                 e.target.value = "";
               }}
             />
+            {photoError && (
+              <p role="alert" className="cr-field-hint cr-field-hint--error">
+                {photoError}
+              </p>
+            )}
           </div>
         </div>
 

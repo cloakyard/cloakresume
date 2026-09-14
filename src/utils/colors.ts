@@ -26,6 +26,20 @@ export function clamp(n: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, n));
 }
 
+/** Accept only hex colours before interpolating values into template styles. */
+export function normalizePrimaryColor(value: unknown): string {
+  if (typeof value !== "string") return "#047857";
+  const hex = value.trim();
+  if (/^#[0-9a-f]{6}$/i.test(hex)) return hex;
+  if (/^#[0-9a-f]{3}$/i.test(hex))
+    return `#${hex
+      .slice(1)
+      .split("")
+      .map((c) => c + c)
+      .join("")}`;
+  return "#047857";
+}
+
 function hexToRgb(hex: string): { r: number; g: number; b: number } {
   const clean = hex.replace("#", "").trim();
   const full =
@@ -58,14 +72,22 @@ function luminance(hex: string): number {
   const { r, g, b } = hexToRgb(hex);
   const srgb = [r, g, b].map((c) => {
     const v = c / 255;
-    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    return v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
   });
   return 0.2126 * srgb[0] + 0.7152 * srgb[1] + 0.0722 * srgb[2];
 }
 
 export function derivePalette(primary: string): PrimaryPalette {
+  primary = normalizePrimaryColor(primary);
   const lum = luminance(primary);
-  const onPrimary = lum > 0.55 ? "#111827" : "#ffffff";
+  const darkContrast = (lum + 0.05) / (luminance("#111827") + 0.05);
+  const lightContrast = 1.05 / (lum + 0.05);
+  const onPrimary =
+    Math.max(darkContrast, lightContrast) < 4.5
+      ? "#000000"
+      : darkContrast > lightContrast
+        ? "#111827"
+        : "#ffffff";
   return {
     primary,
     primaryText: onPrimary,

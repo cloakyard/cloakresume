@@ -1,44 +1,8 @@
 /**
- * Auto-paginating A4 canvas.
- *
- * Accepts a sequence of top-level section blocks and packs them into as
- * many A4 pages as needed. Each block is treated as atomic — if it fits
- * in the remaining space on the current page it stays there, otherwise
- * a new page is started. Sections that are themselves taller than an
- * A4 page are allowed to spill (the print engine + CSS
- * `break-inside: auto` on over-tall atoms handles that gracefully).
- *
- * `sidebar` can be either a ReactNode (repeated on every page) or a
- * render function. When `sidebarAtoms` is supplied, the function signature
- * is `(pageIndex, pageCount, atomsForPage) => ReactNode` and sidebar
- * content is paginated independently of the main column so sections that
- * overflow page 1's sidebar continue onto later pages rather than being
- * hidden or pushing the page past A4.
- *
- * IMPORTANT: Heights are read from `offsetHeight`, NOT
- * `getBoundingClientRect().height`. The preview wraps this canvas in a
- * `transform: scale(zoom)` container, and `getBoundingClientRect` would
- * return the *visually scaled* height — causing more content to appear
- * to fit per page at lower zooms and fewer at higher ones. `offsetHeight`
- * returns the unscaled layout box height, so pagination stays identical
- * across all zoom levels and matches print output.
- *
- * KEEP-WITH-NEXT: an atom whose root element carries
- * `data-keep-with-next="true"` is treated as "must not end a page" —
- * the packer evicts it onto the next page alongside whatever would have
- * caused the overflow. Templates use this on section headings (H2s) so
- * that a heading like "Experience" can never be orphaned at the bottom
- * of a page with its first item on the next. Multiple consecutive
- * keep-with-next atoms are all evicted together. A safety rail prevents
- * evicting every atom off a page (we always keep at least one).
- *
- * PAGE HEIGHT: when sidebar pagination is active (`sidebarAtoms`
- * provided), each rendered page is exactly 297mm with `overflow: hidden`
- * so a dense sidebar can never stretch the page past A4. Without sidebar
- * atoms the page uses `min-height: 297mm` so normal templates render
- * identically to before.
+ * Paper-sized pages shared by every template. Normal atoms pack together;
+ * long paragraphs, bullets and grids split at measured text-line boundaries.
+ * Both columns paginate independently with measured continuation headers.
  */
-
 import {
   Children,
   createContext,
@@ -51,6 +15,7 @@ import {
   useState,
   type ReactNode,
 } from "react";
+import { paginateMeasured, pageFragmentsEqual, type PageFragment } from "../utils/pagination.ts";
 import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "../utils/paperSize.ts";
 
 /**
@@ -103,8 +68,8 @@ interface PaginatedCanvasProps {
    * mm reserved at the top of sidebar pages 2+ for a continuation header
    * (e.g. "Name — ctd.") rendered above the atoms on those pages only.
    * The packer reduces the budget for pages 2+ by this amount so atoms
-   * don't overflow past the header when the page's `overflow: hidden`
-   * clips them. Leave at 0 if the template has no continuation header.
+   * fit below the header. Its actual rendered height is also measured,
+   * so long names/titles can increase this reserve.
    */
   sidebarContinuationReserveMm?: number;
   /**
@@ -122,6 +87,22 @@ interface PaginatedCanvasProps {
 
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
+
+function renderFragment(fragment: PageFragment, blocks: ReactNode[], key: string): ReactNode {
+  return fragment.html === undefined ? (
+    <div key={key} data-pagination-atom style={{ display: "flow-root" }}>
+      {blocks[fragment.index]}
+    </div>
+  ) : (
+    <div
+      key={key}
+      data-pagination-atom
+      data-pagination-fragment
+      style={{ display: "flow-root" }}
+      dangerouslySetInnerHTML={{ __html: fragment.html }}
+    />
+  );
+}
 
 export function PaginatedCanvas({
   sidebar,
@@ -149,10 +130,11 @@ export function PaginatedCanvas({
   );
   const measureRef = useRef<HTMLDivElement>(null);
   const sidebarMeasureRef = useRef<HTMLDivElement>(null);
-  const [pageGroups, setPageGroups] = useState<number[][]>(() => [blocks.map((_, i) => i)]);
-  const [sidebarGroups, setSidebarGroups] = useState<number[][]>(() =>
-    sidebarBlocks.length > 0 ? [sidebarBlocks.map((_, i) => i)] : [],
-  );
+  const continuationMeasureRef = useRef<HTMLDivElement>(null);
+  const [pageGroups, setPageGroups] = useState<PageFragment[][]>([[]]);
+  const [sidebarGroups, setSidebarGroups] = useState<PageFragment[][]>([]);
+  const pageGroupsRef = useRef(pageGroups);
+  const sidebarGroupsRef = useRef(sidebarGroups);
 
   const [topPadMm, xPadMm] = mainPaddingMm;
   const [sidebarTopPadMm, sidebarXPadMm] = sidebarPaddingMm;
@@ -167,79 +149,38 @@ export function PaginatedCanvas({
   const measure = useCallback(() => {
     const container = measureRef.current;
     if (!container) return;
-    const children = Array.from(container.children) as HTMLElement[];
-    const heights = children.map((el) => el.offsetHeight);
-    const total = heights.reduce((a, b) => a + b, 0);
-    if (total === 0 && heights.length > 0) return;
-    // Each child is a flow-root wrapper around the actual atom. Check
-    // the wrapper's first element child for the keep-with-next flag (the
-    // atom's root carries the attribute).
-    const keep = children.map((el) => {
-      const atom = el.firstElementChild as HTMLElement | null;
-      return atom?.dataset.keepWithNext === "true";
-    });
-    const groups: number[][] = [];
-    let current: number[] = [];
-    let used = 0;
-    const closePage = () => {
-      const carry: number[] = [];
-      while (current.length > 1 && keep[current[current.length - 1] as number]) {
-        const popped = current.pop() as number;
-        carry.unshift(popped);
-      }
-      groups.push(current);
-      current = carry;
-      used = carry.reduce((sum, i) => sum + heights[i], 0);
-    };
-    heights.forEach((h, idx) => {
-      if (current.length > 0 && used + h > budgetPx) {
-        closePage();
-      }
-      current.push(idx);
-      used += h;
-    });
-    if (current.length > 0) groups.push(current);
-    if (groups.length === 0) groups.push([]);
-    setPageGroups((prev) => (groupsEqual(prev, groups) ? prev : groups));
+    const groups = paginateMeasured(
+      container,
+      (pageIndex) => budgetPx - (pageIndex ? 6 * PX_PER_MM : 0) - 2,
+    );
+    if (!pageFragmentsEqual(pageGroupsRef.current, groups)) {
+      pageGroupsRef.current = groups;
+      setPageGroups(groups);
+    }
   }, [budgetPx]);
 
   const measureSidebar = useCallback(() => {
-    if (sidebarBlocks.length === 0) {
-      setSidebarGroups((prev) => (prev.length === 0 ? prev : []));
+    const container = sidebarMeasureRef.current;
+    if (!container || sidebarBlocks.length === 0) {
+      if (sidebarGroupsRef.current.length) {
+        sidebarGroupsRef.current = [];
+        setSidebarGroups([]);
+      }
       return;
     }
-    const container = sidebarMeasureRef.current;
-    if (!container) return;
-    const children = Array.from(container.children) as HTMLElement[];
-    const heights = children.map((el) => el.offsetHeight);
-    const total = heights.reduce((a, b) => a + b, 0);
-    if (total === 0 && heights.length > 0) return;
-    // Sidebar atoms don't use keep-with-next — section headers are
-    // embedded inside each atom alongside their content, so there's no
-    // orphaned-header risk to guard against.
-    //
-    // Per-page budget: page 0 uses the full budget minus the optional
-    // bottom buffer. Pages 1+ additionally subtract the continuation-
-    // header reserve because those pages render a header (e.g. "Name —
-    // ctd.") above the atoms that isn't measured as an atom itself.
-    const bottomBufferPx = sidebarBottomBufferMm * PX_PER_MM;
-    const continuationReservePx = sidebarContinuationReserveMm * PX_PER_MM;
-    const budgetForPage = (pageIdx: number) =>
-      sidebarBudgetPx - bottomBufferPx - (pageIdx > 0 ? continuationReservePx : 0);
-    const groups: number[][] = [];
-    let current: number[] = [];
-    let used = 0;
-    heights.forEach((h, idx) => {
-      if (current.length > 0 && used + h > budgetForPage(groups.length)) {
-        groups.push(current);
-        current = [];
-        used = 0;
-      }
-      current.push(idx);
-      used += h;
-    });
-    if (current.length > 0) groups.push(current);
-    setSidebarGroups((prev) => (groupsEqual(prev, groups) ? prev : groups));
+    const continuation = Math.max(
+      sidebarContinuationReserveMm * PX_PER_MM,
+      continuationMeasureRef.current?.offsetHeight ?? 0,
+    );
+    const groups = paginateMeasured(
+      container,
+      (pageIndex) =>
+        sidebarBudgetPx - sidebarBottomBufferMm * PX_PER_MM - (pageIndex ? continuation : 0) - 2,
+    );
+    if (!pageFragmentsEqual(sidebarGroupsRef.current, groups)) {
+      sidebarGroupsRef.current = groups;
+      setSidebarGroups(groups);
+    }
   }, [sidebarBlocks, sidebarBudgetPx, sidebarContinuationReserveMm, sidebarBottomBufferMm]);
 
   useLayoutEffect(() => {
@@ -267,6 +208,7 @@ export function PaginatedCanvas({
     });
     if (measureRef.current) ro.observe(measureRef.current);
     if (sidebarMeasureRef.current) ro.observe(sidebarMeasureRef.current);
+    if (continuationMeasureRef.current) ro.observe(continuationMeasureRef.current);
     return () => ro.disconnect();
   }, [measure, measureSidebar]);
 
@@ -274,32 +216,46 @@ export function PaginatedCanvas({
 
   const renderSidebarFor = (pageIndex: number, pageCount: number): ReactNode => {
     if (typeof sidebar === "function") {
-      // Pre-wrap each sidebar atom in a flow-root div so its measured
-      // height and its rendered height match (margins contained). The
-      // template's renderer just slots these wrappers into the aside.
       const atomsForPage =
-        sidebarGroups[pageIndex]?.map((i) => (
-          <div key={`sb-${i}`} style={{ display: "flow-root" }}>
-            {sidebarBlocks[i] as ReactNode}
-          </div>
-        )) ?? [];
+        sidebarGroups[pageIndex]?.map((fragment, i) =>
+          renderFragment(fragment, sidebarBlocks, `sb-${fragment.index}-${i}`),
+        ) ?? [];
       return sidebar(pageIndex, pageCount, atomsForPage);
     }
     return sidebar ?? null;
   };
 
-  // Strict page-height mode is active when the sidebar is paginated;
-  // each .resume-page is locked to the paper height with overflow hidden
-  // so a dense sidebar cannot stretch the page past its nominal size.
-  // Otherwise we fall back to min-height so existing single-column
-  // templates render unchanged.
-  const strictPageHeight = sidebarBlocks.length > 0;
-  const pageHeightStyle = strictPageHeight
-    ? ({ height: `${pageHeightMm}mm`, overflow: "hidden" } as const)
-    : ({ minHeight: `${pageHeightMm}mm` } as const);
+  const renderMainFor = (pageIndex: number, group: PageFragment[]) => (
+    <>
+      {pageIndex > 0 && !group[0]?.hasHeading && group[0]?.contextLabel && (
+        <div
+          data-pagination-continuation-label
+          style={{
+            height: "6mm",
+            fontSize: "7.5pt",
+            lineHeight: 1.3,
+            letterSpacing: "0.6px",
+            textTransform: "uppercase",
+            opacity: 0.7,
+          }}
+        >
+          {group[0].contextLabel.length > 48
+            ? `${group[0].contextLabel.slice(0, 45)}…`
+            : group[0].contextLabel}{" "}
+          · continued
+        </div>
+      )}
+      {group.map((fragment, i) => renderFragment(fragment, blocks, `${fragment.index}-${i}`))}
+    </>
+  );
+
+  // Every template uses exact paper dimensions. Content is actually split
+  // into semantic fragments; no overflow rule is used to hide a bad break.
+  const pageHeightStyle = { height: `${pageHeightMm}mm`, boxSizing: "border-box" } as const;
 
   return (
     <>
+      <style>{`.resume-root li[data-pagination-continuation] { list-style-type: none; } .resume-root li[data-pagination-continuation]::before { display: none; }`}</style>
       {/* Hidden measurement container. Position off-screen so it doesn't
           contribute to layout but keeps layout parity with the visible pages.
           Each atom is wrapped in a `display: flow-root` div so the atom's
@@ -321,17 +277,35 @@ export function PaginatedCanvas({
       >
         {blocks.map((block, i) => (
           // oxlint-disable-next-line jsx/no-array-index-key
-          <div key={i} style={{ display: "flow-root" }}>
+          <div key={i} data-pagination-atom style={{ display: "flow-root" }}>
             {block}
           </div>
         ))}
       </div>
 
+      {typeof sidebar === "function" && sidebarBlocks.length > 0 && (
+        <div
+          ref={continuationMeasureRef}
+          aria-hidden="true"
+          className={`${pageClassName ?? ""} ${sidebarClassName ?? ""}`}
+          style={{
+            position: "absolute",
+            left: -99999,
+            top: 0,
+            width: sidebarMeasureWidthPx,
+            visibility: "hidden",
+            display: "flow-root",
+            pointerEvents: "none",
+          }}
+        >
+          {sidebar(1, 2, [<div key="measurement-sentinel" />])}
+        </div>
+      )}
       {sidebarBlocks.length > 0 && (
         <div
           ref={sidebarMeasureRef}
           aria-hidden="true"
-          className={pageClassName}
+          className={`${pageClassName ?? ""} ${sidebarClassName ?? ""}`}
           style={{
             position: "absolute",
             left: -99999,
@@ -343,7 +317,7 @@ export function PaginatedCanvas({
         >
           {sidebarBlocks.map((block, i) => (
             // oxlint-disable-next-line jsx/no-array-index-key
-            <div key={i} style={{ display: "flow-root" }}>
+            <div key={i} data-pagination-atom style={{ display: "flow-root" }}>
               {block}
             </div>
           ))}
@@ -353,7 +327,12 @@ export function PaginatedCanvas({
       {Array.from({ length: totalPages }).map((_, pageIndex) => {
         const group = pageGroups[pageIndex] ?? [];
         return (
-          <div className="resume-page" key={pageIndex}>
+          <div
+            className="resume-page"
+            key={pageIndex}
+            data-paper-size={paperSize}
+            style={pageHeightStyle}
+          >
             {sidebar ? (
               <div
                 className={pageClassName}
@@ -368,7 +347,7 @@ export function PaginatedCanvas({
                   style={{
                     background: sidebarBackground,
                     padding: `${sidebarPaddingMm[0]}mm ${sidebarPaddingMm[1]}mm`,
-                    ...(strictPageHeight ? { overflow: "hidden" } : null),
+                    minWidth: 0,
                   }}
                 >
                   {renderSidebarFor(pageIndex, totalPages)}
@@ -376,21 +355,10 @@ export function PaginatedCanvas({
                 <main
                   style={{
                     padding: `${topPadMm}mm ${xPadMm}mm`,
-                    ...(strictPageHeight ? { overflow: "hidden" } : null),
+                    minWidth: 0,
                   }}
                 >
-                  {group.map((idx) => (
-                    <div
-                      key={idx}
-                      style={{
-                        display: "flow-root",
-                        pageBreakInside: "avoid",
-                        breakInside: "avoid",
-                      }}
-                    >
-                      {blocks[idx]}
-                    </div>
-                  ))}
+                  {renderMainFor(pageIndex, group)}
                 </main>
               </div>
             ) : (
@@ -398,18 +366,7 @@ export function PaginatedCanvas({
                 className={pageClassName}
                 style={{ padding: `${topPadMm}mm ${xPadMm}mm`, ...pageHeightStyle }}
               >
-                {group.map((idx) => (
-                  <div
-                    key={idx}
-                    style={{
-                      display: "flow-root",
-                      pageBreakInside: "avoid",
-                      breakInside: "avoid",
-                    }}
-                  >
-                    {blocks[idx]}
-                  </div>
-                ))}
+                {renderMainFor(pageIndex, group)}
               </div>
             )}
           </div>
@@ -417,13 +374,4 @@ export function PaginatedCanvas({
       })}
     </>
   );
-}
-
-function groupsEqual(a: number[][], b: number[][]): boolean {
-  if (a.length !== b.length) return false;
-  for (let i = 0; i < a.length; i++) {
-    if (a[i].length !== b[i].length) return false;
-    for (let j = 0; j < a[i].length; j++) if (a[i][j] !== b[i][j]) return false;
-  }
-  return true;
 }

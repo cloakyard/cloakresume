@@ -17,23 +17,36 @@ export function StatsSection({ resume, onChange }: SectionProps) {
   const addStat = () =>
     patch("quickStats", [...resume.quickStats, { id: newId("q"), value: "", label: "" }]);
 
+  const addExtra = () =>
+    patch("extras", [...resume.extras, { id: newId("x"), label: "", value: "" }]);
+
   if (resume.quickStats.length === 0 && resume.extras.length === 0) {
     return (
-      <EmptyState
-        sectionLabel="quick stats"
-        icon={<BarChart3 className="w-5 h-5" strokeWidth={2} />}
-        heading="No quick stats yet"
-        description="Highlight headline numbers (years of experience, systems shipped) that sidebar templates surface up front."
-        buttonLabel="Add a stat"
-        onAdd={addStat}
-      />
+      <>
+        <EmptyState
+          sectionLabel="quick stats"
+          icon={<BarChart3 className="w-5 h-5" strokeWidth={2} />}
+          heading="No quick stats yet"
+          description="Highlight headline numbers such as years of experience and systems shipped in templates that feature quick stats."
+          buttonLabel="Add a stat"
+          onAdd={addStat}
+        />
+        <div className="border-t border-(--line-soft) pt-5">
+          <p className="mb-3 text-sm text-(--ink-3)">
+            Add availability, visa status, or other details.
+          </p>
+          <AddButton onClick={addExtra}>Add extra</AddButton>
+        </div>
+      </>
     );
   }
 
   return (
     <div className="space-y-6">
       <div className="space-y-3">
-        <span className="cr-field-label block mb-2">Quick stats · shown in sidebar templates</span>
+        <span className="cr-field-label block mb-2">
+          Quick stats · shown in supporting templates
+        </span>
         <DragList items={resume.quickStats} onReorder={(next) => patch("quickStats", next)}>
           {resume.quickStats.map((s, i) => (
             <DragItem
@@ -148,13 +161,7 @@ export function StatsSection({ resume, onChange }: SectionProps) {
           ))}
         </DragList>
         <div className="mt-3">
-          <AddButton
-            onClick={() =>
-              patch("extras", [...resume.extras, { id: newId("x"), label: "", value: "" }])
-            }
-          >
-            Add extra
-          </AddButton>
+          <AddButton onClick={addExtra}>Add extra</AddButton>
         </div>
       </div>
     </div>

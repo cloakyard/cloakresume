@@ -11,6 +11,8 @@ const FOCUSABLE_SELECTOR = [
   '[tabindex]:not([tabindex="-1"])',
 ].join(",");
 
+const activeDialogs: symbol[] = [];
+
 let scrollLockDepth = 0;
 let previousBodyOverflow = "";
 let previousBodyPaddingRight = "";
@@ -83,19 +85,23 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
   useEffect(() => {
     if (!open) return;
 
+    const dialogToken = Symbol("modal");
+    activeDialogs.push(dialogToken);
+    const isTopDialog = () => activeDialogs.at(-1) === dialogToken;
+    const dialogElement = dialogRef.current;
     const previouslyFocused =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const unlockBodyScroll = lockBodyScroll();
     const focusTimer = window.setTimeout(() => {
       const dialog = dialogRef.current;
-      if (!dialog) return;
+      if (!dialog || !isTopDialog()) return;
       const target = initialFocusRef?.current ?? getFocusableElements(dialog)[0] ?? dialog;
       target.focus({ preventScroll: true });
     }, 0);
 
     const onKeyDown = (event: KeyboardEvent) => {
       const dialog = dialogRef.current;
-      if (!dialog) return;
+      if (!dialog || !isTopDialog()) return;
 
       if (event.key === "Escape" && onCloseRef.current) {
         event.preventDefault();
@@ -131,8 +137,16 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
     return () => {
       window.clearTimeout(focusTimer);
       document.removeEventListener("keydown", onKeyDown, true);
+      const wasTopDialog = isTopDialog();
+      const index = activeDialogs.indexOf(dialogToken);
+      if (index !== -1) activeDialogs.splice(index, 1);
       unlockBodyScroll();
-      if (previouslyFocused?.isConnected) {
+      // A closing overlay already allows pointer interaction with the editor.
+      // Preserve a field the user deliberately focused during that exit instead
+      // of sending subsequent keystrokes back to the dialog's opener.
+      const active = document.activeElement;
+      const restoreFocus = !active || active === document.body || dialogElement?.contains(active);
+      if (wasTopDialog && restoreFocus && previouslyFocused?.isConnected) {
         previouslyFocused.focus({ preventScroll: true });
       }
     };

@@ -1,6 +1,7 @@
 /** Experience: roles with bullets. */
 
 import { Briefcase, Plus } from "lucide-react";
+import { useRef } from "react";
 import { TextField } from "../fields.tsx";
 import { RichTextArea } from "../RichTextArea.tsx";
 import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
@@ -15,8 +16,13 @@ import {
   type SectionProps,
 } from "./shared.tsx";
 
+function isCurrentJob(end: string) {
+  return /^present$/i.test(end.trim());
+}
+
 export function ExperienceSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
+  const previousEndDates = useRef(new Map<string, string>());
   const addRole = () =>
     patch("experience", [
       ...resume.experience,
@@ -114,7 +120,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                       />
                       <MonthYearField
                         label="End"
-                        allowPresent
+                        disabled={isCurrentJob(job.end)}
                         value={job.end}
                         onChange={(v) => {
                           const next = [...resume.experience];
@@ -123,6 +129,25 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         }}
                       />
                     </div>
+                    <label className="flex items-center gap-2 min-h-11 md:min-h-10 w-fit text-sm text-(--ink-2) cursor-pointer">
+                      <input
+                        type="checkbox"
+                        name={`experience-${job.id}-current`}
+                        checked={isCurrentJob(job.end)}
+                        onChange={(event) => {
+                          const current = event.target.checked;
+                          if (current) previousEndDates.current.set(job.id, job.end);
+                          const next = [...resume.experience];
+                          next[i] = {
+                            ...job,
+                            end: current ? "Present" : (previousEndDates.current.get(job.id) ?? ""),
+                          };
+                          patch("experience", next);
+                        }}
+                        className="size-4 accent-(--brand)"
+                      />
+                      Current job
+                    </label>
                     <div>
                       <div className="cr-field-row">
                         <span className="cr-field-label">Bullets</span>

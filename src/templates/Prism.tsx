@@ -45,15 +45,15 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const initials = extractInitials(resume.profile.name);
   const css = `
-    .pr-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #0f172a; font-size: 9.3pt; line-height: 1.45; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+    .pr-root { font-family: 'Geist Variable', 'Inter', sans-serif; color: #0f172a; font-size: 9.3pt; line-height: 1.45; overflow-wrap: break-word; word-break: normal; hyphens: manual; }
     .pr-sidebar { background: ${palette.primary800}; color: #f1f5f9; position: relative; min-width: 0; }
     .pr-sidebar::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 2.5mm; background: ${palette.primary500}; }
     .pr-mono { width: 22mm; height: 22mm; border-radius: 50%; background: #ffffff; color: ${palette.primary800}; display: flex; align-items: center; justify-content: center; font-size: 12pt; font-weight: 800; letter-spacing: -0.3px; margin: 0 0 5mm; overflow: hidden; flex-shrink: 0; }
     .pr-mono img { width: 100%; height: 100%; object-fit: cover; }
-    .pr-name { font-size: 20pt; font-weight: 800; color: #ffffff; line-height: 1.05; letter-spacing: -0.5px; margin: 0; overflow-wrap: normal; }
-    .pr-role { font-size: 8.4pt; color: ${palette.primary200}; font-weight: 700; margin-top: 2mm; letter-spacing: 1.8px; text-transform: uppercase; overflow-wrap: normal; }
+    .pr-name { font-size: 20pt; font-weight: 800; color: #ffffff; line-height: 1.05; letter-spacing: -0.5px; margin: 0; overflow-wrap: break-word; }
+    .pr-role { font-size: 8.4pt; color: ${palette.primary200}; font-weight: 700; margin-top: 2mm; letter-spacing: 1.8px; text-transform: uppercase; overflow-wrap: break-word; }
     .pr-rule { height: 2px; background: ${palette.primary400}; width: 12mm; margin: 5mm 0 0; }
-    .pr-cont-name { font-size: 11pt; font-weight: 800; color: #ffffff; letter-spacing: -0.2px; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid rgba(255,255,255,0.25); overflow-wrap: normal; }
+    .pr-cont-name { font-size: 11pt; font-weight: 800; color: #ffffff; letter-spacing: -0.2px; padding-bottom: 2mm; margin-bottom: 5mm; border-bottom: 1px solid rgba(255,255,255,0.25); overflow-wrap: break-word; }
     .pr-cont-name small { display: block; font-size: 7.4pt; color: ${palette.primary200}; font-weight: 700; text-transform: uppercase; letter-spacing: 1.6px; margin-top: 1mm; }
     .pr-h3 { font-size: 8pt; text-transform: uppercase; letter-spacing: 2.2px; color: #ffffff; font-weight: 800; margin-bottom: 2.8mm; display: flex; align-items: center; gap: 2mm; }
     .pr-h3::before { content: ""; width: 2mm; height: 2mm; background: ${palette.primary400}; border-radius: 50%; flex-shrink: 0; }
@@ -63,62 +63,63 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     .pr-contact > span:last-child { min-width: 0; flex: 1 1 auto; overflow-wrap: anywhere; word-break: break-word; }
     .pr-skill-group { margin-bottom: 2.4mm; }
     .pr-skill-group:last-child { margin-bottom: 0; }
-    .pr-skill-label { font-size: 8.2pt; font-weight: 700; color: #ffffff; margin-bottom: 0.4mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: normal; }
+    .pr-skill-label { font-size: 8.2pt; font-weight: 700; color: #ffffff; margin-bottom: 0.4mm; display: flex; align-items: center; gap: 1.5mm; overflow-wrap: break-word; }
+    .pr-skill-label > :not(svg) { min-width: 0; overflow-wrap: anywhere; }
     .pr-skill-icon { width: 1em; height: 1em; color: ${palette.primary300}; flex-shrink: 0; }
     .pr-skill-list { font-size: 8pt; color: #cbd5e1; line-height: 1.45; overflow-wrap: anywhere; word-break: break-word; }
     .pr-lang { display: flex; justify-content: space-between; gap: 2mm; font-size: 8.2pt; margin-bottom: 1mm; color: #cbd5e1; padding-bottom: 0.8mm; border-bottom: 1px dotted rgba(255,255,255,0.18); flex-wrap: wrap; }
     .pr-lang:last-child { border-bottom: 0; }
-    .pr-lang > span:first-child { min-width: 0; overflow-wrap: normal; }
+    .pr-lang > span:first-child { min-width: 0; overflow-wrap: break-word; }
     .pr-lang .lvl { color: ${palette.primary200}; font-weight: 700; font-size: 7.8pt; flex-shrink: 0; }
     .pr-chips { display: flex; flex-wrap: wrap; gap: 1.2mm; }
-    .pr-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #e2e8f0; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: normal; word-break: break-word; }
-    .pr-cert { font-size: 8.2pt; margin-bottom: 1.6mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: normal; }
+    .pr-chip { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18); color: #e2e8f0; padding: 0.3mm 1.8mm; border-radius: 999px; font-size: 7.6pt; font-weight: 600; max-width: 100%; overflow-wrap: break-word; word-break: break-word; }
+    .pr-cert { font-size: 8.2pt; margin-bottom: 1.6mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: break-word; }
     .pr-cert:last-child { margin-bottom: 0; }
-    .pr-cert strong { color: #ffffff; display: block; font-weight: 700; overflow-wrap: normal; }
-    .pr-cert .meta { color: ${palette.primary200}; font-size: 7.8pt; overflow-wrap: normal; }
-    .pr-award { font-size: 8.2pt; margin-bottom: 1.6mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: normal; }
+    .pr-cert strong { color: #ffffff; display: block; font-weight: 700; overflow-wrap: break-word; }
+    .pr-cert .meta { color: ${palette.primary200}; font-size: 7.8pt; overflow-wrap: break-word; }
+    .pr-award { font-size: 8.2pt; margin-bottom: 1.6mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: break-word; }
     .pr-award:last-child { margin-bottom: 0; }
-    .pr-award strong { color: #ffffff; display: block; font-weight: 700; overflow-wrap: normal; }
+    .pr-award strong { color: #ffffff; display: block; font-weight: 700; overflow-wrap: break-word; }
     .pr-stats { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 1.8mm; }
     .pr-stat { background: rgba(255,255,255,0.05); border-left: 2px solid ${palette.primary400}; padding: 1.8mm 2.2mm; border-radius: 1mm; min-width: 0; }
-    .pr-stat-value { font-size: 12pt; font-weight: 800; color: #ffffff; line-height: 1; letter-spacing: -0.3px; overflow-wrap: normal; }
-    .pr-stat-label { font-size: 6.8pt; text-transform: uppercase; letter-spacing: 1.1px; color: ${palette.primary200}; font-weight: 700; margin-top: 0.6mm; overflow-wrap: normal; }
-    .pr-extra { font-size: 8pt; margin-bottom: 1.4mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: normal; }
+    .pr-stat-value { font-size: 12pt; font-weight: 800; color: #ffffff; line-height: 1; letter-spacing: -0.3px; overflow-wrap: break-word; }
+    .pr-stat-label { font-size: 6.8pt; text-transform: uppercase; letter-spacing: 1.1px; color: ${palette.primary200}; font-weight: 700; margin-top: 0.6mm; overflow-wrap: break-word; }
+    .pr-extra { font-size: 8pt; margin-bottom: 1.4mm; color: #cbd5e1; line-height: 1.4; overflow-wrap: break-word; }
     .pr-extra:last-child { margin-bottom: 0; }
-    .pr-extra strong { display: block; color: #ffffff; font-weight: 700; font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3mm; overflow-wrap: normal; }
+    .pr-extra strong { display: block; color: #ffffff; font-weight: 700; font-size: 7.6pt; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.3mm; overflow-wrap: break-word; }
     .pr-section-head { font-size: 10pt; font-weight: 800; color: ${palette.primary800}; text-transform: uppercase; letter-spacing: 1.8px; margin: 6mm 0 3mm; padding-left: 3.5mm; position: relative; break-after: avoid; page-break-after: avoid; }
     .pr-summary-atom .pr-section-head { margin-top: 0; }
     .pr-section-head::before { content: ""; position: absolute; left: 0; top: 50%; transform: translateY(-50%); width: 2mm; height: 70%; background: ${palette.primary600}; border-radius: 1px; }
-    .pr-summary { font-size: 9.6pt; line-height: 1.6; color: #1e293b; overflow-wrap: normal; }
+    .pr-summary { font-size: 9.6pt; line-height: 1.6; color: #1e293b; overflow-wrap: break-word; }
     .pr-summary-atom { margin-bottom: 5mm; }
     .pr-job { margin-bottom: 3.8mm; page-break-inside: avoid; break-inside: avoid; }
     .pr-job-head { margin-bottom: 0; }
     .pr-jobhead { display: flex; justify-content: space-between; align-items: baseline; gap: 4mm; margin-bottom: 0.4mm; flex-wrap: wrap; }
-    .pr-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: normal; }
-    .pr-jobdates { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; }
-    .pr-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.4mm; overflow-wrap: normal; }
+    .pr-jobtitle { font-size: 10.2pt; font-weight: 700; color: #0f172a; letter-spacing: -0.1px; min-width: 0; flex: 1 1 auto; overflow-wrap: break-word; }
+    .pr-jobdates { font-size: 8.4pt; color: ${palette.primary700}; font-weight: 700; font-variant-numeric: tabular-nums; flex-shrink: 0; max-width: 100%; min-width: 0; }
+    .pr-jobco { font-size: 9pt; color: ${palette.primary700}; font-weight: 600; margin-bottom: 1.4mm; overflow-wrap: break-word; }
     .pr-jobco .loc { color: #64748b; font-weight: 500; }
     .pr-job ul { list-style: none; padding: 0; margin: 0; }
-    .pr-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: normal; }
+    .pr-job li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: break-word; }
     .pr-job li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary500}; border-radius: 50%; }
     .pr-ul-bullet { list-style: none; padding: 0; margin: 0; }
-    .pr-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: normal; }
+    .pr-ul-bullet li { font-size: 9pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.8mm; color: #1e293b; overflow-wrap: break-word; }
     .pr-ul-bullet li::before { content: ""; position: absolute; left: 0; top: 1.8mm; width: 1.8mm; height: 1.8mm; background: ${palette.primary500}; border-radius: 50%; }
     .pr-ul-bullet-first { margin-top: 0; }
     .pr-ul-bullet-last { margin-bottom: 3.8mm; }
     .pr-edu { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 2mm; gap: 4mm; flex-wrap: wrap; page-break-inside: avoid; break-inside: avoid; padding-bottom: 1.8mm; border-bottom: 1px solid #e2e8f0; }
     .pr-edu:last-child { border-bottom: 0; padding-bottom: 0; margin-bottom: 0; }
     .pr-edu > div:first-child { min-width: 0; flex: 1 1 auto; }
-    .pr-edutitle { font-size: 9.6pt; font-weight: 700; color: #0f172a; overflow-wrap: normal; }
-    .pr-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: normal; }
-    .pr-edumeta { font-size: 8.4pt; color: #64748b; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; }
-    .pr-edu-detail { font-size: 8pt; color: #64748b; font-style: italic; margin-top: 0.3mm; overflow-wrap: normal; }
+    .pr-edutitle { font-size: 9.6pt; font-weight: 700; color: #0f172a; overflow-wrap: break-word; }
+    .pr-eduschool { font-size: 8.8pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.3mm; overflow-wrap: break-word; }
+    .pr-edumeta { font-size: 8.4pt; color: #64748b; font-variant-numeric: tabular-nums; text-align: right; flex-shrink: 0; max-width: 100%; min-width: 0; }
+    .pr-edu-detail { font-size: 8pt; color: #64748b; font-style: italic; margin-top: 0.3mm; overflow-wrap: break-word; }
     .pr-proj { margin-bottom: 3mm; padding: 2.4mm 3mm; background: ${palette.primary50}; border-left: 2.5px solid ${palette.primary600}; border-radius: 0 2mm 2mm 0; page-break-inside: avoid; break-inside: avoid; }
     .pr-proj:last-child { margin-bottom: 0; }
-    .pr-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.3mm; overflow-wrap: normal; }
+    .pr-projname { font-size: 10pt; font-weight: 700; color: #0f172a; margin-bottom: 0.3mm; overflow-wrap: break-word; }
     .pr-proj-label { font-size: 7.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 0.8px; margin: 1mm 0 0.4mm; }
     .pr-proj-bullets { list-style: none; padding: 0; margin: 0 0 0.6mm; }
-    .pr-proj-bullets li { font-size: 8.8pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1e293b; overflow-wrap: normal; }
+    .pr-proj-bullets li { font-size: 8.8pt; line-height: 1.5; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1e293b; overflow-wrap: break-word; }
     .pr-proj-bullets li::before { content: "▸"; position: absolute; left: 0; color: ${palette.primary600}; font-weight: 700; }
     .pr-projstack { font-size: 8.2pt; color: ${palette.primary700}; font-weight: 600; margin-top: 0.8mm; overflow-wrap: anywhere; }
   `;
@@ -164,7 +165,7 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
         <div className="pr-sb-atom" key={`skill-${group.id}`}>
           {idx === 0 && <div className="pr-h3">Expertise</div>}
           <div className="pr-skill-group">
-            <div className="pr-skill-label">
+            <div className="pr-skill-label" data-keep-with-next="true">
               {GroupIcon && <GroupIcon className="pr-skill-icon" />}
               <span>{group.label}</span>
             </div>
@@ -387,10 +388,14 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
     resume.projects.forEach((p) => {
       mainAtoms.push(
         <div className="pr-proj" key={`proj-${p.id}`}>
-          <div className="pr-projname">{p.name}</div>
+          <div className="pr-projname" data-keep-with-next="true">
+            {p.name}
+          </div>
           {p.description && (
             <>
-              <div className="pr-proj-label">About Project</div>
+              <div className="pr-proj-label" data-keep-with-next="true">
+                About Project
+              </div>
               <ul className="pr-proj-bullets">
                 <li>
                   <RichText value={p.description} />
@@ -400,7 +405,9 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
           )}
           {p.roles && p.roles.length > 0 && (
             <>
-              <div className="pr-proj-label">Role</div>
+              <div className="pr-proj-label" data-keep-with-next="true">
+                Role
+              </div>
               <ul className="pr-proj-bullets">
                 {p.roles.map((r, ri) => (
                   // oxlint-disable-next-line jsx/no-array-index-key

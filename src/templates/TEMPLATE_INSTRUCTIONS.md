@@ -26,7 +26,7 @@ Always gate each section by `.length > 0` / truthiness so a template with empty 
 Quick self-check:
 
 ```bash
-for f in src/templates/{Academic,AtsPlain,AtsProfessional,Aurora,Bauhaus,ClassicSidebar,CompactTimeline,ExecutiveSerif,GradientHeader,Horizon,Minimalist,ModernMinimal,Monograph,Prism,Typographic}.tsx; do
+for f in src/templates/{Academic,AtsPlain,AtsProfessional,Aurora,Bauhaus,ClassicImpact,ClassicSidebar,CompactTimeline,ExecutiveSerif,GradientHeader,Horizon,Ledger,Minimalist,ModernMinimal,Monograph,Prism,Typographic}.tsx; do
   for field in profile.summary experience education skills projects certifications awards languages interests tools extras custom; do
     rg -q "resume\.${field}" "$f" || echo "MISSING $field in $f"
   done
@@ -38,6 +38,8 @@ done
 Long CVs must flow across multiple A4 pages. The shared `PaginatedCanvas` does the work — call it from every new template.
 
 **Mandatory rule for every template: never leave a conspicuous white gap at the bottom of a page just because the next section, sub-section, or bullet will not fit whole.** Sections, sub-sections, and bullet points **can and must** divide at safe boundaries so pages remain usefully packed. When unused space dominates the page ending, split the content and continue it on the next page.
+
+Prefer small, semantic atoms as described below. The shared paginator also handles oversized paragraphs, bullets and grids by splitting their rendered HTML at line boundaries; it preserves text, links and column placement. Keep template output declarative and static: event handlers inside a resume atom do not belong in the printed document.
 
 The rules `PaginatedCanvas` enforces:
 
@@ -125,7 +127,7 @@ Do **not**:
 
 - Hardcode `.resume-page` divs for multi-page templates (this bypasses pagination and cuts off content when it overflows).
 - Wrap sidebar content in `overflow: hidden` + a `mask-image` fade. Fades hide content, which violates rule 1.
-- Use `min-height: 297mm` on the page grid. It lets a dense column push the page past A4. Each rendered page **must be exactly 297mm** so print and PDF output stay honest.
+- Use `min-height: 297mm` on the page grid. It lets a dense column push the page past A4. Each rendered page **must exactly match the selected paper height** so print and PDF output stay honest.
 
 **Sidebar pattern** — sidebar templates (`ClassicSidebar`, `Monograph`, `Prism`) pass **both** column contents to `PaginatedCanvas` as atom arrays:
 
@@ -134,7 +136,7 @@ Do **not**:
 - The `sidebar` prop is a render function `(pageIndex, pageCount, atomsForPage) => ReactNode`. For page indices > 0 where `atomsForPage.length > 0`, render a continuation header (e.g. "Name — ctd.") before the atoms. When `atomsForPage` is empty, return `null` so the sidebar column stays empty on that page.
 - Supply `sidebarContentWidthMm` so measurement matches the rendered content width (`sidebarWidthMm − 2 × sidebarPaddingMm[1]`).
 
-When sidebar pagination is active, `PaginatedCanvas` locks every page to exactly `height: 297mm` with `overflow: hidden`. Total page count is `max(mainPages, sidebarPages)` — if one column needs more pages than the other, the shorter column renders empty on those pages. Nothing is hidden, no page grows past A4.
+All `PaginatedCanvas` pages use the exact selected paper height (297mm for A4, 279.4mm for Letter). Oversized atoms split into real HTML fragments at measured text-line boundaries, preserving rich text and grid columns; no page or column uses clipping to conceal content. Total page count is `max(mainPages, sidebarPages)` — if one column needs more pages than the other, the shorter column renders empty. Main-column continuation labels and sidebar continuation headers reserve space before packing. The sidebar header reserve is measured, so long names and titles cannot displace content beyond the page.
 
 ## 3. ATS parseability
 
@@ -208,7 +210,7 @@ When you group two sections into one atom (e.g. `Credentials` containing both Ce
 7. Run `vp test` — no regressions in existing templates.
 8. Preview with the `sampleResume` in the template modal; also preview with a long resume (10+ experience items, 15+ skills, 10+ projects) to confirm pagination holds.
 9. Register the template in `src/templates/index.ts` with accurate category, level, and badge metadata.
-10. If you add a new sidebar template, pass sidebar content via `sidebarAtoms` (identity block as atom[0]) and supply `sidebarContentWidthMm`. `PaginatedCanvas` will paginate the sidebar column itself — each page stays at exactly 297mm with `overflow: hidden`.
+10. If you add a new sidebar template, pass sidebar content via `sidebarAtoms` (identity block as atom[0]) and supply `sidebarContentWidthMm`. `PaginatedCanvas` will paginate the sidebar column itself — each page stays at the selected paper height, and oversized content is split rather than clipped.
 
 ## Why these rules exist
 

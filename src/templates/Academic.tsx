@@ -34,44 +34,45 @@ interface Props {
 export const Academic = memo(function Academic({ resume, palette }: Props) {
   const logo = findLogoIcon(resume.profile.logoIconName);
   const css = `
-    .ac-root { font-family: 'Lora', 'Times New Roman', serif; color: #1a1a1a; font-size: 10pt; line-height: 1.5; overflow-wrap: normal; word-break: normal; hyphens: manual; }
+    .ac-root { font-family: 'Lora', 'Times New Roman', serif; color: #1a1a1a; font-size: 10pt; line-height: 1.5; overflow-wrap: break-word; word-break: normal; hyphens: manual; }
     .ac-head { text-align: center; padding-bottom: 4mm; border-bottom: 2px solid #1a1a1a; margin-bottom: 6mm; position: relative; }
     .ac-head::after { content: ""; position: absolute; bottom: -4px; left: 0; right: 0; border-bottom: 1px solid #1a1a1a; }
     .ac-logo-wrap { display: flex; justify-content: center; margin-bottom: 2mm; }
     .ac-logo { width: 13mm; height: 13mm; border-radius: 50%; display: flex; align-items: center; justify-content: center; border: 1.5px solid ${palette.primary600}; color: ${palette.primary600}; overflow: hidden; flex-shrink: 0; }
     .ac-photo { width: 13mm; height: 13mm; border-radius: 50%; object-fit: cover; border: 1.5px solid ${palette.primary600}; }
-    .ac-name { font-size: 22pt; font-weight: 700; letter-spacing: 1.5px; color: #0f172a; margin: 0; font-variant: small-caps; overflow-wrap: normal; }
-    .ac-title { font-size: 11pt; color: #374151; margin-top: 1.5mm; font-style: italic; overflow-wrap: normal; }
+    .ac-name { font-size: 22pt; font-weight: 700; letter-spacing: 1.5px; color: #0f172a; margin: 0; font-variant: small-caps; overflow-wrap: break-word; }
+    .ac-title { font-size: 11pt; color: #374151; margin-top: 1.5mm; font-style: italic; overflow-wrap: break-word; }
     .ac-contact { margin-top: 3mm; font-size: 9pt; color: #374151; display: flex; justify-content: center; flex-wrap: wrap; gap: 2mm 5mm; }
     .ac-contact span { display: inline-flex; align-items: center; gap: 1mm; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
     .ac-contact svg { color: ${palette.primary700}; flex-shrink: 0; }
     .ac-h2 { font-size: 11.2pt; text-transform: uppercase; letter-spacing: 2px; color: #0f172a; font-weight: 700; margin: 5mm 0 2mm; padding-bottom: 1mm; border-bottom: 1px solid #94a3b8; display: flex; align-items: baseline; gap: 3mm; break-after: avoid; page-break-after: avoid; }
     .ac-h2::after { content: ""; flex: 1; border-bottom: 1px dotted #cbd5e1; }
-    .ac-summary { font-size: 10pt; line-height: 1.6; text-align: justify; color: #1a1a1a; hyphens: manual; overflow-wrap: normal; }
+    .ac-summary { font-size: 10pt; line-height: 1.6; text-align: justify; color: #1a1a1a; hyphens: manual; overflow-wrap: break-word; }
     .ac-entry { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4mm; margin-bottom: 2.5mm; align-items: baseline; page-break-inside: avoid; break-inside: avoid; }
     .ac-entry > div:first-child { min-width: 0; }
     .ac-entry-head { margin-bottom: 0; }
     .ac-entry-bullet { margin-bottom: 0; }
     .ac-entry-bullet-last { margin-bottom: 2.5mm; }
     .ac-entry-bullet .ac-body { margin-top: 0; }
-    .ac-entry-title { font-weight: 700; color: #0f172a; overflow-wrap: normal; }
-    .ac-entry-sub { font-style: italic; color: ${palette.primary700}; font-size: 9.2pt; overflow-wrap: normal; }
-    .ac-entry-date { font-size: 9pt; color: #4b5563; white-space: nowrap; font-variant-numeric: tabular-nums; }
-    .ac-body { font-size: 9.6pt; color: #1a1a1a; margin-top: 0.8mm; line-height: 1.55; overflow-wrap: normal; }
+    .ac-entry-title { font-weight: 700; color: #0f172a; overflow-wrap: break-word; }
+    .ac-entry-sub { font-style: italic; color: ${palette.primary700}; font-size: 9.2pt; overflow-wrap: break-word; }
+    .ac-entry-date { font-size: 9pt; color: #4b5563; white-space: normal; font-variant-numeric: tabular-nums; max-width: 100%; min-width: 0; }
+    .ac-body { font-size: 9.6pt; color: #1a1a1a; margin-top: 0.8mm; line-height: 1.55; overflow-wrap: break-word; }
     .ac-proj-label { font-family: 'Lora', 'Times New Roman', serif; font-size: 8.6pt; font-weight: 700; color: ${palette.primary700}; text-transform: uppercase; letter-spacing: 1.2px; margin: 1mm 0 0.4mm; }
     .ac-proj-bullets { list-style: none; padding: 0; margin: 0 0 1mm; }
-    .ac-proj-bullets li { font-size: 9.6pt; line-height: 1.55; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1a1a1a; overflow-wrap: normal; }
+    .ac-proj-bullets li { font-size: 9.6pt; line-height: 1.55; padding-left: 4mm; position: relative; margin-bottom: 0.5mm; color: #1a1a1a; overflow-wrap: break-word; }
     .ac-proj-bullets li::before { content: "—"; position: absolute; left: 0; color: ${palette.primary700}; }
     .ac-body ul { list-style: disc; padding-left: 5mm; margin: 1mm 0 0; }
-    .ac-body li { margin-bottom: 0.8mm; overflow-wrap: normal; }
+    .ac-body li { margin-bottom: 0.8mm; overflow-wrap: break-word; }
     .ac-skill-row { display: grid; grid-template-columns: 40mm minmax(0, 1fr); gap: 5mm; margin-bottom: 1.2mm; font-size: 9.8pt; page-break-inside: avoid; break-inside: avoid; }
     .ac-skill-row > div:last-child { min-width: 0; overflow-wrap: anywhere; word-break: break-word; }
-    .ac-skill-label { font-weight: 700; color: #0f172a; font-variant: small-caps; letter-spacing: 0.5px; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: normal; }
+    .ac-skill-label { font-weight: 700; color: #0f172a; font-variant: small-caps; letter-spacing: 0.5px; display: flex; align-items: center; gap: 1.8mm; min-width: 0; overflow-wrap: break-word; }
+    .ac-skill-label > :not(svg) { min-width: 0; overflow-wrap: anywhere; }
     .ac-skill-icon { width: 1em; height: 1em; color: ${palette.primary700}; flex-shrink: 0; }
     .ac-two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 6mm; }
     .ac-two > div { min-width: 0; }
-    .ac-kv { font-size: 9.4pt; margin-bottom: 1.4mm; overflow-wrap: normal; }
-    .ac-kv strong { color: #0f172a; overflow-wrap: normal; }
+    .ac-kv { break-inside: avoid; page-break-inside: avoid; font-size: 9.4pt; margin-bottom: 1.4mm; overflow-wrap: break-word; }
+    .ac-kv strong { color: #0f172a; overflow-wrap: break-word; }
     .ac-proj-entry { margin-bottom: 2mm; page-break-inside: avoid; break-inside: avoid; }
   `;
 
@@ -209,7 +210,9 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
           <div className="ac-entry-title">{p.name}</div>
           {p.description && (
             <>
-              <div className="ac-proj-label">About Project</div>
+              <div className="ac-proj-label" data-keep-with-next="true">
+                About Project
+              </div>
               <ul className="ac-proj-bullets">
                 <li>
                   <RichText value={p.description} />
@@ -219,7 +222,9 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
           )}
           {p.roles && p.roles.length > 0 && (
             <>
-              <div className="ac-proj-label">Role</div>
+              <div className="ac-proj-label" data-keep-with-next="true">
+                Role
+              </div>
               <ul className="ac-proj-bullets">
                 {p.roles.map((r, ri) => (
                   // oxlint-disable-next-line jsx/no-array-index-key
@@ -250,7 +255,7 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
       const GroupIcon = findLogoIcon(g.iconName)?.Icon;
       atoms.push(
         <div key={`skills-${g.id}`} className="ac-skill-row">
-          <div className="ac-skill-label">
+          <div className="ac-skill-label" data-keep-with-next="true">
             {GroupIcon && <GroupIcon className="ac-skill-icon" />}
             <span>{g.label}</span>
           </div>

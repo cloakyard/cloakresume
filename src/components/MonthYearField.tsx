@@ -20,6 +20,7 @@ interface MonthYearFieldProps {
   /** When true, a "Present" chip is shown inside the popover. */
   allowPresent?: boolean;
   placeholder?: string;
+  disabled?: boolean;
 }
 
 const MONTHS = [
@@ -83,9 +84,10 @@ export function MonthYearField({
   onChange,
   allowPresent = false,
   placeholder,
+  disabled = false,
 }: MonthYearFieldProps) {
   const [open, setOpen] = useState(false);
-  const presence = useAnimatedPresence(open);
+  const presence = useAnimatedPresence(open && !disabled);
   const [showYearPicker, setShowYearPicker] = useState(false);
   const labelId = useId();
   const dialogId = useId();
@@ -108,6 +110,10 @@ export function MonthYearField({
 
   const parsed = useMemo(() => parseValue(value), [value]);
   const todayYear = new Date().getFullYear();
+
+  useEffect(() => {
+    if (disabled) setOpen(false);
+  }, [disabled]);
 
   // Keep the cursor in sync when the stored value changes externally
   // (e.g. user clears, or parent seeds a value).
@@ -259,13 +265,14 @@ export function MonthYearField({
         <button
           ref={buttonRef}
           type="button"
+          disabled={disabled}
           onClick={() => setOpen((v) => !v)}
           aria-haspopup="dialog"
-          aria-expanded={open}
-          aria-controls={open ? dialogId : undefined}
+          aria-expanded={open && !disabled}
+          aria-controls={open && !disabled ? dialogId : undefined}
           aria-labelledby={`${labelId} ${valueId}`}
-          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue ? "pr-12" : ""} ${
-            open ? "border-(--brand)! shadow-(--sh-focus)!" : ""
+          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue && !disabled ? "pr-12" : ""} ${
+            open && !disabled ? "border-(--brand)! shadow-(--sh-focus)!" : ""
           }`}
         >
           <Calendar className="w-4 h-4 text-(--brand) shrink-0" />
@@ -276,7 +283,7 @@ export function MonthYearField({
             {displayLabel}
           </span>
         </button>
-        {hasValue && (
+        {hasValue && !disabled && (
           <button
             type="button"
             aria-label={`Clear ${label.toLowerCase()}`}
@@ -292,6 +299,7 @@ export function MonthYearField({
       </div>
 
       {presence.mounted &&
+        !disabled &&
         coords &&
         createPortal(
           <div

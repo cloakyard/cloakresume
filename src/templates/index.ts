@@ -37,6 +37,12 @@ const ClassicSidebar = lazy(() =>
     default: component,
   })),
 );
+const ClassicImpact = lazy(() =>
+  import("./ClassicImpact.tsx").then(({ ClassicImpact: component }) => ({ default: component })),
+);
+const Ledger = lazy(() =>
+  import("./Ledger.tsx").then(({ Ledger: component }) => ({ default: component })),
+);
 const CompactTimeline = lazy(() =>
   import("./CompactTimeline.tsx").then(({ CompactTimeline: component }) => ({
     default: component,
@@ -91,6 +97,26 @@ export const TEMPLATES: Record<
     category: "classic",
     badge: { label: "Recommended", tone: "brand" },
     component: ClassicSidebar,
+  },
+  "classic-impact": {
+    id: "classic-impact",
+    name: "Classic Impact",
+    description: "Classic sidebar · Results below summary",
+    accent: "#047857",
+    level: "Mid–Senior · Achievement-focused",
+    category: "classic",
+    badge: { label: "New", tone: "brand" },
+    component: ClassicImpact,
+  },
+  ledger: {
+    id: "ledger",
+    name: "Ledger",
+    description: "Ruled professional brief · Results grid",
+    accent: "#334155",
+    level: "Leadership · Consulting · Operations",
+    category: "classic",
+    badge: { label: "New", tone: "brand" },
+    component: Ledger,
   },
   "executive-serif": {
     id: "executive-serif",

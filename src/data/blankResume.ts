@@ -34,9 +34,11 @@ export const blankResume: ResumeData = {
  */
 export function resumeHasContent(r: ResumeData): boolean {
   const { profile } = r;
+  if (profile.photoUrl || profile.logoIconName) return true;
   if (profile.summary.trim().length > 0) return true;
   if (profile.name.trim() && profile.name !== blankResume.profile.name) return true;
   if (profile.title.trim() && profile.title !== blankResume.profile.title) return true;
+  if (r.interestsLabel?.trim() || r.toolsLabel?.trim()) return true;
   return (
     r.contact.length > 0 ||
     r.skills.length > 0 ||

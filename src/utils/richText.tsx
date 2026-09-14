@@ -31,6 +31,16 @@ function parseInline(input: string): Token[] {
     }
     const marker = match[0];
     const rest = remaining.slice(match.index + marker.length);
+    // Underscores inside identifiers (e.g. event_source_id) are literal text.
+    if (
+      marker.startsWith("_") &&
+      /[\p{L}\p{N}]/u.test(remaining[match.index - 1] ?? "") &&
+      /[\p{L}\p{N}]/u.test(rest[0] ?? "")
+    ) {
+      out.push({ type: "text", value: marker });
+      remaining = rest;
+      continue;
+    }
     const closeIdx = findClose(rest, marker);
     if (closeIdx === -1) {
       // No matching close — treat as literal.
@@ -86,6 +96,7 @@ function renderTokens(tokens: Token[], keyPrefix = ""): ReactNode[] {
           background: "rgba(0,0,0,0.04)",
           padding: "0 0.3em",
           borderRadius: "2px",
+          overflowWrap: "anywhere",
         }}
       >
         {t.value}
@@ -94,17 +105,31 @@ function renderTokens(tokens: Token[], keyPrefix = ""): ReactNode[] {
   });
 }
 
-/** Render plain text with Markdown-lite inline formatting. */
-export function RichText({ value, block = false }: { value: string; block?: boolean }) {
+/** Render body text with inline formatting, preserving entered whitespace and line breaks. */
+export function RichText({ value }: { value: string }) {
   if (!value) return null;
-  const lines = value.split(/\r?\n/);
+  const lines = value.split(/\r\n|\r|\n/);
   const rendered = lines.map((line, i) => (
     <span key={i}>
       {renderTokens(parseInline(line))}
-      {i < lines.length - 1 && block && <br />}
+      {i < lines.length - 1 && <br />}
     </span>
   ));
-  return <>{rendered}</>;
+  return <span style={{ whiteSpace: "pre-wrap" }}>{rendered}</span>;
+}
+
+/** Use the same inline grammar for analysis and the displayed résumé. */
+export function plainText(value: string): string {
+  const flatten = (tokens: Token[]): string =>
+    tokens
+      .map((token) =>
+        token.type === "text" || token.type === "code" ? token.value : flatten(token.children),
+      )
+      .join("");
+  return value
+    .split(/\r\n|\r|\n/)
+    .map((line) => flatten(parseInline(line)))
+    .join("\n");
 }
 
 /**
@@ -117,11 +142,28 @@ export function RichText({ value, block = false }: { value: string; block?: bool
  * caller can restore the caret / selection after applying the change.
  */
 export function toggleSelection(
-  textarea: HTMLTextAreaElement,
+  textarea: Pick<HTMLTextAreaElement, "value" | "selectionStart" | "selectionEnd">,
   marker: string,
 ): { value: string; start: number; end: number } {
   const { selectionStart: s, selectionEnd: e, value } = textarea;
   const m = marker.length;
+
+  // Inline formatting is scoped to a line. Wrap each selected line separately,
+  // leaving blank lines and indentation intact so toolbar actions match preview.
+  const selected = value.slice(s, e);
+  if (/[\r\n]/.test(selected)) {
+    const inner = selected
+      .split(/(\r\n|\r|\n)/)
+      .map((line) => {
+        if (!line.trim()) return line;
+        const start = line.length - line.trimStart().length;
+        const end = line.trimEnd().length;
+        return toggleSelection({ value: line, selectionStart: start, selectionEnd: end }, marker)
+          .value;
+      })
+      .join("");
+    return { value: value.slice(0, s) + inner + value.slice(e), start: s, end: s + inner.length };
+  }
 
   // Markers sit immediately outside the selection: **[foo]**
   if (
@@ -153,7 +195,6 @@ export function toggleSelection(
   }
 
   // Default: wrap the selection (or insert placeholder when empty).
-  const selected = value.slice(s, e);
   const placeholder = "text";
   const inner = selected || placeholder;
   const next = `${value.slice(0, s)}${marker}${inner}${marker}${value.slice(e)}`;

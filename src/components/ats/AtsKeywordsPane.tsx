@@ -7,29 +7,11 @@
 import { Check, X } from "lucide-react";
 import type { AtsReport, ResumeData } from "../../types.ts";
 import { Card, CardHead } from "./AtsCard.tsx";
+import { flattenResumeText } from "../../utils/ats.ts";
 import { toneColor } from "./atsShared.ts";
 
-function flattenResume(resume: ResumeData): string {
-  const parts: string[] = [resume.profile.name, resume.profile.title, resume.profile.summary];
-  for (const c of resume.contact) parts.push(c.value);
-  for (const s of resume.skills) parts.push(s.label, s.items);
-  for (const e of resume.experience) {
-    parts.push(e.title, e.company, e.location, e.start, e.end, ...e.bullets);
-  }
-  for (const ed of resume.education) {
-    parts.push(ed.degree, ed.school, ed.location, ed.detail);
-  }
-  for (const p of resume.projects)
-    parts.push(p.name, p.description, ...(p.roles ?? []), ...p.stack);
-  for (const ct of resume.certifications) parts.push(ct.issuer, ct.name);
-  for (const a of resume.awards) parts.push(a.title, a.detail);
-  for (const l of resume.languages) parts.push(l.name, l.level);
-  parts.push(...resume.interests, ...resume.tools);
-  return parts.join(" ");
-}
-
 function countKeywordHits(resume: ResumeData, keyword: string): number {
-  const haystack = flattenResume(resume).toLowerCase();
+  const haystack = flattenResumeText(resume);
   const needle = keyword.toLowerCase();
   if (!needle) return 0;
   let count = 0;
@@ -111,7 +93,7 @@ export function AtsKeywordsPane({
                 {k}
               </span>
               <span className="font-mono text-[10px] text-(--ink-5) font-medium shrink-0">
-                ×{count || 1}
+                ×{count}
               </span>
             </div>
           );

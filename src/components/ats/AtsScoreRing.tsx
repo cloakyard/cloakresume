@@ -9,7 +9,7 @@
 import { clamp } from "../../utils/colors.ts";
 
 interface AtsScoreRingProps {
-  score: number;
+  score: number | null;
   color: string;
   size?: number;
 }
@@ -22,7 +22,7 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
   const gap = compact ? 3 : 5;
   const r = (size - stroke) / 2;
   const c = 2 * Math.PI * r;
-  const clamped = clamp(score, 0, 100);
+  const clamped = clamp(score ?? 0, 0, 100);
   const offset = c - (clamped / 100) * c;
   return (
     <div className="relative grid place-items-center" style={{ width: size, height: size }}>
@@ -58,7 +58,7 @@ export function AtsScoreRing({ score, color, size = 136 }: AtsScoreRingProps) {
           className="font-mono font-semibold tabular-nums tracking-[-0.03em]"
           style={{ color: "var(--ink-1)", fontSize: numFontPx, lineHeight: 1 }}
         >
-          {clamped}
+          {score === null ? "—" : clamped}
         </span>
         <span
           className="font-mono tracking-[0.12em] opacity-70"

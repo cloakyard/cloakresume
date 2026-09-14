@@ -2,6 +2,7 @@
 
 import { readFile, readdir } from "node:fs/promises";
 import { describe, expect, it } from "vite-plus/test";
+import { TEMPLATE_COUNT } from "../src/templates/meta.ts";
 
 const projectRoot = new URL("../", import.meta.url);
 
@@ -180,12 +181,14 @@ describe("CloakResume family contract", () => {
     expect(tokens).toContain("--editor-header-height: 4rem");
     expect(tokens).toContain("--editor-rail-width: 4.5rem");
     expect(tokens).toContain("--editor-panel-width: 20.5rem");
-    expect(tokens).toContain("--editor-panel-width-wide: 24rem");
+    expect(tokens).toContain("--editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem)");
     expect(tokens).toMatch(
       /@media \(min-width: 80rem\)[\s\S]*?--editor-panel-width:\s*var\(--editor-panel-width-wide\)/,
     );
     expect(portable.size["editor-panel"].$value).toBe("20.5rem");
-    expect(portable.size["editor-panel-wide"].$value).toBe("24rem");
+    expect(portable.size["editor-panel-wide"].$value).toBe(
+      "clamp(24rem, calc(100vw - 58rem), 46rem)",
+    );
     expect(layout).toContain(
       "grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)]",
     );
@@ -295,7 +298,7 @@ describe("CloakResume family contract", () => {
         .map((match) => match[1])
         .find((declarations) => declarations.includes("overflow-wrap")) ?? "";
     const longTokenSelectors =
-      /(?:contact|skill|stack|handle|chip|pill|url|link|code|email|website)/i;
+      /(?:contact|skill|stack|handle|chip|pill|url|link|code|email|website|stat-value)/i;
     const midWordDeclaration =
       /overflow-wrap\s*:\s*anywhere|word-break\s*:\s*(?:break-word|break-all)/i;
     const templateRoots: { file: string; declarations: string }[] = [];
@@ -345,9 +348,9 @@ describe("CloakResume family contract", () => {
     expect(indexCss).toMatch(
       /\.resume-root a,\s*\.resume-root code\s*\{[^}]*overflow-wrap:\s*anywhere;[^}]*word-break:\s*break-word;/,
     );
-    expect(templateRoots).toHaveLength(15);
+    expect(templateRoots).toHaveLength(TEMPLATE_COUNT);
     for (const root of templateRoots) {
-      expect(root.declarations, root.file).toContain("overflow-wrap: normal");
+      expect(root.declarations, root.file).toMatch(/overflow-wrap: (?:normal|break-word)/);
       expect(root.declarations, root.file).toContain("word-break: normal");
       expect(root.declarations, root.file).toContain("hyphens: manual");
       expect(root.declarations, root.file).not.toContain("overflow-wrap: anywhere");

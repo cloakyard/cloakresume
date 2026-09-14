@@ -7,7 +7,8 @@
  *
  *   • ≥1024px (`lg:` breakpoint) — 3-column grid. Section rail on the
  *     left; panel + preview share the remaining width. The properties
- *     panel grows from 20.5rem to 24rem at the 1280px widescreen token.
+ *     panel is 20.5rem on smaller desktops and grows from 24rem to 46rem
+ *     on widescreens, using spare canvas space for comfortable data entry.
  *   • <1024px — Edit keeps the proof and the lower workspace visible in
  *     an exact 50:50 split. The lower pane shows either one open editor
  *     or the section picker, never both. Preview expands the proof.

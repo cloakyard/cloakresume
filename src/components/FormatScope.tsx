@@ -137,7 +137,7 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
     const { value, start, end } = toggleSelection(el, marker);
     handler(value);
     requestAnimationFrame(() => {
-      el.focus();
+      el.focus({ preventScroll: true });
       el.setSelectionRange(start, end);
       scope.refreshFormat();
     });

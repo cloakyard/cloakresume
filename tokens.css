@@ -97,7 +97,7 @@
   --editor-header-height: 4rem;
   --editor-rail-width: 4.5rem;
   --editor-panel-width: 20.5rem;
-  --editor-panel-width-wide: 24rem;
+  --editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem);
   --logo-size: 2.5rem;
   --logo-wordmark-gap: 0.6rem;
   --dialog-max: 36rem;
@@ -156,8 +156,8 @@
   --lightness-thumb-border: var(--color-ink);
 }
 
-/* The standard desktop keeps a compact properties panel. Widescreens can
- * spend another 56px on data entry without compromising the proof stage. */
+/* Grow data entry into spare canvas space, reserving the rail and a full-size
+ * paper preview. Cap line length on very wide screens for comfortable editing. */
 @media (min-width: 80rem) {
   :root {
     --editor-panel-width: var(--editor-panel-width-wide);

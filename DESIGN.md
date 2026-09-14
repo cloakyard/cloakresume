@@ -116,20 +116,20 @@ Italic serif marketing headlines are not part of the family.
 
 ## Exact geometry
 
-| Element                     | Rule                                    |
-| --------------------------- | --------------------------------------- |
-| Maximum content frame       | `88rem` / 1408px                        |
-| Phone / 640px+ page gutter  | `16px` / `24px`                         |
-| Marketing / editor header   | `72px` / `64px`                         |
-| Editor rail / desktop panel | `72px` / `328px`; `384px` at ≥1280px    |
-| Header and editor logo      | `40px`, `0.6rem` wordmark gap           |
-| Statement footer            | No repeated logo; product/family kicker |
-| Card/dialog radius          | `8px`                                   |
-| Repeatable editor entry     | `1px` complete rule, `12px` inset       |
-| Input/button/popover radius | `6px`                                   |
-| Standard dialog             | `min(36rem, calc(100vw - 3rem))`        |
-| Wide ATS/gallery dialog     | `min(68.75rem, calc(100vw - 3rem))`     |
-| Popover maximum             | `24rem` or safe viewport width          |
+| Element                     | Rule                                           |
+| --------------------------- | ---------------------------------------------- |
+| Maximum content frame       | `88rem` / 1408px                               |
+| Phone / 640px+ page gutter  | `16px` / `24px`                                |
+| Marketing / editor header   | `72px` / `64px`                                |
+| Editor rail / desktop panel | `72px` / `328px`; fluid `384–736px` at ≥1280px |
+| Header and editor logo      | `40px`, `0.6rem` wordmark gap                  |
+| Statement footer            | No repeated logo; product/family kicker        |
+| Card/dialog radius          | `8px`                                          |
+| Repeatable editor entry     | `1px` complete rule, `12px` inset              |
+| Input/button/popover radius | `6px`                                          |
+| Standard dialog             | `min(36rem, calc(100vw - 3rem))`               |
+| Wide ATS/gallery dialog     | `min(68.75rem, calc(100vw - 3rem))`            |
+| Popover maximum             | `24rem` or safe viewport width                 |
 
 Use the 4px family rhythm: **4, 8, 12, 16, 24, 32, 48, 72, 112, 160px**.
 Major sections use 72–160px vertical space; instrument internals use 12–32px.
@@ -149,8 +149,10 @@ resume local work. It is not a screenshot, decorative mockup, window, or animati
 ### Editor — persistent canvas workbench
 
 The editor stays a full-screen instrument: 64px top bar, 72px section rail, a 328px
-desktop properties panel below 1280px, a 384px properties panel at 1280px and above,
-and a persistent document stage. The panel width comes from the responsive
+desktop properties panel below 1280px, and a fluid 384–736px properties panel at
+1280px and above. Spare canvas space goes to text entry while reserving 856px for
+the document stage as the panel grows; its maximum keeps long fields readable.
+The panel width comes from the responsive
 `--editor-panel-width` token; Layout never carries a parallel hard-coded width. All
 fixed and sticky panels begin below the complete 64px header. At narrow widths, the
 mobile proof and lower workspace divide available content height exactly 50:50. The
@@ -259,7 +261,8 @@ Visual verification is mandatory at **320, 375, 414, 768, and 1280px** wide;
 - At 640px+: 24px page gutter and desktop overlay gutters.
 - Below 860px: declaration splits and ledgers stack in source order.
 - At 768px: no overflow, clipped actions, or off-canvas dialog controls.
-- At 1280px+: the properties panel uses the 24rem widescreen token; it remains
+- At 1280px+: the properties panel uses `clamp(24rem, calc(100vw - 58rem), 46rem)`;
+  this gives text entry spare horizontal space without shrinking an already full-size preview. It remains
   20.5rem from the desktop breakpoint through 1279px.
 - Desktop content remains centred inside 88rem; no section gets a competing width.
 
@@ -270,11 +273,12 @@ order, dialog labels, focus return, escape dismissal, and readable muted contras
 mandatory. Icon-only controls have a minimum 40px visual hit area.
 
 Ordinary interface prose and résumé-document text preserve natural word boundaries:
-use `overflow-wrap: normal`, `word-break: normal`, and `hyphens: manual` at document
-and paragraph roots. Never apply `anywhere` or `break-word` globally; arbitrary
-mid-word breaks make names and résumé copy look corrupted in the preview and PDF.
-Emergency wrapping is limited to genuinely unbroken values such as URLs, code,
-filenames, and constrained tokens.
+use `word-break: normal` and `hyphens: manual`. Interface prose uses
+`overflow-wrap: normal`; résumé templates use `overflow-wrap: break-word` as an
+emergency fallback only when an otherwise unbreakable token exceeds its column.
+Normal words still wrap at spaces, and their intrinsic sizing is preserved.
+Never use `word-break: break-all`. The stronger `overflow-wrap: anywhere` sizing
+rule remains limited to URLs, code, filenames, and constrained tokens.
 
 ## Invariants
 
@@ -316,7 +320,7 @@ portable equivalents required for downstream implementations.
   --header-height: 4.5rem;
   --editor-header-height: 4rem;
   --editor-panel-width: 20.5rem;
-  --editor-panel-width-wide: 24rem;
+  --editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem);
 }
 ```
 
