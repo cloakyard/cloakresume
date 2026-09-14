@@ -310,7 +310,7 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
           <div>
             <h2 className="gh-h2">Certifications</h2>
             {resume.certifications.map((c) => (
-              <div className="gh-cert" key={c.id}>
+              <div className="gh-cert" key={c.id} data-keep-together="true">
                 {certificationLink(c, <strong>{c.name}</strong>)}
                 {c.issuer}
                 {c.year ? ` · ${c.year}` : ""}
@@ -323,7 +323,7 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
             <h2 className="gh-h2">Awards</h2>
             {resume.awards.map((a) => (
               <div className="gh-cert" key={a.id}>
-                <strong>
+                <strong data-keep-with-next="true">
                   {a.title}
                   {a.year ? ` · ${a.year}` : ""}
                 </strong>

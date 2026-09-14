@@ -232,6 +232,7 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
               // This catches lost/duplicated text without confusing sidebar/main
               // interleaving and generated continuation labels with missing prose.
               const changedAtoms: string[] = [];
+              const expectedKeptRecords: string[] = [];
               let originalText = "";
               for (const channel of ["main", "sidebar"]) {
                 const original = [
@@ -246,6 +247,11 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
                   .filter((element) => (element.closest("aside") ? "sidebar" : "main") === channel);
                 original.forEach((atom, index) => {
                   const before = readText(atom);
+                  expectedKeptRecords.push(
+                    ...[...atom.querySelectorAll('[data-keep-together="true"]')].map((record) =>
+                      normalize(readText(record)),
+                    ),
+                  );
                   originalText += before;
                   const after = fragments
                     .filter((fragment) => Number(fragment.dataset.paginationSourceIndex) === index)
@@ -266,6 +272,14 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
                 pages: pages.length,
                 violations,
                 changedAtoms,
+                expectedKeptRecords: expectedKeptRecords.sort(),
+                keptRecords: pages
+                  .flatMap((page) =>
+                    [...page.querySelectorAll('[data-keep-together="true"]')].map((record) =>
+                      normalize(readText(record)),
+                    ),
+                  )
+                  .sort(),
                 statCards: pages.flatMap((page) =>
                   [...page.querySelectorAll('[data-stat-card="true"]')].map((card) =>
                     normalize(readText(card)),
@@ -303,6 +317,7 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
             .toEqual({ count: 0, first: [] });
           expect.soft(result.missing, fixture.name).toEqual([]);
           expect.soft(result.changedAtoms, fixture.name).toEqual([]);
+          expect.soft(result.keptRecords, fixture.name).toEqual(result.expectedKeptRecords);
           const expectedStats = statsTemplates.has(template.id)
             ? fixture.resume.quickStats.map((stat) =>
                 `${stat.value}${stat.label}`.toLowerCase().replace(/[^\p{L}\p{N}]/gu, ""),

@@ -122,9 +122,12 @@ function partition(node: Node, bottom: number, maxWholeHeight: number): [Node | 
   if (!node.childNodes.length) {
     return rect.bottom <= bottom ? [node.cloneNode(true), null] : [null, node.cloneNode(true)];
   }
-  // Stats values and their labels are one fact, including within the older
-  // hero grids. Grid cells share row height, so moving them preserves the row.
-  if (node.dataset.statCard === "true" && layoutHeight(node) <= maxWholeHeight)
+  // Keep explicit records and stat value/label pairs whole when they fit on
+  // a fresh page. Taller records must still be allowed to split into lines.
+  if (
+    (node.dataset.statCard === "true" || node.dataset.keepTogether === "true") &&
+    layoutHeight(node) <= maxWholeHeight
+  )
     return [null, node.cloneNode(true)];
   // Short factual blocks (an award, language, or credential) move as a
   // unit. Line fragmentation is reserved for content that is actually long.
@@ -279,7 +282,8 @@ export function paginateMeasured(
         // Keep normal compact cards together, but use meaningful remaining
         // page space for long prose/grids instead of moving a whole section.
         const atom = pending.firstElementChild as HTMLElement | null;
-        const preserveRow = atom?.dataset.statRow === "true";
+        const preserveRow =
+          atom?.dataset.statRow === "true" || atom?.dataset.keepTogether === "true";
         const compactCard = atom && getComputedStyle(atom).breakInside === "avoid" && height <= 110;
         const fitsFreshPage = height <= budgetForPage(pages.length + 1);
         const canSplit =

@@ -223,7 +223,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
         <div className="mg-chips">
           {resume.tools.map((t, i) => (
             // oxlint-disable-next-line jsx/no-array-index-key
-            <span className="mg-chip" key={i}>
+            <span className="mg-chip" key={i} data-keep-together="true">
               {t}
             </span>
           ))}
@@ -239,7 +239,7 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
         <div className="mg-chips">
           {resume.interests.map((t, i) => (
             // oxlint-disable-next-line jsx/no-array-index-key
-            <span className="mg-chip" key={i}>
+            <span className="mg-chip" key={i} data-keep-together="true">
               {t}
             </span>
           ))}

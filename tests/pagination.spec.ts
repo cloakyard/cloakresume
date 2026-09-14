@@ -146,6 +146,30 @@ describe.skipIf(!chrome)("measured resume pagination", () => {
     );
   }
 
+  it.each([false, true])("keeps a complete credential together (nested: %s)", async (nested) => {
+    const credential =
+      '<div data-keep-together="true"><strong style="display:block;height:70px">CREDENTIAL_NAME</strong><div style="height:70px">ISSUER_AND_YEAR</div></div>';
+    const result = await verify(
+      `<div class="atom"><div style="height:100px">Earlier content</div></div><div class="atom">${nested ? `<section>${credential}<p>Following content</p></section>` : credential}</div>`,
+    );
+    expect(result.errors).toEqual([]);
+    expect(result.preserved).toBe(true);
+    expect(result.pageText[0]).not.toContain("CREDENTIAL_NAME");
+    expect(result.pageText.find((text) => text?.includes("CREDENTIAL_NAME"))).toContain(
+      "ISSUER_AND_YEAR",
+    );
+  });
+
+  it("allows an explicitly kept record taller than a page to continue", async () => {
+    const result = await verify(
+      `<div class="atom"><div data-keep-together="true"><p>${"Long credential details remain readable. ".repeat(50)}CREDENTIAL_END</p></div></div>`,
+    );
+    expect(result.pages).toBeGreaterThan(2);
+    expect(result.errors).toEqual([]);
+    expect(result.preserved).toBe(true);
+    expect(result.text.match(/CREDENTIAL_END/g)).toHaveLength(1);
+  });
+
   it("flows oversized rich text without dropping characters, emphasis or links", async () => {
     const result = await verify(
       `<div class="atom"><h2>Summary</h2><p>${"A thoughtful <strong>engineer</strong> ships reliable systems. ".repeat(35)}<a href="https://example.com">Final link</a> SUMMARY_END</p></div>`,

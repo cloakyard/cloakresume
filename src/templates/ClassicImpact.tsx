@@ -124,7 +124,7 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
 
   resume.certifications.forEach((cert, i) => {
     sidebarAtoms.push(
-      <div className="ci-sb-item" key={`cert-${cert.id}`}>
+      <div className="ci-sb-item" key={`cert-${cert.id}`} data-keep-together="true">
         {i === 0 && <h2 className="ci-side-head">Certifications</h2>}
         {certificationLink(cert, <strong className="ci-side-strong">{cert.name}</strong>)}
         <div className="ci-side-meta">{[cert.issuer, cert.year].filter(Boolean).join(" · ")}</div>
@@ -166,7 +166,7 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
           <div className="ci-chips">
             {items.slice(i, i + 3).map((item, offset) => (
               // oxlint-disable-next-line jsx/no-array-index-key
-              <span className="ci-chip" key={`${i}-${offset}`}>
+              <span className="ci-chip" key={`${i}-${offset}`} data-keep-together="true">
                 {item}
               </span>
             ))}
