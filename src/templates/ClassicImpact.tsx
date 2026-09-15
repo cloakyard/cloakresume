@@ -26,7 +26,12 @@ const SIDEBAR_PADDING_MM = 7;
 
 export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: TemplateProps) {
   const logo = findLogoIcon(resume.profile.logoIconName);
-  const statColumns = Math.max(1, Math.min(resume.quickStats.length, 4));
+  // Descriptive labels and longer values need wider cards in this narrow main
+  // column. Keep compact metrics four across; give detailed metrics two columns.
+  const detailedStats = resume.quickStats.some(
+    (stat) => stat.value.trim().length > 6 || stat.label.trim().length > 20,
+  );
+  const statColumns = Math.max(1, Math.min(resume.quickStats.length, detailedStats ? 2 : 4));
   const css = `
     .ci-root { font-family: var(--ci-font); color: var(--ci-ink); font-size: 9pt; line-height: 1.45; overflow-wrap: break-word; word-break: normal; hyphens: manual; --ci-font: 'Geist Variable', 'Inter', sans-serif; --ci-ink: #1f2937; --ci-heading: #111827; --ci-muted: #4b5563; --ci-rule: #d1d5db; --ci-accent: ${palette.primary700}; --ci-tint: ${palette.primary50}; --ci-accent-rule: ${palette.primary200}; --ci-on-accent: ${palette.primaryText};  }
     .ci-sidebar { min-width: 0; }
@@ -207,10 +212,10 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
         Quick Stats
       </h2>,
     );
-    for (let i = 0; i < resume.quickStats.length; i += 4) {
+    for (let i = 0; i < resume.quickStats.length; i += statColumns) {
       mainAtoms.push(
         <div className="ci-stats-row" data-stat-row="true" key={`stats-${i}`}>
-          {resume.quickStats.slice(i, i + 4).map((stat) => (
+          {resume.quickStats.slice(i, i + statColumns).map((stat) => (
             <div className="ci-stat" key={stat.id} data-stat-card="true">
               <strong className="ci-stat-value">{stat.value}</strong>
               <span className="ci-stat-label">{stat.label}</span>

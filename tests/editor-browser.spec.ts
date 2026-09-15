@@ -265,6 +265,88 @@ describe.skipIf(!existsSync(chromePath))(
       await page.keyboard.sendCharacter(value);
     }
 
+    for (const paperSize of ["a4", "letter"]) {
+      it.each([
+        {
+          name: "descriptive labels",
+          columns: 2,
+          stats: [
+            ["1500+", "HC transformation"],
+            ["7%", "CSAT enhancement"],
+            ["20%", "Productivity enhancement"],
+            ["30%", "Training duration optimized"],
+          ],
+        },
+        {
+          name: "long values",
+          columns: 2,
+          stats: [
+            ["1,500,000+", "Customers"],
+            ["99.999%", "Availability"],
+            ["$250,000", "Savings"],
+            ["30%", "Growth"],
+          ],
+        },
+        {
+          name: "compact metrics",
+          columns: 4,
+          stats: [
+            ["25+", "Projects"],
+            ["12+", "Years"],
+            ["6×", "Awards"],
+            ["4", "Talks"],
+          ],
+        },
+      ])("fits Classic Impact stats with $name on " + paperSize, async ({ stats, columns }) => {
+        await openDraft(
+          {
+            ...blankResume,
+            profile: {
+              name: "Operations Leader",
+              title: "Contact Centre Transformation",
+              summary: "Summary.",
+            },
+            quickStats: stats.map(([value, label], i) => ({ id: `stat-${i}`, value, label })),
+          },
+          { templateId: "classic-impact", paperSize },
+        );
+        await page.waitForSelector('.resume-root[data-template-ready="true"] .ci-stat');
+        await page.emulateMediaType("print");
+        const rows = await page.$$eval(".resume-page .ci-stats-row", (elements) =>
+          elements.map((element) =>
+            [...element.querySelectorAll<HTMLElement>(".ci-stat")].map((card) => {
+              const cardBox = card.getBoundingClientRect();
+              return [...card.querySelectorAll<HTMLElement>(".ci-stat-value, .ci-stat-label")].map(
+                (text) => {
+                  const range = document.createRange();
+                  range.selectNodeContents(text);
+                  const lines = [...range.getClientRects()];
+                  return {
+                    text: text.textContent,
+                    lines: lines.length,
+                    inside: lines.every(
+                      (line) =>
+                        line.left >= cardBox.left + 5 &&
+                        line.right <= cardBox.right - 5 &&
+                        line.top >= cardBox.top &&
+                        line.bottom <= cardBox.bottom - 5,
+                    ),
+                  };
+                },
+              );
+            }),
+          ),
+        );
+        expect(rows).toHaveLength(stats.length / columns);
+        expect(rows.map((row) => row.length)).toEqual(Array(stats.length / columns).fill(columns));
+        expect(rows.flat().map((card) => card.map((text) => text.text))).toEqual(stats);
+        for (const text of rows.flat(2)) {
+          expect(text.inside, text.text ?? "stat text").toBe(true);
+          expect(text.lines, text.text ?? "stat text").toBe(1);
+        }
+      });
+    }
+
     for (const template of TEMPLATE_LIST)
       for (const paperSize of ["a4", "letter"]) {
         it(`preserves four title lines and flags wrapped overflow in ${template.name} / ${paperSize}`, async () => {
