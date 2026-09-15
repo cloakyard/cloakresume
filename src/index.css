@@ -329,7 +329,7 @@
   }
   /* Row used to pair a section-scope label with an inline action. */
   .cr-field-row {
-    @apply flex items-center justify-between min-h-[22px] mb-1.5;
+    @apply flex flex-wrap items-center justify-between gap-x-2 gap-y-1 min-h-[22px] mb-1.5;
   }
   .cr-field-row .cr-field-label {
     @apply mb-0;
@@ -385,6 +385,29 @@
 .resume-root code {
   overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+/* Preserve chosen breaks and bound every identity block, including continuation
+ * headers. Full draft text stays editable; overflow is flagged before export. */
+.resume-root .resume-profile-title,
+.resume-template-preview .resume-profile-title {
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  max-width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Canvas export reads decoration on each text node's immediate parent.
+ * Inherit it through the nested spans, bold, italic, and code in rich text. */
+.resume-root u *,
+.resume-template-preview u * {
+  text-decoration-line: inherit;
+  text-underline-offset: inherit;
 }
 
 .resume-root .resume-page {
@@ -481,6 +504,10 @@
   .resume-root .resume-page:has(+ .resume-page) {
     break-after: page;
     page-break-after: always;
+  }
+
+  .resume-root .resume-profile-title {
+    overflow: hidden !important;
   }
 }
 

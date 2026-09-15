@@ -1,0 +1,49 @@
+<!-- Hallmark · pre-emit critique: P5 H5 E4 S5 R5 V4 -->
+
+# Reliability audit — 14 September 2026
+
+The audit covered document state, save/load boundaries, text editing, dates, photo uploads, ATS and writing analysis, template pagination, PDF export, dependencies, and representative responsive/keyboard flows. It includes the original text-entry fixes and the additional bugs found during the broader review. Findings below describe the resulting working-tree changes.
+
+## Fixed findings
+
+| Priority | Finding and correction                                                                                                                                                                                                                                                                                                | Main files                                                                                                             |
+| -------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| P1       | Rapid typing could trigger React's maximum-update-depth error in production. Writing reports now belong to a document revision; editing invalidates them without scheduling state resets on every keystroke. Pagination also avoids scheduling unchanged page groups.                                                 | `src/utils/grammar.ts`, `src/components/PaginatedCanvas.tsx`                                                           |
+| P1       | Reloading before the autosave debounce could lose the last edit, and storage failures were silent. Pending edits flush on page lifecycle events; failed writes display recovery instructions and warn before leaving when saving still fails.                                                                         | `src/utils/useAutosave.ts`, `src/App.tsx`                                                                              |
+| P1       | Malformed nested import/storage values could crash editors or analysis. Every row and field is normalized, duplicate/missing IDs are repaired, obsolete settings fall back safely, and template lookup rejects inherited property names such as `constructor`.                                                        | `src/utils/fileIO.ts`, `src/App.tsx`                                                                                   |
+| P1       | Compact Timeline's entire project grid was one pagination block. Project rows now flow across pages. Long education details in Classic Sidebar and Monograph now wrap within the column.                                                                                                                              | `src/templates/CompactTimeline.tsx`, `ClassicSidebar.tsx`, `Monograph.tsx`                                             |
+| P1       | PDF export could silently crop overflowing content and accept duplicate export clicks. Export now checks text against paper/column bounds, waits for font layout, reports overflow, and prevents concurrent exports.                                                                                                  | `src/utils/pdfExport.ts`, `src/App.tsx`, toolbar components                                                            |
+| P2       | Summary and other rich-text fields lost line breaks in templates. Shared rendering preserves line endings, blank lines, and spacing; multiline formatting preserves line boundaries. Underscores inside identifiers remain literal.                                                                                   | `src/utils/richText.tsx`                                                                                               |
+| P2       | Growing a textarea temporarily collapsed its height and moved the surrounding scroll position. A hidden measurement copy preserves the live field's geometry, caret, and focus.                                                                                                                                       | `src/components/RichTextArea.tsx`, `FormatScope.tsx`                                                                   |
+| P2       | Experience lacked an explicit ongoing-role state. “Current job” stores `Present`, disables end-date controls, recognizes older Present values, and restores the previous date when toggled off during the same editing session.                                                                                       | `src/components/editor/ExperienceSection.tsx`, `MonthYearField.tsx`                                                    |
+| P2       | Photo uploads lacked size, type, and image-decoding validation and could overwrite newer profile edits. Uploads now validate JPG/PNG and the 2 MB limit, reject corrupt images, cancel obsolete requests, and merge into the latest profile. Imported remote photos are omitted to keep document image loading local. | `src/components/editor/ProfileSection.tsx`, `src/utils/fileIO.ts`                                                      |
+| P2       | Failed writing-engine downloads could remain cached as failures; short completed scans looked perpetually pending. Downloads can retry, stale reports disappear immediately, short scans explain the 20-word threshold, and unavailable scores show a dash. Custom-section prose is included.                         | `src/utils/grammar.ts`, ATS review components                                                                          |
+| P2       | Keyword matching omitted custom sections, quick stats, and extras. Palette text could have insufficient contrast. Some partial date ranges displayed a leading dash, parenthesized phone numbers were rejected, and photo/logo/JD-only drafts could lose the resume option.                                           | `src/utils/ats.ts`, `colors.ts`, `validation.ts`, `src/templates/shared.tsx`, `src/data/blankResume.ts`, `src/App.tsx` |
+
+## Verification
+
+- `vp check`: formatting, lint, and type checks pass.
+- `vp test run`: **112 tests pass**, including 23 real Chrome browser regressions.
+- `vp run build`: production build and service-worker generation pass.
+- `CLOAKRESUME_BROWSER_BUILD=production vp test run tests/editor-browser.spec.ts`: **23 tests pass**. Browser tests fail on uncaught runtime errors.
+- A large résumé fixture passes text-boundary checks in **all 15 templates on both A4 and Letter**. Separate checks verified explicit line breaks and current-job dates in all 15 templates.
+- The production app successfully loads the bundled writing worker, downloads a PDF, and registers its service worker without runtime errors.
+- Landing, editor, and template gallery checked at **320, 375, 414, 768, 1280, and 1440px**: no document horizontal overflow, no unnamed visible action controls in the checked surfaces, 16px mobile inputs, gallery keyboard containment, Escape dismissal, and desktop focus return. Light and dark editor screenshots were inspected after theme transitions settled.
+- `vp pm audit`: **no known vulnerabilities**. Frozen installation with strict peer checking passes under the repository's declared compatibility rules.
+
+Dependency updates are locked. `vp outdated` reports only Vitest: it remains at **4.1.11**, the version bundled with Vite+ **0.3.1**, instead of independently installing Vitest 5. The standalone PWA asset generator is updated to 2.0.0; its compatibility exception is scoped to the unused optional Vite-plugin integration.
+
+## Design review
+
+The checked surfaces retain `DESIGN.md`'s Workbench structure, Archivo/JetBrains Mono typography, Emerald identity, responsive editor geometry, and white résumé outputs. No redesign was needed. Hallmark taste findings in the reviewed surfaces: **0 critical · 0 major · 0 minor**.
+
+Primary-background text now meets the [WCAG small-text contrast threshold](https://www.w3.org/WAI/WCAG22/Understanding/contrast-minimum.html) for the tested presets and edge cases. This is a targeted contrast and keyboard review, not a complete accessibility certification or a claim about every possible custom template colour.
+
+## Remaining improvements
+
+1. **Split oversized individual blocks automatically.** A paragraph or grid row taller than a page still needs splitting or shortening. Export now refuses to crop it; the paginator does not yet split arbitrary text within a block. This also means every possible extreme document is not covered by the successful fixture matrix.
+2. **Strengthen PDF text extraction.** The existing invisible text layer uses jsPDF's built-in font and whole text-node bounds. Multilingual glyph encoding, soft-wrapped selection geometry, and real third-party ATS parsing need targeted validation and potentially embedded fonts and per-line positioning. Successful visual export does not establish universal ATS compatibility.
+3. **Add cross-tab draft conflict handling.** Separate tabs still share one local draft key; the last successful writer wins. A revision check and an explicit choice between conflicting drafts would prevent accidental overwrites during simultaneous editing.
+4. **Broaden platform coverage.** The browser regressions ran in Chrome. Safari/iOS keyboards, Firefox lifecycle behavior, and service-worker update/offline recovery still need platform-specific checks. The production build retains large-chunk warnings for the app/export bundles.
+
+Local QA screenshots, pagination results, and downloaded PDFs were saved under `/tmp/cloakresume-audit/`; these temporary artifacts are not committed project fixtures.

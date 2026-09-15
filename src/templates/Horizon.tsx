@@ -150,7 +150,9 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
         )}
       </div>
       <h1 className="hz-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="hz-role">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="hz-role resume-profile-title">{resume.profile.title}</div>
+      )}
     </div>,
   );
 
@@ -483,7 +485,9 @@ export const Horizon = memo(function Horizon({ resume, palette }: Props) {
         {pageIndex > 0 && (
           <div className="hz-cont-name">
             <strong>{resume.profile.name}</strong>
-            {resume.profile.title && <small>{resume.profile.title}</small>}
+            {resume.profile.title && (
+              <small className="resume-profile-title">{resume.profile.title}</small>
+            )}
           </div>
         )}
         {atomsForPage}

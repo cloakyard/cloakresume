@@ -21,12 +21,14 @@ import type { TemplateProps } from "../templates/index.ts";
 import type { ResumeData } from "../types.ts";
 import { clamp, type PrimaryPalette } from "../utils/colors.ts";
 import { PAPER_SIZES, type PaperSize } from "../utils/paperSize.ts";
+import { profileTitleOverflows } from "../utils/profileTitle.ts";
 
 interface PreviewProps {
   resume: ResumeData;
   palette: PrimaryPalette;
   paperSize: PaperSize;
   TemplateComponent: ComponentType<TemplateProps>;
+  onTitleOverflowChange: (overflow: boolean) => void;
 }
 
 /** 1mm in CSS pixels at 96dpi. */
@@ -59,7 +61,13 @@ function ReadyTemplate({
   return <TemplateComponent resume={resume} palette={palette} />;
 }
 
-export function Preview({ resume, palette, paperSize, TemplateComponent }: PreviewProps) {
+export function Preview({
+  resume,
+  palette,
+  paperSize,
+  TemplateComponent,
+  onTitleOverflowChange,
+}: PreviewProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(0.75);
@@ -83,6 +91,29 @@ export function Preview({ resume, palette, paperSize, TemplateComponent }: Previ
 
   const { widthMm: pageWidthMm, heightMm: pageHeightMm } = PAPER_SIZES[paperSize];
   const pageWidthPx = pageWidthMm * PX_PER_MM;
+
+  useEffect(() => {
+    const root = innerRef.current;
+    if (!root) return;
+    const checkTitle = () => onTitleOverflowChange(profileTitleOverflows(root));
+    const resize = new ResizeObserver(checkTitle);
+    const observeTitles = () => {
+      resize.disconnect();
+      root
+        .querySelectorAll(".resume-page .resume-profile-title")
+        .forEach((title) => resize.observe(title));
+      checkTitle();
+    };
+    const mutations = new MutationObserver(observeTitles);
+    mutations.observe(root, { childList: true, characterData: true, subtree: true });
+    document.fonts.addEventListener("loadingdone", checkTitle);
+    observeTitles();
+    return () => {
+      resize.disconnect();
+      mutations.disconnect();
+      document.fonts.removeEventListener("loadingdone", checkTitle);
+    };
+  }, [onTitleOverflowChange]);
 
   const computeFitZoom = useCallback(
     (containerWidth: number): number => {

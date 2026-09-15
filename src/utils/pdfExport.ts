@@ -22,6 +22,7 @@ import { renderedTextLines } from "./pagination.ts";
 import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "./paperSize.ts";
+import { profileTitleOverflows } from "./profileTitle.ts";
 
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
@@ -37,6 +38,11 @@ const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
 
 /** Fail visibly if a future template regression would otherwise crop its PDF. */
 export function assertExportFits(source: HTMLElement, paperSize: PaperSize): void {
+  if (profileTitleOverflows(source)) {
+    throw new Error(
+      "Your title exceeds 4 lines. Open Profile and shorten the title or adjust its line breaks, then export again.",
+    );
+  }
   const paper = PAPER_SIZES[paperSize];
   const pages = source.querySelectorAll<HTMLElement>(".resume-page");
   if (!pages.length) throw new Error("The resume preview is still loading. Please try again.");

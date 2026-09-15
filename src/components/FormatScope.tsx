@@ -19,7 +19,7 @@ import {
   type MutableRefObject,
   type ReactNode,
 } from "react";
-import { Bold, Code2, Italic } from "lucide-react";
+import { Bold, Code2, Italic, Underline } from "lucide-react";
 import { formatStateAt, toggleSelection } from "../utils/richText.tsx";
 
 type Handler = (next: string) => void;
@@ -27,10 +27,11 @@ type Handler = (next: string) => void;
 interface FormatState {
   bold: boolean;
   italic: boolean;
+  underline: boolean;
   code: boolean;
 }
 
-const EMPTY_FORMAT: FormatState = { bold: false, italic: false, code: false };
+const EMPTY_FORMAT: FormatState = { bold: false, italic: false, underline: false, code: false };
 
 interface FormatScopeContextValue {
   activeRef: MutableRefObject<HTMLTextAreaElement | null>;
@@ -55,9 +56,12 @@ export function FormatScope({ children }: { children: ReactNode }) {
       setFormat((prev) => (prev === EMPTY_FORMAT ? prev : EMPTY_FORMAT));
       return;
     }
-    const next = formatStateAt(el.value, el.selectionStart);
+    const next = formatStateAt(el.value, el.selectionStart, el.selectionEnd);
     setFormat((prev) =>
-      prev.bold === next.bold && prev.italic === next.italic && prev.code === next.code
+      prev.bold === next.bold &&
+      prev.italic === next.italic &&
+      prev.underline === next.underline &&
+      prev.code === next.code
         ? prev
         : next,
     );
@@ -121,7 +125,7 @@ export function useFormatRegistration(
 /**
  * Single format toolbar shared by every RichTextArea in its FormatScope.
  *
- * Rendered as three subtle icon buttons — no pill container, no shadow —
+ * Rendered as four subtle icon buttons — no pill container, no shadow —
  * so the toolbar sits beside the field label without visually competing
  * with it.
  */
@@ -170,6 +174,14 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         active={format.italic}
       >
         <Italic className={icon} strokeWidth={2.5} />
+      </FmtBtn>
+      <FmtBtn
+        label="Underline (⌘U)"
+        onClick={() => apply("<u>")}
+        disabled={disabled}
+        active={format.underline}
+      >
+        <Underline className={icon} strokeWidth={2.5} />
       </FmtBtn>
       <FmtBtn label="Code" onClick={() => apply("`")} disabled={disabled} active={format.code}>
         <Code2 className={icon} strokeWidth={2.5} />

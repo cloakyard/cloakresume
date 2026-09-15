@@ -146,7 +146,7 @@ export const Bauhaus = memo(function Bauhaus({ resume, palette }: Props) {
         <h1 className="bh-name">{resume.profile.name}</h1>
       </div>
       <div className="bh-title-block">
-        <div className="bh-title">{resume.profile.title || "—"}</div>
+        <div className="bh-title resume-profile-title">{resume.profile.title || "—"}</div>
       </div>
       <div className="bh-contact-block">
         {resume.contact.map((c) => (

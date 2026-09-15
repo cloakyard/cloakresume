@@ -1,9 +1,10 @@
 /** Profile section: avatar/photo + name + headline + logo + summary. */
 
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
 import type { ResumeData } from "../../types.ts";
-import { TextField } from "../fields.tsx";
+import { TextArea, TextField } from "../fields.tsx";
+import { PROFILE_TITLE_MAX_LINES, ProfileTitleOverflowContext } from "../../utils/profileTitle.ts";
 import { RichTextArea } from "../RichTextArea.tsx";
 import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
 import { LogoPicker } from "../LogoPicker.tsx";
@@ -15,6 +16,9 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
   const readerRef = useRef<FileReader | null>(null);
   const photoRequest = useRef(0);
   const [photoError, setPhotoError] = useState<string | null>(null);
+  const titleOverflows = useContext(ProfileTitleOverflowContext);
+  const tooManyTitleLines =
+    resume.profile.title.split(/\r\n|\r|\n/).length > PROFILE_TITLE_MAX_LINES;
 
   const updateProfile = (partial: Partial<ResumeData["profile"]>) =>
     patch("profile", { ...resume.profile, ...partial });
@@ -147,12 +151,22 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
           value={resume.profile.name}
           onChange={(v) => updateProfile({ name: v })}
         />
-        <TextField
+        <TextArea
           label="Title / headline"
           name="profile-headline"
           autoComplete="organization-title"
           value={resume.profile.title}
           onChange={(v) => updateProfile({ title: v })}
+          rows={PROFILE_TITLE_MAX_LINES}
+          resizable={false}
+          invalid={tooManyTitleLines || titleOverflows}
+          hint={
+            tooManyTitleLines
+              ? "Use at most 4 lines. Remove extra line breaks before exporting."
+              : titleOverflows
+                ? "This title wraps beyond 4 lines in this template. Shorten it or adjust the line breaks before exporting."
+                : "Press Enter to choose line breaks. Your title must fit within 4 lines in the résumé."
+          }
         />
 
         <div className="cr-field">
@@ -176,7 +190,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             rows={8}
           />
           <div className="text-sm text-(--ink-4) mt-2">
-            Tip: wrap text in **bold** or *italic* for emphasis.
+            Select text to apply bold, italic, underline, or code.
           </div>
         </div>
       </div>

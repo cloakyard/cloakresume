@@ -131,7 +131,9 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
         </div>
       ) : null}
       <div className="mg-name">{resume.profile.name}</div>
-      {resume.profile.title && <div className="mg-role">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="mg-role resume-profile-title">{resume.profile.title}</div>
+      )}
       <div className="mg-orn" />
     </div>,
   );
@@ -469,7 +471,9 @@ export const Monograph = memo(function Monograph({ resume, palette }: Props) {
         {pageIndex > 0 && (
           <div className="mg-cont-name">
             {resume.profile.name}
-            {resume.profile.title && <small>{resume.profile.title}</small>}
+            {resume.profile.title && (
+              <small className="resume-profile-title">{resume.profile.title}</small>
+            )}
           </div>
         )}
         {atomsForPage}

@@ -72,6 +72,7 @@ import { useAutosave } from "./utils/useAutosave.ts";
 import { computeAts } from "./utils/ats.ts";
 import { useGrammarScan } from "./utils/grammar.ts";
 import { FieldIssuesProvider } from "./utils/fieldIssues.tsx";
+import { ProfileTitleOverflowContext } from "./utils/profileTitle.ts";
 import { highlightField } from "./utils/highlightField.ts";
 import {
   buildDownloadFilename,
@@ -150,6 +151,7 @@ function loadPersisted(): Persisted {
 export function App() {
   const initial = useMemo(() => loadPersisted(), []);
   const [resume, setResume] = useState<ResumeData>(initial.resume);
+  const [titleOverflows, setTitleOverflows] = useState(false);
   const [templateId, setTemplateId] = useState<TemplateId>(initial.templateId);
   const [primary, setPrimary] = useState<string>(initial.primary);
   const [paperSize, setPaperSize] = useState<PaperSize>(initial.paperSize);
@@ -433,15 +435,17 @@ export function App() {
           onMobileSectionOpenChange={setMobileSectionOpen}
           panel={
             <FieldIssuesProvider report={grammarReport}>
-              <SectionPanel
-                active={activeSection}
-                resume={resume}
-                onChange={setResume}
-                jobDescription={jobDescription}
-                onJobDescriptionChange={setJobDescription}
-                onAnalyze={openAts}
-                onClose={() => setMobileSectionOpen(false)}
-              />
+              <ProfileTitleOverflowContext value={titleOverflows}>
+                <SectionPanel
+                  active={activeSection}
+                  resume={resume}
+                  onChange={setResume}
+                  jobDescription={jobDescription}
+                  onJobDescriptionChange={setJobDescription}
+                  onAnalyze={openAts}
+                  onClose={() => setMobileSectionOpen(false)}
+                />
+              </ProfileTitleOverflowContext>
             </FieldIssuesProvider>
           }
           preview={
@@ -450,6 +454,7 @@ export function App() {
               palette={palette}
               paperSize={paperSize}
               TemplateComponent={TemplateComponent}
+              onTitleOverflowChange={setTitleOverflows}
             />
           }
         />

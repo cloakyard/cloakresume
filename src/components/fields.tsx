@@ -239,6 +239,7 @@ interface TextAreaProps {
   autoComplete?: string;
   hint?: string;
   invalid?: boolean;
+  resizable?: boolean;
 }
 
 export function TextArea({
@@ -251,6 +252,7 @@ export function TextArea({
   autoComplete = "off",
   hint,
   invalid = false,
+  resizable = true,
 }: TextAreaProps) {
   const reactId = useId();
   const inputId = `${reactId}-textarea`;
@@ -271,7 +273,7 @@ export function TextArea({
         spellCheck={true}
         aria-invalid={invalid || undefined}
         aria-describedby={hint ? hintId : undefined}
-        className={`cr-input font-[inherit] resize-y${invalid ? " cr-input--invalid" : ""}`}
+        className={`cr-input font-[inherit] ${resizable ? "resize-y" : "resize-none"}${invalid ? " cr-input--invalid" : ""}`}
       />
       <span
         id={hintId}

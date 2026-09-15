@@ -38,12 +38,20 @@ their individual typography, palettes, and pagination behavior.
 
 **Save** writes a versioned `.cloakresume.json` file containing the résumé, selected
 template, document colour, paper size, and optional job description. **Load** checks
-the CloakResume discriminator, normalises older or partial top-level résumé data, and
+the CloakResume discriminator, normalises older or partial résumé data including nested rows, and
 restores that workbench state. The JSON workflow was verified with a real browser
 save→load round trip.
 
 **Export PDF** renders the selected A4 or US Letter document locally. Exported pages
 retain the template's visual layout while adding selectable text and link annotations.
+Export reports content outside a page or column instead of silently cropping it.
+The profile title supports manual line breaks and displays at most four lines in every
+template. The editor flags titles that exceed that space, and PDF export asks you to
+shorten them before continuing. The complete title remains in saved drafts.
+Body fields support bold, italic, underline, and code through their formatting toolbar.
+Use ⌘/Ctrl+B, I, or U for the corresponding keyboard shortcuts. Underline is saved as
+`<u>text</u>` and rendered consistently in every template and PDF, with markup excluded
+from ATS and writing analysis.
 Ordinary prose keeps natural word boundaries; emergency wrapping is reserved for
 unbroken values such as URLs. The final A4 sample export was visually inspected across
 all five pages and checked with independent PDF text and link extraction tools.
@@ -100,6 +108,10 @@ vp dev
 | `vp run generate-og`          | Capture the 1200×630 social image from the live landing page  |
 | `vp run generate-screenshots` | Capture the narrow and wide PWA screenshots                   |
 
+The browser regression tests cover long-field editing, current-job dates, autosave recovery, imports, photo uploads, writing-engine retries, and page clipping. They use Google Chrome on macOS by default; set `CHROME_PATH` to a Chrome or Chromium executable elsewhere. These tests are skipped when that executable is unavailable. Use `vp test run` for a single complete run. To check production behavior, run `vp run build`, then `CLOAKRESUME_BROWSER_BUILD=production vp test run tests/editor-browser.spec.ts`.
+
+Vitest is pinned to the version bundled by Vite+. Upgrade that pin together with Vite+ rather than independently. The PWA asset generator runs through `vp run generate-icons`; the Vite plugin's optional asset-generation integration is disabled.
+
 ## Project map
 
 ```text
@@ -134,6 +146,7 @@ cloakresume/
 - [DESIGN.md](DESIGN.md) defines the shared CloakPDF-family design language, Emerald identity, geometry, overlays, responsive behavior, and résumé-output boundary.
 - [tokens.css](tokens.css) is normative at runtime; [tokens.json](tokens.json) is its portable token inventory.
 - [docs/design-audit.md](docs/design-audit.md) records the complete 73-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
+- [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
 - [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
 - [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.
 

@@ -106,6 +106,41 @@ describe("saved document boundaries", () => {
 });
 
 describe("analysis and validation", () => {
+  it("keeps ATS scoring and keywords unchanged when body text is underlined", () => {
+    const resume = {
+      ...blankResume,
+      profile: {
+        ...blankResume.profile,
+        summary:
+          "Built reliable platforms with Kubernetes and TypeScript to help engineering teams deliver better services.",
+      },
+      experience: [
+        {
+          id: "role",
+          title: "Engineer",
+          company: "Company",
+          location: "Remote",
+          start: "2020",
+          end: "Present",
+          bullets: [
+            "Delivered reliable tools for 20 engineers and improved platform speed by 30%.",
+          ],
+        },
+      ],
+    };
+    const formatted = {
+      ...resume,
+      profile: { ...resume.profile, summary: `<u>${resume.profile.summary}</u>` },
+      experience: resume.experience.map((job) => ({
+        ...job,
+        bullets: job.bullets.map((bullet) => `<u>${bullet}</u>`),
+      })),
+    };
+    expect(computeAts(formatted, "Kubernetes TypeScript")).toEqual(
+      computeAts(resume, "Kubernetes TypeScript"),
+    );
+  });
+
   it("matches keywords in custom sections, quick stats, and extras", () => {
     const resume = {
       ...blankResume,

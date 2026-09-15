@@ -91,7 +91,9 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
         </div>
       ) : null}
       <h1 className="ci-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="ci-role">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="ci-role resume-profile-title">{resume.profile.title}</div>
+      )}
       <div className="ci-divider" />
     </div>,
   ];

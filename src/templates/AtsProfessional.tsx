@@ -81,7 +81,9 @@ export const AtsProfessional = memo(function AtsProfessional({ resume, palette }
   atoms.push(
     <header className="atp-header" key="head">
       <h1 className="atp-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="atp-title">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="atp-title resume-profile-title">{resume.profile.title}</div>
+      )}
       {visibleContacts.length > 0 && (
         <div className="atp-contact">
           {visibleContacts.map((c, i) => (

@@ -81,7 +81,9 @@ export const Minimalist = memo(function Minimalist({ resume, palette }: Props) {
   atoms.push(
     <header className="ml-head" key="head">
       <h1 className="ml-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="ml-title">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="ml-title resume-profile-title">{resume.profile.title}</div>
+      )}
       <div className="ml-rule" />
       {resume.contact.length > 0 && (
         <div className="ml-contact">

@@ -23,6 +23,11 @@ Required data references (use the self-check below when reviewing a template):
 
 Always gate each section by `.length > 0` / truthiness so a template with empty sections doesn't render empty headers.
 
+Profile titles use the shared `resume-profile-title` class, including continuation headers.
+It preserves manual line breaks and limits the preview to four lines. Full draft text is
+retained; the editor flags overflow at the selected template width and PDF export requires
+the user to correct it. Keep this title limit active in gallery and print styles too.
+
 Quick self-check:
 
 ```bash
