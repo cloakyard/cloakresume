@@ -288,6 +288,16 @@ describe.skipIf(!existsSync(chromePath))(
           ],
         },
         {
+          name: "wide characters in short values",
+          columns: 2,
+          stats: [
+            ["GLOBAL", "Reach"],
+            ["WINNER", "Award"],
+            ["500MW+", "Power"],
+            ["100000", "Customers"],
+          ],
+        },
+        {
           name: "compact metrics",
           columns: 4,
           stats: [

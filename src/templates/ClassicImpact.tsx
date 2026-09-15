@@ -29,7 +29,7 @@ export const ClassicImpact = memo(function ClassicImpact({ resume, palette }: Te
   // Descriptive labels and longer values need wider cards in this narrow main
   // column. Keep compact metrics four across; give detailed metrics two columns.
   const detailedStats = resume.quickStats.some(
-    (stat) => stat.value.trim().length > 6 || stat.label.trim().length > 20,
+    (stat) => stat.value.trim().length > 4 || stat.label.trim().length > 20,
   );
   const statColumns = Math.max(1, Math.min(resume.quickStats.length, detailedStats ? 2 : 4));
   const css = `
