@@ -23,6 +23,7 @@ import html2canvas from "html2canvas-pro";
 import jsPDF from "jspdf";
 import { DEFAULT_PAPER_SIZE, PAPER_SIZES, type PaperSize } from "./paperSize.ts";
 import { profileTitleOverflows } from "./profileTitle.ts";
+import { preparePdfFonts } from "./pdfFonts.ts";
 
 /** 1mm in CSS pixels at 96dpi. */
 const PX_PER_MM = 96 / 25.4;
@@ -263,6 +264,7 @@ export async function exportResumeToPdf(
   document.body.appendChild(host);
 
   try {
+    await preparePdfFonts(clone);
     if (document.fonts && typeof document.fonts.ready?.then === "function") {
       await document.fonts.ready.catch(() => undefined);
     }

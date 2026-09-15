@@ -265,6 +265,119 @@ describe.skipIf(!existsSync(chromePath))(
       await page.keyboard.sendCharacter(value);
     }
 
+    it.each([
+      "classic-impact",
+      "ledger",
+      "horizon",
+      "aurora",
+      "bauhaus",
+      "prism",
+      "classic-sidebar",
+      "monograph",
+    ])("paints PDF stat symbols with the preview's font metrics in %s", async (templateId) => {
+      const stats = ["25+", "120%", "6×", "−10%", "$25k", "€5k", "±3", "1/2"];
+      await openDraft(
+        {
+          ...blankResume,
+          profile: { name: "PDF Symbols", title: "Engineer", summary: "Summary." },
+          quickStats: stats.map((value, i) => ({ id: `stat-${i}`, value, label: `Metric ${i}` })),
+        },
+        { templateId, paperSize: "a4" },
+      );
+      await page.waitForSelector('.resume-root[data-template-ready="true"] .resume-page');
+      const metrics = await page.evaluate((stats) => {
+        const expected: Record<string, number> = {};
+        const elements = [...document.querySelectorAll<HTMLElement>(".resume-page *")].filter(
+          (element) => !element.children.length && stats.includes(element.textContent ?? ""),
+        );
+        for (const element of elements) {
+          const computed = getComputedStyle(element);
+          const ruler = document.createElement("span");
+          Object.assign(ruler.style, {
+            position: "fixed",
+            whiteSpace: "pre",
+            fontFamily: computed.fontFamily,
+            fontSize: computed.fontSize,
+            fontWeight: computed.fontWeight,
+            fontStyle: computed.fontStyle,
+            fontVariantNumeric: computed.fontVariantNumeric,
+            fontFeatureSettings: computed.fontFeatureSettings,
+            letterSpacing: "0px",
+          });
+          document.body.appendChild(ruler);
+          // html2canvas may paint a digit run or individual glyphs depending on
+          // letter spacing. Check both, including the plus/percent boundaries.
+          const value = element.textContent!;
+          const glyphs = [...new Intl.Segmenter().segment(value)].map((part) => part.segment);
+          const fragments = new Set([value, ...glyphs, ...(value.match(/\d+/g) ?? [])]);
+          for (const fragment of fragments) {
+            ruler.textContent = fragment;
+            expected[`${fragment}:${computed.fontWeight}:${computed.fontSize}`] =
+              ruler.getBoundingClientRect().width;
+          }
+          ruler.remove();
+        }
+        const draws: { key: string; width: number }[] = [];
+        // Retain the method for instrumentation; every call below binds its canvas.
+        // oxlint-disable-next-line typescript/unbound-method
+        const original = CanvasRenderingContext2D.prototype.fillText;
+        CanvasRenderingContext2D.prototype.fillText = function (text, x, y, maxWidth) {
+          const font = document.createElement("span").style;
+          font.font = this.font;
+          const weight =
+            font.fontWeight === "normal"
+              ? "400"
+              : font.fontWeight === "bold"
+                ? "700"
+                : font.fontWeight;
+          const key = `${text}:${weight}:${font.fontSize}`;
+          if (key in expected) draws.push({ key, width: this.measureText(text).width });
+          if (maxWidth === undefined) original.call(this, text, x, y);
+          else original.call(this, text, x, y, maxWidth);
+        };
+        Object.assign(window, { pdfSymbolDraws: draws });
+        return { expected, count: elements.length };
+      }, stats);
+      expect(metrics.count).toBe(stats.length);
+      const directory = mkdtempSync(join(tmpdir(), "cloak-pdf-symbols-"));
+      try {
+        const session = await page.createCDPSession();
+        await session.send("Browser.setDownloadBehavior", {
+          behavior: "allowAndName",
+          browserContextId: context.id,
+          downloadPath: directory,
+          eventsEnabled: true,
+        });
+        const downloaded = new Promise<string>((resolve) => {
+          session.on("Browser.downloadProgress", (event) => {
+            if (event.state === "completed") resolve(event.guid);
+          });
+        });
+        await page.click('button[aria-label="Export to PDF"]');
+        const filename = await downloaded;
+        expect(readFileSync(join(directory, filename)).subarray(0, 5).toString()).toBe("%PDF-");
+        const draws = await page.evaluate(
+          () =>
+            (window as unknown as { pdfSymbolDraws: { key: string; width: number }[] })
+              .pdfSymbolDraws,
+        );
+        expect(draws.length).toBeGreaterThan(0);
+        for (const draw of draws)
+          expect(Math.abs(draw.width - metrics.expected[draw.key]), draw.key).toBeLessThan(0.05);
+        for (const symbol of ["+", "%", "×"])
+          expect(
+            draws.some((draw) => draw.key.split(":")[0].includes(symbol)),
+            symbol,
+          ).toBe(true);
+        // The export-only faces must never leak into the live document.
+        expect(
+          await page.$eval(".resume-root", (root) => root.innerHTML.includes("CloakPdfFont")),
+        ).toBe(false);
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    });
+
     for (const paperSize of ["a4", "letter"]) {
       it.each([
         {
