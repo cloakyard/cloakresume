@@ -54,7 +54,7 @@ export function TemplatePreview({ TemplateComponent, resume, accent }: Props) {
   return (
     <div
       ref={wrapRef}
-      className="relative w-full"
+      className="resume-template-preview relative w-full"
       inert
       aria-hidden="true"
       tabIndex={-1}

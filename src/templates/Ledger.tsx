@@ -71,7 +71,9 @@ export const Ledger = memo(function Ledger({ resume, palette }: TemplateProps) {
     <header className="ld-header" key="identity">
       <div className="ld-identity">
         <h1 className="ld-name">{resume.profile.name}</h1>
-        {resume.profile.title && <p className="ld-title">{resume.profile.title}</p>}
+        {resume.profile.title && (
+          <p className="ld-title resume-profile-title">{resume.profile.title}</p>
+        )}
       </div>
       {resume.profile.photoUrl ? (
         <img

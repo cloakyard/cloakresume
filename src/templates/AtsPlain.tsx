@@ -76,7 +76,9 @@ export const AtsPlain = memo(function AtsPlain({ resume }: Props) {
   atoms.push(
     <header key="head">
       <h1 className="ats-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="ats-title">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="ats-title resume-profile-title">{resume.profile.title}</div>
+      )}
       {visibleContacts.length > 0 && (
         <div className="ats-contact">
           {visibleContacts.map((c) => (

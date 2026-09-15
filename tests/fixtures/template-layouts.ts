@@ -21,7 +21,7 @@ function compact(): ResumeData {
     name: "Zara Patel",
     title: "Senior Backend Engineer · Distributed Systems & Streaming",
     summary:
-      "Builds reliable distributed systems, leads engineering teams, and improves delivery. **Platform ownership** and careful technical communication are central to this work.",
+      "Builds reliable distributed systems, leads engineering teams, and improves delivery. **Platform ownership** and <u>careful **technical** *communication* and `review`</u> are central to this work.",
   };
   resume.experience = [
     {
@@ -32,7 +32,7 @@ function compact(): ResumeData {
       start: "Jan 2020",
       end: "Present",
       bullets: [
-        "Built a streaming platform serving customers across three regions.",
+        "Built a <u>streaming platform</u> serving customers across three regions.",
         "Mentored engineers and improved service reliability.",
       ],
     },
@@ -41,8 +41,8 @@ function compact(): ResumeData {
     {
       id: "project",
       name: "Streaming Platform",
-      description: "A reliable event platform for customer operations.",
-      roles: ["Owned architecture and delivery."],
+      description: "A <u>reliable event platform</u> for customer operations.",
+      roles: ["Owned <u>architecture and delivery</u>."],
       stack: ["TypeScript", "Kafka"],
     },
   ];
@@ -84,7 +84,7 @@ function compact(): ResumeData {
   resume.toolsLabel = "Daily Tools";
   resume.extras = [{ id: "extra", label: "Availability", value: "One month" }];
   resume.custom = [
-    { id: "custom", header: "Community", bullets: ["Mentors early-career engineers."] },
+    { id: "custom", header: "Community", bullets: ["<u>Mentors early-career engineers</u>."] },
   ];
   resume.quickStats = Array.from({ length: 9 }, (_, i) => ({
     id: `stat-${i}`,

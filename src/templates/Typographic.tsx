@@ -113,7 +113,9 @@ export const Typographic = memo(function Typographic({ resume, palette }: Props)
     <header className="tg-head" key="head">
       <div>
         <h1 className="tg-name">{resume.profile.name}</h1>
-        {resume.profile.title && <div className="tg-title">{resume.profile.title}</div>}
+        {resume.profile.title && (
+          <div className="tg-title resume-profile-title">{resume.profile.title}</div>
+        )}
       </div>
       {resume.contact.length > 0 && (
         <div className="tg-handle">

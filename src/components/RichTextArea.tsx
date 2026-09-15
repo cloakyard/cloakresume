@@ -1,7 +1,7 @@
 /**
  * Textarea that cooperates with an ancestor `FormatScope` so a single
- * shared toolbar can apply Bold / Italic / Code to whichever textarea
- * was most recently focused. Keyboard shortcuts (⌘B / ⌘I) still work
+ * shared toolbar can apply Bold / Italic / Underline / Code to whichever textarea
+ * was most recently focused. Keyboard shortcuts (⌘B / ⌘I / ⌘U) still work
  * when typing directly in this field.
  */
 
@@ -170,6 +170,9 @@ export function RichTextArea({
             } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "i") {
               e.preventDefault();
               applyInline("*");
+            } else if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "u") {
+              e.preventDefault();
+              applyInline("<u>");
             }
           }}
         />

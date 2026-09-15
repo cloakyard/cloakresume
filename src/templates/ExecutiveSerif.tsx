@@ -95,7 +95,7 @@ export const ExecutiveSerif = memo(function ExecutiveSerif({ resume, palette }: 
         </div>
       )}
       <h1 className="es-name">{resume.profile.name}</h1>
-      <div className="es-title">{resume.profile.title}</div>
+      <div className="es-title resume-profile-title">{resume.profile.title}</div>
       <div className="es-contact">
         {resume.contact.map((c) => (
           <span key={c.id}>

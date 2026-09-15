@@ -1,7 +1,7 @@
 /**
  * Markdown-lite renderer for resume body text.
  *
- * Supports **bold**, __bold__, *italic*, _italic_, and `code` — the
+ * Supports **bold**, __bold__, *italic*, _italic_, <u>underline</u>, and `code` — the
  * minimum needed for emphasising keywords or titles inside otherwise
  * plain text fields. Renders to React nodes (no dangerouslySetInnerHTML),
  * so templates stay XSS-safe.
@@ -13,9 +13,14 @@ type Token =
   | { type: "text"; value: string }
   | { type: "bold"; children: Token[] }
   | { type: "italic"; children: Token[] }
+  | { type: "underline"; children: Token[] }
   | { type: "code"; value: string };
 
-const MARKER_RE = /(\*\*|__|\*|_|`)/;
+const MARKER_RE = /(\*\*|__|\*|_|`|<u>)/;
+
+function closingMarker(marker: string): string {
+  return marker === "<u>" ? "</u>" : marker;
+}
 
 function parseInline(input: string): Token[] {
   const out: Token[] = [];
@@ -41,7 +46,8 @@ function parseInline(input: string): Token[] {
       remaining = rest;
       continue;
     }
-    const closeIdx = findClose(rest, marker);
+    const close = closingMarker(marker);
+    const closeIdx = findClose(rest, close);
     if (closeIdx === -1) {
       // No matching close — treat as literal.
       out.push({ type: "text", value: marker });
@@ -49,13 +55,15 @@ function parseInline(input: string): Token[] {
       continue;
     }
     const inner = rest.slice(0, closeIdx);
-    remaining = rest.slice(closeIdx + marker.length);
+    remaining = rest.slice(closeIdx + close.length);
     if (marker === "**" || marker === "__") {
       out.push({ type: "bold", children: parseInline(inner) });
     } else if (marker === "*" || marker === "_") {
       out.push({ type: "italic", children: parseInline(inner) });
     } else if (marker === "`") {
       out.push({ type: "code", value: inner });
+    } else if (marker === "<u>") {
+      out.push({ type: "underline", children: parseInline(inner) });
     }
   }
   return out;
@@ -87,6 +95,12 @@ function renderTokens(tokens: Token[], keyPrefix = ""): ReactNode[] {
     if (t.type === "text") return <span key={key}>{t.value}</span>;
     if (t.type === "bold") return <strong key={key}>{renderTokens(t.children, `${key}.`)}</strong>;
     if (t.type === "italic") return <em key={key}>{renderTokens(t.children, `${key}.`)}</em>;
+    if (t.type === "underline")
+      return (
+        <u key={key} style={{ textDecorationLine: "underline", textUnderlineOffset: "0.12em" }}>
+          {renderTokens(t.children, `${key}.`)}
+        </u>
+      );
     return (
       <code
         key={key}
@@ -147,6 +161,8 @@ export function toggleSelection(
 ): { value: string; start: number; end: number } {
   const { selectionStart: s, selectionEnd: e, value } = textarea;
   const m = marker.length;
+  const closeMarker = closingMarker(marker);
+  const c = closeMarker.length;
 
   // Inline formatting is scoped to a line. Wrap each selected line separately,
   // leaving blank lines and indentation intact so toolbar actions match preview.
@@ -168,18 +184,18 @@ export function toggleSelection(
   // Markers sit immediately outside the selection: **[foo]**
   if (
     s >= m &&
-    e + m <= value.length &&
+    e + c <= value.length &&
     value.slice(s - m, s) === marker &&
-    value.slice(e, e + m) === marker
+    value.slice(e, e + c) === closeMarker
   ) {
-    const next = value.slice(0, s - m) + value.slice(s, e) + value.slice(e + m);
+    const next = value.slice(0, s - m) + value.slice(s, e) + value.slice(e + c);
     return { value: next, start: s - m, end: e - m };
   }
 
   // Markers sit just inside the selection: [**foo**]
-  if (e - s >= 2 * m && value.slice(s, s + m) === marker && value.slice(e - m, e) === marker) {
-    const next = value.slice(0, s) + value.slice(s + m, e - m) + value.slice(e);
-    return { value: next, start: s, end: e - 2 * m };
+  if (e - s >= m + c && value.slice(s, s + m) === marker && value.slice(e - c, e) === closeMarker) {
+    const next = value.slice(0, s) + value.slice(s + m, e - c) + value.slice(e);
+    return { value: next, start: s, end: e - m - c };
   }
 
   // Collapsed cursor inside a matched pair on the same line — unwrap it.
@@ -187,7 +203,7 @@ export function toggleSelection(
     const enclosing = findEnclosingPair(value, s, marker);
     if (enclosing) {
       const { open, close } = enclosing;
-      const next = value.slice(0, open) + value.slice(open + m, close) + value.slice(close + m);
+      const next = value.slice(0, open) + value.slice(open + m, close) + value.slice(close + c);
       // Clamp the caret to the new (unwrapped) region.
       const caret = Math.max(open, Math.min(s - m, close - m));
       return { value: next, start: caret, end: caret };
@@ -197,7 +213,7 @@ export function toggleSelection(
   // Default: wrap the selection (or insert placeholder when empty).
   const placeholder = "text";
   const inner = selected || placeholder;
-  const next = `${value.slice(0, s)}${marker}${inner}${marker}${value.slice(e)}`;
+  const next = `${value.slice(0, s)}${marker}${inner}${closeMarker}${value.slice(e)}`;
   const innerStart = s + m;
   const innerEnd = innerStart + inner.length;
   return { value: next, start: innerStart, end: innerEnd };
@@ -214,7 +230,13 @@ export function toggleSelection(
 export function formatStateAt(
   value: string,
   pos: number,
-): { bold: boolean; italic: boolean; code: boolean } {
+  selectionEnd = pos,
+): { bold: boolean; italic: boolean; underline: boolean; code: boolean } {
+  // A multiline toolbar action selects the markers too. Inspect the first
+  // selected character after opening markers so the chosen format stays active.
+  if (selectionEnd > pos) {
+    pos += value.slice(pos, selectionEnd).match(/^\s*(?:(?:\*\*|__|\*|_|`|<u>))*/)?.[0].length ?? 0;
+  }
   const lineStart = value.lastIndexOf("\n", pos - 1) + 1;
   const end = Math.min(pos, value.length);
   let boldStar = false;
@@ -222,6 +244,7 @@ export function formatStateAt(
   let italicStar = false;
   let italicUnder = false;
   let code = false;
+  let underline = false;
   let i = lineStart;
   while (i < end) {
     // Inside a code span the other markers are literal — ignore them.
@@ -234,7 +257,13 @@ export function formatStateAt(
       }
       continue;
     }
-    if (value.slice(i, i + 2) === "**") {
+    if (value.startsWith("<u>", i)) {
+      underline = true;
+      i += 3;
+    } else if (value.startsWith("</u>", i)) {
+      underline = false;
+      i += 4;
+    } else if (value.slice(i, i + 2) === "**") {
       boldStar = !boldStar;
       i += 2;
     } else if (value.slice(i, i + 2) === "__") {
@@ -256,6 +285,7 @@ export function formatStateAt(
   return {
     bold: boldStar || boldUnder,
     italic: italicStar || italicUnder,
+    underline,
     code,
   };
 }
@@ -274,6 +304,24 @@ function findEnclosingPair(
   const nextNl = value.indexOf("\n", pos);
   const lineEnd = nextNl === -1 ? value.length : nextNl;
   const m = marker.length;
+
+  if (marker === "<u>") {
+    const pattern = /<u>|<\/u>/g;
+    pattern.lastIndex = lineStart;
+    let open: number | null = null;
+    for (
+      let match = pattern.exec(value);
+      match && match.index < lineEnd;
+      match = pattern.exec(value)
+    ) {
+      if (match[0] === "<u>") open = match.index;
+      else if (open !== null) {
+        if (pos >= open + m && pos <= match.index) return { open, close: match.index };
+        open = null;
+      }
+    }
+    return null;
+  }
 
   // Collect marker positions on this line while respecting longer variants.
   const positions: number[] = [];

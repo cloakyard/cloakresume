@@ -114,7 +114,7 @@ export const GradientHeader = memo(function GradientHeader({ resume, palette }: 
       </div>
       <div>
         <h1 className="gh-name">{resume.profile.name}</h1>
-        <div className="gh-title">{resume.profile.title}</div>
+        <div className="gh-title resume-profile-title">{resume.profile.title}</div>
         <div className="gh-contact">
           {resume.contact.map((c) => (
             <span key={c.id}>

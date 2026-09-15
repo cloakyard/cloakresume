@@ -7,6 +7,7 @@ import puppeteer, { type Browser, type BrowserContext, type Page } from "puppete
 import { createServer, preview, type PreviewServer, type ViteDevServer } from "vite-plus";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vite-plus/test";
 import { blankResume } from "../src/data/blankResume.ts";
+import { TEMPLATE_LIST } from "../src/templates/index.ts";
 
 // Use the same local Chrome override as the project's screenshot scripts.
 const chromePath =
@@ -235,8 +236,9 @@ describe.skipIf(!existsSync(chromePath))(
         profile: { ...blankResume.profile, summary: "Draft for audit" },
       },
       options = {},
+      width = 1440,
     ) {
-      await page.setViewport({ width: 1440, height: 1000 });
+      await page.setViewport({ width, height: 1000 });
       await page.goto(url, { waitUntil: "networkidle0" });
       await page.evaluate(
         ({ draft, options }) => {
@@ -254,6 +256,278 @@ describe.skipIf(!existsSync(chromePath))(
       );
       await resumeEditing();
     }
+
+    async function fillTitle(value: string) {
+      await page.$eval('textarea[name="profile-headline"]', (element) => {
+        (element as HTMLTextAreaElement).focus();
+        (element as HTMLTextAreaElement).select();
+      });
+      await page.keyboard.sendCharacter(value);
+    }
+
+    for (const template of TEMPLATE_LIST)
+      for (const paperSize of ["a4", "letter"]) {
+        it(`preserves four title lines and flags wrapped overflow in ${template.name} / ${paperSize}`, async () => {
+          const title = "Staff Engineer\nPlatform\n& Tooling\nLeadership";
+          await openDraft(
+            {
+              ...blankResume,
+              profile: {
+                name: "Amara Schmidt",
+                title,
+                summary: "<u>Underlined summary with **bold**, *italic*, and `code`</u>.",
+              },
+              contact: [{ id: "email", kind: "email", value: "amara@example.com" }],
+            },
+            { templateId: template.id, paperSize },
+          );
+          await page.waitForSelector(
+            '.resume-root[data-template-ready="true"] .resume-page .resume-profile-title',
+          );
+          await page.waitForSelector(".resume-page u");
+          expect(
+            await page.$eval(
+              ".resume-page u",
+              (element) => getComputedStyle(element).textDecorationLine,
+            ),
+          ).toBe("underline");
+          expect(
+            await page.$$eval(".resume-page u *", (elements) =>
+              elements.every(
+                (element) => getComputedStyle(element).textDecorationLine === "underline",
+              ),
+            ),
+          ).toBe(true);
+          const selector = 'textarea[name="profile-headline"]';
+          expect(
+            await page.$eval(selector, (element) => ({
+              rows: (element as HTMLTextAreaElement).rows,
+              resize: getComputedStyle(element).resize,
+              invalid: element.getAttribute("aria-invalid"),
+            })),
+          ).toEqual({ rows: 4, resize: "none", invalid: null });
+          const renderedTitle = () =>
+            page.$eval(".resume-page .resume-profile-title", (element) => {
+              const title = element as HTMLElement;
+              const style = getComputedStyle(title);
+              const bounds = title.getBoundingClientRect();
+              const parent = title.parentElement!.getBoundingClientRect();
+              return {
+                text: title.textContent,
+                lines: title.clientHeight / parseFloat(style.lineHeight),
+                whiteSpace: style.whiteSpace,
+                overflow: style.overflowY,
+                clipped: title.scrollHeight > title.clientHeight + 1,
+                outside: bounds.left < parent.left - 1 || bounds.right > parent.right + 1,
+              };
+            });
+          const valid = await renderedTitle();
+          expect(valid.text).toBe(title);
+          expect(valid.lines).toBeCloseTo(4, 1);
+          expect(valid.whiteSpace).toBe("pre-line");
+          expect(valid.clipped).toBe(false);
+          expect(valid.outside).toBe(false);
+
+          // Covers automatic wrapping and pasted text without word boundaries.
+          for (const overflow of [
+            "Platform engineering and leadership ".repeat(30),
+            "PlatformArchitecture".repeat(60),
+          ]) {
+            await fillTitle(overflow);
+            await page.waitForSelector(`${selector}[aria-invalid="true"]`);
+            const invalid = await renderedTitle();
+            expect(invalid.lines).toBeLessThanOrEqual(4.05);
+            expect(invalid.clipped).toBe(true);
+            expect(invalid.outside).toBe(false);
+            expect((await savedResume()).profile.title).toBe(overflow);
+          }
+          await page.emulateMediaType("print");
+          const printed = await renderedTitle();
+          expect(printed.lines).toBeLessThanOrEqual(4.05);
+          expect(printed.overflow).toBe("hidden");
+          await page.emulateMediaType("screen");
+          await fillTitle(title);
+          await page.waitForFunction(
+            (selector) => !document.querySelector(selector)?.hasAttribute("aria-invalid"),
+            {},
+            selector,
+          );
+          expect((await savedResume()).profile.title).toBe(title);
+        }, 20_000);
+      }
+
+    it.each([1440, 320])(
+      "toggles underline using the toolbar and keyboard at %ipx",
+      async (width) => {
+        await openDraft(
+          {
+            ...blankResume,
+            profile: {
+              name: "Amara Schmidt",
+              title: "Engineer",
+              summary: "Important work\nSecond line",
+            },
+          },
+          { templateId: "classic-impact" },
+          width,
+        );
+        const selector = 'textarea[aria-label="Professional summary"]';
+        await page.$eval(selector, (element) => {
+          (element as HTMLTextAreaElement).scrollIntoView({ block: "center" });
+          (element as HTMLTextAreaElement).focus();
+          (element as HTMLTextAreaElement).select();
+        });
+        const underline = '.cr-editor-panel button[aria-label="Underline (⌘U)"]';
+        await page.locator(underline).click();
+        await page.waitForFunction(
+          (selector) => {
+            const field = document.querySelector(selector) as HTMLTextAreaElement;
+            return (
+              document.activeElement === field &&
+              field.value === "<u>Important work</u>\n<u>Second line</u>"
+            );
+          },
+          {},
+          selector,
+        );
+        await page.waitForSelector(`${underline}[aria-pressed="true"]`);
+        expect(await page.$eval(underline, (element) => element.getAttribute("aria-pressed"))).toBe(
+          "true",
+        );
+        expect(
+          await page.$$eval(".resume-page u", (elements) =>
+            elements.map((element) => element.textContent),
+          ),
+        ).toEqual(["Important work", "Second line"]);
+        const bounds = await page.$eval('[role="toolbar"]', (element) => {
+          const box = element.getBoundingClientRect();
+          return { left: box.left, right: box.right, viewport: window.innerWidth };
+        });
+        expect(bounds.left).toBeGreaterThanOrEqual(0);
+        expect(bounds.right).toBeLessThanOrEqual(bounds.viewport);
+        await page.keyboard.down("Control");
+        await page.keyboard.press("u");
+        await page.keyboard.up("Control");
+        await page.waitForFunction(
+          (selector) => {
+            const field = document.querySelector(selector) as HTMLTextAreaElement;
+            return (
+              field.value === "Important work\nSecond line" &&
+              field.selectionStart === 0 &&
+              field.selectionEnd === field.value.length
+            );
+          },
+          {},
+          selector,
+        );
+        expect((await savedResume()).profile.summary).toBe("Important work\nSecond line");
+        await page.keyboard.down("Meta");
+        await page.keyboard.press("u");
+        await page.keyboard.up("Meta");
+        expect((await savedResume()).profile.summary).toBe(
+          "<u>Important work</u>\n<u>Second line</u>",
+        );
+        await resumeEditing();
+        expect((await savedResume()).profile.summary).toBe(
+          "<u>Important work</u>\n<u>Second line</u>",
+        );
+      },
+    );
+
+    it.each(["profile", "experience", "projects", "custom"])(
+      "keeps formatting and bullet actions inside the %s editor at 320px",
+      async (activeSection) => {
+        await openDraft(resume, { activeSection }, 320);
+        const rows = await page.$$eval(".cr-editor-panel .cr-field-row", (elements) =>
+          elements
+            .filter((element) => element.querySelector('[role="toolbar"]'))
+            .map((element) => {
+              const row = element.getBoundingClientRect();
+              return {
+                left: row.left,
+                right: row.right,
+                actions: [...element.querySelectorAll("button")].map((button) => {
+                  const box = button.getBoundingClientRect();
+                  return { left: box.left, right: box.right, width: box.width };
+                }),
+              };
+            }),
+        );
+        expect(rows.length).toBeGreaterThan(0);
+        for (const row of rows) {
+          expect(row.actions.length).toBeGreaterThanOrEqual(4);
+          for (const action of row.actions) {
+            expect(action.left).toBeGreaterThanOrEqual(row.left - 1);
+            expect(action.right).toBeLessThanOrEqual(row.right + 1);
+            expect(action.width).toBeGreaterThanOrEqual(44);
+          }
+        }
+      },
+    );
+
+    it("keeps extra title lines editable and blocks a truncated PDF", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: { name: "Amara Schmidt", title: "Engineer", summary: "Summary." },
+        },
+        { templateId: "classic-impact" },
+      );
+      const title = "One\nTwo\nThree\nFour\nFive";
+      await fillTitle(title);
+      await page.waitForSelector('textarea[name="profile-headline"][aria-invalid="true"]');
+      expect(await page.$eval(".cr-editor-panel", (element) => element.textContent)).toContain(
+        "Use at most 4 lines",
+      );
+      expect((await savedResume()).profile.title).toBe(title);
+      await page.click('button[aria-label="Export to PDF"]');
+      await page.waitForFunction(() =>
+        document
+          .querySelector('[role="alertdialog"]')
+          ?.textContent?.includes("Your title exceeds 4 lines"),
+      );
+      expect(
+        await page.$eval(
+          'button[aria-label="Export to PDF"]',
+          (element) => (element as HTMLButtonElement).disabled,
+        ),
+      ).toBe(false);
+    });
+
+    it("preserves manual title breaks and Professional language proficiency after reloading on mobile", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: { name: "Amara Schmidt", title: "Engineer", summary: "Summary." },
+          languages: [{ id: "english", name: "English", level: "Native · Professional" }],
+        },
+        { templateId: "classic-impact" },
+        390,
+      );
+      const title = "Staff Engineer\nPlatform & Tooling";
+      await fillTitle(title);
+      await page.setViewport({ width: 1440, height: 1000 });
+      await page.locator('nav button[aria-label="Languages"]').click();
+      const select = '.cr-editor-panel select[name="proficiency"]';
+      await page.waitForSelector(select);
+      expect(await page.$eval(select, (element) => (element as HTMLSelectElement).value)).toBe(
+        "Native · Professional",
+      );
+      await page.select(select, "Professional");
+      expect((await savedResume()).languages[0].level).toBe("Professional");
+      await page.click('nav button[aria-label="Profile"]');
+      await resumeEditing();
+      expect(
+        await page.$eval(
+          'textarea[name="profile-headline"]',
+          (element) => (element as HTMLTextAreaElement).value,
+        ),
+      ).toBe(title);
+      expect((await savedResume()).languages[0].level).toBe("Professional");
+      expect(await page.$eval(".resume-page", (element) => element.textContent)).toContain(
+        "Professional",
+      );
+    });
 
     async function clickText(label: string, scope = "") {
       await page.waitForFunction(

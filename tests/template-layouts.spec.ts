@@ -5,6 +5,7 @@ import { join } from "node:path";
 import puppeteer, { type Browser, type Page } from "puppeteer-core";
 import { createServer, preview, type PreviewServer, type ViteDevServer } from "vite-plus";
 import { afterAll, beforeAll, describe, expect, it } from "vite-plus/test";
+import { plainText } from "../src/utils/richText.tsx";
 import { TEMPLATE_LIST } from "../src/templates/index.ts";
 import type { ResumeData, TemplateId } from "../src/types.ts";
 import { templateLayoutFixtures as fixtures } from "./fixtures/template-layouts.ts";
@@ -43,7 +44,7 @@ function displayFields(resume: ResumeData, templateId: TemplateId): string[] {
   function walk(value: unknown, key = "") {
     if (ignored.has(key) || (key === "quickStats" && !statsTemplates.has(templateId))) return;
     if (typeof value === "string" && value.trim())
-      values.push(...(key === "items" ? value.split(",") : [value]));
+      values.push(...(key === "items" ? value.split(",") : [value]).map(plainText));
     else if (Array.isArray(value)) value.forEach((item) => walk(item));
     else if (value && typeof value === "object")
       Object.entries(value).forEach(([name, item]) => walk(item, name));
@@ -103,7 +104,12 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
           const errorStart = errors.length;
           await page.emulateMediaType("screen");
           await page.evaluate(
-            (payload) => localStorage.setItem("cloakresume:v1", JSON.stringify(payload)),
+            (payload) => {
+              // Flush the previous fixture before replacing its draft; otherwise
+              // the page's pending autosave can overwrite this one on reload.
+              window.dispatchEvent(new Event("pagehide"));
+              localStorage.setItem("cloakresume:v1", JSON.stringify(payload));
+            },
             {
               resume: fixture.resume,
               templateId: template.id,
@@ -124,6 +130,19 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
               requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
             );
           });
+          const titleValidation = await page.evaluate(() => {
+            const titles = [
+              ...document.querySelectorAll<HTMLElement>(".resume-page .resume-profile-title"),
+            ];
+            return {
+              overflow: titles.some((title) => title.scrollHeight > title.clientHeight + 1),
+              invalid:
+                document
+                  .querySelector('textarea[name="profile-headline"]')
+                  ?.getAttribute("aria-invalid") === "true",
+            };
+          });
+          expect(titleValidation.invalid).toBe(titleValidation.overflow);
           await page.emulateMediaType("print");
           const result = await page.evaluate(
             ({ fields, paperSize }) => {
@@ -156,12 +175,22 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
                     continue;
                   const range = document.createRange();
                   const words: DOMRect[] = [];
+                  // Overlong titles retain their draft text but only paint four
+                  // lines. The editor validation above and export regression
+                  // prevent that intentional preview limit from losing PDF text.
+                  const title = parent.closest<HTMLElement>(".resume-profile-title");
+                  const titleBottom =
+                    title && getComputedStyle(title).overflowY === "hidden"
+                      ? title.getBoundingClientRect().bottom
+                      : Infinity;
                   // Whitespace at a wrapped line can have a box past the line's
                   // right edge, although no ink is painted there.
                   for (const match of node.textContent.matchAll(/\S+/g)) {
                     range.setStart(node, match.index);
                     range.setEnd(node, match.index + match[0].length);
-                    words.push(...range.getClientRects());
+                    words.push(
+                      ...[...range.getClientRects()].filter((rect) => rect.top < titleBottom),
+                    );
                   }
                   for (
                     let ancestor: HTMLElement | null = parent;

@@ -112,7 +112,7 @@ export const CompactTimeline = memo(function CompactTimeline({ resume, palette }
       )}
       <div className="ct-head-body">
         <div className="ct-name">{resume.profile.name}</div>
-        <div className="ct-title">{resume.profile.title}</div>
+        <div className="ct-title resume-profile-title">{resume.profile.title}</div>
         <div className="ct-contact">
           {resume.contact.map((c) => (
             <span key={c.id}>

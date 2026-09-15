@@ -100,7 +100,7 @@ export const ModernMinimal = memo(function ModernMinimal({ resume, palette }: Pr
       )}
       <div className="mm-head-body">
         <h1 className="mm-name">{resume.profile.name}</h1>
-        <div className="mm-title">{resume.profile.title}</div>
+        <div className="mm-title resume-profile-title">{resume.profile.title}</div>
         <div className="mm-contact">
           {resume.contact.map((c) => (
             <span key={c.id}>

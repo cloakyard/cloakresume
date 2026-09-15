@@ -12,7 +12,14 @@ import {
   type SectionProps,
 } from "./shared.tsx";
 
-const LANGUAGE_LEVELS = ["Beginner", "Intermediate", "Experienced", "Advanced", "Expert"] as const;
+const LANGUAGE_LEVELS = [
+  "Beginner",
+  "Intermediate",
+  "Experienced",
+  "Professional",
+  "Advanced",
+  "Expert",
+] as const;
 
 export function LanguagesSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);

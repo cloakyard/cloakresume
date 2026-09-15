@@ -92,7 +92,7 @@ export const Academic = memo(function Academic({ resume, palette }: Props) {
         </div>
       )}
       <h1 className="ac-name">{resume.profile.name}</h1>
-      <div className="ac-title">{resume.profile.title}</div>
+      <div className="ac-title resume-profile-title">{resume.profile.title}</div>
       <div className="ac-contact">
         {resume.contact.map((c) => (
           <span key={c.id}>

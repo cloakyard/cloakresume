@@ -151,7 +151,9 @@ export const Aurora = memo(function Aurora({ resume, palette }: Props) {
         </div>
         <div className="au-headbody">
           <h1 className="au-name">{resume.profile.name}</h1>
-          {resume.profile.title && <div className="au-title">{resume.profile.title}</div>}
+          {resume.profile.title && (
+            <div className="au-title resume-profile-title">{resume.profile.title}</div>
+          )}
           <div className="au-contact">
             {resume.contact.map((c) => (
               <span key={c.id}>

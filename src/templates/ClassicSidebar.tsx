@@ -134,7 +134,9 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
         </div>
       ) : null}
       <div className="cs-name">{resume.profile.name}</div>
-      {resume.profile.title && <div className="cs-role">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="cs-role resume-profile-title">{resume.profile.title}</div>
+      )}
       <div className="cs-divider" />
     </div>,
   );
@@ -490,7 +492,9 @@ export const ClassicSidebar = memo(function ClassicSidebar({ resume, palette }: 
         {pageIndex > 0 && (
           <div className="cs-cont-name">
             {resume.profile.name}
-            {resume.profile.title && <small>{resume.profile.title}</small>}
+            {resume.profile.title && (
+              <small className="resume-profile-title">{resume.profile.title}</small>
+            )}
           </div>
         )}
         {atomsForPage}

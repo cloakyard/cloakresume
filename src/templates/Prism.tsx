@@ -139,7 +139,9 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
         )}
       </div>
       <h1 className="pr-name">{resume.profile.name}</h1>
-      {resume.profile.title && <div className="pr-role">{resume.profile.title}</div>}
+      {resume.profile.title && (
+        <div className="pr-role resume-profile-title">{resume.profile.title}</div>
+      )}
       <div className="pr-rule" />
     </div>,
   );
@@ -473,7 +475,9 @@ export const Prism = memo(function Prism({ resume, palette }: Props) {
         {pageIndex > 0 && (
           <div className="pr-cont-name">
             {resume.profile.name}
-            {resume.profile.title && <small>{resume.profile.title}</small>}
+            {resume.profile.title && (
+              <small className="resume-profile-title">{resume.profile.title}</small>
+            )}
           </div>
         )}
         {atomsForPage}

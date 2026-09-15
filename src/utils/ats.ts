@@ -12,6 +12,7 @@
  */
 
 import type { AtsIssue, AtsReport, GrammarIssue, GrammarReport, ResumeData } from "../types.ts";
+import { plainText } from "./richText.tsx";
 
 const ACTION_VERBS = new Set([
   "architected",
@@ -164,7 +165,7 @@ const ENGLISH_MARKERS = new Set([
 
 /** Tokenise a blob of resume text, lower-cased and stripped of punctuation. */
 function tokenize(text: string): string[] {
-  return text
+  return plainText(text)
     .toLowerCase()
     .replace(/[^a-z0-9+#.\-/\s]/g, " ")
     .split(/\s+/)
@@ -193,7 +194,7 @@ export function flattenResumeText(resume: ResumeData): string {
   parts.push(...resume.interests, ...resume.tools);
   for (const section of resume.custom) parts.push(section.header, ...section.bullets);
   for (const item of [...resume.quickStats, ...resume.extras]) parts.push(item.label, item.value);
-  return parts.join(" ").toLowerCase();
+  return parts.map(plainText).join(" ").toLowerCase();
 }
 
 /** Count all words in the resume body (summary, bullets, project descriptions). */
@@ -286,7 +287,7 @@ function extractKeywords(jd: string): string[] {
 
 function startsWithActionVerb(bullet: string): boolean {
   const first =
-    bullet
+    plainText(bullet)
       .trim()
       .split(/\s+/)[0]
       ?.toLowerCase()
