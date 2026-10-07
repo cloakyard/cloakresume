@@ -75,7 +75,7 @@ After regeneration:
    frame gutter and the tablet editor preserves its rail, panel, and proof-stage geometry.
 4. Confirm no browser chrome, animation frame, cursor, focus ring, or unintended local draft appears.
 5. Confirm [`../vite.config.ts`](../vite.config.ts) labels the screenshots by content, uses `orientation:
-"any"`, and excludes social/store captures from the application-shell precache.
+   "any"`, and excludes social/store captures from the application-shell precache.
 6. Run `vp build`, install the generated PWA locally, and inspect the install surface.
 7. For Android, mask `maskable-icon-512x512.png` to the central 80% circle and confirm the entire
    shield and résumé page remain visible. Also inspect circle, rounded-square, squircle, and
