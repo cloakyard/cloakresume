@@ -1217,7 +1217,8 @@ describe.skipIf(!existsSync(chromePath))(
         await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button');
         await page.keyboard.press("Escape");
         await page.setViewport({ width: 1920, height: 1000 });
-        await page.click('nav button[aria-label="Education"]');
+        // Resizing updates the responsive React layout on the next render.
+        await page.locator('nav button[aria-label="Education"]').click();
         await page.setViewport({ width, height: 1000 });
         await page.locator('.cr-editor-panel button[aria-haspopup="dialog"]').click();
         await page.locator('button[aria-label="Select year"]').click();
