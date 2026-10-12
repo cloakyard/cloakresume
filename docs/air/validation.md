@@ -1,0 +1,96 @@
+# Air validation record
+
+## 2026-10-11 — portable contract and baseline
+
+`vp check` and the production build pass. The initial concurrent browser suites
+had intermittent timeouts: 286/288, then 287/288. Both initial failures passed on
+targeted rerun. Running the entire suite with `vp test run --no-file-parallelism`
+passes **288/288 in eight files** (385 seconds), without changing assertions or
+timeouts. The temporary `fileParallelism: false` configuration was subsequently
+removed; serial execution must be requested with the command flag. A later full
+run failed a contact-focus assertion, so that earlier pass did not close the
+commit gate. The editor and template files each own Chrome and Vite instances.
+No runtime app source changed.
+
+## 2026-10-11 — shared component bundle
+
+The pinned local CSS and working `docs/air/components.html` reference are identical
+across the family. They are not yet imported into product screens. Contract/bundle
+hashes, palette equality and standalone-copy validation pass. All 15 required and
+breakpoint-neighbour viewport sizes have no document overflow in light and dark.
+The reference was visually inspected on desktop, laptop and phone, including the
+390px dark sheet and 320px light controls. Evidence images are recorded in the
+family repository's `docs/air/evidence/reference-*.jpg`.
+
+Verified: field/select editing; checkbox and segment selection; slider keyboard
+increment; dialog initial focus, forward/reverse focus wrap, Escape, Done and focus
+return; 44px coarse-pointer controls; 16px mobile inputs; zero-duration reduced
+motion. Fixed the native dialog's default max-width narrowing the phone sheet.
+Contrast calculations: all tested normal text/semantic pairs >=4.5:1; required
+field boundaries >=3:1 (light 3.31:1, dark 4.39:1). Source review covers disabled,
+busy, hover/press and status variants. Product-specific controls, real app state
+sweeps, 200% browser zoom and software-keyboard behaviour remain separate gates.
+
+The CSS is an explicit standalone reference entry for PDF's dead-code tool because
+its HTML reference imports it; it is not a dead-code ignore. Product migration will
+replace this entry with the application's normal stylesheet import.
+
+## 2026-10-11 — complete default-section and conditional-control audit
+
+All 13 populated sections were inspected at 1440×900, 1280×800, 768×1024 and
+390×844 in light/dark (104 geometry cases). The two narrow sizes used touch
+emulation. No page/panel horizontal overflow was measured. Tablet buttons and
+contact fields that shrink to 40px, 10px desktop contact typography, and 40px
+phone review actions are recorded defects, not conformance passes.
+
+Month/year, options, primary colour, template search, logo search, local review
+loading/completion, all four review tabs and inline writing hints were inspected.
+`editor-audit.md` links raw evidence, screenshots, source locations and remaining
+feature/state coverage. No résumé content changed; this manual audit did not
+export a document or validate every template. The portable contract now includes
+structured-writing rules; product styles and runtime imports remain unchanged.
+
+Checks: `vp check` (156 files formatted; 114 lint/type checked) and production
+build pass, including PWA generation. The four contact-focus tests pass on targeted
+rerun. A full serial run passed 287/288, timing out in Horizon's PDF-stat-symbol
+test at 15 seconds. All eight symbol tests then passed on targeted rerun in
+27.61 seconds. Targeted passes do not substitute for the full-suite gate. No
+assertion or timeout was changed.
+
+The fresh serial run without simultaneous interactive browser auditing finished
+at **286/288** in 442.07 seconds. All 107 editor-browser cases passed; Modern
+Minimal/Letter and Prism/Letter failed with a 30-second Puppeteer `Locator.click`
+timeout at `tests/template-layouts.spec.ts:125`, entering the editor through
+Resume editing. This does not establish a document-layout defect, but the complete
+suite is not green. Diagnose that entry step with failure-state evidence before
+another broad rerun; do not increase timeouts or skip templates to obtain a pass.
+Resume's commit gate remains closed. The audit tab reported no console errors.
+
+## 2026-10-12 — complete reference checkpoint and fresh feature gate
+
+The refined Air reference from Cloakyard `340aee8` is now pinned locally at
+contract hash prefix `dc6032235f40`, including fields/choices, custom selects,
+compound controls, motion, floating surfaces and safe dialog handoffs. The local
+bundle contains shader/overlay modules and licenses. Its integrity checker and
+all ten isolated portability assertions pass (13 files, no dependencies/siblings).
+No production entry point imports Air CSS or either reference module.
+
+The earlier Modern Minimal/Letter and Prism/Letter entry failures were checked
+first: **2/2 targeted cases passed** (the other 32 were filtered out only for that
+diagnostic run). The fresh full `vp test run --no-file-parallelism` then passed
+**288/288 in eight files, zero skipped**, in **386.58 seconds**. This fresh full
+pass supersedes the previously failing latest-run gate. It does not establish
+that the historical intermittent entry/focus/export issues have been fixed.
+
+The template entry test now captures the failed page screenshot, rendered text,
+button geometry/visibility/disabled state, focus and page errors before teardown
+if its existing click fails. It then rethrows that failure. No timeout, assertion,
+retry policy, template or runtime source was changed. This keeps a future
+recurrence diagnosable instead of erasing it with blind reruns.
+
+`vp check` and `vp run build` (TypeScript, production and PWA) also pass. The full
+suite output is saved in `evidence/precommit-suite-2026-10-12.log`. Existing chunk
+size warnings remain. Shared reference visual/interaction evidence is maintained
+in Cloakyard's dated validation record; the full product Air migration, browser
+parity, real zoom/touch and generated-output inspection remain future gates.
+No push, deployment or production appearance change was performed.

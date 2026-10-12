@@ -119,10 +119,38 @@ describe.skipIf(!chrome)("template container and content matrix", () => {
             },
           );
           await page.reload({ waitUntil: "load" });
-          await page
-            .locator("button")
-            .filter((button) => !!button.textContent?.includes("Resume editing"))
-            .click();
+          try {
+            await page
+              .locator("button")
+              .filter((button) => !!button.textContent?.includes("Resume editing"))
+              .click();
+          } catch (error) {
+            // Preserve the failed UI before teardown; do not retry or relax this gate.
+            const failureDir = mkdtempSync(join(tmpdir(), "cloak-template-entry-failure-"));
+            const state = await page.evaluate(() => ({
+              readyState: document.readyState,
+              activeElement: document.activeElement?.outerHTML,
+              text: document.body.innerText,
+              buttons: [...document.querySelectorAll("button")].map((button) => ({
+                text: button.textContent,
+                disabled: button.disabled,
+                bounds: button.getBoundingClientRect().toJSON(),
+                visibility: getComputedStyle(button).visibility,
+                pointerEvents: getComputedStyle(button).pointerEvents,
+              })),
+            }));
+            writeFileSync(
+              join(failureDir, "state.json"),
+              JSON.stringify(
+                { template: template.id, paperSize, fixture: fixture.name, state, errors },
+                null,
+                2,
+              ),
+            );
+            await page.screenshot({ path: join(failureDir, "page.png"), fullPage: true });
+            console.error(`Template entry failure captured at ${failureDir}`);
+            throw error;
+          }
           await page.waitForSelector('.resume-root[data-template-ready="true"] .resume-page');
           await page.evaluate(async () => {
             await document.fonts.ready;

@@ -1,0 +1,8336 @@
+{
+  "scope": "Default populated section geometry; no software keyboard, output or full state certification.",
+  "cases": [
+    {
+      "section": "Profile",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Contact",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Experience",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Skills",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Projects",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Education",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Certifications",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Awards",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Languages",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Quick stats",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Custom",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Target JD",
+      "theme": "light",
+      "coarse": false,
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      },
+      "panel": {
+        "height": 836,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Profile",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Contact",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Experience",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Skills",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Projects",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Education",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Certifications",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Awards",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Languages",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Quick stats",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Custom",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Target JD",
+      "theme": "dark",
+      "coarse": true,
+      "viewport": {
+        "height": 844,
+        "width": 390
+      },
+      "panel": {
+        "height": 390,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "pageOverflow": false
+    },
+    {
+      "section": "Profile",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        }
+      ],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 836,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 511,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 900,
+        "width": 1440
+      }
+    },
+    {
+      "section": "Profile",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        }
+      ],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "light",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Profile",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "10px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        }
+      ],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "dark",
+      "coarse": false,
+      "pageOverflow": false,
+      "panel": {
+        "height": 736,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 383,
+        "x": 72,
+        "y": 64
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 800,
+        "width": 1280
+      }
+    },
+    {
+      "section": "Profile",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Add photo",
+          "width": 117.8828125
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: none",
+          "width": 740
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add contact",
+          "width": 123.7421875
+        }
+      ],
+      "smallTextFields": [
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "email contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "phone contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "location contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "website contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "linkedin contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "github contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "medium contact value",
+          "width": 400
+        }
+      ],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add role",
+          "width": 99.984375
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Cloud",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Database",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Server",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Zap",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Server",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Layers",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Brain",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Bot",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 9",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Palette",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 10",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Cpu",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add group",
+          "width": 113.328125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add project",
+          "width": 120.3046875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete entry 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete entry 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add entry",
+          "width": 108.203125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 9",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 10",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add certification",
+          "width": 151.546875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add award",
+          "width": 114.6328125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add language",
+          "width": 135.140625
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add stat",
+          "width": 99.453125
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add extra",
+          "width": 107.84375
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete section 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete section 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add section",
+          "width": 122.8671875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Analyze keyword coverage",
+          "width": 740
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Profile",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Add photo",
+          "width": 117.8828125
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: none",
+          "width": 740
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add contact",
+          "width": 123.7421875
+        }
+      ],
+      "smallTextFields": [
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "email contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "phone contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "location contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "website contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "linkedin contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "github contact value",
+          "width": 400
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "Contact kind",
+          "width": 112
+        },
+        {
+          "font": "16px",
+          "height": 40,
+          "label": "medium contact value",
+          "width": 400
+        }
+      ],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete role 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add role",
+          "width": 99.984375
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Cloud",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Database",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Server",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Zap",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Server",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Layers",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Brain",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Bot",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 9",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Palette",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete group 10",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Logo icon: Cpu",
+          "width": 670
+        },
+        {
+          "height": 40,
+          "label": "Clear logo",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add group",
+          "width": 113.328125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete project 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add project",
+          "width": 120.3046875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete entry 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete entry 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear start",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Clear end",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add entry",
+          "width": 108.203125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 9",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete certification 10",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add certification",
+          "width": 151.546875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 7",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete award 8",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add award",
+          "width": 114.6328125
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete language 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add language",
+          "width": 135.140625
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 5",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete stat 6",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add stat",
+          "width": 99.453125
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 3",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete extra 4",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add extra",
+          "width": 107.84375
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete section 1",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Delete section 2",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Bold (⌘B)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Italic (⌘I)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Underline (⌘U)",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Code",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": " Bullet",
+          "width": 77.359375
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Drag to reorder",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move up",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Move down",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Remove",
+          "width": 40
+        },
+        {
+          "height": 40,
+          "label": "Add section",
+          "width": 122.8671875
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "dark",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 480,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 768,
+        "x": 0,
+        "y": 544
+      },
+      "smallButtons": [
+        {
+          "height": 40,
+          "label": "Analyze keyword coverage",
+          "width": 740
+        }
+      ],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 1024,
+        "width": 768
+      }
+    },
+    {
+      "section": "Profile",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Profile editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Contact",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Contact editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Experience",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Experience editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Skills",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Skills editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Projects",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Projects editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Education",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Education editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Certifications",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Certifications editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Awards",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Awards editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Languages",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Languages editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Interests & Tools",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Interests & Tools editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Quick stats",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Quick stats editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Custom",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Custom editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    },
+    {
+      "section": "Target JD",
+      "theme": "light",
+      "coarse": true,
+      "pageOverflow": false,
+      "panel": {
+        "height": 390,
+        "label": "Target JD editor",
+        "overflow": false,
+        "width": 390,
+        "x": 0,
+        "y": 454
+      },
+      "smallButtons": [],
+      "smallTextFields": [],
+      "viewport": {
+        "height": 844,
+        "width": 390
+      }
+    }
+  ]
+}

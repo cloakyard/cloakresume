@@ -1,0 +1,1074 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "1.0.0",
+  "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
+  "surfaces": [
+    {
+      "path": "src/App.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/cloak-family.css",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/AtsReviewModal.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/BottomSheet.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/BrandLogo.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/CloakWorkbenchLanding.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ColorPickerContent.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ConfirmDialog.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/DragList.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/Editor.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ErrorBoundary.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/FormatScope.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/GithubIcon.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/Layout.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/LogoPicker.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Source reviewed; phone icon/no-results/Escape states inspected. Selection, clear, touch keyboard and other themes/layouts remain pending."
+    },
+    {
+      "path": "src/components/MonthYearField.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse", "768x1024 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/OrientationLock.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/PaginatedCanvas.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/PaperSizeToggle.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/Preview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/PrivacyPolicyModal.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ReloadPrompt.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/RichTextArea.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/SectionPanel.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/SectionRail.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/TemplateModal.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/TemplatePreview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ToolbarActions.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ToolbarCenter.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ToolbarOverflow.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ViewSegment.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ats/AtsCard.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/ats/AtsInsightsPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ats/AtsKeywordsPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ats/AtsOverviewPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ats/AtsParsePreview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/components/ats/AtsScoreRing.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/editor/AwardsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/CertificationsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/ContactSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/CustomSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/EducationSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/ExperienceSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/InterestsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/JdSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/LanguagesSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/ProfileSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/ProjectsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/SkillsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/StatsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/editor/shared.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/components/fields.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json"
+      ],
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+    },
+    {
+      "path": "src/index.css",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/main.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/styles/air.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover/press (CSS review)",
+        "focus",
+        "selected",
+        "disabled",
+        "busy",
+        "error",
+        "success",
+        "warning",
+        "dialog open/close/focus return",
+        "narrow sheet",
+        "light/dark",
+        "reduced motion",
+        "coarse/fine pointer"
+      ],
+      "viewports": [
+        "320x568",
+        "375x812",
+        "390x844",
+        "430x932",
+        "844x390",
+        "768x1024",
+        "1024x768",
+        "1280x720",
+        "1366x768",
+        "1440x900",
+        "1920x1080",
+        "639x800",
+        "641x800",
+        "1023x768",
+        "1025x768"
+      ],
+      "evidence": ["docs/air/validation.md — refinement 02 candidate", "docs/air/components.html"],
+      "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
+    },
+    {
+      "path": "src/templates/Academic.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/AtsPlain.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/AtsProfessional.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Aurora.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Bauhaus.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ClassicImpact.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ClassicSidebar.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/CompactTimeline.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ExecutiveSerif.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/GradientHeader.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Horizon.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Ledger.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Minimalist.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ModernMinimal.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Monograph.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Prism.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Typographic.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/paginationAtoms.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/shared.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/utils/fieldIssues.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
+      "viewports": ["390x844 dark coarse"],
+      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
+      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
+    },
+    {
+      "path": "src/utils/richText.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    }
+  ]
+}

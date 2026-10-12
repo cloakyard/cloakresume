@@ -1,386 +1,867 @@
 ---
-name: CloakResume — Cloakyard Workbench
-description: >-
-  A technical-editorial system for a private, browser-native résumé workbench.
-  It shares CloakPDF's paper surfaces, slate rules, typography, geometry, and
-  interaction language while retaining CloakResume Emerald as its identity.
-status: authoritative
-version: 2.0.0
-date: 2026-07-22
-mode: light-and-dark
-genre: modern-minimal
-design-system: app-wide
-primary: "#047857"
-paper: "oklch(0.975 0.009 255)"
-ink: "oklch(0.225 0.031 255)"
-fonts:
-  display: Archivo
-  body: Archivo
-  mono: JetBrains Mono
-macrostructures:
-  marketing: Workbench
-  editor: Persistent canvas workbench
-  content: Long document
-navigation: N1b three-zone solid header
-footer: Ft5 statement band
+name: CloakResume — Cloakyard Air
+version: 1.0.0
+status: design-review
+date: 2026-10-12
+scope: complete-web-product
+source-repository: https://github.com/cloakyard/cloakyard
+source-directory: design/air
+family-contract-sha256: dc6032235f40df1b56a753d80bd66f7360862c3ef5b68e2fce37893143cf19e5
 ---
 
-# CloakResume design system
+<!-- BEGIN CLOAKYARD AIR CONTRACT -->
 
-> **Current source of truth.** This document and the root `tokens.css` and
-> `tokens.json` files supersede every earlier CloakResume design note. Retired
-> blue, glass, and spring-motion specifications have been removed.
+# Cloakyard Air design contract
 
-Compatibility aliases exist only where an active component still consumes them;
-retired visual experiments and speculative token aliases are not part of the system.
+Version: **1.0.0 — refinement 03 candidate** · Direction: **Air** · Updated: **2026-10-12**
 
-`tokens.css` is normative for runtime values. This document is normative for
-composition, component behavior, responsive rules, and content hierarchy.
+The Air direction is approved. This detailed refinement is **under design review**;
+product migration waits for that review. The reference is an interactive design
+study, not an implementation of the products.
 
-## Family signature
+This is the portable design contract for the Cloakyard web family.
+It applies to existing and future products, all routes, all states, and every
+custom or third-party control rendered inside a product. A landing page alone
+cannot establish conformance. Product-specific requirements follow this contract
+in each repository's `DESIGN.md`.
 
-CloakResume and CloakPDF are siblings authored by the same designer. They share:
+Air supersedes the former Workbench visual specification: heavy Archivo display,
+uppercase mono control labels, product-tinted application surfaces, compact square
+cards, obligatory dark statement footers, and decorative technical ledgers.
+Existing functional requirements, privacy boundaries, output fidelity, and data
+integrity remain requirements. This document describes the target; completion is
+recorded separately in the refresh TODO and validation evidence.
 
-- Archivo for decisive display and durable interface text.
-- JetBrains Mono for status, provenance, IDs, counts, and operational labels.
-- Cool paper, dark slate ink, flat surfaces, and one-pixel rules.
-- A single product accent. CloakResume uses Emerald `#047857`; CloakPDF keeps blue.
-- Real browser-native instruments as proof, never fake browser or OS chrome.
-- Large declarations, fact strips, and operational ledgers instead of generic cards.
-- A dark engineering/privacy chapter and Ft5 statement footer.
-- Compact 6–8px corners, no resting shadows, and restrained functional motion.
+## 1. Priority and ownership
 
-Résumé sections, templates, tailoring, ATS review, spelling and grammar, live paper
-preview, JSON save/load, and PDF export are this product's native instruments.
+1. Accessible, correct operation and preservation of user work.
+2. Consistency across the family, including custom components and edge states.
+3. Clear hierarchy, comfortable reading, direct actions, and responsive layouts.
+4. Air's quiet visual character and restrained motion.
 
-## Product truth
+The family contract owns typography, semantic colour, component geometry, spacing,
+elevation, focus, icons, overlays, responsive behaviour, and motion. A product may
+choose its tools, content, document format, and task-specific composition. It may
+not invent a different control skin. New shared patterns are added to this contract
+and the shared assets first, then adopted by all affected products.
 
-The central line is **“A complete résumé workbench. Nothing uploaded.”**
+Every exception must name the exact surface, its functional reason, owner, and
+validation. An exception cannot be justified by preference, convenience, or an
+existing hardcoded value. Document and image output are explicit exceptions to UI
+colour/typography; their surrounding controls are not exceptions.
 
-“Nothing uploaded” applies to résumé and job-description content. CloakResume
-processes that content in the browser and stores working data locally. Static app
-assets may still be fetched and the installable app may cache assets. Copy must not
-overstate cold-cache offline availability.
+### Canonical source and inheritance
 
-The privacy proof path is:
+The main **cloakyard/cloakyard** repository owns `design/air/`: this contract,
+tokens, component shells, reference interactions, motion and product appendices.
+Every existing or future web app derives from that source. Product `DESIGN.md`
+files are generated snapshots, not separate design authorities.
 
-1. Content enters through the local editor, a local JSON file, or the local sample.
-2. Browser state and local language tooling perform editing, tailoring, and review.
-3. The browser writes a PDF or JSON file directly to the user's device.
+1. Change a shared pattern in Cloakyard first, including its anatomy, states,
+   keyboard/touch behavior, responsive/theme rules and reference example.
+2. Validate it there, then copy the complete contract and local assets as one
+   revision. Each bundle records its source repository, directory, review status,
+   contract SHA-256 and asset hashes. A bundle paired with another contract fails
+   validation even if its individual assets are intact.
+3. Product wrappers may adapt framework APIs and domain behavior, but cannot
+   redefine tokens, geometry, states or motion. Product appendices add constraints;
+   they do not override the family contract. Proposed exceptions return upstream.
+4. Keep a product's adopted revision pinned until its affected feature and visual
+   checks pass. Synchronization updates the candidate reference; it is not runtime
+   adoption. Never fetch the live specification or CSS at app startup.
+5. Record changes and migration requirements with the source commit. During design
+   review, content hashes identify exact candidate revisions; `1.0.0` is the target
+   contract version, not a production-release claim. After approval, breaking
+   changes increment major, additive patterns minor, and compatible fixes patch.
 
-The absent routes are upload server, required account, and product analytics.
+A new app starts with the complete portable contract, its own surface inventory
+and product appendix, the same local bundle and the same drift/portability checks.
+Standalone builds work offline without another checkout. The central component
+review matrix records remaining design work; each app still owns proof that its
+real features and custom widgets conform.
 
-## Scope boundary
+## 2. Visual signature — the Air identity
 
-This system governs landing, editor chrome, navigation, rails, panels, toolbars,
-dialogs, sheets, popovers, menus, notices, privacy content, loading, and error pages.
-It does **not** restyle user résumé templates. A rendered résumé is an output artifact:
-its selected typeface, colours, spacing, and white paper remain template-true in both
-themes and in print.
+Air should be recognisable with the logo covered. Its identity comes from the
+relationship between open space, precise edges, neutral working surfaces, and one
+quiet blue indicator. It does not depend on a framework's default component skin.
 
-## Colour
+### Open composition
 
-The cool paper and slate ladder is identical to CloakPDF:
+- Group by proximity: 8px for one control's parts, 12px between related controls,
+  24px between tasks, 48–64px between page sections. Start with open space; add a
+  divider only for a genuine boundary. Do not put every group in a card.
+- Landing pages have a light, centred promise and an open product row. An editor
+  has one containing surface, a persistent canvas and unboxed inspector groups.
+  Quiet family navigation gives way to task actions inside the workspace.
+- Hero/section display uses weight 400 with tight optical tracking. Headings must
+  have natural line breaks at each size; do not simply scale a desktop screenshot.
+- Product text explains the job. Avoid technical ledgers, invented readouts,
+  template-like feature grids and marketing counts.
 
-- Paper `oklch(0.975 0.009 255)`; Paper 2 `oklch(0.947 0.014 255)`.
-- Surface `oklch(0.992 0.004 255)`.
-- Ink `oklch(0.225 0.031 255)`; secondary ink `oklch(0.43 0.035 255)`;
-  muted ink `oklch(0.48 0.03 255)`.
-- Rule `oklch(0.865 0.022 255)`; strong rule `oklch(0.72 0.032 255)`.
+### Matte surfaces and precise edges
 
-CloakResume Emerald 700 `#047857` / `oklch(0.508 0.118 165.612)` is the only
-product accent. It owns primary actions, active sections, links, progress, focus-
-adjacent cues, and proof markers. Hover uses Emerald 800; active uses Emerald 900.
-Red, amber, and green status colours are semantic only.
+- Opaque, subtly separated planes. No frosted forms or translucent reading areas.
+  Small shadows explain elevation; surface steps do most of the work.
+- Inputs, textareas and selects have one continuous 1px `line-control` border,
+  a solid surface and no inset shadow or bottom-edge accent. On focus, replace the
+  resting border with a single 2px blue outline at zero offset; make the border
+  transparent so two contours never compete. Field geometry does not move.
+- Buttons may use a soft top/side edge and a firmer lower edge. That elevation
+  treatment never carries into data-entry fields. Persistent labels and nearby
+  help provide clarity without decoration.
+- Neutral primary actions, 10px corners, 14px/500 labels, 16–18px icons, 8px icon
+  gap, and 16px side padding. A standalone icon is optically centred in its box.
+- Nested geometry is deliberate: an 18px outer surface with an 8px inset gives a
+  10px inner corner. Do not accumulate unrelated radii or padded card layers.
+- Icon art uses the existing Lucide family at 1.6 stroke for 18–24px UI icons;
+  preserve original family/product marks. No decorative icon backplates everywhere.
 
-Night surfaces use navy slate rather than pure black. The core action accent stays
-fixed across themes; the soft accent surface and label colour use explicit dark-mode
-companions for readable contrast. Marketing backgrounds are flat. Grainient, aurora
-glow, decorative radial gradients, cursor spotlights, and translucent glass panels
-are outside this system and are not shipped as fallback components.
+### A restrained, ownable blue signature
 
-## Typography
+- Selected rails use a neutral tile plus a 2×16px blue marker. It sits on the
+  leading edge of a vertical rail and the bottom edge of a horizontal tool dock.
+  Selected segments use the same neutral surface and a small blue marker.
+- Focus, meaningful links and selection use shared blue. Logo colours may remain;
+  they never tint the whole app or create a rainbow of tool categories.
+- The landing signature is a low-contrast light horizon: two offset, softly lit
+  planes echo the family mark's overlapping geometry. It occupies the space below
+  hero copy and above product entries. Text remains on a solid, quiet background.
+  No generic purple glow, animated blob, cosmic backdrop or GPU effect in editors.
 
-- Hero display: Archivo 760, `clamp(2.75rem, 5.5vw, 5.6rem)`, 0.91 line-height,
-  `-0.065em` tracking, and a compact editorial measure.
-- Section display: Archivo 720, `clamp(2.15rem, 4.7vw, 4.9rem)`, 0.98 line-height.
-- Editor/dialog titles: Archivo 720–760, 1.05–1.15 line-height.
-- Body: Archivo 400–600, 1.5–1.6 line-height; never below 14px.
-- Operational label: JetBrains Mono 600, 10–12px, uppercase, 0.05–0.10em tracking.
-- Wordmark: Archivo 800, 18px, `line-height: 1`, `-0.02em` tracking. Archivo and
-  JetBrains Mono use the same explicit self-hosted face registrations and font files
-  as CloakPDF; never rely on a family-name alias or narrowed fallback for either.
+### Two equally designed appearances
 
-Mono is metadata, not personality. Never use it for paragraphs or oversized display.
-Italic serif marketing headlines are not part of the family.
+- Light: near-white page, white working surfaces, cool matte canvas surround,
+  graphite text and discreet contact shadows.
+- Dark: graphite page, raised solid surfaces, visible edge separation and brighter
+  blue indicators. Never obtain dark mode by simply inverting a light screenshot.
+- Every selected, focused, disabled, error, warning and busy state is reviewed in
+  both themes. Disabled controls stay identifiable, even though contrast exceptions
+  apply to disabled content. Colour is never the only carrier of meaning.
+- System appearance is the default. An explicit user choice may select light or
+  dark. Switching theme is immediate; it does not animate the whole workspace.
+- Paper stays white and actual image colours stay intact. The surrounding UI
+  adapts; user-created content and export typography do not.
 
-## Exact geometry
+## 3. Portable foundations
 
-| Element                     | Rule                                           |
-| --------------------------- | ---------------------------------------------- |
-| Maximum content frame       | `88rem` / 1408px                               |
-| Phone / 640px+ page gutter  | `16px` / `24px`                                |
-| Marketing / editor header   | `72px` / `64px`                                |
-| Editor rail / desktop panel | `72px` / `328px`; fluid `384–736px` at ≥1280px |
-| Header and editor logo      | `40px`, `0.6rem` wordmark gap                  |
-| Statement footer            | No repeated logo; product/family kicker        |
-| Card/dialog radius          | `8px`                                          |
-| Repeatable editor entry     | `1px` complete rule, `12px` inset              |
-| Input/button/popover radius | `6px`                                          |
-| Standard dialog             | `min(36rem, calc(100vw - 3rem))`               |
-| Wide ATS/gallery dialog     | `min(68.75rem, calc(100vw - 3rem))`            |
-| Popover maximum             | `24rem` or safe viewport width                 |
+Implement these as semantic CSS properties with an `--air-` prefix. Framework
+theme utilities and legacy aliases must reference these properties, never maintain
+parallel literal palettes. Values are identical across products. The maintained
+family bundle is versioned and copied into each repository; builds must work from
+a standalone checkout without sibling repositories, a CDN, or a private package.
+Copies have a revision/hash check. Local component overrides cannot redefine the
+family tokens. System appearance is the default in every app.
 
-Use the 4px family rhythm: **4, 8, 12, 16, 24, 32, 48, 72, 112, 160px**.
-Major sections use 72–160px vertical space; instrument internals use 12–32px.
-Avoid nested padded cards and arbitrary competing widths.
+### Colour
 
-## Macrostructures
+| Token suffix    | Light     | Dark      | Purpose                               |
+| --------------- | --------- | --------- | ------------------------------------- |
+| `page`          | `#fafbfc` | `#101216` | Page background                       |
+| `surface`       | `#ffffff` | `#1a1d23` | Controls, panels, dialogs             |
+| `surface-soft`  | `#f0f2f6` | `#232830` | Canvas surround, selected neutral row |
+| `surface-hover` | `#e9edf3` | `#2d333e` | Hovered neutral surface               |
+| `ink`           | `#202329` | `#f1f3f7` | Primary text                          |
+| `ink-secondary` | `#525b68` | `#b6becb` | Body/supporting text                  |
+| `ink-muted`     | `#646b76` | `#a7afbc` | Secondary metadata                    |
+| `line`          | `#e1e5eb` | `#363d48` | Surface separation                    |
+| `line-control`  | `#858e9b` | `#778395` | Required control boundary             |
+| `action`        | `#222831` | `#e9eef7` | Primary button                        |
+| `on-action`     | `#ffffff` | `#18212e` | Primary button content                |
+| `accent`        | `#285ad7` | `#9ebcff` | Focus, links, active indicators       |
+| `accent-soft`   | `#edf2ff` | `#202f4e` | Selected accent surface               |
+| `danger`        | `#b42335` | `#ff9ea8` | Destructive/error content             |
+| `danger-soft`   | `#fff0f1` | `#382229` | Error surface                         |
+| `warning`       | `#875700` | `#f4ca7c` | Warning content                       |
+| `warning-soft`  | `#fff6df` | `#352d1c` | Warning surface                       |
+| `success`       | `#236444` | `#8dd5b0` | Success content                       |
+| `success-soft`  | `#eaf7ef` | `#1c3027` | Success surface                       |
+| `checker-a`     | `#f0f2f6` | `#232830` | Transparency grid                     |
+| `checker-b`     | `#dce1e8` | `#363d48` | Transparency grid                     |
 
-### Marketing — Workbench
+Muted text is not disabled text. Check actual foreground/background contrast, not
+just individual token values: 4.5:1 normal text, 3:1 large text and required UI
+indicators. `line` is decorative separation and cannot be the sole indicator of a
+control. Errors/warnings/success also use text and an appropriate icon.
 
-The landing sequence is fixed: N1b three-zone header → split declaration → real
-résumé start/load workbench and document preview → factual strip → Build/Tailor/
-Export ledgers → dark local-processing receipt → Ft5 statement footer.
+### Type
 
-The hero performs real actions: start blank, load sample, load a local file, or
-resume local work. It is not a screenshot, decorative mockup, window, or animation.
+- UI and display: `-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif`.
+  This reproduces Air's native, light typography without remote font requests.
+- Code and machine identifiers only: `ui-monospace, "SFMono-Regular", Consolas,
+  monospace`. Button labels, navigation, ordinary status, and headings use UI sans.
+- Weight 400 for body and display; 500 for labels/workspace headings; 600 for limited emphasis.
+  No 700–900 display or control weights. Logos and document output are exempt.
+- Hero: `clamp(2.5rem, 5.5vw, 4.5rem)`, weight 400, line-height 1.05, tracking
+  `-0.045em`. Section title: `clamp(1.75rem, 3vw, 2.75rem)`, 400, 1.15,
+  `-0.03em`. Workspace/dialog heading: 20–24px, 500, 1.25.
+- Page prose 16–18px/1.6; UI body 14px/1.5; labels 13px/1.4; metadata minimum
+  12px/1.5. Mobile editable text remains at least 16px to avoid focus zoom.
+- Shared component sizes use relative tokens: `text-body` .875rem, `text-label`
+  .8125rem, `text-meta` .75rem, `text-editable` 1rem. The pixel values above describe
+  a 16px root, not fixed text boxes. Let controls grow at enlarged text; never alter
+  document artwork dimensions to compensate.
+- Sentence case. Tabular numerals for dimensions, sizes, percentages, and aligned
+  counts. No tracked uppercase eyebrows, pipeline IDs, or marketing tool counts.
+- Natural word boundaries; wrap long filenames/URLs without forcing normal prose
+  into arbitrary letter breaks. Never shrink text to conceal overflow.
 
-### Editor — persistent canvas workbench
+### Geometry
 
-The editor stays a full-screen instrument: 64px top bar, 72px section rail, a 328px
-desktop properties panel below 1280px, and a fluid 384–736px properties panel at
-1280px and above. Spare canvas space goes to text entry while reserving 856px for
-the document stage as the panel grows; its maximum keeps long fields readable.
-The panel width comes from the responsive
-`--editor-panel-width` token; Layout never carries a parallel hard-coded width. All
-fixed and sticky panels begin below the complete 64px header. At narrow widths, the
-mobile proof and lower workspace divide available content height exactly 50:50. The
-lower workspace shows one open section editor or the inline section picker. Closing
-an editor reveals the picker in place; other sections never overlay an open form.
-The editor header contains only document actions: project provenance and the GitHub
-link remain on the landing page and policy surfaces. Animate inner content only;
-never animate this geometry.
+| Primitive              | Normative value                                   |
+| ---------------------- | ------------------------------------------------- |
+| Spacing scale          | 4, 8, 12, 16, 20, 24, 32, 48, 64, 96px            |
+| Page max width         | 1200px                                            |
+| Page gutters           | 16px phone; 24px tablet; 32px laptop/desktop      |
+| Marketing header       | 72px desktop; at least 64px narrow                |
+| Editor top bar         | 64px; may wrap/reflow on narrow screens           |
+| Icon rail              | 72px desktop; 64px compact, with labels/tooltips  |
+| Inspector              | 288–360px; 328px default desktop                  |
+| Content entry panel    | 420px writing default; 360px compact; up to 560px |
+| Control radius         | 10px                                              |
+| Small chip/tab radius  | 8px                                               |
+| Panel/card radius      | 18px                                              |
+| Dialog radius          | 20px                                              |
+| Floating menu radius   | 12px                                              |
+| Normal control height  | 40px; 44px minimum touch target                   |
+| Compact control height | 32px on fine pointers only                        |
+| Field/row interior     | 12–16px; section group gap 24px                   |
+| Reading measure        | 65ch maximum                                      |
 
-### Content — long document
+Full-bleed app rails may meet an edge without rounded outer corners. Do not nest
+several padded cards. Use whitespace and modest section dividers inside inspectors.
+Primary action groups contain one dominant action. A 2px focus outline with 3px
+offset uses `accent` and remains visible inside scrolling and clipped containers.
+Fields use the single-contour exception above: zero-offset outline, transparent
+resting border during focus, no box shadow. Invalid fields retain a nearby error
+message when the blue focus contour replaces their red resting border.
 
-Privacy, explanatory, error, and empty-state pages use the 88rem outer frame with a
-narrow reading column, declarative title, mono chapter markers, ruled sections, and
-a dark statement close. They never introduce a separate microsite.
+Touch target sizing is independent of layout width. A tablet or touch laptop must
+not inherit 32px/40px targets from a desktop breakpoint. Check the effective hit
+area of the whole labelled control, including inline clear, reorder, formatting,
+calendar and review actions; a 16px checkbox is acceptable inside a 44px label row.
 
-## Navigation and branding
+Elevations use a contact shadow plus a diffuse shadow, never a thick glow:
 
-N1b is a three-zone grid: logo at start, product links at centre, primary/source
-actions at end. It is never a floating pill. The shell is solid paper, 72px tall,
-and bounded by a one-pixel rule. Mobile may collapse centre links while preserving
-logo and action alignment inside the 16px gutter.
+| Surface | Light shadows                                | Dark shadows                                 |
+| ------- | -------------------------------------------- | -------------------------------------------- |
+| Panel   | `0 2px 6px #18223404, 0 12px 32px #18223408` | `0 2px 6px #00000012, 0 12px 32px #00000020` |
+| Menu    | `0 2px 4px #10182806, 0 12px 32px #10182814` | `0 2px 4px #00000020, 0 12px 32px #00000040` |
+| Dialog  | `0 2px 8px #10182808, 0 24px 64px #10182824` | `0 2px 8px #00000024, 0 24px 64px #00000060` |
 
-The canonical circular mark is `public/cloakresume-mark.svg`: a 64×64 Cloakyard-family
-construction with a diameter-42 glyph keyline, 3px round stroke, emerald field, and
-profile-led résumé shield. It is 40px in marketing and editor headers, paired with the
-wordmark at a `0.6rem` gap—the exact CloakPDF header geometry. The Ft5 statement footer
-does not repeat the lockup; it closes with the product/family kicker and provenance
-line. Never redraw, crop, stretch, or independently resize the wordmark.
+Dark mode also requires opaque surfaces and `line` separation. Scrim:
+`rgb(12 18 28 / 40%)`.
+No glass blur behind forms, body copy, tables, or document content.
 
-## Surfaces and common components
+## 4. Component contracts — custom controls included
 
-- Cards are flat solid paper/surface with a 1px rule and 8px corner. No resting
-  shadow; hover may strengthen the rule or change paper tint.
-- Every repeated résumé entry uses a complete card boundary and 12px inset. Below
-  640px the redundant drag grip is hidden to protect the heading/action row; the
-  44px move-up/down controls remain available and named.
-- Buttons use a 6px corner and stable height. A scope has one emerald primary;
-  secondary controls are neutral outlined or quiet text actions.
-- Inputs use a solid surface, 1px boundary, visible focus ring, and no error-state
-  layout shift. Inputs remain 16px on phones to prevent auto-zoom.
-- Icons are inline metadata, not coloured icon tiles.
-- Proof and capability ledgers use numbered rows, descriptive text, metadata, and a
-  ruled rhythm instead of interchangeable feature cards.
-- Loading and empty states retain the loaded instrument's geometry.
-- Status states combine icon, text, and colour; colour is never the only signal.
-- The Ft5 footer is a dark Night statement band: product/family kicker, large local-
-  first declaration, two-by-two link index, then version, author, privacy, and MIT
-  provenance below a rule. Its structure and spacing mirror CloakPDF.
+| Component                       | Required shared behaviour and appearance                                                                                                                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Brand/header/footer             | Same wordmark spacing and header rhythm; existing family mark, 28px in editor (24px compact) and 36px marketing. Compact neutral footer with product links, privacy, source, and version where useful. |
+| Buttons                         | Sans label; stable box; neutral secondary; monochrome primary; visible hover/press/focus; descriptive action verb; busy state preserves width.                                                         |
+| Icon buttons                    | Accessible name, tooltip for unfamiliar meaning, 40px fine/44px touch target; selected and disabled semantics.                                                                                         |
+| Text/number/date fields         | Visible persistent label; shared boundary, height, radius, focus; unit beside value; help/error beneath; correct input type and autocomplete.                                                          |
+| Select/listbox                  | Native semantics or established accessible primitive; same field shell; arrow inset; wrapping long labels; keyboard navigation; viewport-aware menu.                                                   |
+| Check/radio/switch              | Label and control share hit target; explicit state; keyboard operation; same accent/focus.                                                                                                             |
+| Slider/scrubber                 | Label, current value/unit, keyboard input, touch-friendly hit area, reset or precise entry when needed; no hidden critical gesture.                                                                    |
+| Segments/tabs                   | Neutral group, one clear selection, correct roles/states and arrow keys where expected; same radius/density.                                                                                           |
+| Tool/section rail               | Stable order, labels/accessible names, neutral selected tile and blue indicator; search/more access on small screens; no coloured tool rainbow.                                                        |
+| Inspector/entry group           | Consistent heading, help, spacing and primary action; advanced settings disclosed; controls stay in reach on short screens.                                                                            |
+| Colour picker/curves            | UI shell follows Air; actual colour field/histogram/curve are functional data, not branding. Provide labels, numeric entry, focus, clipping protection.                                                |
+| Lists/layers/history            | Same row states, selection/focus, progress and empty-state language; long names wrap/truncate with full-name access; accessible reorder alternatives.                                                  |
+| Drop zone/import                | Clear local-file action and supported types; equivalent browse action; drag-over, wrong type, encrypted/invalid/large-file states; readable progress.                                                  |
+| Dialog/sheet                    | Named title/description; close, scroll body, action region; focus containment/return; Escape; background inert; preserve state across resizing.                                                        |
+| Popover/menu/tooltip            | Anchored, viewport-aware, opaque; common elevation/radius; keyboard dismissal; no clipping inside parent scroll regions.                                                                               |
+| Toast/notice/error              | Shared icon/text/action layout, semantic role/live region, understandable recovery; never cover primary or modal actions.                                                                              |
+| Progress/AI model state         | Honest determinate progress when known; explicit size, consent, download/cancel/retry/error/cached/ready states; no fake percentages.                                                                  |
+| Rich text/signature/drawing     | Air toolbar and focus; preserve content formatting; keyboard/tap alternative where feasible; undo/reset; visible selection.                                                                            |
+| Privacy/help/404/error boundary | Same typography, width, navigation and controls; clear return/retry path; technical detail only when relevant.                                                                                         |
+| PWA/install/update              | Same notice/dialog language; do not reload over unsaved work; readable offline/cache/download distinctions.                                                                                            |
 
-## Overlays
+### Field anatomy and validation
 
-Every overlay shares one shell: solid Surface, 1px Rule, 8px corners, named overlay
-shadow, and a Night 58% scrim. No backdrop blur, frosted glass, decorative
-transparency, or unscoped z-index.
+- One persistent label, 8px gap to the field, then help/error 8px below. Related
+  fields share a 12–24px gap. Use the shared relative label/body/help typography;
+  do not force equal-height error areas or truncate long assistance text.
+- The single contour uses 10px corners and 8px block/12px inline padding. Height
+  is at least 40px fine / 44px coarse and grows with its content. Editable text is
+  at least 1rem on coarse pointers and narrow screens, independent of layout mode.
+  A multiline field starts at 7.5rem and permits vertical resizing.
+- Populated, empty, focused, invalid, read-only and disabled are different states.
+  Read-only content stays full contrast on `surface-soft`, focusable and copyable;
+  disabled controls cannot accept input or focus and explain why nearby. Never
+  simulate read-only with disabled or hide a stored value behind placeholder text.
+- Focus replaces the resting or invalid boundary with one blue contour. Keep the
+  actual error and `aria-invalid` while focused. Hover does not add a new edge,
+  shadow or motion. Numeric suffixes stay outside the editable value.
+- Use native labels/types, meaningful names, appropriate autocomplete and input
+  modes; placeholders are examples only. Connect help and errors with
+  `aria-describedby`. Required and optional labels are explicit in ambiguous forms.
+- Validate at blur/submit or the product's established completion boundary, not
+  halfway through composition. On submit, preserve all values, expose actionable
+  errors, announce the outcome and focus the first invalid field. Correcting a
+  value clears its error at the next validation boundary; never report success
+  while another field is invalid. Allow paste, undo and IME without interception.
 
-- Standard dialogs use 36rem. Template galleries, ATS review, and the long-form
-  privacy document may use the 68.75rem wide variant. The privacy dialog begins
-  with the Night architecture receipt—promise, three-step document path, and absent
-  routes—then returns to a narrow ruled reading column for the full policy. Desktop
-  dialogs are centred and stay within
-  `calc(100dvh - 3rem)`.
-- At 640px and below, modal content becomes a viewport-wide bottom sheet, max-height
-  92dvh, square lower corners, 8px upper corners, and safe-area bottom padding.
-- Dialog title, description, close, scroll region, and actions occur in the same
-  order. Escape/outside dismissal, focus containment/return, and scroll lock are
-  consistent. Inner scroll uses `overscroll-behavior: contain`.
-- Scrim and panel enter together over 220–260ms. Dialogs, sheets, and popovers retain
-  their mounted focus/geometry state through a responsive 160ms ease-out exit before unmounting.
-- Popovers/menus use 6px corners and `--shadow-popover`, flip before clipping, keep a
-  16px safe viewport edge, and never exceed 24rem.
-- Toasts use solid surfaces/live-region semantics and do not cover modal actions.
+### Compound search and numeric fields
 
-Z-index is fixed: sticky 30, navigation 50, editor/toast 100, dialog 200, popover
-900, system overlay 1000.
+- A compound field has one `air-field-group` boundary and no interior input
+  border, underline or shadow. Input focus replaces only that outer contour.
+  Focusing an embedded action instead identifies that action with an inset ring;
+  it must not add a second field contour. Invalid, disabled and read-only styles
+  belong to the complete group, with help and errors outside it.
+- Keep 12px text inset, 10px corners and shared field typography. Units sit after
+  the value with a 12px trailing inset. Let an unusually long unit wrap within
+  half the field; preserve room for editing. Never append a unit to the editable
+  string or shrink the number to fit. Expose the unit in the label or description,
+  and hide a duplicate visual suffix from assistive technology.
+- Search has a persistent label and one named clear button. Its glyph remains
+  small, but its target is at least 44×44px; the containing field may grow to 46px
+  to enclose it. Reserve this space when empty to avoid value-width movement.
+  An empty clear action is visually hidden and absent from focus/accessibility.
+  Clearing restores focus to the input and the full result set. Suppress the
+  platform's duplicate search-cancel decoration only when this equivalent exists.
+- Filtering preserves the typed query, handles composition before updating
+  results, and announces meaningful result-count/no-results changes without
+  moving focus. No-results copy offers recovery. A product search still needs its
+  real loading, failure, result-navigation and selection behavior validated.
+- Numeric controls use native number semantics, explicit bounds/step and suitable
+  input mode. The reference hides platform spinner chrome while retaining native
+  arrow-key stepping and direct entry; do not add a second keyboard implementation.
+  If visible steppers are needed in a product, specify and validate them upstream.
+- Empty, out-of-range and fractional values remain editable; validate on blur or
+  apply, preserve the draft and last committed value, and focus invalid input on
+  submission. Never silently clamp, round, reset or apply an invalid number.
+  Disabled/read-only values keep the base field rules. No typing or focus motion.
 
-## Motion
+### Action states and stability
 
-- The product uses four motion primitives: 100ms press feedback, 160ms anchored
-  popovers, 220–260ms overlay surfaces, and a three-block staged landing entry.
-- Border and colour changes are the default interaction. Spatial movement is limited
-  to the shared 2px, 4px, and 6px distance tokens; press and surface scale both start
-  at 0.98. The 400ms token is reserved for the rare landing reveal, field locator,
-  and toast arrival; landing delays use the 60ms stagger token.
-- Entrances, exits, and presses use `--ease-out`; reversible on-screen movement may
-  use `--ease-in-out`. Motion never overshoots. Never use `transition: all`, animate
-  a focus-ring shadow, or replay motion for keyboard focus and frequent section/tab changes.
-- Spatial icon motion is applied to an HTML wrapper, never directly to an SVG. The
-  ATS field locator animates a pseudo-element with opacity/scale rather than paint-
-  heavy shadow interpolation.
-- Landing reveals may animate three major hero blocks and major sections once. Do
-  not animate every row. Decorative infinite motion is prohibited.
-- Functional progress, drag-over feedback, spinners, and live analysis remain.
-- Reduced-motion removes nonessential transforms/smooth scrolling while preserving
-  immediate state and progress communication. Anchored popovers compose their
-  positioning and 4px motion offsets so placement never jumps.
+- Use a real button for actions. Ready, busy, success and recoverable failure
+  retain the same geometry and hierarchy. Reserve the intrinsic size of all
+  translated labels (including wrapped height), using shared `air-action-labels`;
+  expose only the current accessible name. Do not hardcode a pixel width or
+  shrink labels to hide layout movement.
+- Busy begins when work actually starts, remains until it settles, and prevents
+  duplicate pointer, keyboard and programmatic activation. A focused action may
+  use `aria-disabled` with a guarded handler to preserve focus; ARIA alone does
+  not block execution. `aria-busy` identifies work, with a separate concise live
+  status outside that busy subtree. Keep the label readable at full contrast.
+- Give successful completion a truthful result and clear next action. Recoverable
+  failure keeps input/work intact, explains the failure and offers retry. Do not
+  automatically reset a result on a timer or move focus for an ordinary outcome.
+  Cancellation must actually stop or safely disregard pending work; stale results
+  must not overwrite a newer attempt. Production adapters own and test that lifecycle.
+- Frequent action-state changes are immediate, with no pulsing text, perpetual
+  decorative spinner or artificial delay. If real work supplies progress, use an
+  honest progress component; never invent a percentage. Existing pointer press
+  feedback respects disabled/busy, keyboard and reduced-motion rules.
+- The reference provides explicit start/resolve/cancel controls for a deterministic
+  state study. Its outcomes are simulated and process no files. Only those study
+  controls return focus before disabling themselves; this does not authorize
+  production focus jumps. Validate real async cancellation/races in each adapter.
 
-Never animate editor dimensions, dialog width, or the mobile editor's 50:50 split.
+### Choice anatomy and semantics
 
-## Responsive and accessibility contract
+- Checkbox/radio glyphs occupy 18×18px with a 1px `line-control` boundary. Checkbox
+  corners are 4px; radio corners are circular. Selected glyphs use `accent` and a
+  contrasting `surface` tick/dot. Mixed checkbox state is an 8×2px dash, exposed
+  through the native `indeterminate` property, never a misleading checked value.
+- The entire label is a minimum 44px target with 12px glyph/text separation. Align
+  the glyph to the first line when the label wraps. Disable the actual input,
+  not just its styling; keep the reason visible. Use a fieldset/legend for a group.
+- Native inputs own checkbox Space, radio arrow-key traversal and form values.
+  Mutually exclusive segmented choices use one native radio group (or an already
+  established accessible equivalent); all-selected and partial-selected checkbox
+  groups accurately reflect their children. Tabs control named panels and retain
+  tab semantics; action/toggle groups must not pretend to be tabs.
+- Segments keep the shared neutral selected plane and 2×16px blue marker. Native
+  radio inputs inside those segments retain one group Tab stop; focus outlines the
+  selected label, without exposing a second invisible-control contour. Buttons
+  retain `aria-pressed` only when they truly toggle or act as an existing choice
+  adapter. Explicitly test disabled choices and arrow navigation.
+- Selection changes are immediate. No tick drawing, bounce, sliding selection
+  pill or delayed state change in frequently used controls. Forced-colour mode
+  uses native checkbox/radio glyphs and system focus/selection colours. Both
+  ordinary themes keep the exact same geometry and contrast-tested indicators.
 
-Visual verification is mandatory at **320, 375, 414, 768, and 1280px** wide;
-1440px validates the 88rem cap.
+### Overlay anatomy and acceptance
 
-- Under 640px: 16px gutter, 2×2 fact strip, single-column start/file actions, 16px
-  form controls, bottom-sheet overlays, and practical 44px touch targets.
-- At 640px+: 24px page gutter and desktop overlay gutters.
-- Below 860px: declaration splits and ledgers stack in source order.
-- At 768px: no overflow, clipped actions, or off-canvas dialog controls.
-- At 1280px+: the properties panel uses `clamp(24rem, calc(100vw - 58rem), 46rem)`;
-  this gives text entry spare horizontal space without shrinking an already full-size preview. It remains
-  20.5rem from the desktop breakpoint through 1279px.
-- Desktop content remains centred inside 88rem; no section gets a competing width.
+- Dialogs use the native modal top layer or an established accessible primitive:
+  a visible title, concise description, clear dismissal, scrollable content and
+  one primary completion action. The background is inert. Choose initial focus
+  according to the task; dangerous actions never receive automatic primary focus.
+- The 576px maximum reference dialog has 24px padding, 20px corners and shared
+  elevation. At 640px and below it becomes a full-width bottom sheet with safe-area
+  padding. Keep 16px viewport clearance above it; never force a minimum body height
+  that pushes actions off a short screen. Footer actions wrap at enlarged text.
+- Scroll stays in the overlay, keyboard-focused content cannot hide behind sticky
+  actions, and long names/validation never widen it. Preserve entered values on
+  viewport/theme changes. Nested selects use the top layer and close before the
+  containing dialog when Escape is pressed. Closing returns focus to the trigger.
+- Test open, mid-transition dismissal/reopening, invalid input, long content,
+  nested picker, short screen, enlarged text, focus traversal and reduced motion.
+  A popover, tooltip, context menu or destructive confirmation needs its own real
+  state example before adoption; an export dialog alone does not certify them.
 
-Text zoom and pinch zoom remain enabled. Layout tolerates 200% text zoom, long names,
-translated labels, safe-area insets, and software keyboards. Every control has an
-accurate name and visible `:focus-visible` treatment. Semantic landmarks, heading
-order, dialog labels, focus return, escape dismissal, and readable muted contrast are
-mandatory. Icon-only controls have a minimum 40px visual hit area.
+### Floating surfaces and safe action handoffs
 
-Ordinary interface prose and résumé-document text preserve natural word boundaries:
-use `word-break: normal` and `hyphens: manual`. Interface prose uses
-`overflow-wrap: normal`; résumé templates use `overflow-wrap: break-word` as an
-emergency fallback only when an otherwise unbreakable token exceeds its column.
-Normal words still wrap at spaces, and their intrinsic sizing is preserved.
-Never use `word-break: break-all`. The stronger `overflow-wrap: anywhere` sizing
-rule remains limited to URLs, code, filenames, and constrained tokens.
+- A settings popover is a small, non-modal form; an action menu is a keyboard
+  command list; a tooltip is supplemental text. Do not interchange their roles.
+  Use established accessible primitives for focus, dismissal, typeahead, pointer
+  handling and positioning. The reference uses locally bundled Base UI 1.9.0;
+  wrappers may adapt frameworks, but must preserve this contract and its behavior.
+- Floating content uses an opaque `surface`, `line` edge, 12px corners and the
+  shared menu shadow. Keep 8px from the trigger and at least 16px from viewport
+  edges. Portals escape clipping ancestors; flip/shift near edges, constrain to
+  available space, wrap labels and scroll inside the surface. Resizing, scrolling
+  and theme changes preserve the current state and keep actions reachable.
+- Menus are 18rem wide before viewport constraints, with 8px padding. Rows have
+  8px block/12px inline padding, 8px corners and 40px fine/44px coarse minimum
+  height. Hover uses a neutral surface; keyboard focus adds an inset 2px blue
+  outline. Checked actions use a trailing blue tick and checked semantics.
+  Disabled items explain their unavailable state and cannot activate. A divider
+  separates destructive actions; danger colour always accompanies explicit text.
+- Enter/Space or arrow keys open the visible action trigger. Menu primitives own
+  arrows, Home/End, typeahead, selection, Tab and Escape. A contextual menu exposes
+  the same actions through a visible button on touch/keyboard; right-click or long
+  press can never be the only path. Dismissal returns to the actual source control.
+- Popovers use 20px padding and a 20rem preferred width, with named title and
+  description. Keep native fields, labels and validation inside. Touch opening
+  focuses the surface instead of unnecessarily raising a software keyboard;
+  keyboard navigation enters the controls normally. Non-modal outside interaction
+  and Escape dismiss; nested pickers dismiss before their containing popover.
+- Tooltips have 8px block/12px inline padding, 13px relative text and an 18rem
+  maximum width. Hover waits 400ms; focused controls show the hint immediately.
+  Adjacent hints may appear immediately. Keep the hint hoverable and dismissible
+  with Escape; never put a required instruction or interactive control only in a
+  tooltip. Its trigger keeps a meaningful name and works on touch without the hint.
+  Expose the visible hint as `role="tooltip"` and connect it with `aria-describedby`;
+  verify this association in the rendered adapter instead of assuming a library adds it.
+- These frequently used floating surfaces appear immediately. Reserve motion for
+  occasional dialogs: pointer entry 240ms, exit 160ms, shared curves; keyboard
+  opening/dismissal and reduced motion are immediate. The desktop dialog moves
+  4px/.98; the phone sheet rises from below. Animate transform/opacity only.
+- Menu-to-dialog handoffs must move focus into the dialog without a menu's closing
+  callback pulling it away. Form dialogs focus the first field on fine pointers
+  and the surface on touch, retain invalid drafts, show nearby error text, and
+  focus the invalid field on submit. A long filename never changes dialog width.
+- Destructive confirmation names the object and consequence, focuses the safe
+  action first and ignores backdrop presses. Escape cancels. On removal, return
+  focus to the logical recovery/next control if the original trigger no longer
+  exists. Restoration preserves the object's name/state. Real permanent actions
+  must describe their actual recovery limits; study-only undo is not a product promise.
+- The reference's rename/remove/restore operations affect only an in-memory sample.
+  Its lazy bundle, licenses and revision hashes travel with the portable gallery;
+  loading errors have a retry path. Validate actual product operations, layered
+  overlays, assistive technology, software keyboards and browser engines separately.
 
-## Invariants
+### Select anatomy
 
-1. CloakResume Emerald `#047857` owns product interaction.
-2. Archivo + JetBrains Mono unify every chrome surface.
-3. Cool paper, slate ink, hairline rules, and no resting card shadow.
-4. Real résumé instrument; no fake chrome or decorative hero motion.
-5. One 88rem frame, one logo lockup, and one overlay shell.
-6. Résumé templates retain their own document visual styles.
-7. Editor header/rail/panel and mobile 50:50 geometry remain exact.
-8. Prose and document output wrap on natural word boundaries.
+- Every single-value dropdown uses the shared field contour, 12px inline inset,
+  16px chevron and at least 12px between its value and icon. The chevron has a
+  stable reserved box; it never touches the field's trailing edge. Focus remains
+  one replacement contour, including while validation text is present.
+- The open picker uses the opaque `surface`, `line` edge, 12px menu radius,
+  shared menu shadow and 8px inset. Its width follows the trigger, with a 15rem
+  readable minimum capped by the viewport. Long labels wrap; lists scroll within
+  the available space above or below the trigger. Rows use 8px block/12px inline
+  padding, 8px corners, 40px fine/44px coarse minimum height, and the UI sans family.
+- Selected rows have a neutral surface and blue checkmark at the trailing edge.
+  Hover uses `surface-hover`; keyboard focus has a 2px inset blue outline.
+  Selection, opening and dismissal are immediate in frequently used selects.
+  Disabled choices remain identifiable and cannot be selected.
+- The reference styles native `base-select` pickers so semantics, typeahead,
+  keyboard traversal, form values and top-layer placement remain native. Its
+  unsupported-browser fallback preserves native operation and the inset arrow,
+  but does not certify a custom menu appearance. Before production rollout, use
+  an established accessible adapter for unsupported target browsers and validate
+  the same appearance/behavior. Do not hand-roll a second keyboard/focus system.
 
-## Exports
+### Dense editor controls
 
-The complete inventory lives in `tokens.css` and `tokens.json`; these are the four
-portable equivalents required for downstream implementations.
+These patterns are required by the existing PDF tools; they also govern the
+same controls in IMG, Resume and future apps.
 
-### 1. CSS custom properties
+- **Mode/position grids:** compact labelled mode choices share the neutral selected
+  surface and blue marker. Preserve spatial meaning for a 3×2 page-position grid;
+  do not flatten it into a list. Every cell has a meaningful accessible name and
+  a 44px touch target. A selected mode is distinct from a selected document object.
+- **Signature/image sources:** Draw and Choose are source modes. Drawing has a
+  clear/reset action and an equivalent image chooser; neither a typed-name generator
+  nor a style selector may replace those existing capabilities. Realistic ink and
+  opaque background are independent switches. Actual ink, alpha and image preview
+  are output data; the surrounding canvas border, labels and controls use Air.
+- **Switch rows:** one unboxed label/help group with a 44×44px control target.
+  Inside it, a 40×24px track contains an 18px thumb. Off is neutral; on uses accent.
+  The thumb position and exposed switch state convey the value without colour alone.
+  Focus replaces the track edge with one 2px zero-offset outline; do not draw a
+  second box around its larger hit area. Space toggles a focused switch; the
+  associated label is clickable. Keep dangerous
+  bulk operations as explicit actions, not switches.
+- **Date/time:** the field trigger uses the same single-contour shell. Calendar,
+  year list, hour/minute menus and AM/PM controls share panel/menu styling, focus
+  return and viewport containment. Preserve the current date restrictions and time
+  semantics. Coarse calendars need room for seven 44px columns; use a full-width
+  sheet on a 320px phone with a 4px calendar-grid inset, rather than shrinking cells.
+  The other sheet content keeps the normal gutter. Short screens scroll the body
+  while dismissal and completion stay reachable.
+- **Field insertion:** page/date/file-name chips insert at the last active text
+  caret and return focus there. They wrap into rows and keep 44px touch targets;
+  ordinary chip labels are sans. Template variables may remain verbatim user data.
+- **Lists and reports:** bookmark nesting/page targets, attached files, form fields,
+  detected matches and privacy counts use open rows with labels and aligned actions.
+  Preserve user-supplied field-name casing. Empty, detecting, ready, no-match, failed,
+  disabled and destructive states need separate examples and recovery paths.
+- **Apply semantics:** a tool with one staged operation has one Apply action. On
+  mobile the persistent Done action may execute it; it is disabled until ready.
+  Cancel rolls back the tool's pending transaction. Tools with multiple operations
+  keep their distinct actions, and export-time redaction must retain its explicit
+  permanence notice. Do not reinterpret Done as a harmless preview toggle in a real
+  transactional editor. The reduced study must label its narrower behaviour.
 
-```css
-:root {
-  --color-paper: oklch(0.975 0.009 255);
-  --color-surface: oklch(0.992 0.004 255);
-  --color-ink: oklch(0.225 0.031 255);
-  --color-rule: oklch(0.865 0.022 255);
-  --color-accent: oklch(0.508 0.118 165.612);
-  --color-accent-hover: oklch(0.432 0.095 166.913);
-  --color-accent-active: oklch(0.378 0.077 168.94);
-  --color-focus: oklch(0.596 0.145 163.225);
-  --font-display: "Archivo", "Arial Narrow", sans-serif;
-  --font-body: "Archivo", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --space-4: 1rem;
-  --space-5: 1.5rem;
-  --space-6: 2rem;
-  --radius-card: 0.5rem;
-  --radius-control: 0.375rem;
-  --page-max: 88rem;
-  --header-height: 4.5rem;
-  --editor-header-height: 4rem;
-  --editor-panel-width: 20.5rem;
-  --editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem);
-}
-```
+A custom implementation is reviewed against the same contract. Native controls,
+accessible existing primitives, and shared shells are preferred to new widgets.
+Every component must define default, hover, focus, pressed/selected, disabled,
+busy, empty, success, error, and overflow behaviour where applicable. Mark truly
+inapplicable states with a reason in the inventory; do not silently skip them.
 
-### 2. Tailwind CSS v4 `@theme`
+### Writing and structured entry
 
-```css
-@theme {
-  --font-sans: "Archivo", system-ui, sans-serif;
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --color-primary-500: var(--color-focus);
-  --color-primary-600: var(--color-accent);
-  --color-primary-700: var(--color-accent-hover);
-  --color-primary-800: var(--color-accent-active);
-  --color-page-bg: var(--color-paper);
-  --color-border: var(--color-rule);
-  --spacing-page: var(--page-gutter-wide);
-  --radius-panel: var(--radius-card);
-  --radius-button: var(--radius-control);
-  --ease-cloak-out: cubic-bezier(0.16, 1, 0.3, 1);
-}
-```
+- **Rich text:** use the same single-contour field as plain text. Place the label
+  and formatting toolbar above it, with 8px separation from the field; wrap the
+  toolbar onto its own row when space is short. No second bordered container or
+  underline around the field/toolbar group. Toolbar buttons use neutral selected
+  surfaces and expose pressed state. Preserve the active field, caret and selection
+  when activating formatting by pointer or keyboard. A toolbar shared by several
+  fields must stay scoped to its entry and never format a different entry.
+- **Long writing:** grow multiline fields without resetting the working panel's
+  scroll position or moving the caret. The focused line must remain reachable
+  with a software keyboard open. Preserve rich-text syntax, explicit line breaks,
+  paste, undo and IME composition. Product-specific title limits are explained
+  beside the field; do not truncate stored text to fit the chrome.
+- **Repeated entries:** one plain heading/action row per role, project or group,
+  followed by its fields. Use 24px between entries and 12px within a related field
+  group; add one divider only where a long list needs a clear boundary. Nested
+  bullets use open rows rather than another padded card. Keep reorder and removal
+  actions separate from the editable area and give them the item's context in
+  their accessible names. On narrow panels, move actions to a row rather than
+  squeezing prose between two permanent action columns. Reorder keeps the edited
+  item's identity/focus and announces its new position; removal is confirmable or
+  undoable, with predictable focus after completion.
+- **Partial dates:** month/year, year-only, empty and Present are distinct values.
+  Do not replace them with a full-day picker or silently normalize imported text.
+  Start/end fields share the normal shell; Current job is a labelled checkbox
+  with a 44px row. Preserve the previous end date when toggling Current job during
+  an edit. Month and year choices keep 44px touch targets at every width, use
+  tabular sans numerals, and return focus after selection or Escape.
+- **Writing hints:** validation errors and optional writing suggestions are
+  distinct. Reserve space for a named hint action so it cannot cover text or the
+  caret. Suggestions use readable text and explicit replacement actions in an
+  opaque, viewport-contained popover; opening it never changes content. Returning
+  from review lands on the named field, with one focus contour. Scores, counts and
+  progress retain textual labels; no colour-only interpretation.
+- **Pickers and review:** searchable icon/template libraries, colour controls and
+  review tabs follow the shared overlay rules. Search has clear and no-results
+  states; close returns to the originating control. Keep the chosen document
+  template/colour separate from the application theme. A reduced study must name
+  its limits and must not present invented controls as existing product features.
 
-### 3. DTCG `tokens.json`
+## 5. Composition and workflow
 
-```json
-{
-  "color": {
-    "$type": "color",
-    "paper": { "$value": "oklch(0.975 0.009 255)" },
-    "ink": { "$value": "oklch(0.225 0.031 255)" },
-    "accent": {
-      "$value": "oklch(0.508 0.118 165.612)",
-      "$description": "CloakResume Emerald 700 / #047857"
-    },
-    "rule": { "$value": "oklch(0.865 0.022 255)" }
-  },
-  "font": {
-    "$type": "fontFamily",
-    "display": { "$value": ["Archivo", "Arial Narrow", "sans-serif"] },
-    "body": { "$value": ["Archivo", "system-ui", "sans-serif"] },
-    "mono": { "$value": ["JetBrains Mono", "ui-monospace", "monospace"] }
-  }
-}
-```
+### Landing pages
 
-### 4. shadcn/ui CSS variables
+Shared sequence: quiet header → short centred promise → direct primary action →
+real product entry/preview where useful → concise capability groups → factual
+privacy explanation → compact family footer. A subtle blue light field may sit
+below the hero copy. Avoid fake product capabilities, excessive feature counts,
+industrial grids, oversized decorative icons, or compulsory dark sections.
 
-```css
-:root {
-  --background: 97.5% 0.009 255;
-  --foreground: 22.5% 0.031 255;
-  --card: 99.2% 0.004 255;
-  --card-foreground: 22.5% 0.031 255;
-  --primary: 50.8% 0.118 165.612;
-  --primary-foreground: 98.5% 0.004 255;
-  --muted: 94.7% 0.014 255;
-  --muted-foreground: 48% 0.03 255;
-  --border: 86.5% 0.022 255;
-  --input: 86.5% 0.022 255;
-  --ring: 59.6% 0.145 163.225;
-  --radius: 0.375rem;
-}
-```
+The family home is a product directory. Each card says what the app does, its
+platform, and how to open it. KERR is a text exploration link with brief context;
+no screenshot, simulation, orbital illustration, animated preview, or embedded app.
+
+### Landing navigation and text resilience
+
+- Keep every destination available at every width. A compact header uses a native,
+  in-flow disclosure; its links expand below the brand row without covering the
+  page. Opening changes layout immediately, with no animated text/reflow. The
+  reference uses a 40rem content boundary so larger text enters compact mode
+  earlier. Use a 44×44px minimum brand/summary target independently of pointer type.
+- Below 22rem of content width, use the family mark with the complete accessible
+  home-link name. Do not fragment the wordmark across lines. The mark and chevron
+  render without JavaScript. Native Enter/Space activation and Tab order work;
+  an enhanced Escape closes the disclosure and returns focus to its summary.
+  Link activation closes it when scripts run. Without scripts it stays in flow,
+  leaving the destination unobscured and the explicit toggle available.
+- Keep the promise, explanation and actions in one reading group. On short
+  landscape screens, reduce ornamental gaps/light-field height before reducing
+  type or moving the primary action out of the composition. Do not bottom-align
+  unrelated hero columns. Body copy wraps naturally; avoid forced desktop breaks.
+- Interpret UI type sizes as the 16px-root reference: author text with rem/em so
+  user font preferences are respected. Preserve fixed document/canvas output as
+  an explicit exception. Fields and labels must eventually follow the same rule;
+  the current landing study does not certify all editor controls at enlarged text.
+- Test both container bounds and actual text bounds, with menus open/closed.
+  At 200% root font, let actions wrap and groups grow. A long product name may
+  wrap at a deliberate word boundary; never reduce its type to hide overflow.
+
+### Editors and canvases
+
+- Consistent action placement: identity/document at start; undo/view/tool context
+  in the middle when space permits; export/finish at end. No marketing navigation
+  inside a working editor.
+- Persistent content stage. Tool changes cannot remount the document, lose edits,
+  reset selection/zoom/history, or trigger a decorative page transition.
+- Neutral canvas surround. PDF/résumé paper stays white and output-accurate;
+  photos retain their actual colours; transparency uses the shared checkerboard.
+- Real selection handles, masks, redaction marks, rulers and annotations remain
+  distinct from UI decoration. Their controls and surrounding panels use Air.
+- Two shared editor compositions preserve the existing task flow. PDF and IMG use
+  rail → stage → right inspector (328px, 288px compact). Resume uses rail → left
+  writing panel → preview (420px reference; 400–560px where space allows, 360px
+  compact). These are family variants, not permission to vary control styling.
+- Numerical controls pair a slider with an editable, labelled value and unit.
+  Both share the same value, limits and keyboard behaviour. Invalid intermediate
+  input remains editable and receives nearby feedback; never silently coerce it.
+  Use the same single-contour field, 32px minimum only for fine-pointer density,
+  44px on touch. Histograms/curves remain functional content within neutral shells.
+- Precision controls display domain values, never internal normalized percentages:
+  exposure in EV, rotation in degrees, dimensions in px/mm, levels in 0–255 and
+  gamma as a decimal. Signed controls mark their neutral point. Keep labels above
+  the track, values aligned at the trailing edge, and units outside the editable
+  number in a reserved 20px unit slot. Value fields are 32px high for fine pointers
+  and 44px on touch; leave 4px between the value row and track, and 16px between
+  numeric groups. Do not animate a value, thumb or canvas response while editing.
+- Curves use an undistorted plot, inset endpoints and a quiet identity reference.
+  Keep histogram data separate from the editable line; name channels in addition
+  to colouring them. Provide selectable points, precise input/output fields,
+  arrow-key movement, explicit add/remove/reset and protected endpoints. A drag
+  gesture must not be the only way to edit or remove a point. Pointer cancellation
+  restores the pre-drag state. Small screens can separate adjustments and curves
+  into labelled views; changing view preserves every value and allows scrolling
+  outside the plot. Open detailed curves in expanded controls on compact layouts,
+  retaining the preview and a return-to-split action. Use a 224px square compact
+  plot (up to 288px in a narrow inspector), with at least 44px point hit areas.
+  Never stretch the graph to fill a shallow drawer.
+- Layer rows separate selection from visibility/delete/filter actions; no nested
+  buttons. Keep image layers, vector objects and baked image history distinct.
+  Do not invent an adjustment-layer model when the product bakes edits into history.
+  Supply keyboard reorder actions alongside dragging and name every icon action.
+- Preserve each tool's commit boundary explicitly. Cancel restores both pending
+  values and edits made since tool entry; Done applies once and creates the expected
+  history entry. Tool switches and export flush only the pending edits the product
+  already promises to save. Test re-entry after Cancel, not only drawer dismissal.
+- Writing rows combine type, value and keyboard reorder actions with open grouping.
+  Rich text, image/logo pickers and date fields retain their full behaviour and
+  follow the same field/focus rules. Do not replace these with plain text inputs
+  during migration merely because a reduced design specimen uses plain text.
+- Small screens use one active tool/section, a persistent preview, and a reachable
+  working panel. Default split can be 50:50 when usable; short heights and software
+  keyboards require an expanded editing/preview mode instead of clipped controls.
+- Opening, replacing, editing, undoing, cancelling, saving/exporting, and returning
+  must have consistent feedback. Destructive actions require confirmation or undo.
+
+### Overlays
+
+Standard dialog width 576px; wide gallery/review 1040px; viewport gutter 16px
+mobile/24px desktop. Maximum height `calc(100dvh - 32px)` with internal body
+scroll and reachable actions. At ≤640px, use the same content in a bottom sheet
+with 20px upper corners and safe-area padding. Large/complex work may use a full
+screen dialog with an explicit close/back. Never hide essential actions on mobile.
+
+Z levels: sticky 30; navigation 50; editor 100; toast 150; dialog 200; popover 900;
+system recovery 1000. Preserve nesting/portal correctness; avoid ad-hoc z-indexes.
+
+## 6. Responsive and accessibility contract
+
+| Class           | Required inspection sizes (CSS pixels) |
+| --------------- | -------------------------------------- |
+| Minimum/phones  | 320×568, 375×812, 390×844, 430×932     |
+| Landscape phone | 844×390 with coarse pointer            |
+| Tablet          | 768×1024, 1024×768                     |
+| Laptop          | 1280×720, 1366×768                     |
+| Desktop         | 1440×900, 1920×1080                    |
+
+Use content-driven reflow with shared breakpoints at 640, 768, 1024, and 1280px. Inspect
+one pixel either side of changed breakpoints. A product may add a breakpoint only
+for a documented content collision, without inventing a new visual language.
+
+The breakpoints have defined jobs: 640px changes page composition and dialogs to
+sheets; 768px moves an editor from side-by-side chrome to preview + working
+panel with a persistent tool selector and relevant actions; 1024px restores full inspector/rail density; 1280px expands page
+composition. Preserve all tools when reflowing. Tablet is designed deliberately,
+not treated as a stretched phone. A writing app may keep a form/preview split
+instead of an image-editor ordering, with the same component geometry.
+
+Mobile tool selection and Apply/Cancel (for transactional tools) stay outside the
+panel's scrolling body. An always-visible second dock is not required; use the
+shared tool picker when it gives the active controls more space. Autosaved writing
+must not acquire a misleading Apply/Cancel transaction. Short landscape uses a
+scrollable working region or explicit edit/preview modes, never a rotation gate.
+
+At minimum phone width, the editor must reserve space for the document and the
+working control region. Each scrolls intentionally. Expanded preview returns to
+the same tool and input values. A short landscape screen and an open software
+keyboard must not hide the close, apply, export or navigation actions.
+
+No horizontal document overflow, cropped controls, inaccessible tool options, or
+forced orientation as a substitute for responsive design. Editing regions may
+scroll deliberately; the surrounding page may not hide layout bugs with overflow
+clipping. Long filenames, translated labels, empty/large lists and 200% browser
+zoom are required cases. Also test 200% root-font enlargement as a separate
+text-reflow stress case; it is not proof of browser zoom support. Pinch zoom stays enabled. Respect safe-area insets and
+software keyboards. DOM order follows reading/focus order.
+
+Semantic buttons/links/landmarks, labels, visible focus, contrast, screen-reader
+state, keyboard alternatives to drag, and recoverable errors are release criteria.
+Test real rendered light and dark themes, keyboard-only operation, coarse and fine
+pointers, reduced motion, and no-WebGPU/static fallback. Automated checks support
+human visual inspection; passing a linter does not establish UX conformance.
+
+## 7. Motion and shader discipline
+
+Motion is part of Air's design acceptance, not a later decorative pass. Before
+locking the system, the reference must demonstrate a working, locally bundled
+light treatment using [Shaders](https://shaders.com/) and its
+[open-source library](https://github.com/shader-effects-inc/shaders). Compose it
+around Air's two offset planes and quiet blue light rather than adopting a preset
+unchanged. Review the short arrival and deliberate pointer response in both
+themes, alongside touch, reduced-motion, static and no-WebGPU alternatives.
+The reference now demonstrates this custom Shaders composition. Its working
+implementation is review evidence; it does not itself grant visual or production
+performance approval.
+
+- Shared motion: pointer press 120ms; hover arrow 160ms; occasional popover ceiling 180ms; dialog 240ms;
+  exit 160ms. Ease-out `cubic-bezier(0.23, 1, 0.32, 1)`; reversible spatial motion
+  `cubic-bezier(0.77, 0, 0.175, 1)`. Sheet easing: `cubic-bezier(0.32, 0.72, 0, 1)`. No per-app timing scale.
+- A completion acknowledgement may settle from 8px/0.90 scale over 240ms, once.
+  A landing entry may use a single 900ms light arrival. These are the moments for
+  playful character. Avoid bouncing controls, moving text, repeated reveals and
+  continuous decorative activity during work.
+- Pointer hover may move a directional arrow by 2px over 160ms. Press uses 0.98
+  scale for 120ms; release is immediate. Keyboard presses never compress controls.
+  Control colours, selection, focus and appearance changes are immediate. No hover
+  lift on touch; a focused keyboard control never acquires decorative hover motion.
+- Dialogs enter from 4px/0.98 over 240ms and exit over 160ms. On phones they rise
+  from the bottom with sheet easing. Keyboard activation and Escape are immediate.
+  Focus moves as soon as opened; animation cannot delay access to controls.
+- Shared `motion.mjs` demonstrates native-dialog and completion behaviour. Dialog
+  exits sample the current composited pose before cancelling an entrance; repeated
+  close requests do not restart the exit. Completion replay uses its current pose
+  and remaining duration. A live reduced-motion change settles either immediately.
+- Rapid repeat actions retarget/cancel the current motion. Never queue entrances,
+  restart progress, remount a content stage, or wait for animation to accept input.
+- Frequent tool/section switching and keyboard commands are immediate. Motion
+  explains state or confirms an action; it must never delay editing.
+- Animate transform/opacity; scale from 0.98, translate at most 4px for small
+  surfaces; sheets enter from their edge. No layout-property animation or
+  `transition: all`. Hover movement is fine-pointer/hover-capable only.
+- Reduced motion removes spatial/decorative movement, preserves immediate state
+  and progress, and uses opacity only when useful. Focus never animates.
+- One optional Air light effect on a landing page, never in an active workspace.
+  Code is local/lazy; use the approved Shaders library only if it improves the
+  chosen light treatment. A static CSS/image fallback must render first.
+- Pause offscreen, hidden, reduced-motion, and constrained-device effects. An
+  autonomous loop longer than five seconds needs a visible pause/stop control.
+  Prefer one short entrance or deliberate pointer response. Content and actions
+  never depend on GPU support or successful effect loading.
+- The reference's light follows a mass 1 / stiffness 100 / damping 10 spring,
+  confined to the middle 70% of the artwork. It settles within 1.8s after the last
+  pointer input. The 900ms arrival uses `motion-arrival` and the shared ease-out;
+  interrupted replay continues from its current opacity. Keyboard replay is immediate.
+- Cap this study at 30 submitted frames/second and effective pixel ratio 1.5.
+  Submit no frames at rest. Release the GPU device offscreen/hidden and cancel
+  pending initialization. Reduced motion, Save-Data, unavailable WebGPU, and
+  reported memory/core counts of 4 or fewer use the static artwork. These browser
+  hints supplement, rather than replace, real-device performance validation.
+- Bundle Shaders locally, pinned to 4.0.4 for this candidate, with no telemetry,
+  hosted presets or remote assets. The lazy study bundle is approximately 369 kB
+  gzip, with a 400 kB build ceiling. This is a measured study budget, not an
+  approved production payload. Preserve dependency licenses and asset hashes.
+- Measure impact on startup, scrolling, input, memory, and battery-sensitive
+  devices; no shader competes with document rendering or on-device AI work.
+
+## 8. Scope exceptions
+
+- Native macOS software keeps SwiftUI, SF Symbols, system materials, system fonts,
+  native navigation, and platform conventions. Its website follows Air. Shared
+  brand assets do not justify replacing native controls with web imitations.
+- KERR's application is excluded. Only its listing on the family home changes.
+- User-created PDF, image, and résumé content retains its chosen appearance and
+  export fidelity. Document themes, image pixels, colour-picker gradients,
+  semantic charts and selection overlays are functional data exceptions.
+- Existing app-specific security/privacy/data-loss requirements remain in force.
+
+## 9. Governance and release gate
+
+Each repository ships a self-contained `DESIGN.md`, pinned family tokens/styles,
+its product appendix, a surface inventory and its validation command. No absolute
+machine path, sibling import, external font dependency, or private service is
+required to apply this specification. A new app adopts these before its first UI.
+
+For each bounded implementation piece:
+
+1. Name the affected surfaces, states, behaviours, and test matrix in the TODO.
+2. Implement with shared primitives/tokens; update custom component shells too.
+   After the initial design refinement, retire each replaced surface's obsolete
+   styles, components, assets, dependencies and authoritative design references.
+   Check dynamic consumers before removal; record justified output/native/history
+   exceptions and re-scan for legacy cues before final family sign-off.
+3. Review source and rendered output, including light/dark, mobile/laptop/desktop,
+   keyboard, touch, reduced motion, error/loading/empty and long-content states.
+4. Run the repository's required format/lint/type, unit/logic, build/dead-code and
+   applicable browser tests. Inspect exported artifacts when the flow changes.
+5. Record commands, results, screenshots, exceptions and feature coverage. A
+   blocked test is not a pass. Fix failures before committing that piece.
+6. Review the complete diff, then make a focused commit with validation evidence.
+   Never silently bless a visual regression or weaken a functional assertion.
+
+Maintain a gallery/reference of shared controls and editor states. CI checks token/contract provenance, asset drift and forbidden arbitrary UI
+styling. Rendered screenshot evidence is reviewed separately; the static checker
+does not certify pixels, accessibility or product behavior. Screenshot updates
+require visual review. A new state/component is incomplete
+until its inventory and tests are added. Final family sign-off repeats the same
+journeys across all apps; it is not inferred from the pilot alone.
+
+<!-- END CLOAKYARD AIR CONTRACT -->
+
+## CloakResume product requirements
+
+- Scope: landing/start/load/restore, editor shell and all content sections, section
+  picker/rail, paginated canvas, formatting, template gallery, ATS/writing review,
+  date/colour/logo/rich-text controls, overlays, privacy, export and PWA notices.
+- Air applies to application chrome. All 17 résumé templates retain their selected
+  fonts, colours, paper, spacing, images and output geometry in both app themes.
+  Do not use a global CSS rule that leaks interface typography into a résumé.
+- Preserve A4/Letter pagination, natural word wrapping, links/symbols and multi-page
+  PDF fidelity. Long entries, custom sections, statistics and images must survive
+  preview, JSON save/load, browser restore and export.
+- Desktop uses rail → left writing panel → preview (420px reference, 360px compact). Narrow screens
+  keep one active section/picker and a persistent preview with an expanded mode.
+  Keyboard/short-height/landscape handling must keep input and actions accessible.
+- Keep keyboard reorder alternatives, stable focus on section changes, issue jumps,
+  focus return, rich-text selection and unsaved-work protection.
+- Preserve all 13 section workflows, including nested role/project/custom bullets,
+  comma-separated skill/tool fields, custom proficiency values, optional headings,
+  quick stats and extra fields. Repeated entries use the shared writing patterns.
+- Profile keeps multiline headlines with the existing four-rendered-line limit,
+  local photo validation, optional logo search and rich summary formatting.
+  Experience keeps month/year and year-only dates, Current job and end-date restore.
+- Document controls are the template library, primary colour and A4/Letter size.
+  Preserve direct PDF export and separate JSON save/load, plus busy/error/recovery
+  states. Do not replace those flows with speculative text-size or pagination
+  switches merely because a design study shows them.
+- Review retains Overview, Keywords, Insights and Parse, local engine progress,
+  missing-JD guidance, field-linked hints and explicit suggestion application.
+  Test every overlay at tablet touch sizes as well as on phones; width-based
+  compact utilities must not reduce their effective targets below 44px.
+- ATS scores are heuristic review aids, not a guarantee of hiring-system success.
+  Résumé/job-description content stays local; language assets may be downloaded.
+- Local CSS/Tailwind bridges alias the common tokens. The output template system
+  is the only typography/colour exception; custom app widgets are not exempt.
+- Required gates: `vp check`, `vp test run` (including editor browser and complete
+  template matrix, with no missing-browser skip), `pnpm run build`, production
+  browser/template tests where affected, exported-document inspection and the
+  complete family responsive/theme/input matrix.
+- Keep a per-component/state inventory and evidence in `docs/air/`. Local tokens
+  and this complete contract travel with the repository.

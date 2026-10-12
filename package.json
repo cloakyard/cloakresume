@@ -10,7 +10,10 @@
     "prepare": "vp config",
     "generate-icons": "pwa-assets-generator && mv public/icons/apple-touch-icon-180x180.png public/icons/apple-touch-icon.png && node scripts/finalize-pwa-icons.mjs",
     "generate-og": "node scripts/build-og-image.mjs",
-    "generate-screenshots": "node scripts/build-pwa-screenshots.mjs"
+    "generate-screenshots": "node scripts/build-pwa-screenshots.mjs",
+    "design:check": "node scripts/check-air-design.mjs",
+    "design:inventory": "node scripts/air-inventory.mjs",
+    "design:portability": "node scripts/check-air-portability.mjs"
   },
   "dependencies": {
     "@fontsource-variable/geist": "^5.3.0",

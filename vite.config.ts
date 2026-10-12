@@ -131,9 +131,9 @@ export default defineConfig({
   },
   // Local agent skill packages are development references, not application source.
   // Keeping them outside product checks also avoids rewriting vendored documentation.
-  fmt: { ignorePatterns: ["dist/**", ".agents/**"] },
+  fmt: { ignorePatterns: ["dist/**", ".agents/**", "docs/air/assets/**"] },
   lint: {
-    ignorePatterns: ["dist/**", ".agents/**"],
+    ignorePatterns: ["dist/**", ".agents/**", "docs/air/assets/**"],
     options: { typeAware: true, typeCheck: true },
   },
 });
