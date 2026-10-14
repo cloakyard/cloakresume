@@ -94,3 +94,24 @@ size warnings remain. Shared reference visual/interaction evidence is maintained
 in Cloakyard's dated validation record; the full product Air migration, browser
 parity, real zoom/touch and generated-output inspection remain future gates.
 No push, deployment or production appearance change was performed.
+
+## 2026-10-14 — Portable Air 1.0.1
+
+Pinned the complete family contract and reference bundle to Air 1.0.1 (contract
+`201f7c381b5f`). Header identity is now consistently 36×36px across landing/editor
+and small screens, with at least a 44px interactive target. A shared paper-accent
+keeps selection chrome readable on white document paper in both themes. Inventory
+version comes from the manifest. The new token does not change this product's
+runtime controls; its full application migration remains separately tracked.
+
+Exact design integrity, isolated portability and production checks pass. Shared
+visual/interaction evidence is in CloakPDF's canvas checkpoint; it does not claim
+this product's editor, physical touch or assistive acceptance is complete.
+
+The full serial suite passes: 288 tests in eight files (360.20s), with the editor
+browser tests pointed at the fixed production build using
+`CLOAKRESUME_BROWSER_BUILD=production`. Two preceding development-mode runs each
+reported a different isolated failure (focus-ring timing and a destroyed browser
+context); the focused four-case focus sweep and this complete production run pass.
+No production behavior or test assertion was changed to obtain this result.
+Format/lint/types and the production/PWA build also pass.
