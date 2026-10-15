@@ -115,3 +115,17 @@ reported a different isolated failure (focus-ring timing and a destroyed browser
 context); the focused four-case focus sweep and this complete production run pass.
 No production behavior or test assertion was changed to obtain this result.
 Format/lint/types and the production/PWA build also pass.
+
+## 2026-10-15 — Air 1.0.2 colour-wheel contract
+
+Pinned the portable colour-wheel rules, opt-in CSS, shared math/types and working
+reference. Product picker runtime adoption remains separate from this bundle sync.
+Format/lint/types, build, design integrity and all 18 standalone portability
+assertions pass. Development browser runs each reached 287/288: an isolated prism
+PDF-symbol timeout passed on retry; a later contact focus-ring timing failure
+passed the complete four-case focus sweep against the production build. The full
+production suite passes: 288 tests in eight files (272.96s), without changing
+product code or test assertions. The complete pass is recorded in
+`evidence/colour-wheel-contract-2026-10-15-tests.log`.
+No product UI source or dependency changed. The family evidence and PDF pilot are
+tracked in Cloakyard's UX_REFRESH_TODO.md; physical/assistive acceptance remains open.
