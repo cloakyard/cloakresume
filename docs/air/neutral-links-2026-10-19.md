@@ -31,3 +31,5 @@ tags, installer assets, document/image output or link destinations changed.
 Local all-link checks pass: 120 layout/state cases and 24 keyboard focus checks. Desktop/laptop/phone light/dark captures were visually inspected, including page content and policy text.
 
 Final stable production build: all 303 tests across eight files pass with no unhandled errors. Formatting/types, build, 78-surface integrity and 18 portability checks pass.
+
+Checker hardening: use an OS-created unique temporary directory when no evidence directory is supplied. The default-directory browser run passes 60 layout/state and 18 keyboard checks; canonical formatting/lint and portable synchronization pass. This resolves the CodeQL temporary-file finding without changing shipped website assets.
