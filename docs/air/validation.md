@@ -370,3 +370,10 @@ Raw matrix: `/var/folders/k0/mzs4nsyn7k78t1j1xlsxq1q40000gn/T/cloakresume-logo-p
 Next: colour wheel, then remaining hints/sections/review/library/export/PWA/static
 recovery and preview assets. Physical touch/keyboard/IME/assistive gates remain
 open. Local commits only; IMG remains last.
+
+## 2026-10-19 — consistent landing arrows
+
+Air 1.0.4 uses straight forward-navigation arrows. See
+[scope, validation and evidence](link-arrows-2026-10-19.md). Twenty-two responsive
+light/dark cases and two enlarged-text cases pass, including compact-menu
+keyboard return; desktop/laptop/phone captures were visually inspected.

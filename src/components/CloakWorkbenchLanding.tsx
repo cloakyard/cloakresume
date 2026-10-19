@@ -1,12 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import {
-  ArrowRight,
-  ArrowUpRight,
-  ChevronDown,
-  FilePlus2,
-  FolderOpen,
-  Sparkles,
-} from "lucide-react";
+import { ArrowRight, ChevronDown, FilePlus2, FolderOpen, Sparkles } from "lucide-react";
 import { TEMPLATE_COUNT } from "../templates/meta.ts";
 import { mountAirLight } from "../../docs/air/light-runtime.mjs";
 import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
@@ -113,7 +106,7 @@ export function CloakWorkbenchLanding({
         Privacy
       </a>
       <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-        Source <ArrowUpRight aria-hidden="true" />
+        Source <ArrowRight aria-hidden="true" />
       </a>
     </>
   );
@@ -333,7 +326,7 @@ export function CloakWorkbenchLanding({
             MIT licensed
           </a>
           <a href="https://cloakyard.com" target="_blank" rel="noreferrer">
-            Cloakyard <ArrowUpRight aria-hidden="true" />
+            Cloakyard <ArrowRight aria-hidden="true" />
           </a>
         </nav>
       </footer>

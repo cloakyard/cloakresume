@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.0.3",
+  "contractVersion": "1.0.4",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -100,7 +100,8 @@
       ],
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
-        "docs/air/evidence/brand-horizons-2026-10-19/checks.json"
+        "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
+        "docs/air/link-arrows-2026-10-19.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
     },
@@ -277,7 +278,7 @@
         "keyboard / emulated touch cancellation / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari and Firefox actual 200%"
       ],
       "evidence": [
@@ -299,7 +300,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -718,7 +719,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -765,7 +766,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -789,7 +790,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -859,7 +860,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -884,7 +885,7 @@
         "keyboard / emulated touch cancellation / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari and Firefox actual 200%"
       ],
       "evidence": [
@@ -931,7 +932,7 @@
         "group fields / add / move / remove / empty"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari and Firefox actual 200%"
       ],
       "evidence": [
@@ -1001,7 +1002,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -1136,10 +1137,7 @@
         "1023x768",
         "1025x768"
       ],
-      "evidence": [
-        "docs/air/validation.md \u2014 refinement 02 candidate",
-        "docs/air/components.html"
-      ],
+      "evidence": ["docs/air/validation.md — refinement 02 candidate", "docs/air/components.html"],
       "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
     },
     {
