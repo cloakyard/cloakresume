@@ -103,7 +103,7 @@ export function EducationSection({ resume, onChange }: SectionProps) {
                       patch("education", next);
                     }}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="resume-field-pair">
                     <MonthYearField
                       label="Start"
                       value={ed.start}

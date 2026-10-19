@@ -1629,7 +1629,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.setViewport({ width, height: 1000 });
         await page.locator('button[aria-label="Logo icon: none"]').click();
         await page.waitForSelector('[aria-label="Choose a logo icon"] .cr-scroll button');
-        async function checkEdges(selector: string) {
+        async function checkEdges(selector: string, expectedExtent = 4) {
           await page.evaluate(
             () =>
               new Promise<void>((resolve) =>
@@ -1658,7 +1658,7 @@ describe.skipIf(!existsSync(chromePath))(
                 ],
               };
             });
-            expect(space.extent).toBe(4);
+            expect(space.extent).toBe(expectedExtent);
             for (const gap of space.gaps)
               expect(gap, JSON.stringify({ selector, index, space })).toBeGreaterThanOrEqual(
                 space.extent - 0.5,
@@ -1673,7 +1673,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.setViewport({ width, height: 1000 });
         await page.locator('.cr-editor-panel button[aria-haspopup="dialog"]').click();
         await page.locator('button[aria-label="Select year"]').click();
-        await checkEdges('[role="dialog"] .cr-scroll button');
+        await checkEdges('[role="dialog"] .cr-scroll button', 5);
       },
     );
 
@@ -1696,6 +1696,112 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).education[0].start).toBe("Mar 2020");
       await page.click('button[aria-label="Clear start"]');
       expect((await savedResume()).education[0].start).toBe("");
+    });
+
+    it("preserves imported partial dates until selection and returns focus through year, clear and Present", async () => {
+      await openDraft({
+        ...blankResume,
+        profile: { ...blankResume.profile, summary: "Partial dates" },
+        education: [
+          {
+            id: "dates",
+            degree: "Degree",
+            school: "School",
+            location: "",
+            detail: "",
+            start: "Spring 1930",
+            end: "March, 2024",
+          },
+        ],
+      });
+      await page.click('nav button[aria-label="Education"]');
+      const trigger = ".resume-date-trigger";
+      await page.focus(trigger);
+      await page.keyboard.press("Enter");
+      await page.waitForSelector(".resume-date-picker");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Previous year",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("Spring 1930");
+      await page.keyboard.press("Enter");
+      await page.locator('button[aria-label="Select year"]').click();
+      await clickText("2020", ".resume-year-grid");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Select year",
+      );
+      expect((await savedResume()).education[0].start).toBe("Spring 1930");
+      await clickText("Year only", ".resume-date-picker");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("2020");
+      await page.click('button[aria-label="Clear start"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("");
+      await page.$$eval(trigger, (els) => (els[1] as HTMLButtonElement).click());
+      await page.waitForSelector(".resume-date-picker");
+      expect(
+        await page.$eval('.resume-date-grid button[aria-pressed="true"]', (e) => e.textContent),
+      ).toBe("Mar");
+      await clickText("Done", ".resume-date-picker");
+      expect((await savedResume()).education[0].end).toBe("March, 2024");
+      await page.$$eval(trigger, (els) => (els[1] as HTMLButtonElement).click());
+      await clickText("Present", ".resume-date-picker");
+      expect((await savedResume()).education[0].end).toBe("Present");
+      await page.waitForFunction(
+        () => document.activeElement === document.querySelectorAll(".resume-date-trigger")[1],
+      );
+    });
+
+    it("dismisses the year grid before its date popup, leaves by Tab and keeps closing controls inert", async () => {
+      await page.setViewport({ width: 1440, height: 1000 });
+      await openSection("experience");
+      const trigger = ".resume-date-trigger";
+      await page.click(trigger);
+      await page.locator('button[aria-label="Select year"]').click();
+      await page.waitForFunction(() => document.activeElement?.closest(".resume-year-grid"));
+      await page.keyboard.press("Escape");
+      expect(await page.$(".resume-year-grid")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Select year",
+      );
+      await page.keyboard.press("Escape");
+      expect(await page.$eval(".resume-date-picker", (e) => (e as HTMLElement).inert)).toBe(true);
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.$eval(".resume-date-actions button:last-child", (e) =>
+        (e as HTMLButtonElement).focus(),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Clear start",
+      );
+      expect((await savedResume()).experience[0].start).toBe("2020");
     });
 
     it("cancels New without clearing work and imports a saved document with all settings", async () => {

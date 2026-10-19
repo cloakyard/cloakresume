@@ -75,7 +75,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                     deleteButton={deleteBtn}
                   />
                   <div className="cr-stack">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="resume-field-pair">
                       <TextField
                         label="Job title"
                         value={job.title}
@@ -104,7 +104,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         patch("experience", next);
                       }}
                     />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="resume-field-pair">
                       <MonthYearField
                         label="Start"
                         value={job.start}
@@ -125,7 +125,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         }}
                       />
                     </div>
-                    <label className="flex items-center gap-2 min-h-11 md:min-h-10 w-fit text-sm text-(--ink-2) cursor-pointer">
+                    <label className="air-check-label">
                       <input
                         type="checkbox"
                         name={`experience-${job.id}-current`}
@@ -140,7 +140,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                           };
                           patch("experience", next);
                         }}
-                        className="size-4 accent-(--brand)"
+                        className="air-check"
                       />
                       Current job
                     </label>

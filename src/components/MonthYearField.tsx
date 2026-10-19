@@ -42,10 +42,10 @@ const MONTHS = [
 // graduation dates a few years out.
 const YEAR_RANGE_BACK = 60;
 const YEAR_RANGE_FORWARD = 10;
-const POPOVER_W = 288;
+
 const POPOVER_H_EST = 364;
 const SAFE_EDGE = 16;
-const POPOVER_GAP = 6;
+const POPOVER_GAP = 8;
 
 interface Parsed {
   month: number | null; // 0–11, null means no month set
@@ -92,6 +92,8 @@ export function MonthYearField({
   const labelId = useId();
   const dialogId = useId();
   const valueId = useId();
+  const helpId = useId();
+  const yearButtonRef = useRef<HTMLButtonElement>(null);
   const [yearCursor, setYearCursor] = useState<number>(() => {
     const p = parseValue(value);
     return p.year ?? new Date().getFullYear();
@@ -137,18 +139,25 @@ export function MonthYearField({
     const viewportHeight = visualViewport?.height ?? window.innerHeight;
     const viewportRight = viewportLeft + viewportWidth;
     const viewportBottom = viewportTop + viewportHeight;
-    const width = Math.min(POPOVER_W, Math.max(0, viewportWidth - SAFE_EDGE * 2));
+    const preferredWidth = 20 * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    const width = Math.min(preferredWidth, Math.max(0, viewportWidth - SAFE_EDGE * 2));
     const viewportContentTop = viewportTop + SAFE_EDGE;
     const viewportContentBottom = viewportBottom - SAFE_EDGE;
     const belowTop = Math.max(viewportContentTop, rect.bottom + POPOVER_GAP);
     const aboveBottom = Math.min(viewportContentBottom, rect.top - POPOVER_GAP);
     const spaceBelow = Math.max(0, viewportContentBottom - belowTop);
     const spaceAbove = Math.max(0, aboveBottom - viewportContentTop);
-    const desiredHeight = popoverRef.current?.scrollHeight ?? POPOVER_H_EST;
+    const desiredHeight = popoverRef.current ? popoverRef.current.scrollHeight + 2 : POPOVER_H_EST;
     const flip = spaceBelow < Math.min(desiredHeight, POPOVER_H_EST) && spaceAbove > spaceBelow;
-    const maxHeight = flip ? spaceAbove : spaceBelow;
+    // On short viewports use the available surface instead of a tiny anchored strip.
+    const useViewport = Math.max(spaceAbove, spaceBelow) < Math.min(desiredHeight, 360);
+    const maxHeight = useViewport ? viewportHeight - SAFE_EDGE * 2 : flip ? spaceAbove : spaceBelow;
     const renderedHeight = Math.min(desiredHeight, maxHeight);
-    const top = flip ? Math.max(viewportContentTop, aboveBottom - renderedHeight) : belowTop;
+    const top = useViewport
+      ? viewportContentTop
+      : flip
+        ? Math.max(viewportContentTop, aboveBottom - renderedHeight)
+        : belowTop;
     const left = Math.max(
       viewportLeft + SAFE_EDGE,
       Math.min(rect.left, viewportRight - width - SAFE_EDGE),
@@ -183,31 +192,23 @@ export function MonthYearField({
 
   useEffect(() => {
     if (!open) return;
-    function handler(e: MouseEvent) {
+    function outside(e: Event) {
       const target = e.target as Node;
-      if (buttonRef.current?.contains(target)) return;
-      if (popoverRef.current?.contains(target)) return;
+      if (buttonRef.current?.contains(target) || popoverRef.current?.contains(target)) return;
       setOpen(false);
     }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false);
-        buttonRef.current?.focus();
-      }
-    }
-    document.addEventListener("mousedown", handler);
-    document.addEventListener("keydown", onKey);
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", outside);
     return () => {
-      document.removeEventListener("mousedown", handler);
-      document.removeEventListener("keydown", onKey);
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", outside);
     };
   }, [open]);
 
-  // Center the year picker on the currently-selected year when it opens.
   useEffect(() => {
-    if (showYearPicker && selectedYearRef.current) {
-      selectedYearRef.current.scrollIntoView({ block: "center", behavior: "instant" });
-    }
+    if (!showYearPicker) return;
+    selectedYearRef.current?.focus({ preventScroll: true });
+    selectedYearRef.current?.scrollIntoView({ block: "nearest", behavior: "instant" });
   }, [showYearPicker]);
 
   // Reset internal picker state whenever the popover closes.
@@ -222,7 +223,7 @@ export function MonthYearField({
     if (!open || !coords || didFocusPopoverRef.current) return;
     didFocusPopoverRef.current = true;
     requestAnimationFrame(() => {
-      popoverRef.current?.querySelector<HTMLButtonElement>("button:not(:disabled)")?.focus();
+      popoverRef.current?.focus({ preventScroll: true });
     });
   }, [open, coords]);
 
@@ -253,31 +254,32 @@ export function MonthYearField({
     const end = todayYear - YEAR_RANGE_BACK;
     const out: number[] = [];
     for (let y = start; y >= end; y--) out.push(y);
-    return out;
-  }, [todayYear]);
+    if (!out.includes(yearCursor)) out.push(yearCursor);
+    return out.sort((a, b) => b - a);
+  }, [todayYear, yearCursor]);
 
   return (
-    <div className="cr-field">
-      <span id={labelId} className="cr-field-label">
+    <div className="resume-date-field">
+      <span id={labelId} className="air-label">
         {label}
       </span>
-      <div className="relative">
+      <div className="resume-date-value">
         <button
           ref={buttonRef}
           type="button"
           disabled={disabled}
-          onClick={() => setOpen((v) => !v)}
+          onClick={(event) => {
+            event.currentTarget.focus();
+            setOpen((v) => !v);
+          }}
           aria-haspopup="dialog"
           aria-expanded={open && !disabled}
           aria-controls={open && !disabled ? dialogId : undefined}
           aria-labelledby={`${labelId} ${valueId}`}
-          className={`cr-input min-h-11 md:min-h-10 flex items-center gap-2 text-left ${hasValue && !disabled ? "pr-12" : ""}`}
+          className="air-field resume-date-trigger"
         >
-          <Calendar className="w-4 h-4 text-(--brand) shrink-0" />
-          <span
-            id={valueId}
-            className={`flex-1 truncate ${hasValue ? "text-(--ink-1)" : "text-(--ink-5)"}`}
-          >
+          <Calendar aria-hidden="true" />
+          <span id={valueId} data-placeholder={!hasValue || undefined}>
             {displayLabel}
           </span>
         </button>
@@ -285,17 +287,16 @@ export function MonthYearField({
           <button
             type="button"
             aria-label={`Clear ${label.toLowerCase()}`}
-            onClick={(e) => {
-              e.stopPropagation();
+            onClick={() => {
               onChange("");
+              closeAndReturnFocus();
             }}
-            className="absolute top-1/2 right-0 -translate-y-1/2 min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md text-(--ink-5) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) transition-colors"
+            className="air-icon-button air-button--quiet"
           >
-            <X className="w-3.5 h-3.5" />
+            <X aria-hidden="true" />
           </button>
         )}
       </div>
-
       {presence.mounted &&
         !disabled &&
         coords &&
@@ -305,169 +306,176 @@ export function MonthYearField({
             ref={popoverRef}
             data-state={presence.state}
             data-placement={coords.placement}
-            data-align="start"
             role="dialog"
             aria-labelledby={labelId}
-            className="cr-popover popover fixed space-y-2 overscroll-contain"
+            aria-describedby={helpId}
+            aria-hidden={!open || undefined}
+            inert={!open}
+            tabIndex={-1}
+            className="cr-popover air-popover resume-date-picker"
             style={{
               top: coords.top,
               left: coords.left,
               width: coords.width,
               maxHeight: coords.maxHeight,
-              overflowY: "auto",
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                if (showYearPicker) {
+                  setShowYearPicker(false);
+                  yearButtonRef.current?.focus();
+                } else closeAndReturnFocus();
+              }
+              if (event.key !== "Tab") return;
+              const buttons = [
+                ...event.currentTarget.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"),
+              ];
+              if (
+                event.shiftKey &&
+                (event.target === event.currentTarget || event.target === buttons[0])
+              ) {
+                event.preventDefault();
+                closeAndReturnFocus();
+              } else if (!event.shiftKey && event.target === buttons.at(-1)) {
+                event.preventDefault();
+                const controls = [
+                  ...document.querySelectorAll<HTMLElement>(
+                    'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]',
+                  ),
+                ].filter(
+                  (el) =>
+                    !popoverRef.current?.contains(el) &&
+                    !el.closest("[inert]") &&
+                    el.getClientRects().length,
+                );
+                const next = controls[controls.indexOf(buttonRef.current!) + 1];
+                setOpen(false);
+                (next ?? buttonRef.current)?.focus();
+              }
             }}
           >
+            <p id={helpId} className="resume-date-help">
+              Choose a month and year, or a year only.
+            </p>
             {allowPresent && (
-              <button
-                type="button"
-                onClick={() => {
-                  commit({ isPresent: true });
-                  closeAndReturnFocus();
-                }}
-                className={`w-full min-h-11 md:min-h-10 px-3 rounded-md text-xs font-semibold transition-colors ${
-                  parsed.isPresent
-                    ? "bg-(--color-accent) text-(--color-accent-ink)"
-                    : "bg-(--brand-50) text-(--brand-700) hover:bg-(--brand-100)"
-                }`}
-              >
-                Present
-              </button>
+              <div className="air-segments">
+                <button
+                  type="button"
+                  aria-pressed={parsed.isPresent}
+                  onClick={() => {
+                    commit({ isPresent: true });
+                    closeAndReturnFocus();
+                  }}
+                >
+                  Present
+                </button>
+              </div>
             )}
-
-            {/* Year navigation header — chevrons step the cursor year, the
-                center label toggles a full year-picker grid. */}
-            <div className="flex items-center justify-between gap-1">
+            <div className="resume-date-navigation">
               <button
                 type="button"
                 onClick={() => setYearCursor((y) => y - 1)}
                 disabled={showYearPicker}
                 aria-label="Previous year"
-                className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md transition-colors ${
-                  showYearPicker
-                    ? "text-(--ink-6) cursor-not-allowed"
-                    : "text-(--ink-4) hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
-                }`}
+                className="air-icon-button air-button--quiet"
               >
-                <ChevronLeft className="w-3.5 h-3.5" />
+                <ChevronLeft aria-hidden="true" />
               </button>
-
               <button
+                ref={yearButtonRef}
                 type="button"
-                onClick={() => setShowYearPicker((v) => !v)}
+                onClick={(event) => {
+                  event.currentTarget.focus();
+                  setShowYearPicker((v) => !v);
+                }}
                 aria-expanded={showYearPicker}
                 aria-label="Select year"
-                className={`min-h-11 md:min-h-10 flex items-center gap-0.5 font-mono text-xs font-semibold tabular-nums rounded-md px-3 transition-colors select-none ${
-                  showYearPicker
-                    ? "bg-(--brand-50) text-(--brand)"
-                    : "text-(--ink-2) hover:bg-(--ink-1)/5"
-                }`}
+                className="air-button air-button--quiet"
               >
-                {yearCursor}
-                <span
-                  aria-hidden="true"
-                  className={`inline-flex ${showYearPicker ? "rotate-180" : ""}`}
-                >
-                  <ChevronDown className="h-3 w-3" />
-                </span>
+                <span aria-live="polite">{yearCursor}</span>
+                <ChevronDown aria-hidden="true" />
               </button>
-
               <button
                 type="button"
                 onClick={() => setYearCursor((y) => y + 1)}
                 disabled={showYearPicker}
                 aria-label="Next year"
-                className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center rounded-md transition-colors ${
-                  showYearPicker
-                    ? "text-(--ink-6) cursor-not-allowed"
-                    : "text-(--ink-4) hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
-                }`}
+                className="air-icon-button air-button--quiet"
               >
-                <ChevronRight className="w-3.5 h-3.5" />
+                <ChevronRight aria-hidden="true" />
               </button>
             </div>
-
             {showYearPicker ? (
-              <div className="cr-scroll grid grid-cols-4 gap-1 max-h-44 overflow-y-auto overscroll-contain p-1 scroll-p-1">
+              <div
+                className="air-segments cr-scroll resume-date-grid resume-year-grid"
+                aria-label="Years"
+              >
                 {yearList.map((year) => (
                   <button
                     key={year}
                     ref={year === yearCursor ? selectedYearRef : undefined}
                     type="button"
+                    aria-pressed={year === yearCursor}
+                    aria-current={year === todayYear ? "date" : undefined}
                     onClick={() => {
                       setYearCursor(year);
                       setShowYearPicker(false);
+                      yearButtonRef.current?.focus();
                     }}
-                    className={`min-h-11 md:min-h-10 px-1 rounded-md font-mono text-xs font-medium tabular-nums transition-colors ${
-                      year === yearCursor
-                        ? "bg-(--color-accent) text-(--color-accent-ink)"
-                        : year === parsed.year
-                          ? "border border-(--brand-300) text-(--brand-700) hover:bg-(--brand-50)"
-                          : year === todayYear
-                            ? "border border-(--line) text-(--ink-2) hover:bg-(--ink-1)/5"
-                            : "text-(--ink-2) hover:bg-(--ink-1)/5"
-                    }`}
                   >
                     {year}
                   </button>
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-4 gap-1.5">
-                {MONTHS.map((m, i) => {
-                  const active =
-                    !parsed.isPresent && parsed.month === i && parsed.year === yearCursor;
-                  return (
-                    <button
-                      type="button"
-                      key={m}
-                      onClick={() => {
-                        commit({ month: i, year: yearCursor, isPresent: false });
-                        closeAndReturnFocus();
-                      }}
-                      aria-pressed={active}
-                      className={`min-h-11 md:min-h-10 px-2 text-xs font-medium rounded-md transition-colors ${
-                        active
-                          ? "bg-(--color-accent) text-(--color-accent-ink)"
-                          : "text-(--ink-2) hover:bg-(--brand-50) hover:text-(--brand-700)"
-                      }`}
-                    >
-                      {m}
-                    </button>
-                  );
-                })}
+              <div className="air-segments resume-date-grid" aria-label="Months">
+                {MONTHS.map((month, i) => (
+                  <button
+                    type="button"
+                    key={month}
+                    aria-pressed={
+                      !parsed.isPresent && parsed.month === i && parsed.year === yearCursor
+                    }
+                    onClick={() => {
+                      commit({ month: i, year: yearCursor, isPresent: false });
+                      closeAndReturnFocus();
+                    }}
+                  >
+                    {month}
+                  </button>
+                ))}
               </div>
             )}
-
-            <div className="flex items-center justify-between gap-2 pt-2 border-t border-(--line-soft)/70">
+            <div className="resume-date-actions">
               <button
                 type="button"
+                className="air-button air-button--quiet"
                 onClick={() => {
                   onChange("");
                   closeAndReturnFocus();
                 }}
-                className="min-h-11 md:min-h-10 px-2 rounded-md text-xs text-(--ink-4) hover:text-(--color-status-danger) transition-colors"
               >
                 Clear
               </button>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => {
-                    commit({ month: null, year: yearCursor, isPresent: false });
-                    closeAndReturnFocus();
-                  }}
-                  className="min-h-11 md:min-h-10 px-2 rounded-md text-xs text-(--brand) hover:text-(--brand-700) transition-colors"
-                >
-                  Year only
-                </button>
-                <button
-                  type="button"
-                  onClick={closeAndReturnFocus}
-                  className="min-h-11 rounded-md bg-(--color-accent) px-3 text-xs font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover) md:min-h-10"
-                >
-                  Done
-                </button>
-              </div>
+              <button
+                type="button"
+                className="air-button air-button--quiet"
+                onClick={() => {
+                  commit({ month: null, year: yearCursor, isPresent: false });
+                  closeAndReturnFocus();
+                }}
+              >
+                Year only
+              </button>
+              <button
+                type="button"
+                className="air-button air-button--primary"
+                onClick={closeAndReturnFocus}
+              >
+                Done
+              </button>
             </div>
           </div>,
           document.body,

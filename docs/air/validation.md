@@ -315,3 +315,29 @@ PNGs; full local proof `/tmp/cloakresume-air-selects/`. Native tabs closed and
 Firefox zoom restored. Next: date/current-job controls, then logo/wheel, remaining
 sections/hints/review/library/export/PWA/static recovery and actual preview assets.
 Human/device gates remain open. Local commits only; IMG stays last.
+
+## 2026-10-19 — Air partial dates and current-job controls
+
+MonthYearField, Experience Current job and Education Present now use Air fields,
+clear actions, checkbox row, popup and neutral selection grids. Partial and imported
+raw strings remain distinct; opening/dismissing never normalizes them. Prior-end
+restoration, current-job disabled state and template output stay intact. Year
+choice/clear restore surviving focus, nested Escape closes years before the popup,
+non-modal Tab can leave, and closing content is inert. Old date skins/compact type
+are removed; legacy popup CSS excludes Air popovers but retains live old consumers.
+
+**300/300 tests in eight files, 381.21s, zero skips**; 120 editor cases and all 34
+complete template/paper cases (17 × two papers × five fixtures). 256 layouts across
+16 sizes × both themes × 16/32px × four date states, 20 selection/clear journeys,
+52 contrast pairs, emulated touch cancellation and forced/reduced states pass.
+Native Safari pointer/focus and Option-Tab/Space Present selection pass; Firefox
+actual 200% keyboard/nested Escape passes. Browser zoom restored and task tabs closed.
+Check/build/78-source design/18 portability/exact sync pass. No dependency or
+schema/template/PDF/font changes. 73 precache entries, 2440.53 KiB.
+
+Six proof PNGs, `evidence/date-controls-2026-10-19.json` and matching checks log
+are durable. Full raw/native captures and next-slice notes:
+`/tmp/cloakresume-air-dates/`. Latest native preview 8154; earlier task ports remain.
+Next: logo search/profile photo, then wheel, remaining sections/hints/review/library/
+export/PWA/static recovery and actual preview assets. Human/device gates remain
+open; IMG remains last. Local commits only, no push/deployment.

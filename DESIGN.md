@@ -1090,7 +1090,7 @@ journeys across all apps; it is not inferred from the pilot alone.
 - A format scope retires removed textarea handlers and clears its active field;
   stale toolbar actions cannot resurrect removed text. Pointer and keyboard
   formatting preserve the current selection. Selected formatting is neutral.
-- Date/logo controls and writing-hint popup interiors remain partial. Do not
+- Logo controls and writing-hint popup interiors remain partial. Do not
   infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
   consumers across all viewport classes and text sizes; native IME/touch and
   assistive speech remain separate acceptance gates.
@@ -1106,7 +1106,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   field or the appropriate Add action. External text drops remain native.
 - `node scripts/test-air-repeated-entries.mjs` checks repeated controls and removal
   confirmation across all viewport classes/themes/text sizes. Individual section
-  date/logo/select/contact/review widgets remain separate migration gates.
+  logo and writing-hint/review widgets remain separate migration gates.
 
 - Contact and Languages use labelled Air fields with content-aware paired columns.
   Contact retains all nine saved kind keys, values, browser input/autofill semantics
@@ -1120,3 +1120,20 @@ journeys across all apps; it is not inferred from the pilot alone.
 - `node scripts/test-air-contact-selects.mjs` checks all contact kinds, custom/empty
   proficiency and opened pickers across all viewport classes/themes/text sizes.
   Real software-keyboard and spoken assistive acceptance remain separate.
+
+- Month/year fields use the canonical field contour, a separate clear target and
+  the Air popup/selection surfaces. Month+year, year-only, empty and Present stay
+  distinct; imported legacy strings are never normalized merely by opening a
+  picker. The year grid includes an imported year outside the ordinary range.
+- Experience Current job keeps its 44px checkbox row and prior-end restoration;
+  Education keeps its Present choice. Date pairs reflow by available content width.
+  Narrow/enlarged grids reflow without shrinking targets; short viewports use the
+  available popup height and internal scrolling. The popup retains the 16px safe
+  edge, 8px anchor gap where space permits, and visual-viewport repositioning.
+- Opening focuses the non-editable surface. Year choice and clear actions restore
+  surviving focus, Escape closes the year view before the popup, Tab can leave the
+  non-modal surface, and closing controls are inert. Safari pointer openers focus
+  explicitly. Legacy popup skin/focus rules exclude Air popovers.
+- `node scripts/test-air-dates.mjs` checks four date states and Current job across
+  all viewport classes/themes/text sizes. Native software-keyboard, physical touch
+  and spoken assistive acceptance remain separate; emulation does not close them.
