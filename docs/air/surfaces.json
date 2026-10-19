@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.0.5",
+  "contractVersion": "1.0.6",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -1025,7 +1025,7 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": [],
+      "evidence": ["docs/air/neutral-links-2026-10-19.md"],
       "notes": ""
     },
     {
@@ -1095,7 +1095,8 @@
       ],
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
-        "docs/air/evidence/brand-horizons-2026-10-19/checks.json"
+        "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
+        "docs/air/neutral-links-2026-10-19.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
     },
@@ -1138,7 +1139,11 @@
         "1023x768",
         "1025x768"
       ],
-      "evidence": ["docs/air/validation.md — refinement 02 candidate", "docs/air/components.html"],
+      "evidence": [
+        "docs/air/validation.md — refinement 02 candidate",
+        "docs/air/components.html",
+        "docs/air/neutral-links-2026-10-19.md"
+      ],
       "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
     },
     {

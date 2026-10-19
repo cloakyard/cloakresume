@@ -77,10 +77,6 @@ body:has(.resume-site) {
   padding: 0;
   cursor: pointer;
 }
-.resume-site a:hover,
-.resume-footer button:hover {
-  color: var(--air-accent);
-}
 .resume-menu {
   display: none;
   margin-left: auto;
@@ -288,7 +284,7 @@ body:has(.resume-site) {
   margin: 16px 0;
 }
 .resume-policy a {
-  color: var(--air-accent);
+  color: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
