@@ -1,0 +1,157 @@
+[
+  {
+    "app": "cloakresume",
+    "url": "http://127.0.0.1:8173",
+    "layouts": [
+      {
+        "width": 1440,
+        "height": 160,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 1440,
+        "height": 160,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 1280,
+        "height": 160,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 1280,
+        "height": 160,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 768,
+        "height": 160,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 768,
+        "height": 160,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 390,
+        "height": 112,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 390,
+        "height": 112,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 320,
+        "height": 112,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 320,
+        "height": 112,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 844,
+        "height": 160,
+        "theme": "light",
+        "expected": "rgb(16, 185, 129)",
+        "colour": "rgb(16, 185, 129)",
+        "strokes": ["rgb(16, 185, 129)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      },
+      {
+        "width": 844,
+        "height": 160,
+        "theme": "dark",
+        "expected": "rgb(110, 231, 183)",
+        "colour": "rgb(110, 231, 183)",
+        "strokes": ["rgb(110, 231, 183)"],
+        "overflow": false,
+        "contained": true,
+        "state": "reduced"
+      }
+    ],
+    "gpu": [
+      {
+        "theme": "light",
+        "lightState": "idle",
+        "lightFrames": "2",
+        "lightFirstDraw": "85.4",
+        "lightReady": "true"
+      },
+      {
+        "theme": "dark",
+        "lightState": "idle",
+        "lightFrames": "2",
+        "lightFirstDraw": "45.8",
+        "lightReady": "true"
+      }
+    ],
+    "errors": []
+  }
+]

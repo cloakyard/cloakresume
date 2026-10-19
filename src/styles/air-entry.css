@@ -165,7 +165,7 @@ body:has(.resume-site) {
   height: 160px;
   overflow: hidden;
   background: var(--air-page);
-  color: var(--air-accent);
+  color: var(--air-light-cloakresume);
   outline-color: var(--air-surface-soft);
   pointer-events: none;
 }

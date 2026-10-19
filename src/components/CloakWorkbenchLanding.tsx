@@ -183,7 +183,7 @@ export function CloakWorkbenchLanding({
               <path
                 d="M0 100Q600 84 1200 145M0 182Q600 132 1200 139"
                 fill="none"
-                stroke="var(--air-accent)"
+                stroke="currentColor"
                 strokeOpacity="0.22"
               />
             </svg>
