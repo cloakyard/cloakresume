@@ -8,8 +8,7 @@
 
 import { useId, useRef } from "react";
 import { createPortal } from "react-dom";
-import { AlertTriangle, X } from "lucide-react";
-import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
+import { X } from "lucide-react";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 
 interface ConfirmDialogProps {
@@ -39,87 +38,53 @@ export function ConfirmDialog({
   const confirmRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
-  const presence = useAnimatedPresence(open);
   const dialogRef = useModalDialog<HTMLDivElement>({
-    open: presence.mounted,
+    open,
     onClose: onCancel,
+    inertBackground: true,
     initialFocusRef: variant === "notice" ? confirmRef : cancelRef,
   });
 
-  if (!presence.mounted) return null;
-
-  const confirmStyles =
-    tone === "danger"
-      ? "bg-(--danger) text-(--color-accent-ink) hover:brightness-90"
-      : "bg-(--color-accent) text-(--color-accent-ink) hover:bg-(--brand-hover)";
-
-  const iconStyles = tone === "danger" ? "text-(--danger)" : "text-(--brand-700)";
+  if (!open) return null;
 
   return createPortal(
     <div
-      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
-      data-state={presence.state}
+      className="air-modal-viewport resume-overlay"
       role="presentation"
-      onMouseDown={(event) => {
+      onClick={(event) => {
         if (event.target === event.currentTarget) onCancel();
       }}
     >
       <div
         ref={dialogRef}
-        className="cr-dialog cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:!w-[min(var(--dialog-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0"
+        className="air-modal"
         role={variant === "notice" ? "alertdialog" : "dialog"}
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={description ? descriptionId : undefined}
         tabIndex={-1}
       >
-        <div className="p-6">
-          <div className="flex items-start gap-4">
-            <span
-              className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center ${iconStyles}`}
-            >
-              <AlertTriangle aria-hidden="true" className="w-5 h-5" />
-            </span>
-            <div className="flex-1 min-w-0">
-              <p className="cr-dialog__eyebrow">
-                {variant === "notice" ? "Workbench notice" : "Confirm action"}
-              </p>
-              <h2 id={titleId} className="cr-dialog__title">
-                {title}
-              </h2>
-              {description && (
-                <p id={descriptionId} className="cr-dialog__description text-sm">
-                  {description}
-                </p>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={onCancel}
-              aria-label="Close"
-              className="cr-dialog__close"
-            >
-              <X aria-hidden="true" className="w-4 h-4" />
-            </button>
-          </div>
+        <div className="resume-dialog-heading">
+          <h2 id={titleId}>{title}</h2>
+          <button
+            className="air-icon-button air-button--quiet"
+            onClick={onCancel}
+            aria-label="Close"
+          >
+            <X aria-hidden="true" />
+          </button>
         </div>
-
-        <div className="cr-dialog__footer flex-col-reverse items-stretch px-6 py-4 min-[640px]:flex-row min-[640px]:items-center">
-          {variant === "confirm" ? (
-            <button
-              ref={cancelRef}
-              type="button"
-              onClick={onCancel}
-              className="min-h-11 rounded-md border border-(--line) bg-(--surface-raised) px-4 py-2 text-sm font-medium text-(--ink-2) transition-colors hover:border-(--ink-5) hover:bg-(--surface-3)"
-            >
+        {description && <p id={descriptionId}>{description}</p>}
+        <div className="resume-dialog-actions">
+          {variant === "confirm" && (
+            <button ref={cancelRef} onClick={onCancel} className="air-button">
               {cancelLabel}
             </button>
-          ) : null}
+          )}
           <button
             ref={confirmRef}
-            type="button"
             onClick={onConfirm}
-            className={`min-h-11 rounded-md px-4 py-2 text-sm font-semibold transition-colors ${confirmStyles}`}
+            className={`air-button ${tone === "danger" && variant === "confirm" ? "air-button--danger" : "air-button--primary"}`}
           >
             {confirmLabel}
           </button>

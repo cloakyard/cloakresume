@@ -109,8 +109,8 @@ describe("brand, social, and install asset contracts", () => {
       'const OUT_PATH = resolve(PROJECT_DIR, "public", "icons", "og-image.png")',
     );
     expect(ogScript).toContain("width: 1200, height: 630, deviceScaleFactor: 1");
-    expect(ogScript).toContain("A complete résumé workbench");
-    expect(screenshotScript).toContain("A complete résumé workbench");
+    expect(ogScript).toContain("Your next chapter.");
+    expect(screenshotScript).toContain("Your next chapter.");
     expect(screenshotScript).toContain("evaluateOnNewDocument");
     expect(screenshotScript).toContain("Math.random = () =>");
     expect(screenshotScript).toContain('.resume-root[data-template-ready="true"] .resume-page');
@@ -218,7 +218,10 @@ describe("brand, social, and install asset contracts", () => {
     } as const;
 
     expect(config).toContain('orientation: "any"');
-    expect(config).toContain('globIgnores: ["icons/og-image.png", "screenshots/**"]');
+    const ignoredAssets = config.match(/globIgnores:\s*\[([^\]]+)\]/)?.[1];
+    for (const path of ["icons/og-image.png", "screenshots/**", "**/air-light-shader-*.js"]) {
+      expect(ignoredAssets).toContain(JSON.stringify(path));
+    }
     for (const size of [64, 192, 512]) {
       expect(config).toMatch(
         new RegExp(

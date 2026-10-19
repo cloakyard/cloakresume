@@ -146,3 +146,54 @@ serial production suite passes: 288 tests in eight files (361.10s), using
 `CLOAKRESUME_BROWSER_BUILD=production`. Results are saved in
 `evidence/icon-focus-2026-10-19-tests.log`.
 No timeout or assertion was changed. Physical/assistive acceptance remains open.
+
+## 2026-10-19 — entry and recovery adoption
+
+The start page, native compact menu, blank/sample/file entry, browser restore,
+privacy, confirmation/notice and render-error recovery consume the pinned Air
+bundle. Five source surfaces are implemented; their physical/assistive validation
+flags stay open. This is **not** a completed editor or product migration.
+
+Saved work survives cancellation and invalid files. Valid imports are parsed
+before replacement confirmation, carry document settings, and ignore duplicate
+pending reads. The existing blank placeholder and random sample data remain.
+Privacy retains all six policy sections and its July revision date, keyboard wrap,
+Escape, pointer dismissal and mobile swipe/cancel. Air dialogs opt into inert
+backgrounds; Safari's pointer opener is explicitly focused before opening. Error
+recovery honestly describes the last browser-saved draft, supports clipboard
+failure fallback and returns to the configured application base.
+
+The entry page supports short landscape. The old editor orientation handler stays
+scoped to the editor pending its migration. Landing/reading/recovery fonts do not
+reach document templates. All template/font/output source files remain unchanged.
+The old entry, receipt, fake résumé proof and privacy skins are removed, including
+unused reveal keyframes. The historical Workbench audit is now labelled as such.
+No dependency was added. The optional finite horizon renderer is excluded from
+precache; static/reduced/offscreen/editor-unmount behavior is checked separately.
+
+Reproduce the entry matrix with a production preview and
+`SITE_URL=http://127.0.0.1:8145 node scripts/test-air-entry.mjs`. The default evidence
+directory is `/tmp/cloakresume-air-entry`; set `AIR_EVIDENCE_DIR` to change it.
+The compact durable record is `evidence/entry-recovery-2026-10-19.json`.
+
+The browser regression harness now waits for a committed responsive panel and
+font-driven textarea mirror resizing before taking its baseline. Both previous
+failures were reproduced: detached elements returned empty focus styles, and a
+fallback-font height caused the initial caret scroll to be measured 61px away
+from the settled field. Assertions and timeouts are retained. Confirmation
+focus/typing checks now follow immediate Air dismissal instead of waiting for
+retired CSS animation selectors. Full runs, rather than filtered diagnostic runs,
+remain the commit gate.
+
+Remaining Resume work: editor shell/sections, custom widgets and wheel alignment,
+template/review/format/export chrome, PWA/update safety, static 404, social/PWA/README
+previews, then final whole-product comparison. The capture helpers recognize the
+new landing heading; existing published screenshot/OG assets are explicitly still
+legacy until that preview slice. Physical touch/software keyboards, actual OS IME,
+spoken assistive and physical GPU/battery acceptance are not certified by emulation.
+
+Final gate: **288/288 in eight files, no skips**, using the production browser build;
+107 editor cases and 17 templates × two paper sizes × five fixtures all pass.
+**341 layout cases, 14 journeys and 124 contrast pairs** pass. Check (zero warnings),
+build, 77-source design inventory, 18 portability checks and exact family sync pass.
+Native Safari focus return was rechecked on the fresh 8146 production origin.

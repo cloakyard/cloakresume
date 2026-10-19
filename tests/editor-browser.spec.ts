@@ -132,7 +132,16 @@ describe.skipIf(!existsSync(chromePath))(
         button?.click();
       });
       await page.waitForSelector(".cr-editor-panel textarea", { visible: true });
-      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        // Auto-growing fields measure a mirror after fonts finish loading. Wait
+        // for that scheduled resize before choosing a caret/scroll baseline.
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+        );
+      });
     }
 
     for (const width of [1440, 390]) {
@@ -971,7 +980,7 @@ describe.skipIf(!existsSync(chromePath))(
       });
     });
 
-    it("keeps a newly focused editor field focused when a dialog finishes closing", async () => {
+    it("keeps a newly focused editor field focused after dismissing a confirmation", async () => {
       await openDraft();
       await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
       const selector = 'input[name="profile-name"]';
@@ -979,10 +988,10 @@ describe.skipIf(!existsSync(chromePath))(
       await page.locator('button[aria-label="Start a new blank resume"]').click();
       await page.waitForSelector('[role="dialog"]', { visible: true });
       await clickText("Cancel", '[role="dialog"]');
-      await page.waitForSelector('.cr-overlay[data-state="closing"]');
+      await page.waitForSelector(".resume-overlay", { hidden: true });
       await page.click(selector);
       await page.keyboard.press("End");
-      const addition = " — typing during the closing animation keeps every character";
+      const addition = " — typing after dismissal keeps every character";
       await page.keyboard.type(addition, { delay: 8 });
       await page.waitForSelector('[role="dialog"]', { hidden: true });
       expect(await page.$eval(selector, (element) => document.activeElement === element)).toBe(
@@ -1088,6 +1097,14 @@ describe.skipIf(!existsSync(chromePath))(
         });
         await page.click('nav button[aria-label="Contact"]');
         await page.setViewport({ width, height: 1000 });
+        // A responsive shell change remounts the panel. Wait for that committed
+        // layout before taking element handles; detached nodes have empty styles.
+        await page.waitForFunction(
+          (compact) =>
+            document.querySelector(".cr-editor-panel")?.classList.contains("relative") === compact,
+          {},
+          width < 1024,
+        );
         for (const selector of [
           'select[aria-label="Contact kind"]',
           'input[aria-label="email contact value"]',
@@ -1277,6 +1294,9 @@ describe.skipIf(!existsSync(chromePath))(
         input.files = transfer.files;
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
+      await page.waitForSelector('[role="dialog"]', { visible: true });
+      expect((await savedResume()).profile.summary).toBe("Draft for audit");
+      await clickText("Replace draft", '[role="dialog"]');
       await page.waitForFunction(
         () =>
           document.querySelector<HTMLInputElement>('input[name="profile-name"]')?.value ===

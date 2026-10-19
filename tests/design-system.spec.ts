@@ -129,39 +129,47 @@ describe("CloakResume family contract", () => {
     expect(brandLogo).toContain('translate="no"');
   });
 
-  it("matches CloakPDF footer provenance and privacy-document structure", async () => {
-    const [landing, privacy, familyCss, tokens, tokenJson] = await Promise.all([
+  it("uses Air for entry and policy while retaining provenance and the complete policy", async () => {
+    const [landing, privacy, main, entryCss, familyCss] = await Promise.all([
       source("src/components/CloakWorkbenchLanding.tsx"),
       source("src/components/PrivacyPolicyModal.tsx"),
+      source("src/main.tsx"),
+      source("src/styles/air-entry.css"),
       source("src/cloak-family.css"),
-      source("tokens.css"),
-      source("tokens.json"),
     ]);
     const footer = landing.match(
-      /<footer className="cr-statement-footer">([\s\S]*?)<\/footer>/,
+      /<footer className="resume-footer resume-frame">([\s\S]*?)<\/footer>/,
     )?.[1];
-    const portable = JSON.parse(tokenJson) as { size: Record<string, { $value: string }> };
-
     expect(footer).toBeDefined();
-    expect(footer).toContain("CloakResume / Cloakyard");
-    expect(footer).toContain("Build a résumé.");
-    expect(footer).toContain("Keep it local.");
-    expect(footer).toContain("CloakResume v{__APP_VERSION__}");
-    expect(footer).toContain("Built by");
-    expect(footer).toContain("Sumit Sahoo");
-    expect(footer).toContain("MIT licensed");
-    expect(footer).not.toContain("<BrandLogo");
-
-    expect(privacy).toContain("cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog");
-    expect(privacy).toContain("The privacy promise has an architecture.");
-    expect(privacy).toContain("Document path");
-    expect(privacy).toContain("Routes not present");
-    expect(privacy).toContain("Upload server — none");
+    for (const content of [
+      "CloakResume v{__APP_VERSION__}",
+      "Built by",
+      "Sumit Sahoo",
+      "MIT licensed",
+      "Cloakyard",
+      "Privacy policy",
+    ])
+      expect(footer).toContain(content);
+    expect(main).toContain('import "./styles/air.css"');
+    expect(landing).toContain('width="32"');
+    expect(landing).toContain('className="resume-menu"');
+    expect(landing).toContain("mountAirLight");
+    expect(privacy).toContain('className="air-modal resume-policy"');
     expect(privacy).toContain("Complete privacy policy");
-    expect(familyCss).toContain(".cr-privacy-dialog__architecture");
-    expect(familyCss).toContain(".cr-privacy-policy__section");
-    expect(tokens).not.toContain("--logo-size-footer");
-    expect(portable.size["logo-footer"]).toBeUndefined();
+    expect(privacy).toContain('LAST_UPDATED_ISO = "2026-07-22"');
+    for (const title of [
+      "Your résumé stays on your device",
+      "Your working draft remains local",
+      "No accounts, advertising, or analytics",
+      "Static assets can use the network",
+      "The implementation is inspectable",
+      "Policy revisions remain visible",
+    ])
+      expect(privacy).toContain(title);
+    expect(entryCss).not.toMatch(/--air-[a-z-]+\s*:/);
+    expect(familyCss).not.toMatch(
+      /cr-family-landing|cr-privacy-dialog|cr-resume-proof|cr-statement-footer/,
+    );
   });
 
   it("keeps the shared frame, logo, editor, and overlay geometry explicit", async () => {
@@ -373,7 +381,9 @@ describe("CloakResume family contract", () => {
       ].map(source),
     );
 
-    expect(files.every((file) => file.includes("cr-overlay"))).toBe(true);
+    expect(
+      files.every((file) => file.includes("cr-overlay") || file.includes("resume-overlay")),
+    ).toBe(true);
     expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
     expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
     expect(files[1]).toContain("ref={resultsScrollRef}");
@@ -530,7 +540,7 @@ describe("CloakResume family contract", () => {
     expect(fieldGlowKeyframes).toContain("transform");
     expect(indexCss).toContain(".cr-field-glow::after");
     expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
-    expect(familyCss).toContain(".cr-family-landing .cr-landing-hero__declaration");
+    expect(familyCss).not.toContain(".cr-family-landing .cr-landing-hero__declaration");
     expect(familyCss).toContain(".cr-overlay {");
     expect(familyCss).toContain('.cr-popover[data-state="closing"]');
     expect(familyCss).toContain("@starting-style");

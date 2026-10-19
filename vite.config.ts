@@ -98,8 +98,9 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ["**/*.{js,css,html,svg,woff2}"],
-        // Social and store screenshots are presentation assets, not application-shell assets.
-        globIgnores: ["icons/og-image.png", "screenshots/**"],
+        // Presentation assets and the optional landing renderer are not offline-shell essentials.
+        // The horizon retains its SVG fallback without downloading the GPU module.
+        globIgnores: ["icons/og-image.png", "screenshots/**", "**/air-light-shader-*.js"],
         runtimeCaching: [
           {
             // Harper is loaded only when writing review first runs. Its production filename is

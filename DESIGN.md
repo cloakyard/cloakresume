@@ -1044,3 +1044,26 @@ journeys across all apps; it is not inferred from the pilot alone.
   complete family responsive/theme/input matrix.
 - Keep a per-component/state inventory and evidence in `docs/air/`. Local tokens
   and this complete contract travel with the repository.
+
+### Runtime adoption boundaries
+
+- Entry, privacy, confirmations and render recovery consume the pinned
+  `src/styles/air.css`; `air-entry.css` owns composition only. The legacy editor
+  bridge remains until its bounded migration. Template fonts and output geometry
+  remain independent of both bridges.
+- Entry supports landscape and native in-flow compact navigation. Blank/sample
+  and validated file replacement require confirmation when a current draft exists;
+  cancellation and malformed files preserve it. Pending file reads disable entry
+  actions and cannot start a duplicate read.
+- Air recovery adapters opt into background inertness while retaining the shared
+  focus/scroll lifecycle. Preserve native Safari opener focus, privacy swipe/cancel,
+  keyboard wrap and nested notices. Recovery describes the last saved draft without
+  guaranteeing that unsaved changes survived a render failure.
+- The landing horizon uses the pinned finite light lifecycle and an SVG fallback.
+  The optional shader is excluded from the PWA shell; reduced motion and unavailable
+  graphics must not prevent entry. Physical GPU/battery acceptance remains separate.
+- `node scripts/test-air-entry.mjs` checks the production entry and recovery matrix.
+  Run full tests with `vp test run --no-file-parallelism`; use
+  `CLOAKRESUME_BROWSER_BUILD=production` for the built browser/template sweep.
+  Wait for committed responsive panels and font-driven textarea resizing before
+  measuring focus/scroll; preserve assertions, templates and timeout budgets.

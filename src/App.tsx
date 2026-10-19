@@ -188,8 +188,18 @@ export function App() {
     () => resumeHasContent(resume) || jobDescription.trim().length > 0,
     [resume, jobDescription],
   );
-  /** Confirmation prompt before clearing the current work via the "New" button. */
+  const latestHasSavedWork = useRef(hasSavedWork);
+  useEffect(() => {
+    latestHasSavedWork.current = hasSavedWork;
+  }, [hasSavedWork]);
+  /** Open start options without discarding the current draft. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
+  const [pendingStart, setPendingStart] = useState<ResumeData | null>(null);
+  const [pendingFile, setPendingFile] = useState<Awaited<ReturnType<typeof readResumeFile>> | null>(
+    null,
+  );
+  const [loadingFile, setLoadingFile] = useState(false);
+  const fileLoadInFlight = useRef(false);
   /** Family notice used for recoverable file and export failures. */
   const [notice, setNotice] = useState<AppNotice | null>(null);
 
@@ -316,27 +326,40 @@ export function App() {
     downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
   }, [resume, templateId, primary, paperSize, jobDescription]);
 
-  const handleLoadFile = useCallback(async (file: File) => {
-    try {
-      const payload = await readResumeFile(file);
-      setResume(payload.resume);
-      setTemplateId(resolveTemplateId(payload.templateId));
-      setPrimary(payload.primary);
-      setPaperSize(payload.paperSize);
-      setJobDescription(payload.jobDescription);
-      setActiveSection("profile");
-      setMobileSectionOpen(true);
-      setMobileView("panel");
-      setShowLanding(false);
-    } catch (err) {
-      setNotice({
-        title: "Resume file couldn't be opened",
-        description: `CloakResume couldn't load that file. ${
-          err instanceof Error ? err.message : "Choose another CloakResume file and try again."
-        }`,
-      });
-    }
+  const applyFile = useCallback((payload: Awaited<ReturnType<typeof readResumeFile>>) => {
+    setResume(payload.resume);
+    setTemplateId(resolveTemplateId(payload.templateId));
+    setPrimary(payload.primary);
+    setPaperSize(payload.paperSize);
+    setJobDescription(payload.jobDescription);
+    setActiveSection("profile");
+    setMobileSectionOpen(true);
+    setMobileView("panel");
+    setShowLanding(false);
   }, []);
+
+  const handleLoadFile = useCallback(
+    async (file: File) => {
+      if (fileLoadInFlight.current) return;
+      fileLoadInFlight.current = true;
+      setLoadingFile(true);
+      try {
+        const payload = await readResumeFile(file);
+        // Validate before asking to replace; a bad file must never discard a draft.
+        if (latestHasSavedWork.current) setPendingFile(payload);
+        else applyFile(payload);
+      } catch (err) {
+        setNotice({
+          title: "Resume file couldn't be opened",
+          description: `CloakResume couldn't load that file. ${err instanceof Error ? err.message : "Choose another CloakResume file and try again."}`,
+        });
+      } finally {
+        fileLoadInFlight.current = false;
+        setLoadingFile(false);
+      }
+    },
+    [applyFile],
+  );
 
   /** Welcome-screen → seed with the given resume data and close the overlay. */
   const startWithResume = useCallback((data: ResumeData) => {
@@ -369,11 +392,9 @@ export function App() {
 
   return (
     <>
-      {/* Phone-only portrait enforcement. Tries the JS lock for
-       * installed PWAs, then falls back to a "rotate your phone"
-       * overlay on devices that reject the lock (iOS Safari, etc.).
-       * Mounted at the very top so it outranks every modal / sheet. */}
-      <OrientationLock />
+      {/* Editor orientation handling remains until its responsive migration.
+       * The Air entry page supports both portrait and landscape. */}
+      {!showLanding && <OrientationLock />}
 
       {/* Service-worker lifecycle prompt — surfaces "Update
        * available" when a new SW version lands and a brief "Ready
@@ -483,9 +504,16 @@ export function App() {
 
       {showLanding && (
         <CloakWorkbenchLanding
-          onStartBlank={() => startWithResume(blankResume)}
-          onLoadSample={() => startWithResume(generateSampleResume())}
+          onStartBlank={() =>
+            hasSavedWork ? setPendingStart(blankResume) : startWithResume(blankResume)
+          }
+          onLoadSample={() =>
+            hasSavedWork
+              ? setPendingStart(generateSampleResume())
+              : startWithResume(generateSampleResume())
+          }
           onLoadFile={handleLoadFile}
+          loading={loadingFile}
           onDismiss={hasSavedWork ? dismissLanding : undefined}
           onResumeEditing={hasSavedWork ? dismissLanding : undefined}
           lastSavedAt={hasSavedWork ? (savedAt ?? initial.savedAt) : undefined}
@@ -493,12 +521,29 @@ export function App() {
       )}
 
       <ConfirmDialog
+        open={pendingStart !== null || pendingFile !== null}
+        title="Replace this draft?"
+        description="Your current résumé will be replaced. Cancel to keep it, or save a JSON copy from the editor first."
+        confirmLabel="Replace draft"
+        tone="danger"
+        onConfirm={() => {
+          if (pendingFile) applyFile(pendingFile);
+          else if (pendingStart) startWithResume(pendingStart);
+          setPendingFile(null);
+          setPendingStart(null);
+        }}
+        onCancel={() => {
+          setPendingFile(null);
+          setPendingStart(null);
+        }}
+      />
+
+      <ConfirmDialog
         open={newConfirmOpen}
-        title="Start a new resume?"
-        description="Your current resume will be replaced. Save it first if you want to keep a copy."
+        title="Open start options?"
+        description="Your current draft stays available under Resume editing until you choose to replace it."
         confirmLabel="Continue"
         cancelLabel="Cancel"
-        tone="danger"
         onConfirm={confirmNewResume}
         onCancel={() => setNewConfirmOpen(false)}
       />

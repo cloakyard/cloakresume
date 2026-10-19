@@ -59,6 +59,7 @@ interface ModalDialogOptions<T extends HTMLElement> {
   onClose?: () => void;
   initialFocusRef?: RefObject<HTMLElement | null>;
   dialogRef?: RefObject<T | null>;
+  inertBackground?: boolean;
 }
 
 /**
@@ -73,6 +74,7 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
   onClose,
   initialFocusRef,
   dialogRef: providedDialogRef,
+  inertBackground = false,
 }: ModalDialogOptions<T>): RefObject<T | null> {
   const internalDialogRef = useRef<T>(null);
   const dialogRef = providedDialogRef ?? internalDialogRef;
@@ -92,6 +94,19 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
     const previouslyFocused =
       document.activeElement instanceof HTMLElement ? document.activeElement : null;
     const unlockBodyScroll = lockBodyScroll();
+    // Isolate the whole background, including a portal's ancestor siblings.
+    // Nested dialogs restore the state they found instead of unlocking a parent.
+    const background: { element: HTMLElement; inert: boolean }[] = [];
+    let branch: HTMLElement | null = dialogElement;
+    while (inertBackground && branch && branch !== document.body) {
+      for (const sibling of branch.parentElement?.children ?? []) {
+        if (sibling instanceof HTMLElement && sibling !== branch) {
+          background.push({ element: sibling, inert: sibling.inert });
+          sibling.inert = true;
+        }
+      }
+      branch = branch.parentElement;
+    }
     const focusTimer = window.setTimeout(() => {
       const dialog = dialogRef.current;
       if (!dialog || !isTopDialog()) return;
@@ -141,6 +156,7 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
       const index = activeDialogs.indexOf(dialogToken);
       if (index !== -1) activeDialogs.splice(index, 1);
       unlockBodyScroll();
+      for (const { element, inert } of background) element.inert = inert;
       // A closing overlay already allows pointer interaction with the editor.
       // Preserve a field the user deliberately focused during that exit instead
       // of sending subsequent keystrokes back to the dialog's opener.
@@ -150,7 +166,7 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
         previouslyFocused.focus({ preventScroll: true });
       }
     };
-  }, [dialogRef, initialFocusRef, open]);
+  }, [dialogRef, initialFocusRef, open, inertBackground]);
 
   return dialogRef;
 }

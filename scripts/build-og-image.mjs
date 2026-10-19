@@ -104,7 +104,7 @@ try {
 
   await page.goto(CAPTURE_URL, { waitUntil: "networkidle0" });
   await page.waitForFunction(
-    () => document.querySelector("h1")?.textContent?.includes("A complete résumé workbench"),
+    () => document.querySelector("#landing-title")?.textContent?.includes("Your next chapter."),
     { timeout: 15_000 },
   );
   await page.evaluate(async () => {

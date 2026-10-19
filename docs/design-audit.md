@@ -1,10 +1,10 @@
-# CloakResume design audit
+# CloakResume historical Workbench audit
 
 **Initial audit:** 22 July 2026 · **Inventory and geometry updated:** 14 September 2026
 
-See [the September feature audit](feature-audit-2026-09-14.md) and [release verification](release-audit-2026-09-14.md) for the current results. The July verification below remains a historical record.
+This July/September record describes the retired Workbench specification. `Aligned` in the source table means aligned to that historical specification, not Air. Current migration progress and evidence live in [the Air inventory](air/surface-inventory.md) and [Air validation](air/validation.md). The September feature audit and release verification remain historical feature baselines.
 
-**Design contract:** [CloakResume Design System 2.0](../DESIGN.md)
+**Current design contract:** [Cloakyard Air](../DESIGN.md)
 
 **Runtime tokens:** [tokens.css](../tokens.css)
 
@@ -15,7 +15,7 @@ See [the September feature audit](feature-audit-2026-09-14.md) and [release veri
 All 73 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
-The active product chrome now follows the CloakPDF-family language with CloakResume
+The September product chrome followed the CloakPDF-family language with CloakResume
 Emerald `#047857`: Archivo and JetBrains Mono, cool paper, slate ink, one-pixel rules,
 6–8px geometry, solid overlays, restrained motion, and one 88rem content frame. A
 user-selected résumé colour is restricted to the rendered résumé and its document

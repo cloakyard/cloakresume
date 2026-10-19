@@ -24,7 +24,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <!-- Theme -->
-    <meta name="theme-color" content="#047857" />
+    <meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
 
     <!-- iOS PWA -->
@@ -109,6 +110,19 @@
     <title>CloakResume — A complete résumé workbench</title>
   </head>
   <body>
+    <noscript>
+      <link rel="stylesheet" href="/src/styles/air.css" />
+      <main class="air-page">
+        <div class="air-page-frame air-page-intro">
+          <h1>CloakResume needs JavaScript</h1>
+          <p class="air-page-lede">
+            Enable JavaScript to build and export a résumé in your browser. Your résumé content
+            stays on your device.
+          </p>
+          <a class="air-button" href="https://cloakyard.com">Explore Cloakyard</a>
+        </div>
+      </main>
+    </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

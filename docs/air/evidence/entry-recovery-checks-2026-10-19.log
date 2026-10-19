@@ -1,0 +1,245 @@
+== check.log ==
+pass: Formatting completed for checked files (1.9s)
+pass: Found no warnings, lint errors, or type errors in 125 files (683ms, 12 threads)
+
+
+== build.log ==
+$ tsc ⊘ cache disabled
+
+$ vp build ⊘ cache disabled
+transforming...
+✓ 2202 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                                              1.04 kB
+dist/assets/lora-vietnamese-700-normal-BHDzxyiD.woff2                  5.28 kB
+dist/assets/lora-vietnamese-600-normal-B_IFhWKN.woff2                  5.56 kB
+dist/index.html                                                        5.64 kB │ gzip:     1.89 kB
+dist/assets/lora-vietnamese-700-normal-DyKKCAD2.woff                   7.28 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2              7.42 kB
+dist/assets/lora-vietnamese-600-normal-BnEhOXH8.woff                   7.61 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2                8.00 kB
+dist/assets/lora-symbols-700-normal-zYsi5zvy.woff2                     9.39 kB
+dist/assets/lora-symbols-600-normal-DaMEG5Dn.woff2                     9.76 kB
+dist/assets/instrument-serif-latin-ext-400-normal-CFCUzsTy.woff        9.86 kB
+dist/assets/instrument-serif-latin-ext-400-italic-D7-lnxEk.woff       10.50 kB
+dist/assets/lora-symbols-700-normal-DaE8wqnc.woff                     11.27 kB
+dist/assets/lora-cyrillic-700-normal-CicHrsUU.woff2                   11.38 kB
+dist/assets/instrument-serif-latin-ext-400-normal-C2je3j2s.woff2      11.60 kB
+dist/assets/lora-symbols-600-normal-CURAubwP.woff                     11.71 kB
+dist/assets/lora-latin-ext-700-normal-DbHby4fw.woff2                  11.96 kB
+dist/assets/lora-cyrillic-600-normal-DuzuWObJ.woff2                   12.05 kB
+dist/assets/lora-latin-ext-600-normal-CURVZmIT.woff2                  12.27 kB
+dist/assets/instrument-serif-latin-ext-400-italic-C9HzH3YL.woff2      12.38 kB
+dist/assets/lora-cyrillic-ext-700-normal-CH2Ef3pd.woff2               12.60 kB
+dist/assets/lora-cyrillic-ext-600-normal-CYLe3Bq4.woff2               13.30 kB
+dist/assets/lora-cyrillic-700-normal-CoUvLzhc.woff                    13.97 kB
+dist/assets/lora-cyrillic-600-normal-j6UMqgXb.woff                    14.56 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2                 15.08 kB
+dist/assets/lora-latin-ext-700-normal-XBj10pPw.woff                   15.64 kB
+dist/assets/lora-latin-ext-600-normal-BX8pxmH4.woff                   15.96 kB
+dist/assets/lora-cyrillic-ext-700-normal-B20D6wuF.woff                15.99 kB
+dist/assets/lora-math-700-normal-BdgFUNlJ.woff2                       16.36 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2                16.51 kB
+dist/assets/lora-cyrillic-ext-600-normal-BobJ8QCm.woff                16.67 kB
+dist/assets/lora-math-600-normal-B9Wi-uy2.woff2                       16.92 kB
+dist/assets/instrument-serif-latin-400-normal-BVbkICAY.woff           18.33 kB
+dist/assets/instrument-serif-latin-400-italic-u__WvvIK.woff           19.26 kB
+dist/assets/lora-math-700-normal-JjB0YUk-.woff                        19.94 kB
+dist/assets/lora-math-600-normal-soY6uGQW.woff                        20.54 kB
+dist/assets/instrument-serif-latin-400-normal-DnYpCC2O.woff2          21.03 kB
+dist/assets/lora-latin-700-normal-BHK4Pzk4.woff2                      21.04 kB
+dist/assets/lora-latin-600-normal-B-3RcLOQ.woff2                      21.91 kB
+dist/assets/instrument-serif-latin-400-italic-DKMiL14s.woff2          22.12 kB
+dist/assets/lora-latin-700-normal-Yfa97ytg.woff                       25.94 kB
+dist/assets/lora-latin-600-normal-Dc3EneHn.woff                       26.81 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2                    29.40 kB
+dist/assets/harper_wasm_bg-BEyNQVrT.wasm                          16,164.07 kB │ gzip: 8,198.65 kB
+dist/assets/index-BjPYtK_f.css                                       134.74 kB │ gzip:    25.77 kB
+dist/assets/binary-B5Vj1QEH.js                                         0.17 kB │ gzip:     0.17 kB
+dist/assets/paginationAtoms-Dyb3tq1W.js                                0.42 kB │ gzip:     0.28 kB
+dist/assets/rolldown-runtime-CbXtAM7H.js                               0.58 kB │ gzip:     0.36 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js                        5.65 kB │ gzip:     2.20 kB
+dist/assets/react-DK6rpPfu.js                                          7.87 kB │ gzip:     3.00 kB
+dist/assets/AtsPlain-BL-cth4B.js                                       9.32 kB │ gzip:     2.17 kB
+dist/assets/AtsProfessional-CVu_6SDs.js                               10.60 kB │ gzip:     2.45 kB
+dist/assets/Ledger-DhP8Bb9m.js                                        10.75 kB │ gzip:     3.02 kB
+dist/assets/Minimalist-BFSBZPKs.js                                    10.96 kB │ gzip:     2.50 kB
+dist/assets/Academic-wA-GLxjg.js                                      11.33 kB │ gzip:     2.81 kB
+dist/assets/ClassicImpact-CS88weWA.js                                 12.64 kB │ gzip:     3.37 kB
+dist/assets/ExecutiveSerif-PL6pTtAQ.js                                12.94 kB │ gzip:     2.99 kB
+dist/assets/ModernMinimal-DCRaEncZ.js                                 12.99 kB │ gzip:     2.96 kB
+dist/assets/GradientHeader-BospQedq.js                                14.22 kB │ gzip:     3.30 kB
+dist/assets/CompactTimeline-BORIlxGD.js                               14.57 kB │ gzip:     3.31 kB
+dist/assets/Typographic-ClT4UNPG.js                                   15.83 kB │ gzip:     3.18 kB
+dist/assets/ClassicSidebar-B7hPFY-I.js                                15.90 kB │ gzip:     3.50 kB
+dist/assets/Monograph-4TCWXQEL.js                                     16.63 kB │ gzip:     3.51 kB
+dist/assets/Aurora-BZtugZuB.js                                        17.44 kB │ gzip:     3.81 kB
+dist/assets/Prism-wF9dQtIS.js                                         17.64 kB │ gzip:     3.72 kB
+dist/assets/Bauhaus-CSsrPtWy.js                                       17.84 kB │ gzip:     3.86 kB
+dist/assets/Horizon-CWY8tzM1.js                                       19.00 kB │ gzip:     3.92 kB
+dist/assets/purify.es-Bvo9QlJ8.js                                     28.08 kB │ gzip:    11.08 kB
+dist/assets/AtsReviewModal-DYDxx7ZA.js                                32.30 kB │ gzip:     9.91 kB
+dist/assets/BinaryModule-BmeyZWwZ-BJeRCG9f.js                         42.91 kB │ gzip:     8.19 kB
+dist/assets/dist-DYSTIoy2.js                                         129.96 kB │ gzip:    28.22 kB
+dist/assets/index.es-DMCCdtWq.js                                     151.41 kB │ gzip:    48.90 kB
+dist/assets/html2canvas-BM5yyqGY.js                                  199.49 kB │ gzip:    46.77 kB
+dist/assets/index-C7fZ2LEN.js                                        496.81 kB │ gzip:   156.23 kB
+dist/assets/pdfExport-pmiNg0cF.js                                    614.76 kB │ gzip:   196.13 kB
+dist/assets/air-light-shader-VlzniAjj.js                           1,261.69 kB │ gzip:   294.30 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 671ms
+
+PWA v2.0.0
+mode      generateSW
+precache  72 entries (2453.30 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-271d3e69.js
+
+---
+vp run: 0/2 cache hit (0%). (Run `vp run --last-details` for full details)
+
+
+== production-tests.log ==
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+
+ Test Files  8 passed (8)
+      Tests  288 passed (288)
+   Start at  14:02:37
+   Duration  335.25s (tests 100%)
+
+
+
+== browser.log ==
+Checking 1920x1080 light 16px
+Checking 1920x1080 light 32px
+Checking 1920x1080 dark 16px
+Checking 1920x1080 dark 32px
+Checking 1440x900 light 16px
+Checking 1440x900 light 32px
+Checking 1440x900 dark 16px
+Checking 1440x900 dark 32px
+Checking 1280x800 light 16px
+Checking 1280x800 light 32px
+Checking 1280x800 dark 16px
+Checking 1280x800 dark 32px
+Checking 1024x768 light 16px
+Checking 1024x768 light 32px
+Checking 1024x768 dark 16px
+Checking 1024x768 dark 32px
+Checking 1023x768 light 16px
+Checking 1023x768 light 32px
+Checking 1023x768 dark 16px
+Checking 1023x768 dark 32px
+Checking 864x900 light 16px
+Checking 864x900 light 32px
+Checking 864x900 dark 16px
+Checking 864x900 dark 32px
+Checking 863x900 light 16px
+Checking 863x900 light 32px
+Checking 863x900 dark 16px
+Checking 863x900 dark 32px
+Checking 820x1180 light 16px
+Checking 820x1180 light 32px
+Checking 820x1180 dark 16px
+Checking 820x1180 dark 32px
+Checking 768x1024 light 16px
+Checking 768x1024 light 32px
+Checking 768x1024 dark 16px
+Checking 768x1024 dark 32px
+Checking 640x800 light 16px
+Checking 640x800 light 32px
+Checking 640x800 dark 16px
+Checking 640x800 dark 32px
+Checking 639x800 light 16px
+Checking 639x800 light 32px
+Checking 639x800 dark 16px
+Checking 639x800 dark 32px
+Checking 430x932 light 16px
+Checking 430x932 light 32px
+Checking 430x932 dark 16px
+Checking 430x932 dark 32px
+Checking 390x844 light 16px
+Checking 390x844 light 32px
+Checking 390x844 dark 16px
+Checking 390x844 dark 32px
+Checking 375x667 light 16px
+Checking 375x667 light 32px
+Checking 375x667 dark 16px
+Checking 375x667 dark 32px
+Checking 360x800 light 16px
+Checking 360x800 light 32px
+Checking 360x800 dark 16px
+Checking 360x800 dark 32px
+Checking 320x568 light 16px
+Checking 320x568 light 32px
+Checking 320x568 dark 16px
+Checking 320x568 dark 32px
+Checking 844x390 light 16px
+Checking 844x390 light 32px
+Checking 844x390 dark 16px
+Checking 844x390 dark 32px
+Checking 667x375 light 16px
+Checking 667x375 light 32px
+Checking 667x375 dark 16px
+Checking 667x375 dark 32px
+PASS 341 layouts, 14 journeys; no script errors or foreign requests
+
+
+== details.log ==
+PASS 124 contrast pairs; light {
+  reduced: { lightState: 'reduced', lightFrames: '0', lightFirstDraw: '0.0' },
+  normal: {
+    lightState: 'idle',
+    lightFrames: '1',
+    lightFirstDraw: '91.7',
+    lightReady: 'true'
+  },
+  stopped: true,
+  offscreen: { lightState: 'offscreen', lightFrames: '1', lightFirstDraw: '91.7' },
+  editorUnmount: true
+}
+
+
+== design.log ==
+Air contract and 77 inventory records are valid. Runtime conformance is audited separately.
+
+
+== portability.log ==
+{
+  "product": "cloakresume",
+  "checks": [
+    "isolated bundle passes with no dependencies or sibling files",
+    "missing light lifecycle hash rejected",
+    "altered light lifecycle rejected",
+    "unsynchronized canonical source rejected when present",
+    "bundle paired with a different contract rejected",
+    "mismatched document version rejected",
+    "missing motion hash rejected",
+    "altered motion module rejected",
+    "altered colour math rejected",
+    "missing overlay bundle hash rejected",
+    "altered overlay module rejected",
+    "missing reading/recovery behavior hash rejected",
+    "altered reading page rejected",
+    "missing file lifecycle behavior hash rejected",
+    "altered file study rejected",
+    "altered collection study rejected",
+    "missing manifest rejected",
+    "restored bundle passes"
+  ],
+  "files": 24,
+  "fixture": null
+}
+
+
+== sync.log ==
+Verified six portable Air specifications (bb90f52e0b0a).
