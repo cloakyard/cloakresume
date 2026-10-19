@@ -203,12 +203,6 @@ button:not(.absolute):active:not(:disabled) {
   cursor: not-allowed;
 }
 
-.sub-card {
-  border-color: var(--line);
-  border-radius: var(--radius-card);
-  box-shadow: none;
-}
-
 .cr-field-label {
   color: var(--ink-4);
   font-family: var(--font-mono);
@@ -266,11 +260,6 @@ button:not(.absolute):active:not(:disabled) {
   transition-property: color, background-color, border-color, transform;
   transition-duration: var(--duration-fast);
   transition-timing-function: var(--ease-standard);
-}
-
-.cr-drag-item {
-  transform-origin: center;
-  transition-timing-function: var(--ease-in-out);
 }
 
 .cr-drag-item[data-dragging="true"] {

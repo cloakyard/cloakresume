@@ -270,3 +270,27 @@ Next is repeated-entry/bullet chrome and identity/focus/reorder/removal. Contact
 select/date/logo/wheel, hint popups, review/templates/export/PWA/static404 and actual
 preview assets remain partial. Physical keyboard/touch/IME, spoken assistive and
 shader hardware gates remain open. IMG stays last and parked.
+
+## 2026-10-19 — Air repeated writing entries
+
+Open entry headings, contextual 44px actions, Add/empty guidance and full-width
+bullets now use Air. One removal owner replaces duplicate confirmation state.
+Stable UI-only bullet keys retain duplicate-string identity and selection; guarded
+move boundaries keep focus. Safari pointer actions explicitly focus their button.
+Escape, survivor/Add recovery, nested drag, external text drop and saved data pass.
+Live announcements are contained by their list so enlarged phone panes cannot
+scroll a hidden parent blank. Confirm is visible beside the active action.
+
+640 populated/confirmation layouts, 240 empty layouts, 37 contrast pairs, forced
+colours/reduced motion, Safari and Firefox actual 200% pass. The full serial
+production suite passes **297/297 in eight files, 361.26s, zero skips**
+(117 editor; 34 template/paper cases, 17 × two papers × five fixtures). Check,
+build/72 precache, 78-source inventory, 18 portability and exact family sync pass.
+No dependency, template/PDF/font/schema/data source change. Old sub-card CSS,
+compact/stack flags, duplicate bullet markup and removal state are removed.
+
+Evidence: `evidence/repeated-entries-2026-10-19.json`, matching checks log and six
+PNGs; full local captures and failure diagnostics in `/tmp/cloakresume-air-entries/`.
+Contact/select/date/logo/wheel/hint and other section/review/export/PWA/asset work
+remain open, as do physical touch/IME/assistive/hardware gates. Native tabs closed
+and Firefox zoom restored. Local commits only; IMG remains last.

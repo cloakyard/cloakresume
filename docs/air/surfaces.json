@@ -145,22 +145,23 @@
       "path": "src/components/DragList.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
       "viewports": [
-        "1440x900 light/dark fine",
-        "1280x800 light/dark fine",
-        "768x1024 light/dark coarse",
-        "390x844 light/dark coarse"
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
       ],
-      "evidence": [
-        "docs/air/editor-audit.md",
-        "docs/air/editor-panel-audit.json",
-        "docs/air/editor-mobile-audit.json",
-        "docs/air/editor-layout-audit.json"
-      ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
     },
     {
       "path": "src/components/Editor.tsx",
@@ -632,7 +633,29 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
+    },
+    {
+      "path": "src/components/editor/BulletList.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
+      "viewports": [
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
+      ],
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
     },
     {
       "path": "src/components/editor/CertificationsSection.tsx",
@@ -653,7 +676,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/ContactSection.tsx",
@@ -674,7 +697,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/CustomSection.tsx",
@@ -696,7 +719,7 @@
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/writing-fields-2026-10-19.json"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/EducationSection.tsx",
@@ -717,7 +740,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/ExperienceSection.tsx",
@@ -739,7 +762,7 @@
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/writing-fields-2026-10-19.json"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/InterestsSection.tsx",
@@ -760,7 +783,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/JdSection.tsx",
@@ -781,7 +804,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/LanguagesSection.tsx",
@@ -802,7 +825,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/ProfileSection.tsx",
@@ -824,7 +847,7 @@
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/writing-fields-2026-10-19.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/ProjectsSection.tsx",
@@ -846,7 +869,7 @@
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/writing-fields-2026-10-19.json"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/SkillsSection.tsx",
@@ -867,7 +890,7 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/StatsSection.tsx",
@@ -888,28 +911,29 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
     },
     {
       "path": "src/components/editor/shared.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
       "viewports": [
-        "1440x900 light/dark fine",
-        "1280x800 light/dark fine",
-        "768x1024 light/dark coarse",
-        "390x844 light/dark coarse"
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
       ],
-      "evidence": [
-        "docs/air/editor-audit.md",
-        "docs/air/editor-panel-audit.json",
-        "docs/air/editor-mobile-audit.json",
-        "docs/air/editor-layout-audit.json"
-      ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present."
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
     },
     {
       "path": "src/components/fields.tsx",

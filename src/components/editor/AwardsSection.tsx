@@ -6,7 +6,7 @@ import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -37,6 +37,7 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
           <DragItem
             key={a.id}
             index={i}
+            label={`award ${i + 1}`}
             onDelete={() =>
               patch(
                 "awards",
@@ -44,19 +45,14 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn, moveBtns) => (
-              <div className="sub-card mb-2.5">
-                <SubCardHead
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="resume-entry">
+                <EntryHeading
                   index={i}
                   prefix="Award"
                   drag={handle}
                   moveBtns={moveBtns}
-                  onDelete={() =>
-                    patch(
-                      "awards",
-                      resume.awards.filter((_, j) => j !== i),
-                    )
-                  }
+                  deleteButton={deleteBtn}
                 />
                 <div className="cr-stack">
                   <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-3">
@@ -95,9 +91,7 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
           </DragItem>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addAward}>Add award</AddButton>
-      </div>
+      <AddButton onClick={addAward}>Add award</AddButton>
     </>
   );
 }

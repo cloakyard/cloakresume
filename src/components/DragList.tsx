@@ -1,239 +1,266 @@
-/**
- * Drag-and-drop reordering primitives.
- *
- * <DragList> owns the drag/over state for a list of items and wires
- * each <DragItem> child so that grabbing its handle moves the item to
- * wherever it's dropped. Uses HTML5 drag-and-drop — no external lib.
- *
- * Only the grip is draggable. The row itself is the drop target, so
- * text selection inside inputs keeps working normally. Up/down arrow
- * buttons are exposed separately from the grip so sections can place
- * the drag handle on the left and the tap-to-nudge arrows on the right
- * — useful on touch devices where drag across a scrolling viewport is
- * awkward.
- */
-
+/** Local reordering with a grip, keyboard alternatives and deliberate focus recovery. */
 import {
   createContext,
   useCallback,
   useContext,
   useEffect,
+  useId,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
-import { Check, ChevronDown, ChevronUp, GripVertical, Trash2 } from "lucide-react";
+import { ChevronDown, ChevronUp, GripVertical, Trash2 } from "lucide-react";
 import { moveItem } from "../utils/arrayMove.ts";
 
+function rows(list: HTMLElement | null) {
+  return list
+    ? [...list.children].filter(
+        (el): el is HTMLElement =>
+          el instanceof HTMLElement && el.classList.contains("cr-drag-item"),
+      )
+    : [];
+}
+function restoreControl(target: HTMLElement, selection: [number, number] | null) {
+  if (
+    !target.isConnected ||
+    (document.activeElement !== target && document.activeElement !== document.body)
+  )
+    return;
+  target.focus({ preventScroll: true });
+  if (selection && (target instanceof HTMLTextAreaElement || target instanceof HTMLInputElement))
+    target.setSelectionRange(...selection);
+  target.scrollIntoView({ block: "nearest", inline: "nearest" });
+}
 interface DragListContextValue {
   dragIndex: number | null;
   overIndex: number | null;
   setDragIndex: (i: number | null) => void;
   setOverIndex: (i: number | null) => void;
   commitMove: (from: number, to: number) => void;
+  remove: (index: number, onDelete: () => void) => void;
   total: number;
 }
-
 const DragListContext = createContext<DragListContextValue | null>(null);
 
-interface DragListProps<T> {
+export function DragList<T>({
+  items,
+  onReorder,
+  children,
+  className = "",
+}: {
   items: readonly T[];
   onReorder: (next: T[]) => void;
   children: ReactNode;
-}
-
-export function DragList<T>({ items, onReorder, children }: DragListProps<T>) {
+  className?: string;
+}) {
   const [dragIndex, setDragIndex] = useState<number | null>(null);
   const [overIndex, setOverIndex] = useState<number | null>(null);
-  // Keep a live ref to the latest items so `commitMove` isn't stale
-  // during a drag gesture (which can outlive a single render).
+  const [announcement, setAnnouncement] = useState("");
+  const listRef = useRef<HTMLDivElement>(null);
   const itemsRef = useRef(items);
   itemsRef.current = items;
-
   const commitMove = useCallback(
     (from: number, to: number) => {
       const next = moveItem(itemsRef.current, from, to);
-      if (next !== itemsRef.current) onReorder(next as T[]);
+      if (next === itemsRef.current) return;
+      const before = rows(listRef.current),
+        active = document.activeElement as HTMLElement;
+      const restoreFocus = listRef.current?.contains(active);
+      const selection: [number, number] | null =
+        (active instanceof HTMLTextAreaElement || active instanceof HTMLInputElement) &&
+        active.selectionStart !== null
+          ? [active.selectionStart, active.selectionEnd ?? active.selectionStart]
+          : null;
+      const label = before[from]?.dataset.entryLabel ?? `Item ${from + 1}`;
+      onReorder(next as T[]);
+      setAnnouncement(`${label} moved to position ${to + 1} of ${next.length}.`);
+      // Every entry has a stable data/UI key, so focus follows its actual node.
+      if (restoreFocus) requestAnimationFrame(() => restoreControl(active, selection));
     },
     [onReorder],
   );
-
-  const value = useMemo<DragListContextValue>(
-    () => ({ dragIndex, overIndex, setDragIndex, setOverIndex, commitMove, total: items.length }),
-    [dragIndex, overIndex, commitMove, items.length],
+  const remove = useCallback((index: number, onDelete: () => void) => {
+    const row = rows(listRef.current)[index];
+    const recovery = row?.closest(".resume-entry") ?? row?.closest(".resume-section-body");
+    const label = row?.dataset.entryLabel ?? `Item ${index + 1}`;
+    onDelete();
+    setAnnouncement(`${label} removed.`);
+    requestAnimationFrame(() => {
+      const remaining = rows(listRef.current);
+      const next = remaining[Math.min(index, remaining.length - 1)];
+      const target =
+        next?.querySelector<HTMLElement>('input:not([type="file"]), textarea, select') ??
+        recovery?.querySelector<HTMLElement>(".resume-add-bullet, .resume-add-action");
+      target?.focus({ preventScroll: true });
+      target?.scrollIntoView({ block: "nearest", inline: "nearest" });
+    });
+  }, []);
+  const value = useMemo(
+    () => ({
+      dragIndex,
+      overIndex,
+      setDragIndex,
+      setOverIndex,
+      commitMove,
+      remove,
+      total: items.length,
+    }),
+    [dragIndex, overIndex, commitMove, remove, items.length],
   );
-
-  return <DragListContext.Provider value={value}>{children}</DragListContext.Provider>;
+  return (
+    <DragListContext.Provider value={value}>
+      <div ref={listRef} className={`resume-entry-list ${className}`}>
+        {children}
+        <span className="sr-only" role="status">
+          {announcement}
+        </span>
+      </div>
+    </DragListContext.Provider>
+  );
 }
 
-function useDragList() {
-  const ctx = useContext(DragListContext);
-  if (!ctx) throw new Error("DragItem must be used inside a <DragList>.");
-  return ctx;
-}
-
-interface DragItemProps {
-  index: number;
-  onDelete: () => void;
-  /**
-   * Caller-provided wrapper so the item renders with its own border/layout.
-   * `handle` is the draggable grip, `deleteBtn` is the trash button, and
-   * `moveBtns` is a separate up/down tap cluster — sections typically put
-   * `handle` on the left and `moveBtns` near the delete button on the right.
-   */
-  children: (handle: ReactNode, deleteBtn: ReactNode, moveBtns: ReactNode) => ReactNode;
-  /** Smaller grip + delete — for bullet rows inside a larger card. */
-  compact?: boolean;
-  /** Stack up/down as a vertical column — pairs well with a vertical delete to free horizontal content width. */
-  stackMoves?: boolean;
-}
-
-/**
- * DragItem renders via a render-prop so the caller decides how the
- * handle and delete button are placed inside their row. That avoids
- * forcing a uniform chrome on every list item.
- */
 export function DragItem({
   index,
+  label,
   onDelete,
   children,
-  compact = false,
-  stackMoves = false,
-}: DragItemProps) {
-  const ctx = useDragList();
+}: {
+  index: number;
+  label: string;
+  onDelete: () => void;
+  children: (handle: ReactNode, deleteBtn: ReactNode, moveBtns: ReactNode) => ReactNode;
+}) {
+  const ctx = useContext(DragListContext);
+  if (!ctx) throw new Error("DragItem must be used inside a <DragList>.");
   const rowRef = useRef<HTMLDivElement>(null);
+  const confirmationId = useId();
   const [pendingDelete, setPendingDelete] = useState(false);
-  const isDragging = ctx.dragIndex === index;
-  const isOver = ctx.overIndex === index && ctx.dragIndex !== null && ctx.dragIndex !== index;
-
-  const iconSize = compact ? "w-3.5 h-3.5" : "w-4 h-4";
-  const arrowIconSize = compact ? "w-3 h-3" : "w-3.5 h-3.5";
-  const targetClass = "min-w-11 min-h-11 md:min-w-10 md:min-h-10";
-  const arrowBtnClass = `${targetClass} inline-flex items-center justify-center rounded-md text-(--ink-5) hover:text-(--brand) hover:bg-(--brand-50) transition-colors disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent disabled:hover:text-(--ink-5)`;
-  const isFirst = index === 0;
-  const isLast = index === ctx.total - 1;
-
   useEffect(() => {
     if (!pendingDelete) return;
-    const timeout = window.setTimeout(() => setPendingDelete(false), 4000);
-    return () => window.clearTimeout(timeout);
+    const timer = window.setTimeout(() => setPendingDelete(false), 4000);
+    return () => window.clearTimeout(timer);
   }, [pendingDelete]);
-
   const handle = (
     <button
       type="button"
       draggable
+      className="air-icon-button air-button--quiet resume-drag-handle"
+      aria-label={`Drag to reorder ${label}`}
+      title={`Drag to reorder ${label}`}
       onDragStart={(e) => {
+        e.stopPropagation();
+        e.currentTarget.focus({ preventScroll: true });
         ctx.setDragIndex(index);
         e.dataTransfer.effectAllowed = "move";
-        // Use the whole row as the drag image so users see the card they're
-        // moving, not just the grip handle.
         const row = rowRef.current;
         if (row) {
           const rect = row.getBoundingClientRect();
           e.dataTransfer.setDragImage(row, e.clientX - rect.left, e.clientY - rect.top);
         }
-        try {
-          e.dataTransfer.setData("text/plain", String(index));
-        } catch {
-          // Some browsers require some data to be set — ignore failures.
-        }
+        e.dataTransfer.setData("text/plain", String(index));
       }}
-      onDragEnd={() => {
+      onDragEnd={(e) => {
+        e.stopPropagation();
         ctx.setDragIndex(null);
         ctx.setOverIndex(null);
       }}
-      title="Drag to reorder"
-      aria-label="Drag to reorder"
-      className={`${targetClass} inline-flex items-center justify-center rounded-md text-(--ink-5) hover:text-(--brand) hover:bg-(--brand-50) cursor-grab active:cursor-grabbing transition-colors select-none`}
     >
-      <GripVertical className={iconSize} />
+      <GripVertical size={18} strokeWidth={1.6} aria-hidden="true" />
     </button>
   );
-
   const moveBtns = (
-    <span
-      className={
-        stackMoves ? "inline-flex flex-col items-center gap-0" : "inline-flex items-center gap-0.5"
-      }
-    >
+    <span className="resume-move-actions">
       <button
         type="button"
-        onClick={() => ctx.commitMove(index, index - 1)}
-        disabled={isFirst}
-        aria-label="Move up"
-        title="Move up"
-        className={arrowBtnClass}
+        className="air-icon-button air-button--quiet"
+        aria-disabled={index === 0}
+        aria-label={`Move up ${label}`}
+        title={`Move up ${label}`}
+        onClick={(e) => {
+          e.currentTarget.focus({ preventScroll: true });
+          if (index > 0) ctx.commitMove(index, index - 1);
+        }}
       >
-        <ChevronUp className={arrowIconSize} />
+        <ChevronUp size={18} strokeWidth={1.6} aria-hidden="true" />
       </button>
       <button
         type="button"
-        onClick={() => ctx.commitMove(index, index + 1)}
-        disabled={isLast}
-        aria-label="Move down"
-        title="Move down"
-        className={arrowBtnClass}
+        className="air-icon-button air-button--quiet"
+        aria-disabled={index === ctx.total - 1}
+        aria-label={`Move down ${label}`}
+        title={`Move down ${label}`}
+        onClick={(e) => {
+          e.currentTarget.focus({ preventScroll: true });
+          if (index < ctx.total - 1) ctx.commitMove(index, index + 1);
+        }}
       >
-        <ChevronDown className={arrowIconSize} />
+        <ChevronDown size={18} strokeWidth={1.6} aria-hidden="true" />
       </button>
     </span>
   );
-
   const deleteBtn = (
     <button
       type="button"
-      onClick={() => {
+      className={
+        pendingDelete ? "air-button air-button--danger" : "air-icon-button air-button--quiet"
+      }
+      aria-label={pendingDelete ? `Confirm removal of ${label}` : `Remove ${label}`}
+      title={pendingDelete ? `Press again to remove ${label}` : `Remove ${label}`}
+      aria-describedby={pendingDelete ? confirmationId : undefined}
+      onClick={(e) => {
+        e.currentTarget.focus({ preventScroll: true });
         if (pendingDelete) {
-          onDelete();
+          ctx.remove(index, onDelete);
           setPendingDelete(false);
-          return;
+        } else setPendingDelete(true);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === "Escape") {
+          e.stopPropagation();
+          setPendingDelete(false);
         }
-        setPendingDelete(true);
       }}
-      onKeyDown={(event) => {
-        if (event.key === "Escape") setPendingDelete(false);
-      }}
-      aria-label={pendingDelete ? "Confirm removal" : "Remove"}
-      title={pendingDelete ? "Press again to confirm removal" : "Remove"}
-      className={`${targetClass} inline-flex items-center justify-center rounded-md transition-colors ${
-        pendingDelete
-          ? "text-(--color-status-danger) bg-(--color-status-danger-soft)"
-          : "text-(--ink-5) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft)"
-      }`}
     >
-      {pendingDelete ? <Check className={iconSize} /> : <Trash2 className={iconSize} />}
+      {pendingDelete ? "Confirm" : <Trash2 size={18} strokeWidth={1.6} aria-hidden="true" />}
     </button>
   );
-
   return (
     <div
       ref={rowRef}
+      className="cr-drag-item"
+      data-entry-label={label}
+      data-dragging={ctx.dragIndex === index || undefined}
+      data-drop-target={
+        (ctx.overIndex === index && ctx.dragIndex !== null && ctx.dragIndex !== index) || undefined
+      }
       onDragOver={(e) => {
         if (ctx.dragIndex === null) return;
         e.preventDefault();
+        e.stopPropagation();
         e.dataTransfer.dropEffect = "move";
-        if (ctx.overIndex !== index) ctx.setOverIndex(index);
+        ctx.setOverIndex(index);
       }}
-      onDragLeave={() => {
-        if (ctx.overIndex === index) ctx.setOverIndex(null);
+      onDragLeave={(e) => {
+        if (ctx.dragIndex === null) return;
+        e.stopPropagation();
+        if (!e.currentTarget.contains(e.relatedTarget as Node)) ctx.setOverIndex(null);
       }}
       onDrop={(e) => {
+        if (ctx.dragIndex === null) return;
         e.preventDefault();
-        if (ctx.dragIndex !== null && ctx.dragIndex !== index) {
-          ctx.commitMove(ctx.dragIndex, index);
-        }
+        e.stopPropagation();
+        ctx.commitMove(ctx.dragIndex, index);
         ctx.setDragIndex(null);
         ctx.setOverIndex(null);
       }}
-      data-dragging={isDragging ? "true" : undefined}
-      data-drop-target={isOver ? "true" : undefined}
-      className={`cr-drag-item transition-[opacity,transform] duration-160 ${
-        isDragging ? "opacity-40" : ""
-      } ${isOver ? "ring-2 ring-(--brand) ring-offset-2 ring-offset-(--surface-2) rounded-md" : ""}`}
     >
       {children(handle, deleteBtn, moveBtns)}
+      {pendingDelete && (
+        <p id={confirmationId} className="air-help resume-remove-confirm" role="status">
+          Remove {label}? Activate again to confirm, or press Escape to keep it.
+        </p>
+      )}
     </div>
   );
 }

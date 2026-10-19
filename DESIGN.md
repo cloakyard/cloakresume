@@ -1090,8 +1090,20 @@ journeys across all apps; it is not inferred from the pilot alone.
 - A format scope retires removed textarea handlers and clears its active field;
   stale toolbar actions cannot resurrect removed text. Pointer and keyboard
   formatting preserve the current selection. Selected formatting is neutral.
-- `SelectField` and contact/date/logo controls, writing-hint popup interiors and
-  repeated-entry chrome remain partial. Do not infer their adoption from the
-  shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
+- `SelectField` and contact/date/logo controls and writing-hint popup interiors
+  remain partial. Do not infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
   consumers across all viewport classes and text sizes; native IME/touch and
   assistive speech remain separate acceptance gates.
+
+- Repeated entries use open headings, contextual 44px reorder/remove controls,
+  neutral Add actions and plain empty guidance. Nested bullets place their actions
+  above the full-width writing field. Shared `BulletList` retains UI-only stable
+  identities while saved bullets remain strings, including duplicates.
+- Move boundaries use guarded `aria-disabled` actions so focus survives a move.
+  Pointer activation explicitly focuses its action for Safari; keyboard alternatives
+  and polite position announcements remain available. A single removal confirmation
+  follows its entry through moves; Escape cancels, and removal focuses a surviving
+  field or the appropriate Add action. External text drops remain native.
+- `node scripts/test-air-repeated-entries.mjs` checks repeated controls and removal
+  confirmation across all viewport classes/themes/text sizes. Individual section
+  date/logo/select/contact/review widgets remain separate migration gates.

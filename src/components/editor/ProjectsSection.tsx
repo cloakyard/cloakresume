@@ -1,14 +1,15 @@
 /** Projects with description, role bullets, and stack chips. */
 
-import { Folder, Plus } from "lucide-react";
+import { Folder } from "lucide-react";
 import { CsvField, TextField } from "../fields.tsx";
 import { RichTextArea } from "../RichTextArea.tsx";
 import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
+import { BulletList } from "./BulletList.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -44,6 +45,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
             <FormatScope key={p.id}>
               <DragItem
                 index={i}
+                label={`project ${i + 1}`}
                 onDelete={() =>
                   patch(
                     "projects",
@@ -51,19 +53,14 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                   )
                 }
               >
-                {(handle, _deleteBtn, moveBtns) => (
-                  <div className="sub-card mb-2.5">
-                    <SubCardHead
+                {(handle, deleteBtn, moveBtns) => (
+                  <div className="resume-entry">
+                    <EntryHeading
                       index={i}
                       prefix="Project"
                       drag={handle}
                       moveBtns={moveBtns}
-                      onDelete={() =>
-                        patch(
-                          "projects",
-                          resume.projects.filter((_, j) => j !== i),
-                        )
-                      }
+                      deleteButton={deleteBtn}
                     />
                     <div className="cr-stack">
                       <TextField
@@ -92,85 +89,19 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                           }}
                         />
                       </div>
-                      <div className="cr-field">
-                        <div className="cr-field-row">
-                          <span className="air-label">Role (optional)</span>
-                          <div className="flex min-w-0 flex-wrap items-center gap-1">
-                            <FormatToolbar />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                const next = [...resume.projects];
-                                next[i] = { ...p, roles: [...roles, ""] };
-                                patch("projects", next);
-                              }}
-                              className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
-                            >
-                              <Plus className="w-3 h-3" /> Bullet
-                            </button>
-                          </div>
-                        </div>
-                        {roles.length === 0 ? (
-                          <p className="text-sm text-(--ink-4) leading-[1.5]">
-                            Add bullets to describe your ownership, responsibilities, or impact on
-                            this project.
-                          </p>
-                        ) : (
-                          <DragList
-                            items={roles}
-                            onReorder={(nextRoles) => {
-                              const nextProjects = [...resume.projects];
-                              nextProjects[i] = { ...p, roles: nextRoles };
-                              patch("projects", nextProjects);
-                            }}
-                          >
-                            {roles.map((r, ri) => (
-                              <DragItem
-                                // oxlint-disable-next-line jsx/no-array-index-key
-                                key={`${p.id}-role-${ri}`}
-                                index={ri}
-                                compact
-                                stackMoves
-                                onDelete={() => {
-                                  const next = [...resume.projects];
-                                  next[i] = {
-                                    ...p,
-                                    roles: roles.filter((_, rj) => rj !== ri),
-                                  };
-                                  patch("projects", next);
-                                }}
-                              >
-                                {(rHandle, rDelete, rMove) => (
-                                  <div
-                                    className={`flex gap-1.5 items-start ${ri > 0 ? "mt-2.5" : ""}`}
-                                  >
-                                    <div className="mt-2">{rHandle}</div>
-                                    <div className="flex-1 min-w-0">
-                                      <RichTextArea
-                                        ariaLabel={`Project role bullet ${ri + 1}`}
-                                        fieldId={`projects.${i}.roles.${ri}`}
-                                        value={r}
-                                        rows={3}
-                                        onChange={(v) => {
-                                          const next = [...resume.projects];
-                                          const nextRoles = [...roles];
-                                          nextRoles[ri] = v;
-                                          next[i] = { ...p, roles: nextRoles };
-                                          patch("projects", next);
-                                        }}
-                                      />
-                                    </div>
-                                    <div className="mt-2 flex flex-col items-center gap-0">
-                                      {rMove}
-                                      {rDelete}
-                                    </div>
-                                  </div>
-                                )}
-                              </DragItem>
-                            ))}
-                          </DragList>
-                        )}
-                      </div>
+                      <BulletList
+                        values={roles}
+                        itemLabel={`project ${i + 1}`}
+                        ariaLabel="Project role bullet"
+                        fieldPrefix={`projects.${i}.roles`}
+                        label="Role (optional)"
+                        emptyText="Add bullets to describe your ownership, responsibilities, or impact on this project."
+                        onChange={(roles) => {
+                          const next = [...resume.projects];
+                          next[i] = { ...p, roles };
+                          patch("projects", next);
+                        }}
+                      />
                       <CsvField
                         label="Stack (comma-separated)"
                         value={p.stack}
@@ -188,9 +119,7 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
           );
         })}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addProject}>Add project</AddButton>
-      </div>
+      <AddButton onClick={addProject}>Add project</AddButton>
     </>
   );
 }

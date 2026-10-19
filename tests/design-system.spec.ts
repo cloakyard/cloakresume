@@ -510,17 +510,16 @@ describe("CloakResume family contract", () => {
     expect(preview).toContain('data-template-ready={readyTemplate === TemplateComponent ? "true"');
     expect(`${indexCss}\n${preview}`).not.toContain("surface-glass");
 
-    const subCardRule = indexCss.match(/\.sub-card\s*\{([\s\S]*?)\}/)?.[1] ?? "";
+    const entryCss = await source("src/styles/air-editor.css");
     expect(indexCss).not.toMatch(/\.acc(?:[-.]|\s*\{)/);
-    expect(subCardRule).toContain("border border-(--line)");
-    expect(subCardRule).toContain("bg-(--surface)");
-    expect(subCardRule).toContain("p-3");
-    expect(subCardRule).not.toContain("rounded-md");
-    expect(subCardRule).not.toContain("bg-(--surface-2)");
+    expect(indexCss).not.toContain(".sub-card");
+    expect(entryCss).toContain(".resume-entry-list");
+    expect(emptyState).toContain("EntryHeading");
+    expect(emptyState).not.toContain("deleteArmed");
 
     expect(panel).toContain("<h2");
     expect(fields).not.toContain("SectionCard");
-    expect(emptyState).toContain('<h3 className="m-0 mb-1.5');
+    expect(emptyState).toContain("<h3>{heading}</h3>");
     expect(projects).not.toContain("--c-muted");
 
     expect(app).toContain("fallback={<AtsReviewLoading open={atsOpen} />}");

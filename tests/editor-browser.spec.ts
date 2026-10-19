@@ -589,17 +589,18 @@ describe.skipIf(!existsSync(chromePath))(
           els.every((el) => !(el as HTMLButtonElement).disabled),
         ),
       ).toBe(true);
-      const remove = await page.$$('.cr-editor-panel button[aria-label="Remove"]');
+      const remove = await page.$$('.resume-bullet-list button[aria-label^="Remove "]');
       await remove[1].click();
-      await page.click('.cr-editor-panel button[aria-label="Confirm removal"]');
-      await page.waitForFunction(() =>
-        [...document.querySelectorAll('.cr-editor-panel [role="toolbar"] button')].every(
-          (el) => (el as HTMLButtonElement).disabled,
+      await page.click('.cr-editor-panel button[aria-label^="Confirm removal of "]');
+      await page.waitForFunction(
+        () =>
+          document.activeElement === document.querySelector('[data-field-id="custom.0.bullets.0"]'),
+      );
+      expect(
+        await page.$$eval(`${toolbar} button`, (els) =>
+          els.every((el) => !(el as HTMLButtonElement).disabled),
         ),
-      );
-      await page.$$eval(`${toolbar} button`, (els) =>
-        els.forEach((el) => (el as HTMLButtonElement).click()),
-      );
+      ).toBe(true);
       expect((await savedResume()).custom[0].bullets).toEqual(["Keep this"]);
       await page.$eval('[data-field-id="custom.0.bullets.0"]', (el) => {
         (el as HTMLTextAreaElement).focus();
@@ -951,7 +952,7 @@ describe.skipIf(!existsSync(chromePath))(
       ],
     ])(
       "adds, edits, reorders, and confirms deletion in %s",
-      async (label, key, initialAdd, nextAdd, field, first, second, prefix) => {
+      async (label, key, initialAdd, nextAdd, field, first, second) => {
         await openDraft();
         await page.click(`nav[aria-label="Resume sections"] button[aria-label="${label}"]`);
         await clickText(initialAdd, ".cr-editor-panel");
@@ -971,12 +972,14 @@ describe.skipIf(!existsSync(chromePath))(
           first,
           second,
         ]);
-        await page.click('.cr-editor-panel button[aria-label="Move down"]');
+        await page.click('.cr-editor-panel button[aria-label^="Move down "]');
         expect((await savedResume())[key].map((row: Record<string, string>) => row[field])).toEqual(
           [second, first],
         );
-        const remove = prefix ? `Delete ${prefix} 1` : "Remove";
-        const confirm = prefix ? `Confirm deletion of ${prefix} 1` : "Confirm removal";
+        const remove = await page.$eval('.cr-editor-panel button[aria-label^="Remove "]', (el) =>
+          el.getAttribute("aria-label")!,
+        );
+        const confirm = remove.replace(/^Remove /, "Confirm removal of ");
         await page.click(`.cr-editor-panel button[aria-label="${remove}"]`);
         expect((await savedResume())[key]).toHaveLength(2);
         await page.click(`.cr-editor-panel button[aria-label="${confirm}"]`);
@@ -985,6 +988,234 @@ describe.skipIf(!existsSync(chromePath))(
         );
       },
     );
+
+    it("keeps outer entry focus at a move boundary and announces the new position", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [
+            { id: "a", header: "First", bullets: ["One"] },
+            { id: "b", header: "Second", bullets: ["Two"] },
+          ],
+        },
+        { activeSection: "custom" },
+      );
+      await page.focus('button[aria-label="Move down section 1"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Move down section 2",
+      );
+      expect(
+        await page.$eval('button[aria-label="Move down section 2"]', (el) =>
+          el.getAttribute("aria-disabled"),
+        ),
+      ).toBe("true");
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "b",
+        "a",
+      ]);
+      expect(
+        await page.$eval(
+          '.resume-section-body > .resume-entry-list > [role="status"]',
+          (el) => el.textContent,
+        ),
+      ).toBe("section 1 moved to position 2 of 2.");
+      await page.keyboard.press("Enter");
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "b",
+        "a",
+      ]);
+      await page.focus('button[aria-label="Move up section 2"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Move up section 1",
+      );
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "a",
+        "b",
+      ]);
+    });
+
+    it("focuses entry actions when pointer activation has no browser focus default", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["First", "Second"] }] },
+        { activeSection: "custom" },
+      );
+      // Safari can dispatch a button click after blurring the field to BODY.
+      await page.$eval('button[aria-label="Move down section 1, bullet 1"]', (el) => {
+        (document.activeElement as HTMLElement)?.blur();
+        (el as HTMLButtonElement).click();
+      });
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") === "Move down section 1, bullet 2",
+      );
+      await page.$eval('button[aria-label="Remove section 1, bullet 2"]', (el) => {
+        (document.activeElement as HTMLElement)?.blur();
+        (el as HTMLButtonElement).click();
+      });
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") ===
+          "Confirm removal of section 1, bullet 2",
+      );
+      await page.keyboard.press("Escape");
+      expect((await savedResume()).custom[0].bullets).toEqual(["Second", "First"]);
+      expect(await page.$(".resume-remove-confirm")).toBeNull();
+    });
+
+    it("keeps duplicate bullets and their selected field identity through a move", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["Repeat", "Repeat"] }] },
+        { activeSection: "custom" },
+      );
+      const field = await page.$('[data-field-id="custom.0.bullets.0"]');
+      await field!.evaluate((el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).setSelectionRange(1, 4);
+      });
+      await page.focus('button[aria-label="Move down section 1, bullet 1"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") === "Move down section 1, bullet 2",
+      );
+      expect(
+        await field!.evaluate((el) => ({
+          connected: el.isConnected,
+          id: el.getAttribute("data-field-id"),
+          start: (el as HTMLTextAreaElement).selectionStart,
+          end: (el as HTMLTextAreaElement).selectionEnd,
+        })),
+      ).toEqual({ connected: true, id: "custom.0.bullets.1", start: 1, end: 4 });
+      await page.locator('button[aria-label="Bold (⌘B)"]').click();
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.1",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["Repeat", "R**epe**at"]);
+      await resumeEditing();
+      expect((await savedResume()).custom[0].bullets).toEqual(["Repeat", "R**epe**at"]);
+    });
+
+    it("keeps pending removal on the moved bullet and focuses the surviving field", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["First", "Second"] }] },
+        { activeSection: "custom" },
+      );
+      await page.click('button[aria-label="Remove section 1, bullet 1"]');
+      await page.click('button[aria-label="Move down section 1, bullet 1"]');
+      await page.click('button[aria-label="Confirm removal of section 1, bullet 2"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.0",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["Second"]);
+    });
+
+    it("cancels removal and recovers focus after the last bullet and entry", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [{ id: "a", header: "Writing", bullets: ["Keep until confirmed"] }],
+        },
+        { activeSection: "custom" },
+      );
+      const remove = 'button[aria-label="Remove section 1, bullet 1"]';
+      await page.click(remove);
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(remove);
+      expect((await savedResume()).custom[0].bullets).toEqual(["Keep until confirmed"]);
+      await page.click(remove);
+      await page.click('button[aria-label="Confirm removal of section 1, bullet 1"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Add bullet to section 1",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual([]);
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.0",
+      );
+      await page.keyboard.type("New bullet");
+      expect((await savedResume()).custom[0].bullets).toEqual(["New bullet"]);
+      await page.click('button[aria-label="Remove section 1"]');
+      await page.click('button[aria-label="Confirm removal of section 1"]');
+      await page.waitForFunction(
+        () => document.activeElement?.textContent?.trim() === "Add a section",
+      );
+      expect((await savedResume()).custom).toEqual([]);
+    });
+
+    it("contains live announcements inside the scrolling writing pane", async () => {
+      await page.evaluateOnNewDocument(() => {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.documentElement.style.fontSize = "32px";
+        });
+      });
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [
+            {
+              id: "a",
+              header: "Writing",
+              bullets: Array(8).fill("Long writing entry. ".repeat(10)),
+            },
+          ],
+        },
+        { activeSection: "custom" },
+        320,
+        true,
+      );
+      await page.setViewport({ width: 320, height: 568, hasTouch: true });
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+            ),
+          ),
+      );
+      await page.$eval(".resume-add-bullet", (el) => (el as HTMLButtonElement).click());
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.8",
+      );
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      expect(
+        await page.evaluate(() => {
+          const panel = document.querySelector<HTMLElement>(".cr-editor-panel")!;
+          const field = document.activeElement!.getBoundingClientRect(),
+            box = panel.getBoundingClientRect();
+          return {
+            parentScroll: panel.scrollTop,
+            windowScroll: scrollY,
+            fieldVisible: field.top >= box.top - 1 && field.bottom <= box.bottom + 1,
+            parentContains: panel.scrollHeight === panel.clientHeight,
+          };
+        }),
+      ).toEqual({ parentScroll: 0, windowScroll: 0, fieldVisible: true, parentContains: true });
+    });
+
+    it("leaves external text drops to the editable field", async () => {
+      await openDraft(resume, { activeSection: "custom" });
+      expect(
+        await page.$eval('[data-field-id="custom.0.bullets.0"]', (el) => {
+          const transfer = new DataTransfer();
+          transfer.setData("text/plain", "Dropped text");
+          const event = new DragEvent("drop", {
+            bubbles: true,
+            cancelable: true,
+            dataTransfer: transfer,
+          });
+          el.dispatchEvent(event);
+          return event.defaultPrevented;
+        }),
+      ).toBe(false);
+      expect((await savedResume()).custom[0].bullets).toEqual(resume.custom[0].bullets);
+    });
 
     it("drags a nested experience bullet without moving its parent role", async () => {
       await openDraft({
@@ -1145,7 +1376,9 @@ describe.skipIf(!existsSync(chromePath))(
       });
       await page.click('nav button[aria-label="Contact"]');
       await page.setViewport({ width: 320, height: 900 });
-      await page.waitForSelector('.cr-editor-panel button[aria-label="Remove"]', { visible: true });
+      await page.waitForSelector('.cr-editor-panel button[aria-label^="Remove "]', {
+        visible: true,
+      });
       const clipped = await page.evaluate(() => {
         const row = document
           .querySelector(".cr-editor-panel .cr-drag-item")!
@@ -1163,8 +1396,8 @@ describe.skipIf(!existsSync(chromePath))(
           .map((element) => element.getAttribute("aria-label"));
       });
       expect(clipped).toEqual([]);
-      await page.click('.cr-editor-panel button[aria-label="Remove"]');
-      await page.click('.cr-editor-panel button[aria-label="Confirm removal"]');
+      await page.click('.cr-editor-panel button[aria-label^="Remove "]');
+      await page.click('.cr-editor-panel button[aria-label^="Confirm removal of "]');
       expect((await savedResume()).contact).toEqual([]);
     });
 
@@ -1232,7 +1465,7 @@ describe.skipIf(!existsSync(chromePath))(
         for (const selector of [
           'select[aria-label="Contact kind"]',
           'input[aria-label="email contact value"]',
-          '.cr-editor-panel button[aria-label="Remove"]',
+          '.cr-editor-panel button[aria-label^="Remove "]',
         ]) {
           await page.keyboard.press("Tab");
           await page.$eval(selector, (element) => {
@@ -1267,7 +1500,17 @@ describe.skipIf(!existsSync(chromePath))(
               clipped,
             };
           });
-          expect(result.ring).toEqual(expectedRing);
+          const expected = selector.includes("button")
+            ? await page.evaluate(() => {
+                const probe = document.createElement("span");
+                probe.style.outline = "2px solid var(--air-accent)";
+                document.body.append(probe);
+                const outline = getComputedStyle(probe).outline;
+                probe.remove();
+                return { outline, offset: "2px", shadow: "none" };
+              })
+            : expectedRing;
+          expect(result.ring).toEqual(expected);
           expect(result.clipped).toEqual([]);
         }
         const input = 'input[aria-label="email contact value"]';

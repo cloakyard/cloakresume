@@ -80,7 +80,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
             <DragItem
               key={c.id}
               index={i}
-              compact
+              label={`${c.kind} contact ${i + 1}`}
               onDelete={() =>
                 patch(
                   "contact",
@@ -161,9 +161,7 @@ export function ContactSection({ resume, onChange }: SectionProps) {
           );
         })}
       </DragList>
-      <div className="pt-1">
-        <AddButton onClick={addContact}>Add contact</AddButton>
-      </div>
+      <AddButton onClick={addContact}>Add contact</AddButton>
     </div>
   );
 }

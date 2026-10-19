@@ -291,11 +291,6 @@
   .cr-field-row .cr-field-label {
     @apply mb-0;
   }
-
-  /* Sub-card — a single entry within a list section (e.g. one role). */
-  .sub-card {
-    @apply border border-(--line) bg-(--surface) p-3;
-  }
 }
 
 /* ────────────────────────────────────────────────────────────────

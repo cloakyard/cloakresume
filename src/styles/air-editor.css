@@ -391,3 +391,102 @@ textarea.resume-writing-field[data-resizable="false"] {
 .resume-format-toolbar .air-icon-button:active {
   transform: none;
 }
+
+/* Open repeated entries. Only the editable field owns a contour. */
+.resume-entry-list {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  min-width: 0;
+}
+.resume-entry,
+.resume-bullet-entry,
+.cr-drag-item {
+  min-width: 0;
+}
+.resume-entry-heading,
+.resume-entry-actions,
+.resume-writing-actions,
+.resume-move-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  min-width: 0;
+  gap: 4px;
+}
+.resume-entry-heading {
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.resume-entry-heading h3 {
+  flex: 1 1 auto;
+  margin: 0;
+  color: var(--air-ink);
+  font: 500 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-entry-heading > .air-label {
+  flex: 1 1 auto;
+  margin: 0;
+}
+.resume-entry-actions {
+  margin-left: auto;
+}
+.cr-drag-item .air-icon-button,
+.resume-add-bullet {
+  min-width: 44px;
+  min-height: 44px;
+}
+.resume-move-actions {
+  flex-wrap: nowrap;
+}
+.resume-drag-handle {
+  cursor: grab;
+  touch-action: auto;
+}
+.resume-drag-handle:active {
+  cursor: grabbing;
+}
+.cr-drag-item[data-dragging] {
+  opacity: 0.5;
+}
+.cr-drag-item[data-drop-target] {
+  outline: 2px solid var(--air-accent);
+  outline-offset: 3px;
+}
+.cr-drag-item .air-icon-button:active,
+.resume-add-bullet:active {
+  transform: none;
+}
+.resume-bullet-list {
+  gap: 12px;
+}
+.resume-bullet-entry .resume-entry-heading {
+  margin-bottom: 8px;
+}
+.resume-remove-confirm {
+  color: var(--air-danger);
+}
+.resume-add-row {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+.resume-empty-entry {
+  padding-block: 24px;
+  color: var(--air-ink-secondary);
+  font: 400 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-empty-entry > span svg {
+  width: 24px;
+  height: 24px;
+  stroke-width: 1.6;
+}
+.resume-empty-entry h3 {
+  margin: 12px 0 8px;
+  color: var(--air-ink);
+  font: 500 1.125rem/1.4 var(--air-font);
+}
+.resume-empty-entry p {
+  margin: 0 0 16px;
+}
