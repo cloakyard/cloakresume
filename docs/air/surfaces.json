@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.0.4",
+  "contractVersion": "1.0.5",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -101,7 +101,8 @@
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
         "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
-        "docs/air/link-arrows-2026-10-19.md"
+        "docs/air/link-arrows-2026-10-19.md",
+        "docs/air/hyperlinks-2026-10-19.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
     },
