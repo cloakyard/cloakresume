@@ -294,3 +294,24 @@ PNGs; full local captures and failure diagnostics in `/tmp/cloakresume-air-entri
 Contact/select/date/logo/wheel/hint and other section/review/export/PWA/asset work
 remain open, as do physical touch/IME/assistive/hardware gates. Native tabs closed
 and Firefox zoom restored. Local commits only; IMG remains last.
+
+## 2026-10-19 — Air contact and native selects
+
+Contact and Languages now use labelled Air fields and content-aware paired columns.
+The shared native select owns its arrow/options/selected check and browser/OS fallback;
+legacy contact grids, tiny uppercase type and duplicate select arrow are removed.
+All nine stored kind keys, values, browser semantics, validation and imported custom
+proficiency remain intact. No template/PDF/font/schema/data/dependency source change.
+
+128 field/popup layout cases, 20 Home/End/Escape journeys, 28 contrast pairs, invalid
+focus, forced colours/reduced motion, native Safari and Firefox actual 200% pass.
+Full serial production suite: **298/298 in eight files, 374.85s, zero skips**
+(118 editor; 34 template/paper cases, 17 × two papers × five fixtures). Check/build,
+78-source design, 18 portability and exact family sync pass. Entry JS gzip is
+152.57 kB (down 1.68); CSS gzip 25.34 kB (down .25); 73 precache entries.
+
+Evidence: `evidence/contact-selects-2026-10-19.json`, matching checks log and six
+PNGs; full local proof `/tmp/cloakresume-air-selects/`. Native tabs closed and
+Firefox zoom restored. Next: date/current-job controls, then logo/wheel, remaining
+sections/hints/review/library/export/PWA/static recovery and actual preview assets.
+Human/device gates remain open. Local commits only; IMG stays last.

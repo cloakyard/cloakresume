@@ -5,7 +5,6 @@
  * editor passes values down and receives changes through `onChange`.
  */
 
-import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
 
@@ -200,32 +199,24 @@ export function SelectField({
       <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
-      <div className="relative">
-        <select
-          id={inputId}
-          name={fieldName(label, name)}
-          autoComplete={autoComplete}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`cr-input appearance-none pr-9 cursor-pointer ${
-            value ? "" : "text-(--ink-5)"
-          }`}
-        >
-          <option value="" disabled>
-            {placeholder}
+      <select
+        id={inputId}
+        name={fieldName(label, name)}
+        autoComplete={autoComplete}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="air-field"
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
           </option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-          {isCustom && <option value={value}>{value}</option>}
-        </select>
-        <ChevronDown
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 w-4 h-4 text-(--ink-5)"
-        />
-      </div>
+        ))}
+        {isCustom && <option value={value}>{value}</option>}
+      </select>
     </div>
   );
 }

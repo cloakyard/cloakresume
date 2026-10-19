@@ -1090,8 +1090,8 @@ journeys across all apps; it is not inferred from the pilot alone.
 - A format scope retires removed textarea handlers and clears its active field;
   stale toolbar actions cannot resurrect removed text. Pointer and keyboard
   formatting preserve the current selection. Selected formatting is neutral.
-- `SelectField` and contact/date/logo controls and writing-hint popup interiors
-  remain partial. Do not infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
+- Date/logo controls and writing-hint popup interiors remain partial. Do not
+  infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
   consumers across all viewport classes and text sizes; native IME/touch and
   assistive speech remain separate acceptance gates.
 
@@ -1107,3 +1107,16 @@ journeys across all apps; it is not inferred from the pilot alone.
 - `node scripts/test-air-repeated-entries.mjs` checks repeated controls and removal
   confirmation across all viewport classes/themes/text sizes. Individual section
   date/logo/select/contact/review widgets remain separate migration gates.
+
+- Contact and Languages use labelled Air fields with content-aware paired columns.
+  Contact retains all nine saved kind keys, values, browser input/autofill semantics
+  and permissive validation. The value remains intact when its kind changes; an
+  invalid field keeps its associated error when the blue focus contour appears.
+- Native selects consume `select.air-field` directly, without the textarea layout
+  helper or a duplicate arrow. The shared customizable picker supplies Air options
+  where supported; native browser/OS fallback retains selection, typeahead and
+  dismissal. Imported custom proficiency values remain selected options until the
+  user chooses a replacement. No schema or output typography change.
+- `node scripts/test-air-contact-selects.mjs` checks all contact kinds, custom/empty
+  proficiency and opened pickers across all viewport classes/themes/text sizes.
+  Real software-keyboard and spoken assistive acceptance remain separate.

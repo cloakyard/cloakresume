@@ -1,23 +1,30 @@
 /** Contact: drag-orderable rows of {kind, value}. */
 
-import { AlertCircle, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
+import { useId } from "react";
 import type { ContactLink } from "../../types.ts";
-import { contactIcon } from "../../templates/shared.tsx";
 import { isValidEmail, isValidHttpUrl, isValidPhone } from "../../utils/validation.ts";
 import { DragList, DragItem } from "../DragList.tsx";
-import { AddButton, EmptyState, newId, usePatch, type SectionProps } from "./shared.tsx";
+import {
+  AddButton,
+  EmptyState,
+  EntryHeading,
+  newId,
+  usePatch,
+  type SectionProps,
+} from "./shared.tsx";
 
-const CONTACT_KINDS = [
-  "email",
-  "phone",
-  "location",
-  "website",
-  "linkedin",
-  "github",
-  "medium",
-  "twitter",
-  "other",
-] as const;
+const CONTACT_KINDS: Record<ContactLink["kind"], string> = {
+  email: "Email",
+  phone: "Phone",
+  location: "Location",
+  website: "Website",
+  linkedin: "LinkedIn",
+  github: "GitHub",
+  medium: "Medium",
+  twitter: "Twitter",
+  other: "Other",
+};
 
 /** Placeholder text shown in the empty value input for each contact kind. */
 const PLACEHOLDER_BY_KIND: Record<ContactLink["kind"], string> = {
@@ -54,6 +61,7 @@ function validateContact(kind: ContactLink["kind"], value: string): string | nul
 
 export function ContactSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
+  const fieldPrefix = useId();
   const addContact = () =>
     patch("contact", [...resume.contact, { id: newId("c"), kind: "website", value: "" }]);
 
@@ -71,11 +79,12 @@ export function ContactSection({ resume, onChange }: SectionProps) {
   }
 
   return (
-    <div className="@container/contacts space-y-2">
+    <>
       <DragList items={resume.contact} onReorder={(next) => patch("contact", next)}>
         {resume.contact.map((c, i) => {
           const issue = validateContact(c.kind, c.value);
-          const issueId = `contact-${c.id}-issue`;
+          const id = `${fieldPrefix}-${c.id}`;
+          const issueId = `${id}-issue`;
           return (
             <DragItem
               key={c.id}
@@ -89,72 +98,76 @@ export function ContactSection({ resume, onChange }: SectionProps) {
               }
             >
               {(handle, deleteBtn, moveBtns) => (
-                <div className="grid grid-cols-[minmax(0,1fr)_auto] rounded-md border border-(--line) bg-(--surface) overflow-hidden @min-[36rem]/contacts:grid-cols-[auto_minmax(0,1fr)_auto]">
-                  <div className="flex min-w-0 items-center gap-1.5 p-1 bg-(--surface-2)">
-                    <span className="hidden @min-[22rem]/contacts:inline-flex">{handle}</span>
-                    <div className="hidden @min-[19rem]/contacts:flex w-6 h-6 items-center justify-center text-(--ink-4) shrink-0">
-                      {contactIcon(c.kind, 14)}
+                <div className="resume-entry">
+                  <EntryHeading
+                    index={i}
+                    prefix="Contact"
+                    drag={handle}
+                    moveBtns={moveBtns}
+                    deleteButton={deleteBtn}
+                  />
+                  <div className="resume-field-pair">
+                    <div className="cr-field">
+                      <label className="air-label" htmlFor={`${id}-kind`}>
+                        Kind
+                      </label>
+                      <select
+                        id={`${id}-kind`}
+                        name={`contact-${c.id}-kind`}
+                        autoComplete="off"
+                        value={c.kind}
+                        onChange={(e) => {
+                          const next = [...resume.contact];
+                          next[i] = { ...c, kind: e.target.value as typeof c.kind };
+                          patch("contact", next);
+                        }}
+                        aria-label="Contact kind"
+                        className="air-field"
+                      >
+                        {Object.entries(CONTACT_KINDS).map(([value, label]) => (
+                          <option key={value} value={value}>
+                            {label}
+                          </option>
+                        ))}
+                      </select>
                     </div>
-                    <select
-                      name={`contact-${c.id}-kind`}
-                      autoComplete="off"
-                      value={c.kind}
-                      onChange={(e) => {
-                        const next = [...resume.contact];
-                        next[i] = { ...c, kind: e.target.value as typeof c.kind };
-                        patch("contact", next);
-                      }}
-                      aria-label="Contact kind"
-                      className="cr-control w-28 min-w-0 shrink-0 min-h-11 md:min-h-10 pl-2 pr-2 font-mono text-[10px] bg-(--surface) hover:bg-(--surface-3) text-(--ink-3) rounded-md uppercase tracking-wider font-semibold cursor-pointer transition-colors border border-(--line-soft)"
-                    >
-                      {CONTACT_KINDS.map((k) => (
-                        <option key={k} value={k}>
-                          {k}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="col-span-full row-start-2 min-w-0 border-t border-(--line-soft) p-1 @min-[36rem]/contacts:col-span-1 @min-[36rem]/contacts:col-start-2 @min-[36rem]/contacts:row-start-1 @min-[36rem]/contacts:border-t-0 @min-[36rem]/contacts:border-x">
-                    <input
-                      name={`contact-${c.id}-value`}
-                      autoComplete={
-                        c.kind === "email"
-                          ? "email"
-                          : c.kind === "phone"
-                            ? "tel"
-                            : c.kind === "location"
-                              ? "address-level2"
-                              : "url"
-                      }
-                      type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
-                      value={c.value}
-                      spellCheck={c.kind === "location"}
-                      aria-label={`${c.kind} contact value`}
-                      onChange={(e) => {
-                        const next = [...resume.contact];
-                        next[i] = { ...c, value: e.target.value };
-                        patch("contact", next);
-                      }}
-                      placeholder={PLACEHOLDER_BY_KIND[c.kind]}
-                      aria-invalid={issue ? true : undefined}
-                      aria-describedby={issue ? issueId : undefined}
-                      className={`cr-input min-w-0 min-h-11 h-full py-2 md:min-h-10 lg:py-2 ${issue ? "cr-input--invalid" : ""}`}
-                    />
-                  </div>
-                  <div className="col-start-2 row-start-1 flex items-center gap-0.5 bg-(--surface-2) p-1 @min-[36rem]/contacts:col-start-3">
-                    {moveBtns}
-                    {deleteBtn}
-                  </div>
-                  {issue && (
-                    <div
-                      id={issueId}
-                      className="col-span-full flex items-center gap-1.5 px-3 py-1.5 text-sm text-(--color-status-danger) bg-(--color-status-danger-soft) border-t border-(--color-status-danger)"
-                      aria-live="polite"
-                    >
-                      <AlertCircle className="w-3 h-3 shrink-0" strokeWidth={2.25} />
-                      <span>{issue}</span>
+                    <div className="cr-field">
+                      <label className="air-label" htmlFor={`${id}-value`}>
+                        Value
+                      </label>
+                      <input
+                        id={`${id}-value`}
+                        name={`contact-${c.id}-value`}
+                        autoComplete={
+                          c.kind === "email"
+                            ? "email"
+                            : c.kind === "phone"
+                              ? "tel"
+                              : c.kind === "location"
+                                ? "address-level2"
+                                : "url"
+                        }
+                        type={c.kind === "email" ? "email" : c.kind === "phone" ? "tel" : "text"}
+                        value={c.value}
+                        spellCheck={c.kind === "location"}
+                        aria-label={`${c.kind} contact value`}
+                        onChange={(e) => {
+                          const next = [...resume.contact];
+                          next[i] = { ...c, value: e.target.value };
+                          patch("contact", next);
+                        }}
+                        placeholder={PLACEHOLDER_BY_KIND[c.kind]}
+                        aria-invalid={issue ? true : undefined}
+                        aria-describedby={issue ? issueId : undefined}
+                        className="air-field resume-writing-field"
+                      />
+                      {issue && (
+                        <p id={issueId} className="air-help air-help--error" aria-live="polite">
+                          {issue}
+                        </p>
+                      )}
                     </div>
-                  )}
+                  </div>
                 </div>
               )}
             </DragItem>
@@ -162,6 +175,6 @@ export function ContactSection({ resume, onChange }: SectionProps) {
         })}
       </DragList>
       <AddButton onClick={addContact}>Add contact</AddButton>
-    </div>
+    </>
   );
 }

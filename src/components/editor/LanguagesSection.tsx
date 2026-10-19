@@ -63,7 +63,7 @@ export function LanguagesSection({ resume, onChange }: SectionProps) {
                   moveBtns={moveBtns}
                   deleteButton={deleteBtn}
                 />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="resume-field-pair">
                   <TextField
                     label="Language"
                     value={l.name}

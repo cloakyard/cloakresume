@@ -1368,7 +1368,61 @@ describe.skipIf(!existsSync(chromePath))(
       }
     });
 
-    it("keeps contact reorder and remove controls inside the card at 320px", async () => {
+    it("preserves every contact kind, value, validation and browser field semantics", async () => {
+      await openDraft({
+        ...blankResume,
+        contact: [{ id: "contact", kind: "website", value: "example.com" }],
+      });
+      await page.click('nav button[aria-label="Contact"]');
+      const cases = [
+        ["email", "person@example.com", "email", "email"],
+        ["phone", "+1 (555) 123-4567", "tel", "tel"],
+        ["location", "Bengaluru, India", "text", "address-level2"],
+        ...["website", "linkedin", "github", "medium", "twitter", "other"].map((kind) => [
+          kind,
+          `https://${kind}.example.com/profile?q=one`,
+          "text",
+          "url",
+        ]),
+      ];
+      for (const [kind, value, type, autoComplete] of cases) {
+        await page.select('select[aria-label="Contact kind"]', kind);
+        const selector = `input[aria-label="${kind} contact value"]`;
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.type(value);
+        expect(
+          await page.$eval(selector, (el) => ({
+            value: (el as HTMLInputElement).value,
+            type: (el as HTMLInputElement).type,
+            autoComplete: (el as HTMLInputElement).autocomplete,
+            spellcheck: (el as HTMLInputElement).spellcheck,
+            invalid: el.getAttribute("aria-invalid"),
+            label: (el as HTMLInputElement).labels?.[0].textContent,
+          })),
+        ).toEqual({
+          value,
+          type,
+          autoComplete,
+          spellcheck: kind === "location",
+          invalid: null,
+          label: "Value",
+        });
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.type("malformed");
+        expect(await page.$eval(selector, (el) => el.getAttribute("aria-invalid"))).toBe(
+          kind === "location" ? null : "true",
+        );
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.press("Backspace");
+        expect(await page.$eval(selector, (el) => el.getAttribute("aria-invalid"))).toBeNull();
+        await page.keyboard.type(value);
+      }
+      expect((await savedResume()).contact).toEqual([
+        { id: "contact", kind: "other", value: "https://other.example.com/profile?q=one" },
+      ]);
+    });
+
+    it("keeps contact reorder and remove controls inside the entry at 320px", async () => {
       await openDraft({
         ...blankResume,
         profile: { ...blankResume.profile, summary: "Contact layout" },
@@ -1407,7 +1461,7 @@ describe.skipIf(!existsSync(chromePath))(
       [1920, "dark"],
       [320, "dark"],
     ] as const)(
-      "keeps Air writing and legacy contact focus contours unclipped at %ipx in %s mode",
+      "keeps Air writing and contact focus contours unclipped at %ipx in %s mode",
       async (width, theme) => {
         await page.emulateMediaFeatures([
           { name: "prefers-color-scheme", value: theme },
@@ -1442,15 +1496,13 @@ describe.skipIf(!existsSync(chromePath))(
           shadow: "none",
           border: "rgba(0, 0, 0, 0)",
         });
-        // Contact is still a legacy adapter. Preserve its contour/clipping gate
-        // independently of Air's replacement contour for shared writing fields.
         const expectedRing = await page.evaluate(() => {
           const probe = document.createElement("span");
-          probe.style.outline = "2px solid var(--color-focus)";
+          probe.style.outline = "2px solid var(--air-accent)";
           document.body.append(probe);
           const outline = getComputedStyle(probe).outline;
           probe.remove();
-          return { outline, offset: "2px", shadow: "none" };
+          return { outline, offset: "0px", shadow: "none" };
         });
         await page.click('nav button[aria-label="Contact"]');
         await page.setViewport({ width, height: 1000 });
@@ -1472,6 +1524,12 @@ describe.skipIf(!existsSync(chromePath))(
             element.scrollIntoView({ block: "center" });
             (element as HTMLElement).focus({ preventScroll: true });
           });
+          await page.evaluate(
+            () =>
+              new Promise<void>((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+              ),
+          );
           const result = await page.$eval(selector, (element) => {
             const style = getComputedStyle(element);
             const rect = element.getBoundingClientRect();
@@ -1492,6 +1550,7 @@ describe.skipIf(!existsSync(chromePath))(
                 clipped.push("vertical");
             }
             return {
+              focused: document.activeElement === element,
               ring: {
                 outline: style.outline,
                 offset: style.outlineOffset,
@@ -1510,6 +1569,7 @@ describe.skipIf(!existsSync(chromePath))(
                 return { outline, offset: "2px", shadow: "none" };
               })
             : expectedRing;
+          expect(result.focused).toBe(true);
           expect(result.ring).toEqual(expected);
           expect(result.clipped).toEqual([]);
         }
@@ -1519,11 +1579,18 @@ describe.skipIf(!existsSync(chromePath))(
         expect(await page.$eval(input, (element) => element.getAttribute("aria-invalid"))).toBe(
           "true",
         );
+        expect(
+          await page.$eval(input, (element) => {
+            const description = element.getAttribute("aria-describedby");
+            return description && document.getElementById(description)?.textContent;
+          }),
+        ).toBe("Enter a valid email address.");
+        await page.focus('.cr-editor-panel button[aria-label^="Remove "]');
         await page.waitForFunction(
           (selector) => {
             const element = document.querySelector(selector)!;
             const token = document.createElement("span");
-            token.style.color = "var(--danger)";
+            token.style.color = "var(--air-danger)";
             document.body.append(token);
             const matches = getComputedStyle(element).borderColor === getComputedStyle(token).color;
             token.remove();

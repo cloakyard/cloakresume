@@ -490,3 +490,10 @@ textarea.resume-writing-field[data-resizable="false"] {
 .resume-empty-entry p {
   margin: 0 0 16px;
 }
+
+/* Related fields share a row only when both retain a useful writing width. */
+.resume-field-pair {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 12rem), 1fr));
+  gap: 12px;
+}
