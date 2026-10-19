@@ -217,88 +217,91 @@ export function Preview({
   };
 
   return (
-    <div
-      ref={containerRef}
-      className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto cr-scroll [touch-action:pan-x_pan-y_pinch-zoom]"
-    >
-      {/* Outer frame sizes the scroll box to the *scaled* page so the
+    <div className="resume-preview-frame">
+      <div
+        ref={containerRef}
+        className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto cr-scroll [touch-action:pan-x_pan-y_pinch-zoom]"
+      >
+        {/* Outer frame sizes the scroll box to the *scaled* page so the
           transform actually affects layout dimensions — otherwise the
           layout box stays at the paper width and forces horizontal scroll
           on phones. Height tracks the measured inner height × zoom. */}
-      <div
-        className="mx-auto"
-        style={{
-          width: `calc(${pageWidthMm}mm * ${zoom})`,
-          height: innerHeight > 0 ? `${innerHeight * zoom}px` : undefined,
-        }}
-      >
         <div
-          ref={innerRef}
-          className="resume-root"
-          data-template-ready={readyTemplate === TemplateComponent ? "true" : undefined}
+          className="mx-auto"
           style={{
-            transform: `scale(${zoom})`,
-            transformOrigin: "top left",
-            width: `${pageWidthMm}mm`,
-            // Published as CSS vars so `.resume-page` + print styles can
-            // size themselves off the same source of truth.
-            ["--resume-page-w" as string]: `${pageWidthMm}mm`,
-            ["--resume-page-h" as string]: `${pageHeightMm}mm`,
+            width: `calc(${pageWidthMm}mm * ${zoom})`,
+            height: innerHeight > 0 ? `${innerHeight * zoom}px` : undefined,
           }}
         >
-          <PaperSizeContext.Provider value={paperSize}>
-            <Suspense fallback={<TemplateLoadingPage />}>
-              <ReadyTemplate
-                TemplateComponent={TemplateComponent}
-                resume={resume}
-                palette={palette}
-                onReady={markTemplateReady}
-              />
-            </Suspense>
-          </PaperSizeContext.Provider>
+          <div
+            ref={innerRef}
+            className="resume-root"
+            data-template-ready={readyTemplate === TemplateComponent ? "true" : undefined}
+            style={{
+              transform: `scale(${zoom})`,
+              transformOrigin: "top left",
+              width: `${pageWidthMm}mm`,
+              // Published as CSS vars so `.resume-page` + print styles can
+              // size themselves off the same source of truth.
+              ["--resume-page-w" as string]: `${pageWidthMm}mm`,
+              ["--resume-page-h" as string]: `${pageHeightMm}mm`,
+            }}
+          >
+            <PaperSizeContext.Provider value={paperSize}>
+              <Suspense fallback={<TemplateLoadingPage />}>
+                <ReadyTemplate
+                  TemplateComponent={TemplateComponent}
+                  resume={resume}
+                  palette={palette}
+                  onReady={markTemplateReady}
+                />
+              </Suspense>
+            </PaperSizeContext.Provider>
+          </div>
         </div>
       </div>
-
-      <div className="print-hide sticky bottom-5 z-30 w-fit mx-auto">
-        <div className="cr-preview-tools inline-flex items-center gap-0.5 rounded-md p-1">
-          <button
-            type="button"
-            onClick={onZoomOut}
-            aria-label="Zoom out"
-            title="Zoom out"
-            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
-          >
-            <ZoomOut aria-hidden="true" className="h-4 w-4" />
-          </button>
-          <button
-            type="button"
-            onClick={onReset}
-            aria-label={`Reset zoom to 100 percent. Current zoom ${Math.round(zoom * 100)} percent`}
-            title="Reset to 100%"
-            className="min-h-10 min-w-12 cursor-pointer rounded-md border-0 bg-transparent px-1 text-center font-mono text-xs font-medium tabular-nums text-(--color-night-ink) hover:bg-(--color-night-2)"
-          >
-            {Math.round(zoom * 100)}%
-          </button>
-          <button
-            type="button"
-            onClick={onZoomIn}
-            aria-label="Zoom in"
-            title="Zoom in"
-            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
-          >
-            <ZoomIn aria-hidden="true" className="h-4 w-4" />
-          </button>
-          <span className="mx-0.5 h-5 w-px bg-(--color-night-rule)" aria-hidden="true" />
-          <button
-            type="button"
-            onClick={onFit}
-            aria-label="Fit preview"
-            title="Fit preview"
-            className="grid h-10 w-10 cursor-pointer place-items-center rounded-md border-0 bg-transparent text-(--color-night-muted) transition-colors duration-160 hover:bg-(--color-night-2) hover:text-(--color-night-ink)"
-          >
-            <Maximize2 aria-hidden="true" className="h-4 w-4" />
-          </button>
-        </div>
+      <div
+        className="cr-preview-tools resume-preview-tools print-hide"
+        role="group"
+        aria-label="Preview zoom"
+      >
+        <button
+          type="button"
+          onClick={onZoomOut}
+          aria-label="Zoom out"
+          title="Zoom out"
+          className="air-icon-button air-button--quiet"
+        >
+          <ZoomOut aria-hidden="true" size={18} strokeWidth={1.6} />
+        </button>
+        <button
+          type="button"
+          onClick={onReset}
+          aria-label={`Reset zoom to 100 percent. Current zoom ${Math.round(zoom * 100)} percent`}
+          title="Reset to 100%"
+          className="air-button air-button--quiet resume-zoom-value"
+        >
+          {Math.round(zoom * 100)}%
+        </button>
+        <button
+          type="button"
+          onClick={onZoomIn}
+          aria-label="Zoom in"
+          title="Zoom in"
+          className="air-icon-button air-button--quiet"
+        >
+          <ZoomIn aria-hidden="true" size={18} strokeWidth={1.6} />
+        </button>
+        <span className="resume-header-divider" aria-hidden="true" />
+        <button
+          type="button"
+          onClick={onFit}
+          aria-label="Fit preview"
+          title="Fit preview"
+          className="air-icon-button air-button--quiet"
+        >
+          <Maximize2 aria-hidden="true" size={18} strokeWidth={1.6} />
+        </button>
       </div>
     </div>
   );

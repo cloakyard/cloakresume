@@ -197,3 +197,46 @@ Final gate: **288/288 in eight files, no skips**, using the production browser b
 **341 layout cases, 14 journeys and 124 contrast pairs** pass. Check (zero warnings),
 build, 77-source design inventory, 18 portability checks and exact family sync pass.
 Native Safari focus return was rechecked on the fresh 8146 production origin.
+
+## 2026-10-19 — editor shell and navigation
+
+The header, original 32px mark/44px link target, 72px rail, 360/420px writing-panel
+frame, section picker, view/paper choices and preview dock now consume Air. The
+panel heading scrolls with its content. Compact section changes retain focus;
+portrait keeps equal panes and short 640–1023px landscape uses side-by-side panes.
+The obsolete orientation lock, keyframes, header/rail/brand/segment/dock skins,
+skip-link skin and unconsumed geometry tokens are removed. No dependency added.
+
+Preview zoom, pinch, Fit/100%, content and paper sizes are preserved. The dock is
+outside document scrolling so it stays reachable. All template, PDF/font and data
+sources are unchanged. Section interiors, custom widgets/wheel, library/review,
+PWA/static recovery and actual OG/PWA/README assets remain open. The existing
+Ready Offline notice was observed oversized at 32px text; this is a tracked PWA
+defect, not a shell conformance claim.
+
+324 layout observations and ten 13-section/zoom/paper journeys pass, covering all
+required widths/themes and 16/32px root text. 60 contrast pairs, exact five-page
+light/dark text/font/geometry/background comparison, emulated pinch and forced-
+colour focus pass. Firefox 158 actual 200% keyboard/picker/expanded zoom and Safari
+27 section/paper/privacy focus return were inspected; review tabs are closed and
+Firefox zoom restored. Physical touch/software keyboard, OS IME, spoken assistive
+and GPU/battery gates remain open.
+
+The first full run found three genuine 320px formatting/bullet-row overflows.
+Those rows now wrap without shrinking controls; the original four containment/
+44px tests pass, then the complete production suite passes **287/287 in eight
+files, no skips**, including all 107 editor cases and 17 templates × two papers ×
+five fixtures. Source-contract checks now assert Air geometry and no orientation
+lock; two obsolete geometry checks were consolidated. No feature assertion or
+timeout was relaxed. Check/build/design/18 portability/exact sync pass.
+
+Durable evidence: `evidence/editor-shell-2026-10-19.json`, checks log and five PNGs.
+Full local captures, pre-fix failure log and contrast diagnostics remain under
+`/tmp/cloakresume-air-shell/`. Next: shared editor fields and repeated-writing controls,
+then every section and custom picker/review/template/export/PWA/preview slice.
+
+Final static adoption check rejected a literal marker radius. Switching it to the
+shared radius token passes; focused light/dark pixel comparisons are identical.
+The full 287-test run preceded this equivalent-style cleanup; final format/lint/
+type/build/design/portability pass afterward. Template loading and export busy-label
+stability remain partial-source follow-ups in Preview/ToolbarActions.

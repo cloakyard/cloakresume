@@ -145,7 +145,7 @@ cloakresume/
 
 - [DESIGN.md](DESIGN.md) defines the shared CloakPDF-family design language, Emerald identity, geometry, overlays, responsive behavior, and résumé-output boundary.
 - [tokens.css](tokens.css) is normative at runtime; [tokens.json](tokens.json) is its portable token inventory.
-- [docs/design-audit.md](docs/design-audit.md) records the complete 73-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
+- [docs/design-audit.md](docs/design-audit.md) records the complete 72-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
 - [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
 - [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
 - [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.

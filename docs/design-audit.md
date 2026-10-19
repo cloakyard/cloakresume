@@ -6,13 +6,13 @@ This July/September record describes the retired Workbench specification. `Align
 
 **Current design contract:** [Cloakyard Air](../DESIGN.md)
 
-**Runtime tokens:** [tokens.css](../tokens.css)
+**Current shared UI:** [Air](../DESIGN.md) and [pinned CSS](../src/styles/air.css). Legacy unmigrated widgets still use [tokens.css](../tokens.css).
 
-**Portable tokens:** [tokens.json](../tokens.json)
+**Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result
 
-All 73 TSX files in `src/` were examined. No application route, common component,
+All 72 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
 The September product chrome followed the CloakPDF-family language with CloakResume
@@ -86,7 +86,6 @@ Status key:
 |  13 | `src/components/Layout.tsx`                       | Aligned | 64px task-only editor header, 72px rail, token-driven 328px panel with a fluid 384–736px wide-screen range, 50:50 mobile proof/workspace split, inline picker, and one editor h1. |
 |  14 | `src/components/LogoPicker.tsx`                   | Aligned | Popover safe edge, search naming, logo choice semantics, separated clear action, and focus return.                                                                                |
 |  15 | `src/components/MonthYearField.tsx`               | Aligned | Associated label, named date controls, keyboard navigation, visual-viewport-safe placement, focus return, and locale-neutral storage.                                             |
-|  16 | `src/components/OrientationLock.tsx`              | Aligned | System-overlay layer, clear rotation instruction, reduced motion, and no interference with document output.                                                                       |
 |  17 | `src/components/PaginatedCanvas.tsx`              | Output  | Measurement, deterministic A4/Letter pages, continuation behavior, no clipping, and print fidelity.                                                                               |
 |  18 | `src/components/PaperSizeToggle.tsx`              | Aligned | Named A4/Letter selection, pressed state, exact 40px toolbar box, and touch-size overflow variant.                                                                                |
 |  19 | `src/components/Preview.tsx`                      | Aligned | Persistent paper stage, zoom controls, names/targets, output isolation, and responsive overflow.                                                                                  |

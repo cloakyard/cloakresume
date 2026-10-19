@@ -70,11 +70,11 @@ export function ToolbarOverflow({
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="inline-flex min-h-11 min-w-11 items-center justify-center rounded-md border-0 bg-transparent text-(--ink-3) transition-colors hover:bg-(--surface-3) hover:text-(--ink-1)"
+        className="air-icon-button air-button--quiet"
         aria-label="More options"
         aria-haspopup="dialog"
       >
-        <MoreVertical className="w-4.5 h-4.5" strokeWidth={2} />
+        <MoreVertical aria-hidden="true" size={18} strokeWidth={1.6} />
       </button>
 
       <input
@@ -128,7 +128,7 @@ export function ToolbarOverflow({
             onClick={() => closeThenOpen(() => setColorOpen(true))}
           />
           <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
-            <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} size="lg" />
+            <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
           </OverflowRow>
           <OverflowDivider />
           <OverflowItem

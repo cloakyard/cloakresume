@@ -1,0 +1,351 @@
+/* Editor composition. Shared Air owns control skins; résumé artwork stays isolated. */
+.resume-editor {
+  display: grid;
+  grid-template: auto minmax(0, 1fr) / var(--air-rail) 360px minmax(0, 1fr);
+  grid-template-areas: "header header header" "rail panel preview";
+  height: 100dvh;
+  overflow: hidden;
+  color: var(--air-ink);
+  background: var(--air-surface-soft);
+}
+.resume-editor-header {
+  grid-area: header;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-height: var(--air-editor-header);
+  padding: 8px 16px;
+  border-bottom: 1px solid var(--air-line);
+  background: var(--air-surface);
+  font-family: var(--air-font);
+  z-index: var(--air-z-navigation);
+}
+.resume-header-spacer {
+  flex: 1;
+}
+.resume-header-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.resume-header-divider {
+  width: 1px;
+  height: 24px;
+  flex: none;
+  background: var(--air-line);
+}
+.resume-editor-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  min-width: 44px;
+  justify-content: center;
+  flex: none;
+  color: var(--air-ink);
+  font: 500 1.125rem/1.25 var(--air-font);
+  text-decoration: none;
+}
+.resume-editor-brand img {
+  width: 32px;
+  height: 32px;
+  flex: none;
+}
+.resume-editor-skip {
+  position: fixed;
+  inset: 8px auto auto 8px;
+  z-index: var(--air-z-recovery);
+  padding: 12px 16px;
+  color: var(--air-on-action);
+  background: var(--air-action);
+  border-radius: var(--air-radius-control);
+  font: 500 var(--air-text-body)/1.5 var(--air-font);
+  transform: translateY(-200%);
+}
+.resume-editor-skip:focus {
+  transform: none;
+}
+.resume-editor-rail {
+  grid-area: rail;
+  min-height: 0;
+  border-right: 1px solid var(--air-line);
+  background: var(--air-surface);
+}
+.resume-editor-panel {
+  grid-area: panel;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--air-line);
+  background: var(--air-surface);
+}
+.resume-editor-preview {
+  grid-area: preview;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+  background: var(--air-surface-soft);
+}
+.resume-section-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 0;
+  font: 500 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-section-nav--rail {
+  height: 100%;
+  align-items: center;
+  padding: 12px 8px;
+  overflow-y: auto;
+}
+.resume-section-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 44px;
+  min-height: 44px;
+  flex: none;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: var(--air-radius-control);
+  background: transparent;
+  color: var(--air-ink-secondary);
+  font: inherit;
+  text-align: start;
+  cursor: pointer;
+  transition: none;
+}
+.resume-section-link svg {
+  flex: none;
+}
+.resume-section-link[aria-current] {
+  color: var(--air-ink);
+  background: var(--air-surface-soft);
+}
+.resume-section-link[aria-current]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: calc(50% - 8px);
+  width: 2px;
+  height: 16px;
+  border-radius: var(--air-radius-check);
+  background: var(--air-accent);
+}
+.resume-section-copy {
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+  overflow-wrap: anywhere;
+}
+.resume-section-copy small {
+  color: var(--air-ink-secondary);
+  font: 400 var(--air-text-label)/1.5 var(--air-font);
+}
+.resume-rail-spacer {
+  flex: 1;
+  min-height: 12px;
+}
+.resume-section {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.resume-section-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 20px 20px 16px;
+  color: var(--air-ink);
+  font-family: var(--air-font);
+}
+.resume-section-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin: 0;
+  font: 500 1.25rem/1.25 var(--air-font);
+  letter-spacing: -0.02em;
+}
+.resume-section-help {
+  margin: 8px 0 0;
+  color: var(--air-ink-secondary);
+  font: 400 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-section-optional {
+  color: var(--air-ink-muted);
+  font: 400 var(--air-text-meta)/1.5 var(--air-font);
+  letter-spacing: normal;
+}
+.resume-section-body {
+  padding: 0 20px max(24px, env(safe-area-inset-bottom));
+}
+.resume-picker-panel {
+  overflow: auto;
+}
+.resume-picker-panel > .resume-section-heading {
+  display: block;
+}
+.resume-picker-scroll {
+  padding: 0 12px max(16px, env(safe-area-inset-bottom));
+}
+.resume-view-segment,
+.resume-paper-size {
+  margin: 0;
+  border: 0;
+  flex: none;
+}
+.resume-view-segment > button {
+  min-width: 40px;
+  padding-inline: 8px;
+}
+.resume-toolbar-label {
+  display: none;
+}
+.resume-preview-frame {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+}
+.resume-preview-frame > .cr-preview-scroll {
+  background: var(--air-surface-soft);
+  padding: 16px;
+}
+.resume-preview-tools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  flex: none;
+  border-top: 1px solid var(--air-line);
+  color: var(--air-ink);
+  background: var(--air-surface);
+}
+.resume-zoom-value {
+  min-width: 5ch;
+  font-variant-numeric: tabular-nums;
+}
+/* These controls are frequent navigation, so state changes and focus are immediate. */
+.resume-editor :is(.air-button, .air-icon-button, .resume-section-link, .air-segments > button) {
+  transition: none;
+}
+.resume-editor :is(.resume-section-link, .air-segments > button):active {
+  transform: none;
+}
+.resume-editor
+  :is(
+    .resume-section-link,
+    .air-segments > button,
+    .air-button,
+    .air-icon-button,
+    .resume-editor-brand
+  ):focus-visible {
+  outline: 2px solid var(--air-accent);
+  outline-offset: 2px;
+  box-shadow: none;
+}
+@media (hover: hover) {
+  .resume-section-link:hover {
+    background: var(--air-surface-hover);
+    color: var(--air-ink);
+  }
+}
+@media (min-width: 1280px) {
+  .resume-editor {
+    grid-template-columns: var(--air-rail) 420px minmax(0, 1fr);
+  }
+}
+@media (min-width: 1536px) {
+  .resume-toolbar-label {
+    display: inline;
+  }
+}
+.resume-editor--compact {
+  display: flex;
+  flex-direction: column;
+}
+.resume-compact-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+.resume-compact-split {
+  display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-areas: "preview" "panel";
+  min-height: 0;
+  flex: 1;
+  overflow: hidden;
+}
+.resume-editor--compact .resume-editor-preview {
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-editor--compact .resume-editor-panel {
+  border-right: 0;
+}
+@media (max-width: 639px) {
+  .resume-editor-brand span {
+    display: none;
+  }
+  .resume-editor-header {
+    padding-inline: 12px;
+  }
+  .resume-section-heading {
+    padding: 16px 16px 12px;
+  }
+  .resume-section-body {
+    padding-inline: 16px;
+  }
+}
+/* Short landscape keeps both tasks usable side by side; no orientation lock. */
+@media (min-width: 640px) and (max-width: 1023px) and (max-height: 600px) {
+  .resume-compact-split {
+    grid-template: minmax(0, 1fr) / minmax(0, 1fr) minmax(320px, 1fr);
+    grid-template-areas: "preview panel";
+  }
+}
+@media (pointer: coarse) {
+  .resume-view-segment > button,
+  .resume-paper-size > button {
+    min-width: 44px;
+  }
+}
+@media (forced-colors: active) {
+  .resume-section-link[aria-current] {
+    border-color: Highlight;
+  }
+  .resume-section-link[aria-current]::before {
+    background: Highlight;
+  }
+}
+
+.resume-paper-size > button {
+  flex: none;
+  white-space: nowrap;
+}
+.resume-section-close {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .resume-section-close {
+    display: inline-flex;
+  }
+}

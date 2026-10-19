@@ -94,12 +94,6 @@
   --page-gutter: 1rem;
   --page-gutter-wide: 1.5rem;
   --header-height: 4.5rem;
-  --editor-header-height: 4rem;
-  --editor-rail-width: 4.5rem;
-  --editor-panel-width: 20.5rem;
-  --editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem);
-  --logo-size: 2.5rem;
-  --logo-wordmark-gap: 0.6rem;
   --dialog-max: 36rem;
   --dialog-wide-max: 68.75rem;
   --dialog-viewport-gutter: 1.5rem;
@@ -154,14 +148,6 @@
   --sh-focus: 0 0 0 2px color-mix(in oklab, var(--color-focus) 48%, transparent);
   --lightness-thumb-bg: var(--color-surface);
   --lightness-thumb-border: var(--color-ink);
-}
-
-/* Grow data entry into spare canvas space, reserving the rail and a full-size
- * paper preview. Cap line length on very wide screens for comfortable editing. */
-@media (min-width: 80rem) {
-  :root {
-    --editor-panel-width: var(--editor-panel-width-wide);
-  }
 }
 
 @media (prefers-color-scheme: dark) {

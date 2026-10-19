@@ -151,7 +151,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                     <div className="cr-field">
                       <div className="cr-field-row">
                         <span className="cr-field-label">Bullets</span>
-                        <div className="flex items-center gap-1">
+                        <div className="flex min-w-0 flex-wrap items-center gap-1">
                           <FormatToolbar compact />
                           <button
                             type="button"

@@ -136,12 +136,12 @@ export function ToolbarCenter({
           <button
             type="button"
             onClick={() => setTemplateOpen(true)}
-            className="tb min-h-10"
+            className="air-icon-button resume-toolbar-action"
             aria-haspopup="dialog"
             aria-label={`Template: ${activeTemplate.name}`}
           >
-            <LayoutTemplate className="w-4 h-4 text-(--ink-4)" />
-            <span className="hidden 2xl:inline">{activeTemplate.name}</span>
+            <LayoutTemplate size={18} strokeWidth={1.6} aria-hidden="true" />
+            <span className="resume-toolbar-label">{activeTemplate.name}</span>
           </button>
 
           <div className="relative" ref={colorRef}>
@@ -149,21 +149,21 @@ export function ToolbarCenter({
               ref={colorButtonRef}
               type="button"
               onClick={() => setColorOpen((v) => !v)}
-              className="tb min-h-10"
+              className="air-icon-button resume-toolbar-action"
               aria-haspopup="dialog"
               aria-expanded={colorOpen}
               aria-controls={colorOpen ? colorPopoverId : undefined}
               aria-label="Primary colour"
             >
-              <Palette className="w-4 h-4 text-(--ink-4)" />
+              <Palette size={18} strokeWidth={1.6} aria-hidden="true" />
               <span
                 className="w-2.5 h-2.5 rounded-full"
                 style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
               />
-              <span className="hidden 2xl:inline">
+              <span className="resume-toolbar-label">
                 <ColorName hex={primary} />
               </span>
-              <span aria-hidden="true" className="caret ml-0.5 hidden 2xl:inline-flex">
+              <span aria-hidden="true" className="resume-toolbar-label">
                 <ChevronDown className="h-3.5 w-3.5" />
               </span>
             </button>

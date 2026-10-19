@@ -15,21 +15,21 @@ interface ViewSegmentProps {
 
 export function ViewSegment({ view, onChange }: ViewSegmentProps) {
   return (
-    <fieldset className="cr-view-segment m-0 inline-flex h-11 min-w-0 shrink-0 items-center rounded-md bg-(--surface-2) p-0">
+    <fieldset className="air-segments resume-view-segment">
       <legend className="sr-only">View</legend>
       <SegmentButton
         active={view === "panel"}
         onClick={() => onChange("panel")}
         ariaLabel="Show editor"
       >
-        <Edit3 className="w-3.5 h-3.5" strokeWidth={2} />
+        <Edit3 size={18} strokeWidth={1.6} aria-hidden="true" />
       </SegmentButton>
       <SegmentButton
         active={view === "preview"}
         onClick={() => onChange("preview")}
         ariaLabel="Show preview"
       >
-        <Eye className="w-3.5 h-3.5" strokeWidth={2} />
+        <Eye size={18} strokeWidth={1.6} aria-hidden="true" />
       </SegmentButton>
     </fieldset>
   );
@@ -52,12 +52,7 @@ function SegmentButton({
       onClick={onClick}
       aria-pressed={active}
       aria-label={ariaLabel}
-      className={[
-        "cr-segment-button grid h-11 min-h-11 min-w-11 place-items-center appearance-none border-0 bg-transparent",
-        "rounded-md px-2.5 cursor-pointer",
-        "transition-[background-color,color] duration-160",
-        active ? "bg-(--brand-50) text-(--brand)" : "text-(--ink-4) hover:text-(--ink-1)",
-      ].join(" ")}
+      className="resume-view-button"
     >
       {children}
     </button>

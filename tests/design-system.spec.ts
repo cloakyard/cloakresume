@@ -104,29 +104,17 @@ describe("CloakResume family contract", () => {
     expect(`${indexCss}\n${familyCss}\n${tokens}`).not.toMatch(/surface-glass|--glass-/);
   });
 
-  it("registers the same self-hosted UI fonts and wordmark metrics as CloakPDF", async () => {
-    const [indexCss, familyCss, brandLogo] = await Promise.all([
-      source("src/index.css"),
-      source("src/cloak-family.css"),
+  it("uses the Air editor identity without changing the original mark", async () => {
+    const [brandLogo, css] = await Promise.all([
       source("src/components/BrandLogo.tsx"),
+      source("src/styles/air-editor.css"),
     ]);
-
-    expect(indexCss).toMatch(
-      /@font-face\s*\{[\s\S]*?font-family:\s*"Archivo";[\s\S]*?font-weight:\s*100 900;[\s\S]*?url\("\/fonts\/archivo-latin\.woff2"\)/,
-    );
-    expect(indexCss).toMatch(
-      /@font-face\s*\{[\s\S]*?font-family:\s*"JetBrains Mono";[\s\S]*?font-weight:\s*100 800;[\s\S]*?url\("\/fonts\/jetbrains-mono-latin\.woff2"\)/,
-    );
-    expect(indexCss).not.toMatch(/@fontsource-variable\/(?:archivo|jetbrains-mono|geist-mono)/);
-    expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
-    expect(brandLogo).toContain('width="40"');
-    expect(brandLogo).toContain('height="40"');
-    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
-    expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
-    expect(familyCss).toMatch(
-      /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,
-    );
+    expect(brandLogo).toContain('width="32"');
+    expect(brandLogo).toContain('height="32"');
+    expect(brandLogo).toContain("cloakresume-mark.svg");
     expect(brandLogo).toContain('translate="no"');
+    expect(css).toContain("font: 500 1.125rem/1.25 var(--air-font)");
+    expect(brandLogo).not.toMatch(/Archivo|font-\[800\]|text-\(--brand\)/);
   });
 
   it("uses Air for entry and policy while retaining provenance and the complete policy", async () => {
@@ -172,77 +160,24 @@ describe("CloakResume family contract", () => {
     );
   });
 
-  it("keeps the shared frame, logo, editor, and overlay geometry explicit", async () => {
-    const [tokens, tokenJson, layout, paperToggle, indexCss] = await Promise.all([
-      source("tokens.css"),
-      source("tokens.json"),
+  it("uses Air editor geometry and keeps the date popover viewport aware", async () => {
+    const [css, layout, view, paper, monthYear] = await Promise.all([
+      source("src/styles/air-editor.css"),
       source("src/components/Layout.tsx"),
-      source("src/components/PaperSizeToggle.tsx"),
-      source("src/index.css"),
-    ]);
-    const portable = JSON.parse(tokenJson) as {
-      size: Record<string, { $value: string }>;
-    };
-
-    expect(tokens).toContain("--color-accent: oklch(0.508 0.118 165.612)");
-    expect(tokens).toContain("--page-max: 88rem");
-    expect(tokens).toContain("--header-height: 4.5rem");
-    expect(tokens).toContain("--editor-header-height: 4rem");
-    expect(tokens).toContain("--editor-rail-width: 4.5rem");
-    expect(tokens).toContain("--editor-panel-width: 20.5rem");
-    expect(tokens).toContain("--editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem)");
-    expect(tokens).toMatch(
-      /@media \(min-width: 80rem\)[\s\S]*?--editor-panel-width:\s*var\(--editor-panel-width-wide\)/,
-    );
-    expect(portable.size["editor-panel"].$value).toBe("20.5rem");
-    expect(portable.size["editor-panel-wide"].$value).toBe(
-      "clamp(24rem, calc(100vw - 58rem), 46rem)",
-    );
-    expect(layout).toContain(
-      "grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)]",
-    );
-    expect(layout).not.toContain("grid-cols-[72px_328px_1fr]");
-    expect(layout).not.toContain("100% Private · Open Source");
-    expect(layout).not.toContain("GithubIcon");
-    expect(indexCss).toMatch(/\.tb\s*\{[\s\S]*?\bh-10\s+min-h-10\b/);
-    expect(paperToggle).toContain("data-paper-size-control={size}");
-    expect(paperToggle).toContain('size === "lg" ? "" : "h-10"');
-    expect(paperToggle).toContain('size === "lg" ? "min-h-11" : "h-[34px] min-h-0"');
-    expect(tokens).toContain("--logo-size: 2.5rem");
-    expect(tokens).toContain("--dialog-max: 36rem");
-    expect(tokens).toContain("--dialog-wide-max: 68.75rem");
-    expect(tokens).toContain("--sheet-max-block-size: 92dvh");
-    expect(tokens).toContain("--popover-safe-edge: 1rem");
-  });
-
-  it("keeps mobile toolbar, editor entry, and date popovers on the shared geometry", async () => {
-    const [viewSegment, layout, monthYear, indexCss, familyCss] = await Promise.all([
       source("src/components/ViewSegment.tsx"),
-      source("src/components/Layout.tsx"),
+      source("src/components/PaperSizeToggle.tsx"),
       source("src/components/MonthYearField.tsx"),
-      source("src/index.css"),
-      source("src/cloak-family.css"),
     ]);
-
-    expect(viewSegment).toContain('className="cr-view-segment');
-    expect(viewSegment).toContain("inline-flex h-11");
-    expect(viewSegment).toContain("grid h-11 min-h-11 min-w-11");
-    expect(familyCss).toContain(".cr-view-segment::after");
-    expect(familyCss).toMatch(
-      /\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\]\s*\{[\s\S]*?display:\s*none/,
-    );
-    expect(familyCss).toMatch(
-      /@media \(min-width: 21\.25rem\)[\s\S]*?\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\][\s\S]*?display:\s*grid/,
-    );
-
+    expect(css).toContain("var(--air-rail) 360px minmax(0, 1fr)");
+    expect(css).toContain("var(--air-rail) 420px minmax(0, 1fr)");
+    expect(css).toContain("min-height: var(--air-editor-header)");
+    expect(css).not.toMatch(/--air-[a-z-]+\s*:/);
+    expect(css).toContain("height: 100dvh");
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
     expect(layout).toContain('href="#editor-content"');
     expect(layout).toContain('id: "editor-content"');
-    expect(layout).toContain('isMobile ? "px-2.5 py-2.5 gap-1.5"');
-    expect(layout).toContain("h-[100dvh] flex flex-col overflow-clip");
-    expect(indexCss).toMatch(/html,\s*body,\s*#app\s*\{/);
-    expect(indexCss).not.toContain("#root");
-
+    expect(view).toContain('className="air-segments resume-view-segment"');
+    expect(paper).toContain('className="air-segments resume-paper-size"');
     expect(monthYear).toContain("window.visualViewport");
     expect(monthYear).toContain('visualViewport?.addEventListener("resize", updateCoords)');
     expect(monthYear).toContain('visualViewport?.addEventListener("scroll", updateCoords)');
@@ -276,7 +211,7 @@ describe("CloakResume family contract", () => {
     expect(app).toContain("const palette = useMemo(() => derivePalette(primary)");
   });
 
-  it("keeps mobile editing as a 50:50 proof plus one lower-pane task", async () => {
+  it("keeps persistent mobile preview and one lower-pane task with a landscape layout", async () => {
     const [layout, panel] = await Promise.all([
       source("src/components/Layout.tsx"),
       source("src/components/SectionPanel.tsx"),
@@ -286,15 +221,17 @@ describe("CloakResume family contract", () => {
     ]);
 
     expect(layout).toContain("data-mobile-view={mobileView}");
-    expect(layout).toMatch(/mobileView === "panel"[\s\S]*?grid-rows-2/);
-    expect(layout).toMatch(/grid-rows-2[\s\S]*?aria-label="Résumé preview"[\s\S]*?cr-editor-panel/);
+    expect(layout).toMatch(/mobileView === "panel"[\s\S]*?resume-compact-split/);
+    expect(layout).toMatch(
+      /resume-compact-split[\s\S]*?aria-label="Résumé preview"[\s\S]*?cr-editor-panel/,
+    );
     expect(layout).toContain("mobileSectionOpen ?");
     expect(layout).toContain('aria-label="Résumé section picker"');
     expect(layout).toContain('variant="picker"');
     expect(layout).not.toMatch(/FloatingSectionPill|sectionDrawerOpen|Jump to section/);
     expect(panel).toContain("Close ${meta.label} editor and choose another section");
-    expect(panel).toContain("lg:hidden");
-    expect(layout).toContain("min-h-0 flex-1");
+    expect(panel).toContain("resume-section-close");
+    expect(layout).toContain("resume-compact-body");
   });
 
   it("preserves natural word wrapping in every résumé document", async () => {
@@ -490,7 +427,6 @@ describe("CloakResume family contract", () => {
       dragList,
       fields,
       emptyState,
-      orientation,
       logoPicker,
       fieldIssues,
       projects,
@@ -511,7 +447,6 @@ describe("CloakResume family contract", () => {
       source("src/components/DragList.tsx"),
       source("src/components/fields.tsx"),
       source("src/components/editor/shared.tsx"),
-      source("src/components/OrientationLock.tsx"),
       source("src/components/LogoPicker.tsx"),
       source("src/utils/fieldIssues.tsx"),
       source("src/components/editor/ProjectsSection.tsx"),
@@ -549,8 +484,8 @@ describe("CloakResume family contract", () => {
     expect(layout).not.toContain("cr-workspace-enter");
     expect(panel).not.toContain("cr-section-enter");
     expect(rail).toContain("cr-section-nav-button");
-    expect(viewSegment).toContain("cr-segment-button");
-    expect(paperToggle).toContain("cr-segment-button");
+    expect(viewSegment).toContain("air-segments");
+    expect(paperToggle).toContain("air-segments");
     expect(templateModal).toContain("cr-template-card");
     expect(reloadPrompt).toContain("cr-toast");
     expect(dragList).toContain("data-dragging");
@@ -590,9 +525,8 @@ describe("CloakResume family contract", () => {
 
     expect(app).toContain("fallback={<AtsReviewLoading open={atsOpen} />}");
     expect(app).toContain('role="status"');
-    expect(orientation).toContain("useModalDialog<HTMLDivElement>");
-    expect(orientation).toContain("tabIndex={-1}");
-    expect(orientation).toContain('<span\n        aria-hidden="true"');
+    expect(app).not.toContain("OrientationLock");
+    expect(indexCss).not.toContain("cr-rotate-hint");
     expect(logoPicker).toContain("window.visualViewport");
     expect(fieldIssues).toContain("window.visualViewport");
     expect(logoPicker).not.toContain("focus:outline-none");

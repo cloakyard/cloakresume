@@ -15,7 +15,6 @@ import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } fro
 import { createPortal } from "react-dom";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
-import { OrientationLock } from "./components/OrientationLock.tsx";
 import { ReloadPrompt } from "./components/ReloadPrompt.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
@@ -392,10 +391,6 @@ export function App() {
 
   return (
     <>
-      {/* Editor orientation handling remains until its responsive migration.
-       * The Air entry page supports both portrait and landscape. */}
-      {!showLanding && <OrientationLock />}
-
       {/* Service-worker lifecycle prompt — surfaces "Update
        * available" when a new SW version lands and a brief "Ready
        * offline" toast on first install. Owns the SW registration

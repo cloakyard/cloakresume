@@ -92,14 +92,6 @@ body {
   z-index: var(--z-popover, 900) !important;
 }
 
-.cr-preview-tools {
-  color: var(--color-night-ink);
-  background: var(--color-night);
-  backdrop-filter: none;
-  border: 1px solid var(--color-night-rule);
-  box-shadow: var(--shadow-popover);
-}
-
 .cr-overlay {
   background: var(--backdrop-bg);
   backdrop-filter: none;
@@ -277,102 +269,9 @@ button:not(.absolute):active:not(:disabled) {
   border-color: var(--warn);
 }
 
-.cr-editor-header {
-  border-color: var(--color-rule);
-  background: var(--color-surface);
-}
-
-/* The mobile segment shares the header's 44px touch geometry. Its rule is
- * painted as an overlay so it does not subtract from the buttons' hit area. */
-.cr-view-segment {
-  position: relative;
-  border: 0;
-}
-
-.cr-view-segment::after {
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  content: "";
-  border: 1px solid var(--line);
-  border-radius: var(--radius-control);
-}
-
-/* At the ultra-narrow content breakpoint, expose only the action that switches
- * away from the current view. This preserves the full brand lockup and every
- * 44px touch target without letting the header become horizontally scrollable. */
-.cr-editor-header .cr-view-segment .cr-segment-button[aria-pressed="true"] {
-  display: none;
-}
-
-@media (min-width: 21.25rem) {
-  .cr-editor-header .cr-view-segment .cr-segment-button[aria-pressed="true"] {
-    display: grid;
-  }
-}
-
-.cr-editor-rail,
-.cr-editor-panel {
-  border-color: var(--color-rule);
-  background: var(--color-surface);
-}
-
-.cr-editor-preview {
-  background: var(--color-paper-2);
-}
-
-.cr-scroll {
-  scrollbar-color: color-mix(in oklab, var(--color-ink-3) 45%, transparent) transparent;
-}
-
-.cr-brand-logo {
-  min-height: 2.75rem;
-  gap: var(--logo-wordmark-gap, 0.6rem);
-  align-items: center;
-  font-family: var(--font-display);
-  transition: opacity var(--duration-fast) var(--ease-standard);
-}
-
-.cr-brand-logo__mark {
-  width: var(--logo-size);
-  height: var(--logo-size);
-  border-radius: var(--radius-pill);
-}
-
-.cr-brand-logo:hover {
-  opacity: 0.82;
-}
-
-.cr-brand-logo:active {
-  transform: translateY(1px);
-}
-
-.cr-skip-link {
-  position: fixed;
-  top: 0.75rem;
-  left: 0.75rem;
-  z-index: var(--z-system);
-  display: inline-flex;
-  align-items: center;
-  min-height: 2.75rem;
-  padding: 0.5rem 1rem;
-  color: var(--color-accent-ink);
-  background: var(--color-accent);
-  border-radius: var(--radius-control);
-  font: 600 0.75rem/1 var(--font-mono);
-  text-decoration: none;
-  transform: translateY(-200%);
-}
-
-.cr-skip-link:focus {
-  transform: translateY(0);
-}
-
 /* Motion language: one staged reveal, one contextual surface transition, and
  * one interaction response. Geometry stays fixed; only opacity and transforms
  * move, and reduced-motion users bypass every nonessential spatial effect. */
-.cr-section-nav-button,
-.cr-segment-button,
 .cr-overflow-item {
   transition-property: color, background-color, border-color, transform;
   transition-duration: var(--duration-fast);

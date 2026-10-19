@@ -1048,9 +1048,11 @@ journeys across all apps; it is not inferred from the pilot alone.
 ### Runtime adoption boundaries
 
 - Entry, privacy, confirmations and render recovery consume the pinned
-  `src/styles/air.css`; `air-entry.css` owns composition only. The legacy editor
-  bridge remains until its bounded migration. Template fonts and output geometry
-  remain independent of both bridges.
+  `src/styles/air.css`; `air-entry.css` owns entry composition. The editor shell,
+  header actions, section rail/picker/panel frame, paper/view segments and preview
+  dock use Air with `air-editor.css` composition. Section interiors, custom widgets,
+  library/review sheets and PWA notices retain the legacy bridge until their slices.
+  Template fonts and output geometry remain independent of both bridges.
 - Entry supports landscape and native in-flow compact navigation. Blank/sample
   and validated file replacement require confirmation when a current draft exists;
   cancellation and malformed files preserve it. Pending file reads disable entry
@@ -1067,3 +1069,16 @@ journeys across all apps; it is not inferred from the pilot alone.
   `CLOAKRESUME_BROWSER_BUILD=production` for the built browser/template sweep.
   Wait for committed responsive panels and font-driven textarea resizing before
   measuring focus/scroll; preserve assertions, templates and timeout budgets.
+
+- The editor uses a 360px compact desktop writing panel and 420px from 1280px,
+  beside the 72px section rail. The 32px mark retains a 44px link target. Header
+  groups reflow at enlarged text; narrow headers retain the named mark link.
+- Portrait compact editing keeps equal preview/editor panes. From 640–1023px on
+  screens at most 600px high, the two panes sit side by side. Both remain scrollable;
+  expanded Preview and the skip-to-editor action remain available. No rotation lock.
+- The panel heading scrolls with its content on short screens. Picker handoffs move
+  focus to the selected section or back to its selected row; resizing does not steal
+  focus. The zoom dock is outside document scrolling and stays reachable at any zoom.
+- `node scripts/test-air-editor-shell.mjs` checks shell geometry and all 13 navigation
+  routes plus preview/paper operations. These checks do not certify the remaining
+  editor interiors, review sheets, PWA notice, real touch/keyboard or assistive speech.

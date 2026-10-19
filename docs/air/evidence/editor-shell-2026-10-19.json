@@ -1,0 +1,986 @@
+{
+  "date": "2026-10-19",
+  "scope": "Resume shell/header/section rail and picker/panel frame/paper and view segments/preview dock. Section interiors, custom widgets, review, template loading, export busy-label stability, PWA and preview assets remain open.",
+  "contractVersion": "1.0.2",
+  "contractHash": "bb90f52e0b0a",
+  "noNewDependencies": true,
+  "gates": {
+    "fullProductionSuite": {
+      "tests": 287,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 107,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5
+    },
+    "check": "zero warnings/lint/type errors",
+    "build": "pass",
+    "design": "77 records pass",
+    "portability": "18 pass",
+    "exactFamilySync": "six specifications pass"
+  },
+  "browser": "Chrome/155.0.8059.85",
+  "matrix": {
+    "columns": ["state", "width", "height", "theme", "rootTextPx"],
+    "cases": [
+      ["editor", 1920, 1080, "light", 16],
+      ["editor", 1920, 1080, "light", 32],
+      ["editor", 1920, 1080, "dark", 16],
+      ["editor", 1920, 1080, "dark", 32],
+      ["editor", 1440, 900, "light", 16],
+      ["editor", 1440, 900, "light", 32],
+      ["editor", 1440, 900, "dark", 16],
+      ["editor", 1440, 900, "dark", 32],
+      ["editor", 1280, 800, "light", 16],
+      ["editor", 1280, 800, "light", 32],
+      ["editor", 1280, 800, "dark", 16],
+      ["editor", 1280, 800, "dark", 32],
+      ["editor", 1024, 768, "light", 16],
+      ["editor", 1024, 768, "light", 32],
+      ["editor", 1024, 768, "dark", 16],
+      ["editor", 1024, 768, "dark", 32],
+      ["editor", 1023, 768, "light", 16],
+      ["section-picker", 1023, 768, "light", 16],
+      ["expanded-preview", 1023, 768, "light", 16],
+      ["editor", 1023, 768, "light", 32],
+      ["section-picker", 1023, 768, "light", 32],
+      ["expanded-preview", 1023, 768, "light", 32],
+      ["editor", 1023, 768, "dark", 16],
+      ["section-picker", 1023, 768, "dark", 16],
+      ["expanded-preview", 1023, 768, "dark", 16],
+      ["editor", 1023, 768, "dark", 32],
+      ["section-picker", 1023, 768, "dark", 32],
+      ["expanded-preview", 1023, 768, "dark", 32],
+      ["editor", 864, 900, "light", 16],
+      ["section-picker", 864, 900, "light", 16],
+      ["expanded-preview", 864, 900, "light", 16],
+      ["editor", 864, 900, "light", 32],
+      ["section-picker", 864, 900, "light", 32],
+      ["expanded-preview", 864, 900, "light", 32],
+      ["editor", 864, 900, "dark", 16],
+      ["section-picker", 864, 900, "dark", 16],
+      ["expanded-preview", 864, 900, "dark", 16],
+      ["editor", 864, 900, "dark", 32],
+      ["section-picker", 864, 900, "dark", 32],
+      ["expanded-preview", 864, 900, "dark", 32],
+      ["editor", 863, 900, "light", 16],
+      ["section-picker", 863, 900, "light", 16],
+      ["expanded-preview", 863, 900, "light", 16],
+      ["editor", 863, 900, "light", 32],
+      ["section-picker", 863, 900, "light", 32],
+      ["expanded-preview", 863, 900, "light", 32],
+      ["editor", 863, 900, "dark", 16],
+      ["section-picker", 863, 900, "dark", 16],
+      ["expanded-preview", 863, 900, "dark", 16],
+      ["editor", 863, 900, "dark", 32],
+      ["section-picker", 863, 900, "dark", 32],
+      ["expanded-preview", 863, 900, "dark", 32],
+      ["editor", 820, 1180, "light", 16],
+      ["section-picker", 820, 1180, "light", 16],
+      ["expanded-preview", 820, 1180, "light", 16],
+      ["editor", 820, 1180, "light", 32],
+      ["section-picker", 820, 1180, "light", 32],
+      ["expanded-preview", 820, 1180, "light", 32],
+      ["editor", 820, 1180, "dark", 16],
+      ["section-picker", 820, 1180, "dark", 16],
+      ["expanded-preview", 820, 1180, "dark", 16],
+      ["editor", 820, 1180, "dark", 32],
+      ["section-picker", 820, 1180, "dark", 32],
+      ["expanded-preview", 820, 1180, "dark", 32],
+      ["editor", 768, 1024, "light", 16],
+      ["section-picker", 768, 1024, "light", 16],
+      ["expanded-preview", 768, 1024, "light", 16],
+      ["editor", 768, 1024, "light", 32],
+      ["section-picker", 768, 1024, "light", 32],
+      ["expanded-preview", 768, 1024, "light", 32],
+      ["editor", 768, 1024, "dark", 16],
+      ["section-picker", 768, 1024, "dark", 16],
+      ["expanded-preview", 768, 1024, "dark", 16],
+      ["editor", 768, 1024, "dark", 32],
+      ["section-picker", 768, 1024, "dark", 32],
+      ["expanded-preview", 768, 1024, "dark", 32],
+      ["editor", 640, 800, "light", 16],
+      ["section-picker", 640, 800, "light", 16],
+      ["expanded-preview", 640, 800, "light", 16],
+      ["editor", 640, 800, "light", 32],
+      ["section-picker", 640, 800, "light", 32],
+      ["expanded-preview", 640, 800, "light", 32],
+      ["editor", 640, 800, "dark", 16],
+      ["section-picker", 640, 800, "dark", 16],
+      ["expanded-preview", 640, 800, "dark", 16],
+      ["editor", 640, 800, "dark", 32],
+      ["section-picker", 640, 800, "dark", 32],
+      ["expanded-preview", 640, 800, "dark", 32],
+      ["editor", 639, 800, "light", 16],
+      ["section-picker", 639, 800, "light", 16],
+      ["expanded-preview", 639, 800, "light", 16],
+      ["editor", 639, 800, "light", 32],
+      ["section-picker", 639, 800, "light", 32],
+      ["expanded-preview", 639, 800, "light", 32],
+      ["editor", 639, 800, "dark", 16],
+      ["section-picker", 639, 800, "dark", 16],
+      ["expanded-preview", 639, 800, "dark", 16],
+      ["editor", 639, 800, "dark", 32],
+      ["section-picker", 639, 800, "dark", 32],
+      ["expanded-preview", 639, 800, "dark", 32],
+      ["editor", 430, 932, "light", 16],
+      ["section-picker", 430, 932, "light", 16],
+      ["expanded-preview", 430, 932, "light", 16],
+      ["editor", 430, 932, "light", 32],
+      ["section-picker", 430, 932, "light", 32],
+      ["expanded-preview", 430, 932, "light", 32],
+      ["editor", 430, 932, "dark", 16],
+      ["section-picker", 430, 932, "dark", 16],
+      ["expanded-preview", 430, 932, "dark", 16],
+      ["editor", 430, 932, "dark", 32],
+      ["section-picker", 430, 932, "dark", 32],
+      ["expanded-preview", 430, 932, "dark", 32],
+      ["editor", 390, 844, "light", 16],
+      ["section-picker", 390, 844, "light", 16],
+      ["expanded-preview", 390, 844, "light", 16],
+      ["editor", 390, 844, "light", 32],
+      ["section-picker", 390, 844, "light", 32],
+      ["expanded-preview", 390, 844, "light", 32],
+      ["editor", 390, 844, "dark", 16],
+      ["section-picker", 390, 844, "dark", 16],
+      ["expanded-preview", 390, 844, "dark", 16],
+      ["editor", 390, 844, "dark", 32],
+      ["section-picker", 390, 844, "dark", 32],
+      ["expanded-preview", 390, 844, "dark", 32],
+      ["editor", 375, 667, "light", 16],
+      ["section-picker", 375, 667, "light", 16],
+      ["expanded-preview", 375, 667, "light", 16],
+      ["editor", 375, 667, "light", 32],
+      ["section-picker", 375, 667, "light", 32],
+      ["expanded-preview", 375, 667, "light", 32],
+      ["editor", 375, 667, "dark", 16],
+      ["section-picker", 375, 667, "dark", 16],
+      ["expanded-preview", 375, 667, "dark", 16],
+      ["editor", 375, 667, "dark", 32],
+      ["section-picker", 375, 667, "dark", 32],
+      ["expanded-preview", 375, 667, "dark", 32],
+      ["editor", 360, 800, "light", 16],
+      ["section-picker", 360, 800, "light", 16],
+      ["expanded-preview", 360, 800, "light", 16],
+      ["editor", 360, 800, "light", 32],
+      ["section-picker", 360, 800, "light", 32],
+      ["expanded-preview", 360, 800, "light", 32],
+      ["editor", 360, 800, "dark", 16],
+      ["section-picker", 360, 800, "dark", 16],
+      ["expanded-preview", 360, 800, "dark", 16],
+      ["editor", 360, 800, "dark", 32],
+      ["section-picker", 360, 800, "dark", 32],
+      ["expanded-preview", 360, 800, "dark", 32],
+      ["editor", 320, 568, "light", 16],
+      ["section-picker", 320, 568, "light", 16],
+      ["expanded-preview", 320, 568, "light", 16],
+      ["editor", 320, 568, "light", 32],
+      ["section-picker", 320, 568, "light", 32],
+      ["expanded-preview", 320, 568, "light", 32],
+      ["editor", 320, 568, "dark", 16],
+      ["section-picker", 320, 568, "dark", 16],
+      ["expanded-preview", 320, 568, "dark", 16],
+      ["editor", 320, 568, "dark", 32],
+      ["section-picker", 320, 568, "dark", 32],
+      ["expanded-preview", 320, 568, "dark", 32],
+      ["editor", 844, 390, "light", 16],
+      ["section-picker", 844, 390, "light", 16],
+      ["expanded-preview", 844, 390, "light", 16],
+      ["editor", 844, 390, "light", 32],
+      ["section-picker", 844, 390, "light", 32],
+      ["expanded-preview", 844, 390, "light", 32],
+      ["editor", 844, 390, "dark", 16],
+      ["section-picker", 844, 390, "dark", 16],
+      ["expanded-preview", 844, 390, "dark", 16],
+      ["editor", 844, 390, "dark", 32],
+      ["section-picker", 844, 390, "dark", 32],
+      ["expanded-preview", 844, 390, "dark", 32],
+      ["editor", 667, 375, "light", 16],
+      ["section-picker", 667, 375, "light", 16],
+      ["expanded-preview", 667, 375, "light", 16],
+      ["editor", 667, 375, "light", 32],
+      ["section-picker", 667, 375, "light", 32],
+      ["expanded-preview", 667, 375, "light", 32],
+      ["editor", 667, 375, "dark", 16],
+      ["section-picker", 667, 375, "dark", 16],
+      ["expanded-preview", 667, 375, "dark", 16],
+      ["editor", 667, 375, "dark", 32],
+      ["section-picker", 667, 375, "dark", 32],
+      ["expanded-preview", 667, 375, "dark", 32],
+      ["section:Profile", 1440, 900, "light", 16],
+      ["section:Contact", 1440, 900, "light", 16],
+      ["section:Experience", 1440, 900, "light", 16],
+      ["section:Skills", 1440, 900, "light", 16],
+      ["section:Projects", 1440, 900, "light", 16],
+      ["section:Education", 1440, 900, "light", 16],
+      ["section:Certifications", 1440, 900, "light", 16],
+      ["section:Awards", 1440, 900, "light", 16],
+      ["section:Languages", 1440, 900, "light", 16],
+      ["section:Interests & Tools", 1440, 900, "light", 16],
+      ["section:Quick stats", 1440, 900, "light", 16],
+      ["section:Custom", 1440, 900, "light", 16],
+      ["section:Target JD", 1440, 900, "light", 16],
+      ["scrolled-preview", 1440, 900, "light", 16],
+      ["section:Profile", 1440, 900, "dark", 16],
+      ["section:Contact", 1440, 900, "dark", 16],
+      ["section:Experience", 1440, 900, "dark", 16],
+      ["section:Skills", 1440, 900, "dark", 16],
+      ["section:Projects", 1440, 900, "dark", 16],
+      ["section:Education", 1440, 900, "dark", 16],
+      ["section:Certifications", 1440, 900, "dark", 16],
+      ["section:Awards", 1440, 900, "dark", 16],
+      ["section:Languages", 1440, 900, "dark", 16],
+      ["section:Interests & Tools", 1440, 900, "dark", 16],
+      ["section:Quick stats", 1440, 900, "dark", 16],
+      ["section:Custom", 1440, 900, "dark", 16],
+      ["section:Target JD", 1440, 900, "dark", 16],
+      ["scrolled-preview", 1440, 900, "dark", 16],
+      ["section:Profile", 1024, 900, "light", 16],
+      ["section:Contact", 1024, 900, "light", 16],
+      ["section:Experience", 1024, 900, "light", 16],
+      ["section:Skills", 1024, 900, "light", 16],
+      ["section:Projects", 1024, 900, "light", 16],
+      ["section:Education", 1024, 900, "light", 16],
+      ["section:Certifications", 1024, 900, "light", 16],
+      ["section:Awards", 1024, 900, "light", 16],
+      ["section:Languages", 1024, 900, "light", 16],
+      ["section:Interests & Tools", 1024, 900, "light", 16],
+      ["section:Quick stats", 1024, 900, "light", 16],
+      ["section:Custom", 1024, 900, "light", 16],
+      ["section:Target JD", 1024, 900, "light", 16],
+      ["scrolled-preview", 1024, 900, "light", 16],
+      ["section:Profile", 1024, 900, "dark", 16],
+      ["section:Contact", 1024, 900, "dark", 16],
+      ["section:Experience", 1024, 900, "dark", 16],
+      ["section:Skills", 1024, 900, "dark", 16],
+      ["section:Projects", 1024, 900, "dark", 16],
+      ["section:Education", 1024, 900, "dark", 16],
+      ["section:Certifications", 1024, 900, "dark", 16],
+      ["section:Awards", 1024, 900, "dark", 16],
+      ["section:Languages", 1024, 900, "dark", 16],
+      ["section:Interests & Tools", 1024, 900, "dark", 16],
+      ["section:Quick stats", 1024, 900, "dark", 16],
+      ["section:Custom", 1024, 900, "dark", 16],
+      ["section:Target JD", 1024, 900, "dark", 16],
+      ["scrolled-preview", 1024, 900, "dark", 16],
+      ["section:Profile", 820, 900, "light", 16],
+      ["section:Contact", 820, 900, "light", 16],
+      ["section:Experience", 820, 900, "light", 16],
+      ["section:Skills", 820, 900, "light", 16],
+      ["section:Projects", 820, 900, "light", 16],
+      ["section:Education", 820, 900, "light", 16],
+      ["section:Certifications", 820, 900, "light", 16],
+      ["section:Awards", 820, 900, "light", 16],
+      ["section:Languages", 820, 900, "light", 16],
+      ["section:Interests & Tools", 820, 900, "light", 16],
+      ["section:Quick stats", 820, 900, "light", 16],
+      ["section:Custom", 820, 900, "light", 16],
+      ["section:Target JD", 820, 900, "light", 16],
+      ["scrolled-preview", 820, 900, "light", 16],
+      ["section:Profile", 820, 900, "dark", 16],
+      ["section:Contact", 820, 900, "dark", 16],
+      ["section:Experience", 820, 900, "dark", 16],
+      ["section:Skills", 820, 900, "dark", 16],
+      ["section:Projects", 820, 900, "dark", 16],
+      ["section:Education", 820, 900, "dark", 16],
+      ["section:Certifications", 820, 900, "dark", 16],
+      ["section:Awards", 820, 900, "dark", 16],
+      ["section:Languages", 820, 900, "dark", 16],
+      ["section:Interests & Tools", 820, 900, "dark", 16],
+      ["section:Quick stats", 820, 900, "dark", 16],
+      ["section:Custom", 820, 900, "dark", 16],
+      ["section:Target JD", 820, 900, "dark", 16],
+      ["scrolled-preview", 820, 900, "dark", 16],
+      ["section:Profile", 390, 900, "light", 16],
+      ["section:Contact", 390, 900, "light", 16],
+      ["section:Experience", 390, 900, "light", 16],
+      ["section:Skills", 390, 900, "light", 16],
+      ["section:Projects", 390, 900, "light", 16],
+      ["section:Education", 390, 900, "light", 16],
+      ["section:Certifications", 390, 900, "light", 16],
+      ["section:Awards", 390, 900, "light", 16],
+      ["section:Languages", 390, 900, "light", 16],
+      ["section:Interests & Tools", 390, 900, "light", 16],
+      ["section:Quick stats", 390, 900, "light", 16],
+      ["section:Custom", 390, 900, "light", 16],
+      ["section:Target JD", 390, 900, "light", 16],
+      ["scrolled-preview", 390, 900, "light", 16],
+      ["section:Profile", 390, 900, "dark", 16],
+      ["section:Contact", 390, 900, "dark", 16],
+      ["section:Experience", 390, 900, "dark", 16],
+      ["section:Skills", 390, 900, "dark", 16],
+      ["section:Projects", 390, 900, "dark", 16],
+      ["section:Education", 390, 900, "dark", 16],
+      ["section:Certifications", 390, 900, "dark", 16],
+      ["section:Awards", 390, 900, "dark", 16],
+      ["section:Languages", 390, 900, "dark", 16],
+      ["section:Interests & Tools", 390, 900, "dark", 16],
+      ["section:Quick stats", 390, 900, "dark", 16],
+      ["section:Custom", 390, 900, "dark", 16],
+      ["section:Target JD", 390, 900, "dark", 16],
+      ["scrolled-preview", 390, 900, "dark", 16],
+      ["section:Profile", 844, 390, "light", 16],
+      ["section:Contact", 844, 390, "light", 16],
+      ["section:Experience", 844, 390, "light", 16],
+      ["section:Skills", 844, 390, "light", 16],
+      ["section:Projects", 844, 390, "light", 16],
+      ["section:Education", 844, 390, "light", 16],
+      ["section:Certifications", 844, 390, "light", 16],
+      ["section:Awards", 844, 390, "light", 16],
+      ["section:Languages", 844, 390, "light", 16],
+      ["section:Interests & Tools", 844, 390, "light", 16],
+      ["section:Quick stats", 844, 390, "light", 16],
+      ["section:Custom", 844, 390, "light", 16],
+      ["section:Target JD", 844, 390, "light", 16],
+      ["scrolled-preview", 844, 390, "light", 16],
+      ["section:Profile", 844, 390, "dark", 16],
+      ["section:Contact", 844, 390, "dark", 16],
+      ["section:Experience", 844, 390, "dark", 16],
+      ["section:Skills", 844, 390, "dark", 16],
+      ["section:Projects", 844, 390, "dark", 16],
+      ["section:Education", 844, 390, "dark", 16],
+      ["section:Certifications", 844, 390, "dark", 16],
+      ["section:Awards", 844, 390, "dark", 16],
+      ["section:Languages", 844, 390, "dark", 16],
+      ["section:Interests & Tools", 844, 390, "dark", 16],
+      ["section:Quick stats", 844, 390, "dark", 16],
+      ["section:Custom", 844, 390, "dark", 16],
+      ["section:Target JD", 844, 390, "dark", 16],
+      ["scrolled-preview", 844, 390, "dark", 16]
+    ]
+  },
+  "journeys": [
+    {
+      "width": 1440,
+      "theme": "light",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 1440,
+      "theme": "dark",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 1024,
+      "theme": "light",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 1024,
+      "theme": "dark",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 820,
+      "theme": "light",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 820,
+      "theme": "dark",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 390,
+      "theme": "light",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 390,
+      "theme": "dark",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 844,
+      "theme": "light",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    },
+    {
+      "width": 844,
+      "theme": "dark",
+      "sections": 13,
+      "contentPreserved": true,
+      "zoom": true,
+      "paperSize": true,
+      "previewDockReachable": true
+    }
+  ],
+  "errors": [],
+  "contrast": [
+    {
+      "theme": "light",
+      "pairs": [
+        {
+          "name": "CloakResume home",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Template: Classic Sidebar",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Primary colour",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "A4",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Letter",
+          "ratio": 6.132921116762568,
+          "fg": [82, 91, 104],
+          "bg": [240, 242, 246],
+          "min": 4.5
+        },
+        {
+          "name": "Scan r\u00e9sum\u00e9 for ATS and writing issues",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Start a new blank resume",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Save resume data as JSON file",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Load a previously saved resume file",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Export to PDF",
+          "ratio": 14.83173212851982,
+          "fg": [255, 255, 255],
+          "bg": [34, 40, 49],
+          "min": 4.5
+        },
+        {
+          "name": "Profile",
+          "ratio": 14.047090298524115,
+          "fg": [32, 35, 41],
+          "bg": [240, 242, 246],
+          "min": 4.5
+        },
+        {
+          "name": "Contact",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Experience",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Skills",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Projects",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Education",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Certifications",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Awards",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Languages",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Interests & Tools",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Quick stats",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Custom",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Target JD",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Privacy policy",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Profile",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Name, headline, logo, and summary",
+          "ratio": 6.873758629397385,
+          "fg": [82, 91, 104],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Zoom out",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Reset zoom to 100 percent. Current zoom 100 percent",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Zoom in",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        },
+        {
+          "name": "Fit preview",
+          "ratio": 15.743934467621905,
+          "fg": [32, 35, 41],
+          "bg": [255, 255, 255],
+          "min": 4.5
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "pairs": [
+        {
+          "name": "CloakResume home",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Template: Classic Sidebar",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Primary colour",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "A4",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Letter",
+          "ratio": 7.912154171524162,
+          "fg": [182, 190, 203],
+          "bg": [35, 40, 48],
+          "min": 4.5
+        },
+        {
+          "name": "Scan r\u00e9sum\u00e9 for ATS and writing issues",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Start a new blank resume",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Save resume data as JSON file",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Load a previously saved resume file",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Export to PDF",
+          "ratio": 13.91972285999866,
+          "fg": [24, 33, 46],
+          "bg": [233, 238, 247],
+          "min": 4.5
+        },
+        {
+          "name": "Profile",
+          "ratio": 13.334260640394385,
+          "fg": [241, 243, 247],
+          "bg": [35, 40, 48],
+          "min": 4.5
+        },
+        {
+          "name": "Contact",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Experience",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Skills",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Projects",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Education",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Certifications",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Awards",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Languages",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Interests & Tools",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Quick stats",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Custom",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Target JD",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Privacy policy",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Profile",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Name, headline, logo, and summary",
+          "ratio": 9.0171348392764,
+          "fg": [182, 190, 203],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Zoom out",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Reset zoom to 100 percent. Current zoom 100 percent",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Zoom in",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        },
+        {
+          "name": "Fit preview",
+          "ratio": 15.196471601782546,
+          "fg": [241, 243, 247],
+          "bg": [26, 29, 35],
+          "min": 4.5
+        }
+      ]
+    }
+  ],
+  "additionalJourneys": [
+    {
+      "name": "light/dark document boundary",
+      "pages": 5,
+      "exactTextFontGeometryBackground": true
+    },
+    {
+      "name": "emulated two-finger preview pinch",
+      "before": 45,
+      "after": 75
+    },
+    {
+      "name": "forced-colour keyboard focus",
+      "width": "2px",
+      "style": "solid"
+    }
+  ],
+  "screenshots": [
+    {
+      "path": "docs/air/evidence/resume-shell-1440-light.png",
+      "sha256": "f7a31150731d89344751c505a094fc4a66a8c68d6b6a8e9ec658c37f34ccd8b2"
+    },
+    {
+      "path": "docs/air/evidence/resume-shell-1280-dark.png",
+      "sha256": "5280dde4e41335cb5e06c3bf755fcc8fda1ce245b7a48759c2203509bf69c0e6"
+    },
+    {
+      "path": "docs/air/evidence/resume-shell-390-dark.png",
+      "sha256": "3cbd05c199aeeaf92cdf0f70638eeb1e1deb122df072fb526cdae92db1c332be"
+    },
+    {
+      "path": "docs/air/evidence/resume-shell-844-dark.png",
+      "sha256": "0e8241ba4db22074791a73da56661a0f8b7c8bfe6e23abe38b79bf0e4f4c621c"
+    },
+    {
+      "path": "docs/air/evidence/resume-picker-320-light-32.png",
+      "sha256": "6e24af2d385608a99f4df88c8496aca431db8ebe834443ce20db9926a76cb563"
+    }
+  ],
+  "native": [
+    {
+      "browser": "Firefox 158",
+      "checks": [
+        "actual 200% zoom",
+        "compact picker and selected-row focus",
+        "Tab/Enter section handoff and editor focus",
+        "expanded preview and Zoom in 100\u2192110",
+        "Fit, restore 100% browser zoom and close review tab"
+      ],
+      "proof": "/tmp/cloakresume-air-shell/firefox-200-sections.png"
+    },
+    {
+      "browser": "Safari 27",
+      "checks": [
+        "desktop shell/section switching",
+        "A4\u2192Letter",
+        "rail privacy isolation/Escape focus return",
+        "review tab closed"
+      ],
+      "proof": "/tmp/cloakresume-air-shell/safari-sections.png"
+    }
+  ],
+  "protectedSources": {
+    "src/templates/meta.ts": "f00f5ebbfdc2af26a1f2aa80dd88533cc7df33717ec7d54cffcaa6a2e854f1c0",
+    "src/templates/shared.tsx": "b0adbf3f5979d606c58fd43b58397475cc419a702d0bdad98a3c6685cb225e74",
+    "src/templates/paginationAtoms.tsx": "a41d74023ee0b277f4c4222580d39ca5927dc8382f7423ec9a96ccea6f3469a3",
+    "src/templates/Minimalist.tsx": "ee621fa8d02c01d11f99c97e4fcb8bf4cc76eb6a0b35e9ce64ccebfd62f934d6",
+    "src/templates/TEMPLATE_INSTRUCTIONS.md": "70b6a809d6206dd2b2db8bc33a40b4e1ecc7074604fd42c7937c939bb21139c7",
+    "src/templates/ClassicSidebar.tsx": "9cf075d3a5a6f5a47b4f573572a8399bc6f94f22f0ef2f37a875b0b9ddd9f6ec",
+    "src/templates/ExecutiveSerif.tsx": "c70fed0d78565e46b9cf11a20f356a045a85f8e2d3fdfc6b67984002df7dc77f",
+    "src/templates/Aurora.tsx": "65d1ac9545bd811b295eda8875e14be204d1e1749d18b9ae4befa12ec82eeb12",
+    "src/templates/GradientHeader.tsx": "ae7c01514617f935b721019e3a78c036c959dc47a949ec81e297aff6cac4601a",
+    "src/templates/Horizon.tsx": "290bac674de6d67fffcfbae44d5fce91ab052a28330e9fbb50ae10f2ba4db4de",
+    "src/templates/Monograph.tsx": "f58fe482b2eb3fa90f1661c6c0c37b8940526b3d3bd3a105979212afa04af892",
+    "src/templates/ClassicImpact.tsx": "d31a6eb4fc3b9dc1c01bb9309556ae21cc65de74e994b084247895071eed22ca",
+    "src/templates/Prism.tsx": "f2ba427bcb45edd11aae30aa5886e8cd7483b08591464a8ab01a41ec1b24b7ed",
+    "src/templates/index.ts": "bd8dc111f804982dd32a7d1bca3086d1ee0bad3df4481250928466ff64b22b3f",
+    "src/templates/Ledger.tsx": "63a8b3f6bd28cc99a9757e18a115a5f29ff8af08dedbba450cb6952ec715dd57",
+    "src/templates/Typographic.tsx": "d27cbc01815f85ecfc2420c06abeecfd76fbc3b35820b36823d7457b477aa01e",
+    "src/templates/ModernMinimal.tsx": "ec0050bd6839208f44fc957676ade2d08dcc6aac2bb03567b266fcd6e84b14ef",
+    "src/templates/Bauhaus.tsx": "db6e20452a9b413b4a709f10274bd88cb8bac06b1083a8979ab77a819a4afae5",
+    "src/templates/AtsPlain.tsx": "d4905dcea3f1b8e79d69cbdcc0915fd65de7e442d18dd77d309ed11ddf2024ea",
+    "src/templates/CompactTimeline.tsx": "38724315fc0aef1311a3837fc1ba0e438f0954fe55d349dde4a66dfa42c9d7c0",
+    "src/templates/Academic.tsx": "4533f63ea085509215f81d2591d4823cb037ae6bdc1aa58c954e8901a6405e17",
+    "src/templates/AtsProfessional.tsx": "dc89d85e57d11ffb38281ec3a02eed04524ab1bf1dc64de0e1d87c490a053240",
+    "src/utils/pdfExport.ts": "4feeea2585cd7a2f3ec75aa0812ecb4db70d88d7b7778ad6e79c943c171ff71d",
+    "src/utils/pdfFonts.ts": "799834db447065f669a13ebc4fb4647a09f7df247b480ed4585a4b9e3fb2d844",
+    "src/data/sampleResume.ts": "db0e661a8890e6581f7b119018e04dbad56c61e2803f5272721d63abb9639ba8",
+    "src/data/blankResume.ts": "a8748651b25ddcc2a253147335129de5ec1326ea09a8ceb0151ee839921ed154"
+  },
+  "corrections": [
+    "Paper labels keep intrinsic width instead of breaking Letter. Coarse A4 and compact mark targets are at least 44px.",
+    "Shared button display overrode the old layered desktop hiding class; the close action now has an explicit responsive composition rule.",
+    "Full suite found three real 320px rich-format/bullet row overflows (292.359px vs 292px limit). The action rows now wrap; original containment/44px assertions and timeouts are unchanged. Four focused cases passed before the final full pass.",
+    "Contrast probes wait for the emulated theme to paint before combining child foreground and ancestor background. No colour/focus animation was added.",
+    "Old fixed-toolbar/40px-brand/orientation source-string tests were replaced by current Air/landscape contracts; two geometry source checks were consolidated, so total tests are 287 (feature/browser/template counts unchanged).",
+    "After marking the new stylesheet implemented, static design validation rejected the literal selection-marker radius. It now uses the shared check-radius token; focused light/dark pixel comparisons prove identical rendered caps. Final check/build/design/portability pass after this equivalent-style correction; the complete 287-test run preceded it."
+  ],
+  "limits": [
+    "Entry and shell implementation are bounded slices, not a complete Resume migration.",
+    "Old field/review/widget/PWA surfaces remain; Ready Offline was observed oversized at 32px root text and is tracked for the PWA slice.",
+    "Native checks are targeted journeys, not the full Chrome layout matrix.",
+    "Physical touch/software keyboard, OS IME, assistive speech and hardware GPU/battery acceptance remain open.",
+    "Geometry suite disables service-worker registration; real PWA/update safety remains a separate gate.",
+    "No push, deployment or document upload."
+  ],
+  "localEvidence": "/tmp/cloakresume-air-shell"
+}
