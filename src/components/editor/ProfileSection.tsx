@@ -137,7 +137,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
               }}
             />
             {photoError && (
-              <p role="alert" className="cr-field-hint cr-field-hint--error">
+              <p role="alert" className="air-help air-help--error">
                 {photoError}
               </p>
             )}
@@ -179,7 +179,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
 
         <div className="cr-field">
           <div className="cr-field-row">
-            <span className="cr-field-label">Professional summary</span>
+            <span className="air-label">Professional summary</span>
             <FormatToolbar />
           </div>
           <RichTextArea

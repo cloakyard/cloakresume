@@ -246,8 +246,9 @@ describe.skipIf(!existsSync(chromePath))(
       },
       options = {},
       width = 1440,
+      hasTouch = false,
     ) {
-      await page.setViewport({ width, height: 1000 });
+      await page.setViewport({ width, height: 1000, hasTouch });
       await page.goto(url, { waitUntil: "networkidle0" });
       await page.evaluate(
         ({ draft, options }) => {
@@ -569,6 +570,100 @@ describe.skipIf(!existsSync(chromePath))(
           expect((await savedResume()).profile.title).toBe(title);
         }, 20_000);
       }
+
+    it("retires the removed active writing field without resurrecting its bullet", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [{ id: "scope", header: "Writing", bullets: ["Keep this", "Remove this"] }],
+        },
+        { activeSection: "custom" },
+      );
+      await page.$eval('[data-field-id="custom.0.bullets.1"]', (el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).select();
+      });
+      const toolbar = '.cr-editor-panel [role="toolbar"]';
+      expect(
+        await page.$$eval(`${toolbar} button`, (els) =>
+          els.every((el) => !(el as HTMLButtonElement).disabled),
+        ),
+      ).toBe(true);
+      const remove = await page.$$('.cr-editor-panel button[aria-label="Remove"]');
+      await remove[1].click();
+      await page.click('.cr-editor-panel button[aria-label="Confirm removal"]');
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll('.cr-editor-panel [role="toolbar"] button')].every(
+          (el) => (el as HTMLButtonElement).disabled,
+        ),
+      );
+      await page.$$eval(`${toolbar} button`, (els) =>
+        els.forEach((el) => (el as HTMLButtonElement).click()),
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["Keep this"]);
+      await page.$eval('[data-field-id="custom.0.bullets.0"]', (el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).select();
+      });
+      await page.locator(`${toolbar} button[aria-label="Bold (⌘B)"]`).click();
+      await page.waitForFunction(
+        () =>
+          (document.querySelector('[data-field-id="custom.0.bullets.0"]') as HTMLTextAreaElement)
+            .value === "**Keep this**",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["**Keep this**"]);
+    });
+
+    it.each(["light", "dark"])(
+      "keeps Air fields readable with one focus contour on a touch tablet in %s",
+      async (theme) => {
+        await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
+        await openDraft(
+          {
+            ...blankResume,
+            profile: { name: "Amara Schmidt", title: "Engineer", summary: "Local work" },
+          },
+          {},
+          768,
+          true,
+        );
+        expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
+        const fields = await page.$$(".cr-editor-panel .resume-writing-field");
+        expect(fields.length).toBe(3);
+        for (const field of fields) {
+          const measured = await field.evaluate((el) => {
+            (el as HTMLElement).focus();
+            const css = getComputedStyle(el),
+              box = el.getBoundingClientRect();
+            return {
+              height: box.height,
+              fontSize: parseFloat(css.fontSize),
+              fontFamily: css.fontFamily,
+              outline: css.outlineWidth,
+              offset: css.outlineOffset,
+              border: css.borderColor,
+              shadow: css.boxShadow,
+            };
+          });
+          expect(measured.height).toBeGreaterThanOrEqual(44);
+          expect(measured.fontSize).toBeGreaterThanOrEqual(16);
+          expect(measured.fontFamily).not.toMatch(/mono|Geist/);
+          expect(measured.outline).toBe("2px");
+          expect(measured.offset).toBe("0px");
+          expect(measured.border).toBe("rgba(0, 0, 0, 0)");
+          expect(measured.shadow).toBe("none");
+        }
+        expect(await page.$$eval(".cr-editor-panel .invisible", (els) => els.length)).toBe(0);
+        expect(
+          await page.$$eval(".resume-format-toolbar button", (els) =>
+            els.every(
+              (el) =>
+                el.getBoundingClientRect().height >= 44 && el.getBoundingClientRect().width >= 44,
+            ),
+          ),
+        ).toBe(true);
+      },
+    );
 
     it.each([1440, 320])(
       "toggles underline using the toolbar and keyboard at %ipx",
@@ -1079,7 +1174,7 @@ describe.skipIf(!existsSync(chromePath))(
       [1920, "dark"],
       [320, "dark"],
     ] as const)(
-      "keeps a complete, consistent contact focus ring at %ipx in %s mode",
+      "keeps Air writing and legacy contact focus contours unclipped at %ipx in %s mode",
       async (width, theme) => {
         await page.emulateMediaFeatures([
           { name: "prefers-color-scheme", value: theme },
@@ -1091,9 +1186,38 @@ describe.skipIf(!existsSync(chromePath))(
           contact: [{ id: "focus", kind: "email", value: "name@example.com" }],
         });
         await page.focus('input[name="profile-name"]');
-        const expectedRing = await page.$eval('input[name="profile-name"]', (element) => {
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+            ),
+        );
+        const writingRing = await page.$eval('input[name="profile-name"]', (element) => {
           const style = getComputedStyle(element);
-          return { outline: style.outline, offset: style.outlineOffset, shadow: style.boxShadow };
+          return {
+            focused: document.activeElement === element,
+            width: style.outlineWidth,
+            offset: style.outlineOffset,
+            shadow: style.boxShadow,
+            border: style.borderColor,
+          };
+        });
+        expect(writingRing).toEqual({
+          focused: true,
+          width: "2px",
+          offset: "0px",
+          shadow: "none",
+          border: "rgba(0, 0, 0, 0)",
+        });
+        // Contact is still a legacy adapter. Preserve its contour/clipping gate
+        // independently of Air's replacement contour for shared writing fields.
+        const expectedRing = await page.evaluate(() => {
+          const probe = document.createElement("span");
+          probe.style.outline = "2px solid var(--color-focus)";
+          document.body.append(probe);
+          const outline = getComputedStyle(probe).outline;
+          probe.remove();
+          return { outline, offset: "2px", shadow: "none" };
         });
         await page.click('nav button[aria-label="Contact"]');
         await page.setViewport({ width, height: 1000 });

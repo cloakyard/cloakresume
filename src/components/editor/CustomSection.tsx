@@ -80,9 +80,9 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                     />
                     <div className="cr-field">
                       <div className="cr-field-row">
-                        <span className="cr-field-label">Bullets</span>
+                        <span className="air-label">Bullets</span>
                         <div className="flex min-w-0 flex-wrap items-center gap-1">
-                          <FormatToolbar compact />
+                          <FormatToolbar />
                           <button
                             type="button"
                             onClick={() => {
@@ -129,7 +129,6 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                                     fieldId={`custom.${i}.bullets.${bi}`}
                                     value={b}
                                     rows={3}
-                                    compact
                                     onChange={(v) => {
                                       const next = [...resume.custom];
                                       const bullets = [...item.bullets];

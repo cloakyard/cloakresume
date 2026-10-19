@@ -240,3 +240,33 @@ shared radius token passes; focused light/dark pixel comparisons are identical.
 The full 287-test run preceded this equivalent-style cleanup; final format/lint/
 type/build/design/portability pass afterward. Template loading and export busy-label
 stability remain partial-source follow-ups in Preview/ToolbarActions.
+
+## 2026-10-19 — shared writing fields and formatting
+
+Plain text, CSV, textarea and rich writing use Air labels, help, a single field
+contour and capability-based editable type. Formatting has neutral pressed states
+and 44px targets; hint actions keep 44px targets with reserved text space. Invisible
+hint rows, compact size flags and retired hint/compact CSS are removed. Both remaining
+error-help consumers were traced and migrated before removing their legacy classes.
+A format scope retires removed fields and disables stale actions, preventing a
+removed bullet from being restored through its old toolbar handler.
+
+384 layouts across six consumers, 16 sizes, both themes and 16/32px root text pass.
+32 contrast pairs, exact invalid text/help/focus, selected formatting and forced
+colours pass. Native Safari pointer formatting and Firefox actual 200% keyboard
+formatting preserve multiline selection/text. Native tabs are closed, Firefox
+zoom restored. No template, PDF/font/data or dependency source changed.
+
+All **290 tests in eight files pass with no skips**, including 110 editor cases and
+17 templates × A4/Letter × five fixtures. The first full run's four failures used a
+shared legacy focus baseline; assertions now explicitly check the Air field contour
+while retaining contact's current contour/clipping/validation gate. The new tablet
+case also asserts actual coarse capability. No feature assertion or timeout weakened.
+Check/build/design/18 portability/exact sync pass. Detailed proof, failures and limits:
+`evidence/writing-fields-2026-10-19.json` and checks log; captures under
+`/tmp/cloakresume-air-fields/`.
+
+Next is repeated-entry/bullet chrome and identity/focus/reorder/removal. Contact,
+select/date/logo/wheel, hint popups, review/templates/export/PWA/static404 and actual
+preview assets remain partial. Physical keyboard/touch/IME, spoken assistive and
+shader hardware gates remain open. IMG stays last and parked.

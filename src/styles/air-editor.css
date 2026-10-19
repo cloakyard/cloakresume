@@ -349,3 +349,45 @@
     display: inline-flex;
   }
 }
+
+/* Writing controls use the shared field, without compact type or blank hint rows. */
+.resume-writing-field {
+  display: block;
+  min-inline-size: 0;
+}
+textarea.resume-writing-field[data-auto-grow="true"] {
+  min-block-size: var(--air-control);
+  resize: none;
+  overflow: hidden;
+}
+textarea.resume-writing-field[data-resizable="false"] {
+  resize: none;
+}
+.resume-writing-field--hints {
+  padding-inline-end: 56px;
+}
+.cr-field-row:has(.resume-format-toolbar) {
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.cr-field-row > .air-label {
+  margin: 0;
+}
+.resume-format-toolbar {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-inline-size: 0;
+}
+.resume-format-toolbar .air-icon-button {
+  min-width: 44px;
+  min-height: 44px;
+}
+.resume-format-toolbar .air-icon-button[aria-pressed="true"] {
+  background: var(--air-surface-soft);
+  color: var(--air-ink);
+  border-color: var(--air-line-control);
+}
+.resume-format-toolbar .air-icon-button:active {
+  transform: none;
+}

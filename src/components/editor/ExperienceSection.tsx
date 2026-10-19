@@ -150,9 +150,9 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                     </label>
                     <div className="cr-field">
                       <div className="cr-field-row">
-                        <span className="cr-field-label">Bullets</span>
+                        <span className="air-label">Bullets</span>
                         <div className="flex min-w-0 flex-wrap items-center gap-1">
-                          <FormatToolbar compact />
+                          <FormatToolbar />
                           <button
                             type="button"
                             onClick={() => {
@@ -199,7 +199,6 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                                     fieldId={`experience.${i}.bullets.${bi}`}
                                     value={b}
                                     rows={3}
-                                    compact
                                     onChange={(v) => {
                                       const next = [...resume.experience];
                                       const bullets = [...job.bullets];

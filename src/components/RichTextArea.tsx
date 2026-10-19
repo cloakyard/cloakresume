@@ -19,7 +19,6 @@ interface RichTextAreaProps {
   placeholder?: string;
   /** Minimum rows the textarea shows even when empty. */
   rows?: number;
-  compact?: boolean;
   /** Auto-grow the textarea to fit its content (default: true). */
   autoGrow?: boolean;
   /** Opt-in target for the ATS jump-to-fix glow highlight. */
@@ -37,7 +36,6 @@ export function RichTextArea({
   onChange,
   placeholder,
   rows = 4,
-  compact = false,
   autoGrow = true,
   fieldId,
   name,
@@ -62,12 +60,6 @@ export function RichTextArea({
     },
     [value, onChange],
   );
-
-  // Refresh the stored handler every render so the toolbar always uses
-  // the latest onChange closure (React recreates it each render).
-  useEffect(() => {
-    registration.setHandler();
-  });
 
   // Measure a hidden copy instead of collapsing the live field to `height: auto`.
   // Collapsing a long field clamps its scroll container back toward the top,
@@ -139,7 +131,7 @@ export function RichTextArea({
   return (
     <div className={label ? "cr-field" : "block"}>
       {label && (
-        <label className="cr-field-label" htmlFor={inputId}>
+        <label className="air-label" htmlFor={inputId}>
           {label}
         </label>
       )}
@@ -156,13 +148,11 @@ export function RichTextArea({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           onFocus={registration.onFocus}
-          onBlur={registration.onBlur}
           placeholder={placeholder}
           rows={rows}
           spellCheck={true}
-          className={`cr-input font-[inherit] ${compact ? "cr-input--compact" : ""} ${
-            autoGrow ? "resize-none overflow-hidden" : "resize-y"
-          } ${hasIssues ? "cr-input--has-issues" : ""}${invalid ? " cr-input--invalid" : ""}`}
+          className={`air-field resume-writing-field${hasIssues ? " resume-writing-field--hints" : ""}`}
+          data-auto-grow={autoGrow}
           onKeyDown={(e) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "b") {
               e.preventDefault();
@@ -178,14 +168,15 @@ export function RichTextArea({
         />
         <FieldIssuesBadge issues={issues} onApplySuggestion={applySuggestion} />
       </div>
-      <span
-        id={hintId}
-        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
-        aria-live={invalid ? "polite" : undefined}
-        aria-hidden={hint ? undefined : true}
-      >
-        {hint || "\u00a0"}
-      </span>
+      {hint && (
+        <p
+          id={hintId}
+          className={`air-help${invalid ? " air-help--error" : ""}`}
+          aria-live={invalid ? "polite" : undefined}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }

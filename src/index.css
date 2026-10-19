@@ -274,31 +274,12 @@
       hover:border-(--color-rule-strong)
       lg:px-3 lg:py-2.5 lg:text-sm lg:leading-[1.5];
   }
-  .cr-input--compact {
-    @apply px-2.5 py-2 text-[14.5px]
-      lg:px-2.5 lg:py-2 lg:text-sm;
-  }
   /* Validation and writing hints keep their status colour; the shared
    * chrome stylesheet supplies the same focus ring for every state. */
   .cr-input--invalid {
     @apply border-(--danger-border) bg-(--danger-bg)/50
       hover:border-(--danger-border);
   }
-  /* Live writing-hint state — amber border, reserves space on the right so
-     text doesn't run under the floating issue badge. */
-  .cr-input--has-issues {
-    @apply border-(--warn-border)
-      hover:border-(--warn-border)
-      pr-10;
-  }
-  /* Helper text shown below a field. Red variant signals validation errors. */
-  .cr-field-hint {
-    @apply block mt-1 text-sm leading-[1.5] text-(--ink-4);
-  }
-  .cr-field-hint--error {
-    @apply text-(--danger);
-  }
-
   /* Vertical rhythm inside a section body */
   .cr-stack > * + * {
     @apply mt-4;

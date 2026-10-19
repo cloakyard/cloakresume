@@ -222,10 +222,6 @@ button:not(.absolute):active:not(:disabled) {
   color: var(--brand);
 }
 
-.cr-field-hint {
-  min-height: 1lh;
-}
-
 .cr-input {
   border-color: var(--line);
   border-radius: var(--radius-control);
@@ -261,12 +257,6 @@ button:not(.absolute):active:not(:disabled) {
 .cr-input--invalid:hover,
 .cr-input--invalid:focus {
   border-color: var(--danger);
-}
-
-.cr-input--has-issues:not(.cr-input--invalid),
-.cr-input--has-issues:not(.cr-input--invalid):hover,
-.cr-input--has-issues:not(.cr-input--invalid):focus {
-  border-color: var(--warn);
 }
 
 /* Motion language: one staged reveal, one contextual surface transition, and

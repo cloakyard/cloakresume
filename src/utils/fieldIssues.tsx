@@ -236,7 +236,7 @@ export function FieldIssuesBadge({
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-controls={open ? dialogId : undefined}
-        className={`absolute z-10 min-w-11 min-h-11 md:min-w-10 md:min-h-10 grid place-items-center border-0 bg-transparent p-0 ${
+        className={`absolute z-10 min-w-11 min-h-11 grid place-items-center border-0 bg-transparent p-0 ${
           className ?? "top-1/2 -translate-y-1/2 right-0"
         }`}
       >

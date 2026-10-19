@@ -1082,3 +1082,16 @@ journeys across all apps; it is not inferred from the pilot alone.
 - `node scripts/test-air-editor-shell.mjs` checks shell geometry and all 13 navigation
   routes plus preview/paper operations. These checks do not certify the remaining
   editor interiors, review sheets, PWA notice, real touch/keyboard or assistive speech.
+
+- Shared text/CSV/textarea fields and scoped rich-text formatting use Air labels,
+  help, contours and capability-based editable text. Blank hint reserves and the
+  compact font variants are removed. Auto-grow retains its mirror measurement;
+  hint actions reserve 56px so text/caret stay clear of their 44px hit target.
+- A format scope retires removed textarea handlers and clears its active field;
+  stale toolbar actions cannot resurrect removed text. Pointer and keyboard
+  formatting preserve the current selection. Selected formatting is neutral.
+- `SelectField` and contact/date/logo controls, writing-hint popup interiors and
+  repeated-entry chrome remain partial. Do not infer their adoption from the
+  shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
+  consumers across all viewport classes and text sizes; native IME/touch and
+  assistive speech remain separate acceptance gates.

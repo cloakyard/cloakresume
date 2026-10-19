@@ -77,8 +77,8 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                       />
                       <div className="cr-field">
                         <div className="cr-field-row">
-                          <span className="cr-field-label">Description</span>
-                          <FormatToolbar compact />
+                          <span className="air-label">Description</span>
+                          <FormatToolbar />
                         </div>
                         <RichTextArea
                           ariaLabel="Project description"
@@ -94,9 +94,9 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                       </div>
                       <div className="cr-field">
                         <div className="cr-field-row">
-                          <span className="cr-field-label">Role (optional)</span>
+                          <span className="air-label">Role (optional)</span>
                           <div className="flex min-w-0 flex-wrap items-center gap-1">
-                            <FormatToolbar compact />
+                            <FormatToolbar />
                             <button
                               type="button"
                               onClick={() => {
@@ -151,7 +151,6 @@ export function ProjectsSection({ resume, onChange }: SectionProps) {
                                         fieldId={`projects.${i}.roles.${ri}`}
                                         value={r}
                                         rows={3}
-                                        compact
                                         onChange={(v) => {
                                           const next = [...resume.projects];
                                           const nextRoles = [...roles];

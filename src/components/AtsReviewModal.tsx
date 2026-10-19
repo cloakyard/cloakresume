@@ -276,7 +276,7 @@ export function AtsReviewModal({
             className="relative flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain cr-scroll min-[640px]:overflow-hidden"
           >
             {grammarError && (
-              <p role="alert" className="mx-4 mt-3 cr-field-hint cr-field-hint--error">
+              <p role="alert" className="mx-4 mt-3 air-help air-help--error">
                 {grammarError}
               </p>
             )}

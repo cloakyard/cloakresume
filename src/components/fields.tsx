@@ -74,7 +74,7 @@ export function TextField({
   );
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <div className="relative">
@@ -90,7 +90,7 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={hint ? hintId : undefined}
           spellCheck={type === "text"}
-          className={`cr-input${invalid ? " cr-input--invalid" : ""}${hasIssues ? " cr-input--has-issues" : ""}`}
+          className={`air-field resume-writing-field${hasIssues ? " resume-writing-field--hints" : ""}`}
         />
         <FieldIssuesBadge
           issues={hasIssues ? issues : []}
@@ -98,14 +98,15 @@ export function TextField({
           className="top-1/2 -translate-y-1/2 right-2"
         />
       </div>
-      <span
-        id={hintId}
-        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
-        aria-live={invalid ? "polite" : undefined}
-        aria-hidden={hint ? undefined : true}
-      >
-        {hint || "\u00a0"}
-      </span>
+      {hint && (
+        <p
+          id={hintId}
+          className={`air-help${invalid ? " air-help--error" : ""}`}
+          aria-live={invalid ? "polite" : undefined}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
@@ -146,7 +147,7 @@ export function CsvField({
 
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <input
@@ -157,7 +158,7 @@ export function CsvField({
         value={raw}
         placeholder={placeholder}
         spellCheck={true}
-        className="cr-input"
+        className="air-field resume-writing-field"
         onChange={(e) => {
           const next = e.target.value;
           setRaw(next);
@@ -196,7 +197,7 @@ export function SelectField({
   const isCustom = value.length > 0 && !options.includes(value);
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <div className="relative">
@@ -259,7 +260,7 @@ export function TextArea({
   const hintId = `${reactId}-hint`;
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <textarea
@@ -273,16 +274,18 @@ export function TextArea({
         spellCheck={true}
         aria-invalid={invalid || undefined}
         aria-describedby={hint ? hintId : undefined}
-        className={`cr-input font-[inherit] ${resizable ? "resize-y" : "resize-none"}${invalid ? " cr-input--invalid" : ""}`}
+        className="air-field resume-writing-field"
+        data-resizable={resizable}
       />
-      <span
-        id={hintId}
-        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
-        aria-live={invalid ? "polite" : undefined}
-        aria-hidden={hint ? undefined : true}
-      >
-        {hint || "\u00a0"}
-      </span>
+      {hint && (
+        <p
+          id={hintId}
+          className={`air-help${invalid ? " air-help--error" : ""}`}
+          aria-live={invalid ? "polite" : undefined}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
