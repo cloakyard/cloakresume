@@ -1665,7 +1665,7 @@ describe.skipIf(!existsSync(chromePath))(
               );
           }
         }
-        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button');
+        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button', 5);
         await page.keyboard.press("Escape");
         await page.setViewport({ width: 1920, height: 1000 });
         // Resizing updates the responsive React layout on the next render.
@@ -1696,6 +1696,121 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).education[0].start).toBe("Mar 2020");
       await page.click('button[aria-label="Clear start"]');
       expect((await savedResume()).education[0].start).toBe("");
+    });
+
+    it("preserves unknown logo values and restores focus across empty search, Escape and clear", async () => {
+      const imported = "Imported custom icon";
+      await openDraft({
+        ...blankResume,
+        profile: { ...blankResume.profile, summary: "Logo audit", logoIconName: imported },
+      });
+      await page.focus(".resume-logo-trigger");
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("name") === "logo-icon-search",
+      );
+      await page.type('[name="logo-icon-search"]', "NoSuchIcon".repeat(20));
+      expect(await page.$eval(".resume-logo-empty", (e) => e.textContent)).toContain(
+        "No icons match",
+      );
+      expect((await savedResume()).profile.logoIconName).toBe(imported);
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect(await page.$(".resume-logo-picker")).toBeNull();
+      await page.click('[aria-label="Clear logo"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect((await savedResume()).profile.logoIconName).toBeUndefined();
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("name") === "logo-icon-search",
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.$(".resume-logo-picker")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
+    });
+
+    it("opens the logo surface on touch without focusing search, and saves skill icons", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Touch logo" },
+          skills: [{ id: "skill", label: "Tools", items: "TypeScript" }],
+        },
+        { activeSection: "skills" },
+        390,
+        true,
+      );
+      const trigger = await page.$(".resume-logo-trigger");
+      await trigger!.tap();
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-picker"),
+      );
+      expect(
+        await page.$eval('[name="logo-icon-search"]', (e) => document.activeElement === e),
+      ).toBe(false);
+      await page.type('[name="logo-icon-search"]', "Code");
+      const icon = await page.$(".resume-logo-grid button");
+      const name = await icon!.evaluate((e) => e.getAttribute("aria-label"));
+      await icon!.tap();
+      await page.waitForFunction(
+        (value) =>
+          document.querySelector(".resume-logo-trigger")?.getAttribute("aria-label") ===
+          `Logo icon: ${value}`,
+        {},
+        name,
+      );
+      expect((await savedResume()).skills[0].iconName).toBe(name);
+      await page.click('[aria-label="Clear logo"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect((await savedResume()).skills[0].iconName).toBeUndefined();
+    });
+
+    it("preserves photo bytes on cancel and invalid replacement, and returns focus after removal", async () => {
+      await openDraft();
+      const photo = await page.evaluate(() => {
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = 8;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#285ad7";
+        ctx.fillRect(0, 0, 8, 8);
+        const url = canvas.toDataURL("image/png");
+        const transfer = new DataTransfer();
+        transfer.items.add(
+          new File(
+            [Uint8Array.from(atob(url.split(",")[1]), (c) => c.charCodeAt(0))],
+            "portrait.png",
+            { type: "image/png" },
+          ),
+        );
+        const input = document.querySelector<HTMLInputElement>('[name="profile-photo"]')!;
+        input.files = transfer.files;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        return url;
+      });
+      await page.waitForSelector(".resume-photo img");
+      expect((await savedResume()).profile.photoUrl).toBe(photo);
+      await page.evaluate(() => {
+        const input = document.querySelector<HTMLInputElement>('[name="profile-photo"]')!;
+        input.dispatchEvent(new Event("cancel", { bubbles: true }));
+        const transfer = new DataTransfer();
+        transfer.items.add(new File(["wrong type"], "portrait.gif", { type: "image/gif" }));
+        input.files = transfer.files;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      await page.waitForSelector('.resume-photo [role="alert"]');
+      expect((await savedResume()).profile.photoUrl).toBe(photo);
+      await clickText("Remove photo", ".resume-photo");
+      expect((await savedResume()).profile.photoUrl).toBeUndefined();
+      expect(await page.evaluate(() => document.activeElement?.textContent?.trim())).toBe(
+        "Add photo",
+      );
+      expect(await page.$('.resume-photo [role="alert"]')).toBeNull();
     });
 
     it("preserves imported partial dates until selection and returns focus through year, clear and Present", async () => {

@@ -67,7 +67,7 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
                     }}
                   />
                   <div className="cr-field">
-                    <span className="cr-field-label">Icon (optional)</span>
+                    <span className="air-label">Icon (optional)</span>
                     <LogoPicker
                       value={g.iconName}
                       onChange={(name) => {

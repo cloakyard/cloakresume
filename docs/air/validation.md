@@ -341,3 +341,32 @@ are durable. Full raw/native captures and next-slice notes:
 Next: logo search/profile photo, then wheel, remaining sections/hints/review/library/
 export/PWA/static recovery and actual preview assets. Human/device gates remain
 open; IMG remains last. Local commits only, no push/deployment.
+
+## 2026-10-19 — Air logo and profile photo controls
+
+Profile/Skills logo search and Profile photo controls use Air. Stable icon names,
+80-result cap, unknown imported values and exact photo bytes remain intact.
+Touch opens the surface without focusing search; keyboard opens search. Clear,
+selection, Escape, Tab exit and native photo cancellation preserve usable focus.
+The date/logo popups share viewport placement; unused cr-control styling is removed.
+Filtering keeps a stable result area so a quick touch cannot select a shifted icon.
+Forced-colour selection uses a visible border. No output/font/schema/dependency change.
+
+**303/303 tests in eight files, 372.83s, zero skips**; 123 editor cases and
+34 template/paper cases (17 × two papers × five fixtures). 320 logo/photo layouts,
+20 contrast pairs and 256 shared-date regression layouts pass. Forced colours,
+reduced motion, emulated touch cancellation, Safari and Firefox actual 200% pass.
+Check/build/78-source design/18 portability/exact family sync pass.
+
+The first full run passed 301/303; two source-location checks still expected
+viewport handling inside the pickers. They now follow the shared helper and retain
+all viewport/listener/placement requirements. The final full run passes without
+skips, feature-assertion removal or timeout increases. An earlier interrupted run
+was discarded while correcting the forced-colour marker.
+
+Evidence: `evidence/logo-photo-2026-10-19.json`, matching checks log and eleven proof PNGs.
+Raw matrix: `/var/folders/k0/mzs4nsyn7k78t1j1xlsxq1q40000gn/T/cloakresume-logo-photo-tc0UgP`; additional states/notes in
+`/tmp/cloakresume-air-logo/`. Native tabs closed and Firefox zoom restored.
+Next: colour wheel, then remaining hints/sections/review/library/export/PWA/static
+recovery and preview assets. Physical touch/keyboard/IME/assistive gates remain
+open. Local commits only; IMG remains last.

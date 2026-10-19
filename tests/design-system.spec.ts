@@ -161,12 +161,13 @@ describe("CloakResume family contract", () => {
   });
 
   it("uses Air editor geometry and keeps the date popover viewport aware", async () => {
-    const [css, layout, view, paper, monthYear] = await Promise.all([
+    const [css, layout, view, paper, monthYear, pickerPosition] = await Promise.all([
       source("src/styles/air-editor.css"),
       source("src/components/Layout.tsx"),
       source("src/components/ViewSegment.tsx"),
       source("src/components/PaperSizeToggle.tsx"),
       source("src/components/MonthYearField.tsx"),
+      source("src/utils/usePickerPosition.ts"),
     ]);
     expect(css).toContain("var(--air-rail) 360px minmax(0, 1fr)");
     expect(css).toContain("var(--air-rail) 420px minmax(0, 1fr)");
@@ -178,11 +179,14 @@ describe("CloakResume family contract", () => {
     expect(layout).toContain('id: "editor-content"');
     expect(view).toContain('className="air-segments resume-view-segment"');
     expect(paper).toContain('className="air-segments resume-paper-size"');
-    expect(monthYear).toContain("window.visualViewport");
-    expect(monthYear).toContain('visualViewport?.addEventListener("resize", updateCoords)');
-    expect(monthYear).toContain('visualViewport?.addEventListener("scroll", updateCoords)');
-    expect(monthYear).toContain("const spaceAbove");
-    expect(monthYear).toContain("const spaceBelow");
+    expect(monthYear).toContain(
+      "usePickerPosition(open && !disabled, buttonRef, popoverRef, showYearPicker)",
+    );
+    expect(pickerPosition).toContain("window.visualViewport");
+    expect(pickerPosition).toContain('visualViewport?.addEventListener("resize", updateCoords)');
+    expect(pickerPosition).toContain('visualViewport?.addEventListener("scroll", updateCoords)');
+    expect(pickerPosition).toContain("const spaceAbove");
+    expect(pickerPosition).toContain("const spaceBelow");
   });
 
   it("uses the canonical landing directly and preserves browser zoom", async () => {
@@ -526,7 +530,7 @@ describe("CloakResume family contract", () => {
     expect(app).toContain('role="status"');
     expect(app).not.toContain("OrientationLock");
     expect(indexCss).not.toContain("cr-rotate-hint");
-    expect(logoPicker).toContain("window.visualViewport");
+    expect(logoPicker).toContain("usePickerPosition(open, buttonRef, popoverRef, query)");
     expect(fieldIssues).toContain("window.visualViewport");
     expect(logoPicker).not.toContain("focus:outline-none");
   });

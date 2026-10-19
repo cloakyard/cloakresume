@@ -4,7 +4,21 @@
 runtime. Fixture: the existing built-in synthetic Rohan Okafor sample, Classic
 Sidebar, A4, multiple pages. No résumé content was changed and no export was run.
 
-## Coverage and evidence
+## Current migration checkpoint — 2026-10-19
+
+Entry/recovery, editor shell, shared writing fields, repeated entries, contact/native
+selects, dates/current-job and logo/photo controls are implemented. The findings and
+unchecked baseline list below describe the original inspection, not current status.
+Use `surfaces.json`, `validation.md` and the dated evidence for exact coverage.
+
+Logo/photo evidence: `evidence/logo-photo-2026-10-19.json`. Shared placement is
+retested against all date layouts. Stable imported names, search/selection/clear,
+photo bytes, decoding/errors/cancellation and focus are covered. Touch opens the
+logo surface without focusing its editable search; physical software-keyboard and
+spoken assistive checks remain open. Next: the primary-colour wheel, then hints,
+remaining sections/review/library/export/PWA/static recovery and actual assets.
+
+## Baseline coverage and evidence
 
 - All 13 populated default sections at 1440×900 and 1280×800 with a fine pointer,
   and 768×1024 and 390×844 with touch emulation, each in light and dark: 104 cases.
@@ -108,4 +122,4 @@ label measured 44px high on the phone. Measure effective targets before flagging
 - [ ] All 17 templates with A4/Letter, long content, pagination and actual PDF
       inspection. Preserve content, links, colours, typography and output geometry.
 - [ ] Production full feature suite after migration, then legacy-design cleanup
-      and a final family comparison. No product screen is Air-implemented or fully validated.
+      and a final family comparison. At this baseline, no product screen was Air-implemented or fully validated.

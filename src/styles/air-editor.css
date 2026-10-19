@@ -502,37 +502,43 @@ textarea.resume-writing-field[data-resizable="false"] {
 .resume-date-field {
   min-inline-size: 0;
 }
-.resume-date-value {
+.resume-date-value,
+.resume-logo-value {
   display: flex;
   align-items: center;
   gap: 8px;
 }
-.resume-date-trigger {
+.resume-date-trigger,
+.resume-logo-trigger {
   display: flex;
   align-items: center;
   gap: 8px;
   min-inline-size: 0;
   text-align: start;
 }
-.resume-date-trigger svg {
+.resume-date-trigger svg,
+.resume-logo-trigger svg {
   flex: 0 0 18px;
   width: 18px;
   height: 18px;
   stroke-width: 1.6;
   color: var(--air-ink-secondary);
 }
-.resume-date-trigger span {
+.resume-date-trigger span,
+.resume-logo-trigger span {
   min-inline-size: 0;
   overflow-wrap: anywhere;
 }
-.resume-date-trigger [data-placeholder] {
+.resume-date-trigger [data-placeholder],
+.resume-logo-trigger [data-placeholder] {
   color: var(--air-ink-muted);
 }
 .resume-date-trigger:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
-.resume-date-value > .air-icon-button {
+.resume-date-value > .air-icon-button,
+.resume-logo-value > .air-icon-button {
   flex: 0 0 44px;
   min-height: 44px;
 }
@@ -594,6 +600,112 @@ textarea.resume-writing-field[data-resizable="false"] {
 
 .resume-date-picker svg,
 .resume-date-value > .air-icon-button svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+
+.resume-logo-trigger > span[data-placeholder],
+.resume-logo-trigger > span:not([aria-hidden]) {
+  flex: 1;
+}
+.resume-logo-picker {
+  position: fixed;
+  z-index: var(--air-z-popover);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  scroll-padding: 8px;
+}
+.resume-logo-search {
+  flex: none;
+}
+.resume-logo-search > svg {
+  margin-left: 12px;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  color: var(--air-ink-muted);
+  stroke-width: 1.6;
+}
+.resume-logo-grid {
+  display: grid;
+  align-content: start;
+  height: 16rem;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 8px;
+  padding: 8px;
+  min-height: 60px;
+  max-height: 16rem;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding: 8px;
+}
+.resume-logo-grid > button {
+  position: relative;
+  width: 100%;
+  min-height: 44px;
+}
+.resume-logo-grid > button[aria-pressed="true"] {
+  background: var(--air-surface-soft);
+  color: var(--air-accent);
+}
+.resume-logo-grid > button[aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  bottom: 3px;
+  left: calc(50% - 8px);
+  width: 16px;
+  height: 2px;
+  border-bottom: 2px solid currentColor;
+}
+.resume-logo-grid svg,
+.resume-logo-value > button > svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+.resume-logo-empty {
+  grid-column: 1 / -1;
+  margin: 0;
+  padding: 12px 0;
+  color: var(--air-ink-secondary);
+}
+.resume-logo-count {
+  flex: none;
+  margin: 0;
+}
+.resume-photo {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+.resume-photo-preview {
+  width: 80px;
+  height: 80px;
+  flex: none;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--air-line);
+  background: var(--air-surface-soft);
+  color: var(--air-ink-secondary);
+  font: 500 1.25rem/1 var(--air-font);
+}
+.resume-photo-controls {
+  display: flex;
+  flex: 1 1 10rem;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.resume-photo-controls > .air-button {
+  max-width: 100%;
+}
+.resume-photo-controls svg {
   width: 18px;
   height: 18px;
   stroke-width: 1.6;

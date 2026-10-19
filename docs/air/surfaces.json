@@ -22,8 +22,8 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": [],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules."
+      "evidence": ["docs/air/evidence/logo-photo-2026-10-19.json"],
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
       "path": "src/components/AtsReviewModal.tsx",
@@ -267,12 +267,22 @@
       "path": "src/components/LogoPicker.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
-      "viewports": ["390x844 dark coarse"],
-      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
-      "notes": "Source reviewed; phone icon/no-results/Escape states inspected. Selection, clear, touch keyboard and other themes/layouts remain pending."
+      "states": [
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion"
+      ],
+      "viewports": [
+        "16 viewport classes × light/dark × 16/32px text",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-conditional-audit.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
+      ],
+      "notes": "Air logo/photo controls and shared Profile/Skills field and entry composition are implemented. Stable icon names, 80-result cap, exact photo bytes, JPG/PNG 2MB decoding and cancellation remain intact. Search stays geometrically stable during quick touch selection; keyboard opens search, touch opens the surface. Unknown imported names remain visible and clearable. Shared hint-popup interiors and physical keyboard/IME/touch/assistive acceptance remain separate gates."
     },
     {
       "path": "src/components/MonthYearField.tsx",
@@ -286,15 +296,16 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
         "docs/air/editor-audit.md",
         "docs/air/editor-conditional-audit.json",
-        "docs/air/evidence/date-controls-2026-10-19.json"
+        "docs/air/evidence/date-controls-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
       ],
-      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Shared writing-hint popup interiors and physical/software-keyboard/assistive acceptance remain separate gates."
+      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Shared writing-hint popup interiors and physical/software-keyboard/assistive acceptance remain separate gates. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
       "path": "src/components/PaginatedCanvas.tsx",
@@ -704,7 +715,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -751,7 +762,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -775,7 +786,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "16 viewport classes × light/dark × 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -845,7 +856,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -862,23 +873,26 @@
       "path": "src/components/editor/ProfileSection.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "states": [
+        "photo / initials / valid import / invalid replacement / native cancel / removal focus",
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion"
+      ],
       "viewports": [
-        "1440x900 light/dark fine",
-        "1280x800 light/dark fine",
-        "768x1024 light/dark coarse",
-        "390x844 light/dark coarse"
+        "16 viewport classes × light/dark × 16/32px text",
+        "native Safari and Firefox actual 200%"
       ],
       "evidence": [
         "docs/air/editor-audit.md",
         "docs/air/editor-panel-audit.json",
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json",
-        "docs/air/evidence/writing-fields-2026-10-19.json"
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
+      "notes": "Air logo/photo controls and shared Profile/Skills field and entry composition are implemented. Stable icon names, 80-result cap, exact photo bytes, JPG/PNG 2MB decoding and cancellation remain intact. Search stays geometrically stable during quick touch selection; keyboard opens search, touch opens the surface. Unknown imported names remain visible and clearable. Shared hint-popup interiors and physical keyboard/IME/touch/assistive acceptance remain separate gates."
     },
     {
       "path": "src/components/editor/ProjectsSection.tsx",
@@ -905,23 +919,26 @@
     {
       "path": "src/components/editor/SkillsSection.tsx",
       "kind": "app-surface",
-      "sourceReviewed": false,
-      "airImplemented": false,
+      "sourceReviewed": true,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline populated default; remaining states in editor-audit.md"],
+      "states": [
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion",
+        "group fields / add / move / remove / empty"
+      ],
       "viewports": [
-        "1440x900 light/dark fine",
-        "1280x800 light/dark fine",
-        "768x1024 light/dark coarse",
-        "390x844 light/dark coarse"
+        "16 viewport classes × light/dark × 16/32px text",
+        "native Safari and Firefox actual 200%"
       ],
       "evidence": [
         "docs/air/editor-audit.md",
         "docs/air/editor-panel-audit.json",
         "docs/air/editor-mobile-audit.json",
-        "docs/air/editor-layout-audit.json"
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
       ],
-      "notes": "Existing UI inspected before migration. No Air runtime implementation or full feature validation. Tablet 40px targets require correction where present. Repeated-entry headings/actions and nested bullet composition are migrated where used; individual section widgets remain separate gates."
+      "notes": "Air logo/photo controls and shared Profile/Skills field and entry composition are implemented. Stable icon names, 80-result cap, exact photo bytes, JPG/PNG 2MB decoding and cancellation remain intact. Search stays geometrically stable during quick touch selection; keyboard opens search, touch opens the surface. Unknown imported names remain visible and clearable. Shared hint-popup interiors and physical keyboard/IME/touch/assistive acceptance remain separate gates."
     },
     {
       "path": "src/components/editor/StatsSection.tsx",
@@ -981,7 +998,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "16 sizes × light/dark × 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -1039,8 +1056,11 @@
         "forced colours",
         "native Firefox 200% / Safari"
       ],
-      "evidence": ["docs/air/evidence/editor-shell-2026-10-19.json"],
-      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+      "evidence": [
+        "docs/air/evidence/editor-shell-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
       "path": "src/styles/air-entry.css",
@@ -1110,10 +1130,7 @@
         "1023x768",
         "1025x768"
       ],
-      "evidence": [
-        "docs/air/validation.md \u2014 refinement 02 candidate",
-        "docs/air/components.html"
-      ],
+      "evidence": ["docs/air/validation.md — refinement 02 candidate", "docs/air/components.html"],
       "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
     },
     {

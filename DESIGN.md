@@ -1090,7 +1090,7 @@ journeys across all apps; it is not inferred from the pilot alone.
 - A format scope retires removed textarea handlers and clears its active field;
   stale toolbar actions cannot resurrect removed text. Pointer and keyboard
   formatting preserve the current selection. Selected formatting is neutral.
-- Logo controls and writing-hint popup interiors remain partial. Do not
+- Writing-hint popup interiors remain partial. Do not
   infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
   consumers across all viewport classes and text sizes; native IME/touch and
   assistive speech remain separate acceptance gates.
@@ -1106,7 +1106,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   field or the appropriate Add action. External text drops remain native.
 - `node scripts/test-air-repeated-entries.mjs` checks repeated controls and removal
   confirmation across all viewport classes/themes/text sizes. Individual section
-  logo and writing-hint/review widgets remain separate migration gates.
+  writing-hint/review widgets remain separate migration gates.
 
 - Contact and Languages use labelled Air fields with content-aware paired columns.
   Contact retains all nine saved kind keys, values, browser input/autofill semantics
@@ -1137,3 +1137,18 @@ journeys across all apps; it is not inferred from the pilot alone.
 - `node scripts/test-air-dates.mjs` checks four date states and Current job across
   all viewport classes/themes/text sizes. Native software-keyboard, physical touch
   and spoken assistive acceptance remain separate; emulation does not close them.
+
+- Profile/Skills logo pickers use Air fields, search and a neutral selection grid;
+  retain stable icon names, the 80-result cap and every existing icon. Unknown
+  imported names remain visible and unchanged until an explicit choice or clear.
+  Search retains a stable-height result area so filtering cannot move a tap target.
+- Logo opening/closing is immediate. Mouse/keyboard opening focuses search;
+  touch opening focuses the surface without summoning a software keyboard.
+  Escape/clear/selection restore the trigger; Tab can leave the non-modal popup.
+  The logo and date portals share viewport placement, safe edges and short-screen
+  fallback. Native focus and emulated touch do not certify physical input devices.
+- Profile photo actions use Air, keeping the exact image bytes, JPG/PNG and 2 MB
+  validation, decode errors and stale-read guards. Cancellation preserves the
+  portrait; removal returns focus to Add photo. No template/output typography,
+  geometry or image pixels change. `node scripts/test-air-logo-photo.mjs` covers
+  portrait/initials, selected/search/empty icons, all viewport classes and themes.
