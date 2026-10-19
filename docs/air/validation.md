@@ -129,3 +129,20 @@ product code or test assertions. The complete pass is recorded in
 `evidence/colour-wheel-contract-2026-10-15-tests.log`.
 No product UI source or dependency changed. The family evidence and PDF pilot are
 tracked in Cloakyard's UX_REFRESH_TODO.md; physical/assistive acceptance remains open.
+
+## 2026-10-19 — Shared Air disabled icon-button correction
+
+Synchronized the canonical Air CSS, manifest and gallery hashes. Guarded unavailable
+icon buttons have inert hover/press states and a full-strength keyboard focus
+contour. The live family behavior is validated in CloakPDF's editor-wrappers audit.
+Resume's product components do not yet import this opt-in Air bundle; full editor
+and colour-wheel adoption remain separately tracked. No product component, export
+logic or dependency changed. Contract remains Air 1.0.2 / bb90f52e0b0a.
+
+Format/lint/types, production/PWA build, design integrity and all 18 portability
+checks pass. An initial development run reached 287/288 with Academic CV/a4 title
+wrapping timing out at 20 seconds; that unchanged case passed alone. The complete
+serial production suite passes: 288 tests in eight files (361.10s), using
+`CLOAKRESUME_BROWSER_BUILD=production`. Results are saved in
+`evidence/icon-focus-2026-10-19-tests.log`.
+No timeout or assertion was changed. Physical/assistive acceptance remains open.
