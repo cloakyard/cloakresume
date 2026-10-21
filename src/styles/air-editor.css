@@ -1085,3 +1085,339 @@ textarea.resume-writing-field[data-resizable="false"] {
     border-color: Highlight;
   }
 }
+
+/* Review uses one scrolling report; Close stays outside it at every text size. */
+.resume-review-viewport {
+  background: var(--air-scrim);
+  padding: 24px;
+}
+.resume-review {
+  inline-size: 1040px;
+  block-size: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.resume-review > .resume-dialog-heading,
+.resume-review > .resume-sheet-handle {
+  flex-shrink: 0;
+}
+.resume-review-body {
+  flex: 1;
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  margin: -4px;
+}
+.resume-review p {
+  margin: 0;
+}
+.resume-review h3 {
+  margin: 0;
+  font: 500 1rem/1.4 var(--air-font);
+}
+.resume-review-description {
+  color: var(--air-ink-secondary);
+}
+.resume-review-meta {
+  color: var(--air-ink-muted);
+  font-size: var(--air-text-meta);
+  line-height: 1.5;
+  font-variant-numeric: tabular-nums;
+}
+.resume-review-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 12px;
+  margin-block: 24px;
+}
+.resume-review-toolbar > div {
+  min-inline-size: 0;
+}
+.resume-review-toolbar > button {
+  max-inline-size: 100%;
+}
+.resume-review-toolbar [role="status"] {
+  font-weight: 500;
+}
+.resume-review-progress {
+  display: grid;
+  gap: 16px;
+  max-inline-size: 65ch;
+}
+.resume-review-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 24rem), 1fr));
+  gap: 24px;
+  margin-block: 24px;
+  align-items: start;
+}
+.resume-review-summary h3 {
+  font-size: 1.25rem;
+  line-height: 1.4;
+  margin-block-end: 12px;
+}
+.resume-review-summary > div {
+  min-inline-size: 0;
+}
+.resume-review-scores {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: space-evenly;
+}
+.resume-review-score {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  min-inline-size: min(100%, 7rem);
+}
+.resume-score-ring {
+  position: relative;
+  inline-size: 5.5rem;
+  block-size: 5.5rem;
+  max-inline-size: 100%;
+}
+.resume-score-ring > svg {
+  inline-size: 100%;
+  block-size: 100%;
+}
+.resume-score-ring > div {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.resume-score-value {
+  font: 500 1.5rem/1.1 var(--air-font);
+  font-variant-numeric: tabular-nums;
+}
+.resume-review-tabs {
+  margin-block: 24px;
+}
+.resume-review-tabs > button {
+  gap: 8px;
+  flex-wrap: wrap;
+  flex-basis: 9rem;
+}
+.resume-review-tab-count {
+  font-size: var(--air-text-meta);
+  font-variant-numeric: tabular-nums;
+}
+.resume-review-pane {
+  /* Give short reports the same tab anchor as long reports. */
+  min-block-size: 100%;
+  outline-offset: -2px;
+}
+.resume-review-pane:focus-visible {
+  outline: 2px solid var(--air-accent);
+}
+.resume-review-groups {
+  display: grid;
+  gap: 24px;
+}
+.resume-review-scorecards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 22rem), 1fr));
+  gap: 24px;
+}
+.resume-review-section {
+  min-inline-size: 0;
+}
+.resume-review-section-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px 16px;
+  margin-block-end: 16px;
+}
+.resume-review-section-heading > svg {
+  align-self: center;
+  color: var(--air-ink-muted);
+  flex-shrink: 0;
+}
+.resume-review-dimensions {
+  display: grid;
+  gap: 24px;
+}
+.resume-review-dimension {
+  min-inline-size: 0;
+  display: grid;
+  gap: 8px;
+}
+.resume-review-dimension-heading {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+.resume-review-number {
+  font-size: 1.125rem;
+  font-variant-numeric: tabular-nums;
+}
+.resume-review-fixes,
+.resume-review-keywords,
+.resume-review-findings {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.resume-review-fix,
+.resume-review-insight {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  padding-block: 16px;
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-review-fix:first-child,
+.resume-review-insight:first-child {
+  padding-block-start: 0;
+}
+.resume-review-fix:last-child,
+.resume-review-insight:last-child {
+  border-bottom: 0;
+}
+.resume-review-fix > span,
+.resume-review-insight > svg {
+  flex-shrink: 0;
+}
+.resume-review-fix-copy {
+  min-inline-size: 0;
+  display: grid;
+  gap: 8px;
+}
+.resume-review-fix-title {
+  font-weight: 500;
+}
+.resume-review-empty {
+  display: flex;
+  gap: 12px;
+  align-items: start;
+}
+.resume-review-empty > svg {
+  flex-shrink: 0;
+}
+.resume-review-guidance {
+  display: grid;
+  justify-items: start;
+  gap: 16px;
+  max-inline-size: 65ch;
+}
+.resume-review-guidance > button {
+  max-inline-size: 100%;
+}
+.resume-review-keywords {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 15rem), 1fr));
+  gap: 0 24px;
+  margin-block-start: 16px;
+}
+.resume-review-keywords > li {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  padding-block: 12px;
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-review-keywords > li > svg {
+  flex-shrink: 0;
+  align-self: start;
+  margin-block-start: 2px;
+}
+.resume-review-keyword {
+  flex: 1;
+  min-inline-size: 0;
+}
+.resume-review-keywords .resume-review-meta {
+  flex-shrink: 0;
+}
+.resume-review-success {
+  color: var(--air-success);
+}
+.resume-review-warning {
+  color: var(--air-warning);
+}
+.resume-review-missing {
+  color: var(--air-danger);
+}
+.resume-review-insights > .resume-review-section {
+  margin-block-start: 24px;
+}
+.resume-review-findings > li {
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-review-finding {
+  display: flex;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: 12px;
+  inline-size: 100%;
+  min-block-size: var(--air-control);
+  border: 0;
+  border-radius: var(--air-radius-chip);
+  padding: 12px;
+  background: transparent;
+  color: var(--air-ink);
+  text-align: start;
+  font: inherit;
+  overflow-wrap: anywhere;
+}
+button.resume-review-finding {
+  cursor: pointer;
+}
+.resume-review-kind {
+  font-size: var(--air-text-meta);
+  color: var(--air-ink-secondary);
+}
+.resume-review-finding-copy {
+  flex: 1 1 16rem;
+  min-inline-size: 0;
+  display: grid;
+  gap: 8px;
+}
+.resume-review-finding > svg {
+  flex-shrink: 0;
+  margin-inline-start: auto;
+  color: var(--air-ink-secondary);
+}
+.resume-review-finding mark {
+  background: var(--air-surface-soft);
+  color: var(--air-ink);
+}
+button.resume-review-finding:focus-visible {
+  outline: 2px solid var(--air-accent);
+  outline-offset: -2px;
+}
+@media (hover: hover) and (pointer: fine) {
+  button.resume-review-finding:hover {
+    background: var(--air-surface-hover);
+  }
+}
+.resume-review-parse {
+  margin: 0;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  font: 400 var(--air-text-body)/1.65 var(--air-font-mono);
+  color: var(--air-ink);
+}
+@media (max-width: 640px) {
+  .resume-review-viewport {
+    padding: 0;
+  }
+  .resume-review {
+    block-size: calc(100dvh - 16px);
+  }
+}
+@media print {
+  .resume-review-viewport {
+    display: none;
+  }
+}

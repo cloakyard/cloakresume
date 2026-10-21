@@ -40,7 +40,10 @@ export function ToolbarActions({
     <>
       <button
         type="button"
-        onClick={onScanAts}
+        onClick={(event) => {
+          event.currentTarget.focus();
+          onScanAts();
+        }}
         className="air-icon-button air-button--quiet resume-toolbar-action"
         title="Scan résumé for ATS and writing issues"
         aria-label="Scan résumé for ATS and writing issues"

@@ -13,11 +13,13 @@ Current behavior, scope and software evidence are tracked in
 [content-section validation](air/validation.md) and the Air surface inventory.
 The historical rows below are preserved as the original audit, not current styling authority.
 
+**2026-10-21 review follow-up:** the old combined modal is replaced by a persistent Air dialog and lazy review content. Its four panes and report controls follow Air; the updated source rows point to the current inventory.
+
 **Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result
 
-All 74 TSX files in `src/` were examined. No application route, common component,
+All 75 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
 The September product chrome followed the CloakPDF-family language with CloakResume
@@ -77,7 +79,7 @@ Status key:
 |   # | File                                              | Status  | Audit scope                                                                                                                                                                       |
 | --: | ------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |   1 | `src/App.tsx`                                     | Aligned | Root workflow, fixed brand boundary, persistence, route-level review, and overlay composition.                                                                                    |
-|   2 | `src/components/AtsReviewModal.tsx`               | Aligned | Wide modal shell, focus lifecycle, tabs, headings, progress, locale-aware metadata, and busy/error states.                                                                        |
+|   2 | `src/components/AtsReviewContent.tsx`             | Aligned | Air report panes, complete findings, keyboard tabs and honest progress; current evidence is in the Air inventory.                                                                 |
 |   3 | `src/components/BottomSheet.tsx`                  | Aligned | Shared 92dvh sheet geometry, title order, focus containment, escape, scroll lock, and safe area.                                                                                  |
 |   4 | `src/components/BrandLogo.tsx`                    | Aligned | Canonical 40px mark, 0.6rem lockup gap, exact CloakPDF Archivo 800 metrics, accessible home label, and no independent distortion.                                                 |
 |   5 | `src/components/CloakWorkbenchLanding.tsx`        | Aligned | N1b header, 88rem frame, real start/load instrument, ledgers, local receipt, and CloakPDF-parity Ft5 footer with version/author provenance.                                       |
@@ -152,6 +154,8 @@ Status key:
 | 74 | `src/components/editor/BulletList.tsx` | Support | Air follow-up: shared bullet controls and UI-only identities; preserves the saved string schema. Current gates are in the Air inventory. |
 
 | 75 | `src/components/ColorPickerPopover.tsx` | Support | Air follow-up: shared viewport-aware primary-colour portal and compact modal focus lifecycle. Current gates are in the Air inventory. |
+
+| 76 | `src/components/AtsReviewDialog.tsx` | Support | Air follow-up: persistent accessible shell through lazy loading, inert background, responsive focus return and swipe dismissal. |
 
 ## Non-TSX surfaces
 

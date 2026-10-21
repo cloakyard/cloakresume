@@ -315,7 +315,7 @@ describe("CloakResume family contract", () => {
     const files = await Promise.all(
       [
         "src/components/TemplateModal.tsx",
-        "src/components/AtsReviewModal.tsx",
+        "src/components/AtsReviewDialog.tsx",
         "src/components/PrivacyPolicyModal.tsx",
         "src/components/ConfirmDialog.tsx",
         "src/components/BottomSheet.tsx",
@@ -333,17 +333,17 @@ describe("CloakResume family contract", () => {
     expect(files[0]).toContain('className="air-modal resume-library"');
     expect(files[0]).toContain("useModalDialog<HTMLDivElement>");
     expect(files[0]).toContain("inertBackground: true");
-    expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
+    expect(files[1]).toContain('className="air-modal resume-review"');
+    expect(files[1]).toContain("inertBackground: true");
     expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
-    expect(files[1]).toContain("ref={resultsScrollRef}");
-    expect(files[1]).toContain("ref={tabAnchorRef}");
-    expect(files[1]).toContain("ref={tabPanelScrollRef}");
-    expect(files[1]).toContain('onClick={() => selectTab("overview")}');
-    expect(files[1]).not.toMatch(
-      /onClick=\{\(\) => setTab\("(?:overview|keywords|insights|parse)"\)\}/,
-    );
-    expect(files[1]).toContain("sticky top-0");
-    expect(files[1]).toContain("min-[640px]:overflow-hidden");
+    const review = await source("src/components/AtsReviewContent.tsx");
+    expect(review).toContain("ref={scrollRef}");
+    expect(review).toContain("ref={tabAnchorRef}");
+    expect(review).toContain("selectTab(key)");
+    expect(review).toContain("useLayoutEffect");
+    expect(review).not.toContain("setTimeout");
+    expect(review).not.toContain("animate-spin");
+    expect(files[1]).toContain("createPortal(");
     expect(files[4]).toContain("createPortal(");
     expect(files[4]).toContain("document.body");
   });
@@ -354,7 +354,7 @@ describe("CloakResume family contract", () => {
         source("src/App.tsx"),
         source("src/components/ConfirmDialog.tsx"),
         source("src/components/TemplateModal.tsx"),
-        source("src/components/AtsReviewModal.tsx"),
+        source("src/components/AtsReviewDialog.tsx"),
         source("src/components/ErrorBoundary.tsx"),
         source("src/components/ReloadPrompt.tsx"),
         source("src/utils/fieldIssues.tsx"),
@@ -368,10 +368,8 @@ describe("CloakResume family contract", () => {
     expect(confirm).toContain('variant === "notice" ? confirmRef : cancelRef');
     expect(confirm).toContain('role={variant === "notice" ? "alertdialog" : "dialog"}');
 
-    for (const sheet of [app, ats]) {
-      expect(sheet).toContain("pb-[env(safe-area-inset-bottom,0px)]");
-      expect(sheet).toContain("min-[640px]:pb-0");
-    }
+    expect(app).toContain("<AtsReviewDialog");
+    expect(ats).toContain('className="air-modal resume-review"');
     expect(templates).toContain('className="air-modal resume-library"');
     expect(templates).toContain('className="resume-library-body"');
     expect(await source("src/styles/air.css")).toMatch(
@@ -418,9 +416,9 @@ describe("CloakResume family contract", () => {
     expect(tokenJson).toContain(
       '"$value": "color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper))"',
     );
-    expect(ats).toContain('color: "var(--color-status-success)"');
-    expect(ats).toContain('color: "var(--color-status-warning)"');
-    expect(ats).toContain('color: "var(--color-status-danger)"');
+    expect(ats).toContain('color: "var(--air-success)"');
+    expect(ats).toContain('color: "var(--air-warning)"');
+    expect(ats).toContain('color: "var(--air-danger)"');
     expect(ats).not.toMatch(/#[0-9a-f]{3,8}\b/i);
     expect(contact).toContain("aria-label={`${c.kind} contact value`}");
     expect(contact).not.toContain("focus:outline-none");
@@ -544,7 +542,8 @@ describe("CloakResume family contract", () => {
     expect(emptyState).toContain("<h3>{heading}</h3>");
     expect(projects).not.toContain("--c-muted");
 
-    expect(app).toContain("fallback={<AtsReviewLoading open={atsOpen} />}");
+    expect(app).toContain("<AtsReviewDialog");
+    expect(app).toContain("Loading the local review workspace…");
     expect(app).toContain('role="status"');
     expect(app).not.toContain("OrientationLock");
     expect(indexCss).not.toContain("cr-rotate-hint");

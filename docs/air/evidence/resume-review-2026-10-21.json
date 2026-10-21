@@ -1,0 +1,124 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume r\u00e9sum\u00e9 review shell, Overview/Keywords/Insights/Parse, real scan progress and handoffs. Full product and physical acceptance remain open.",
+  "status": "Passed; local checkpoint",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5af9d852a9ec15a38649c9bdaa052e3392db3ff9fd52cd91193af",
+  "changes": [
+    "Persistent Air frame keeps Close/focus/inertness available during lazy loading; shared neutral segments and readable open report groups",
+    "Complete phrases, reasons, labels, captions, keyword counts and Parse content; numerical scoring untouched",
+    "Removed 900ms artificial delay, duplicate shells, tiny mono labels, tinted report cards, ignored boxed prop and unused wide-dialog CSS aliases",
+    "Actual decoded-byte progress, honest unknown/encoded lengths, named live status and completion-only current-revision timestamp",
+    "Guarded duplicate scan, retry, stale-report invalidation, responsive logical focus return, field/JD handoff, nested notice and compact swipe/cancel"
+  ],
+  "gates": {
+    "check": "Zero formatting/lint/type warnings or errors; 142 code files",
+    "build": "73 precache entries; dependencies unchanged",
+    "design": "80 source records",
+    "portability": "18 isolation/drift checks",
+    "familySync": "Six exact specifications; shared contract unchanged",
+    "productionSuite": {
+      "tests": 349,
+      "files": 9,
+      "skipped": 0,
+      "editorCases": 165,
+      "templatePaperCases": 34,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 503.99
+    }
+  },
+  "matrix": {
+    "cases": 1154,
+    "reportLayouts": 960,
+    "progressFailureAndForcedColourCases": 194,
+    "contrastPairs": 14,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "drafts": [
+      "empty / absent JD",
+      "short / JD without reviewable keywords",
+      "populated / full sample plus 30 repeated-typo custom bullets"
+    ],
+    "states": [
+      "summary",
+      "overview",
+      "keywords",
+      "insights",
+      "parse",
+      "known-byte download",
+      "unknown-byte download",
+      "download failure",
+      "forced-colour keyboard focus"
+    ],
+    "input": "Coarse/fine including tablet touch; reduced motion; all panels scroll to the end; Close stays reachable",
+    "captures": 68,
+    "results": [
+      "resume-review-2026-10-21/matrix-results.json",
+      "resume-review-2026-10-21/edges-results.json"
+    ]
+  },
+  "nativeReview": [
+    "Safari: actual sample scan, complete scores, Keywords missing-JD guidance and editor handoff, real JD analysis, writing-detail jump to focused summary, Escape returns to Scan",
+    "Firefox: actual 200% browser zoom, readable summary/scores, keyboard End to Parse and Tab to panel, visible panel focus and complete wrapped text, Escape returns to compact More options",
+    "Own native tabs closed; Firefox zoom restored to 100%"
+  ],
+  "outputProof": {
+    "templatePaperRecords": 34,
+    "exactImagesGeometryText": true,
+    "pdfRasters": {
+      "a4": "ea69b7c87ae509fa48c7a6928cfdc3fb3fdadf76a38b519651de78790037e70f",
+      "letter": "47e03cef173cfc585dd29912826bd16bd62880ebe11d33749889a5b6486820d6"
+    },
+    "records": "resume-review-2026-10-21/output-proof.json",
+    "numericalScoringImplementation": "Unchanged source before scoreBand; only semantic display palette simplified"
+  },
+  "reproduction": [
+    "Build and serve production on 127.0.0.1:8201 or pass SITE_URL",
+    "node scripts/test-air-review.mjs",
+    "node scripts/test-air-review-progress.mjs",
+    "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism"
+  ],
+  "limits": [
+    "Physical touch, real software keyboard, OS IME, spoken assistive and real-device GPU acceptance remain open",
+    "All-clear/no-insights, complete long phrases/reasons, repeated finding identities and exact keyword counts are covered by static component renders; ordinary reports/progress/error use the actual production app and Harper engine",
+    "No dependencies, templates, JSON schema, PDF geometry or PWA assets changed",
+    "Remaining overflow/export, PWA/static recovery and OG/PWA/README assets are later slices; IMG parked last; no push/deploy"
+  ],
+  "scratch": "/tmp/cloakresume-air-review/",
+  "runtimeFreeze": {
+    "runtimeFiles": 134,
+    "distFiles": 99,
+    "unchangedThroughoutSuite": true,
+    "manifests": [
+      "resume-review-2026-10-21/runtime-hashes.json",
+      "resume-review-2026-10-21/dist-hashes.json"
+    ]
+  },
+  "validationLogs": [
+    "resume-review-2026-10-21/full-tests.txt",
+    "resume-review-2026-10-21/check.txt",
+    "resume-review-2026-10-21/build.txt",
+    "resume-review-2026-10-21/design.txt",
+    "resume-review-2026-10-21/portability.txt",
+    "resume-review-2026-10-21/matrix.txt",
+    "resume-review-2026-10-21/edges.txt"
+  ]
+}

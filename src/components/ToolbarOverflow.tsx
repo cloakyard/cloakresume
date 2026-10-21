@@ -125,7 +125,12 @@ export function ToolbarOverflow({
           <OverflowItem
             icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
             label="Scan résumé"
-            onClick={() => closeThenOpen(() => window.dispatchEvent(new Event("cr:scan-ats")))}
+            onClick={() =>
+              closeThenOpen(() => {
+                moreRef.current?.focus();
+                window.dispatchEvent(new Event("cr:scan-ats"));
+              })
+            }
           />
           <OverflowDivider />
           <OverflowItem

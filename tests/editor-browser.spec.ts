@@ -2729,7 +2729,7 @@ describe.skipIf(!existsSync(chromePath))(
       });
       expect(captionClipped).toEqual([]);
       await page.locator('[role="tab"][id$="tab-keywords"]').click();
-      await clickText("Open JD editor →", '[role="dialog"]');
+      await clickText("Open JD editor", '[role="dialog"]');
       await page.waitForSelector('textarea[name="target-job-description"]', { visible: true });
       expect(
         await page.$eval('button[aria-label="Show editor"]', (element) =>
@@ -3090,6 +3090,261 @@ describe.skipIf(!existsSync(chromePath))(
         ),
       ).toBe(hintText);
     });
+
+    it.each(["known", "unknown", "encoded"])(
+      "reports honest %s engine progress and completion while surviving close/reopen",
+      async (mode) => {
+        await page.evaluateOnNewDocument((mode) => {
+          const original = window.fetch;
+          let requests = 0;
+          window.fetch = async (...args) => {
+            const response = await original(...args);
+            const requestUrl = args[0] instanceof Request ? args[0].url : args[0].toString();
+            if (!requestUrl.includes(".wasm")) return response;
+            requests++;
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            const split = Math.floor(bytes.length / 4);
+            const headers = new Headers({ "content-type": "application/wasm" });
+            if (mode !== "unknown") headers.set("content-length", String(bytes.length));
+            if (mode === "encoded") headers.set("content-encoding", "gzip");
+            const stream = new ReadableStream({
+              start(controller) {
+                controller.enqueue(bytes.slice(0, split));
+                Object.assign(window, {
+                  reviewEngineRequests: requests,
+                  releaseReviewEngine: () => {
+                    controller.enqueue(bytes.slice(split));
+                    controller.close();
+                  },
+                });
+              },
+            });
+            return new Response(stream, { headers });
+          };
+        }, mode);
+        await openDraft({
+          ...blankResume,
+          profile: {
+            ...blankResume.profile,
+            summary:
+              "I designed teh reliable system and helped teh team build useful tools. We work on quality software and support our customers every day.",
+          },
+        });
+        const opener = 'button[aria-label="Scan résumé for ATS and writing issues"]';
+        await page.click(opener);
+        await page.waitForFunction(() => "releaseReviewEngine" in window);
+        await page.waitForSelector('[role="progressbar"]');
+        if (mode === "known")
+          await page.waitForSelector('[role="progressbar"][aria-valuenow="25"]');
+        else {
+          expect(await page.$('[role="progressbar"][aria-valuenow]')).toBeNull();
+          expect(await page.$('[role="progressbar"] > span')).toBeNull();
+        }
+        expect(await page.$(".resume-review time")).toBeNull();
+        await page.click('button[aria-label="Scanning résumé"]');
+        expect(
+          await page.$('button[aria-label="Scanning résumé"][aria-disabled="true"]'),
+        ).not.toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(`${opener}:focus`);
+        await page.click(opener);
+        await page.waitForSelector('button[aria-label="Close ATS review"]:focus');
+        const releasedAt = await page.evaluate(() => {
+          const target = window as unknown as {
+            releaseReviewEngine: () => void;
+            reviewEngineRequests: number;
+          };
+          if (target.reviewEngineRequests !== 1) throw new Error("Duplicate engine request");
+          const now = Date.now();
+          target.releaseReviewEngine();
+          return now;
+        });
+        await page.waitForSelector(".resume-review time", { timeout: 30_000 });
+        expect(
+          await page.$eval(".resume-review time", (el) => Date.parse(el.getAttribute("datetime")!)),
+        ).toBeGreaterThanOrEqual(releasedAt);
+        expect(await page.$('button[aria-label="Close ATS review"]:focus')).not.toBeNull();
+        expect(await page.$eval('.resume-review [role="status"]', (el) => el.textContent)).toBe(
+          "Review complete",
+        );
+        const size = await page.$eval('button[aria-label="Re-scan"]', (el) => ({
+          w: el.getBoundingClientRect().width,
+          h: el.getBoundingClientRect().height,
+        }));
+        await page.click('button[aria-label="Re-scan"]');
+        await page.waitForSelector('button[aria-label="Re-scan"]:focus');
+        expect(
+          await page.$eval('button[aria-label="Re-scan"]', (el) => ({
+            w: el.getBoundingClientRect().width,
+            h: el.getBoundingClientRect().height,
+          })),
+        ).toEqual(size);
+      },
+      40_000,
+    );
+
+    it("keeps review tab keyboard navigation and focus through compact reflow", async () => {
+      await openDraft(
+        { ...blankResume, profile: { ...blankResume.profile, summary: "Built TypeScript tools." } },
+        { jobDescription: "TypeScript React Kubernetes" },
+      );
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[role="tab"]', { timeout: 30_000 });
+      await page.click('[role="tab"][id$="tab-overview"]');
+      for (const [key, tab] of [
+        ["ArrowRight", "keywords"],
+        ["End", "parse"],
+        ["ArrowRight", "overview"],
+        ["ArrowLeft", "parse"],
+        ["Home", "overview"],
+        ["ArrowDown", "keywords"],
+      ]) {
+        await page.keyboard.press(key as import("puppeteer-core").KeyInput);
+        await page.waitForSelector(`[role="tab"][id$="tab-${tab}"][aria-selected="true"]:focus`);
+        expect(await page.$$('[role="tab"][tabindex="0"]')).toHaveLength(1);
+      }
+      await page.setViewport({ width: 390, height: 844 });
+      expect(
+        await page.$('[role="tab"][id$="tab-keywords"][aria-selected="true"]:focus'),
+      ).not.toBeNull();
+      expect(await page.$eval('[role="tabpanel"]:not([hidden])', (el) => el.textContent)).toContain(
+        "typescript",
+      );
+      await page.keyboard.press("End");
+      await page.keyboard.press("Tab");
+      expect(await page.$('[role="tabpanel"]:not([hidden]):focus')).not.toBeNull();
+      expect(
+        await page.$eval('[role="tabpanel"]:not([hidden]) pre', (el) => el.textContent),
+      ).toContain("Built TypeScript tools.");
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+      await page.click('[aria-label="More options"]');
+      await clickText("Scan résumé", '[role="dialog"]');
+      await page.waitForSelector('[role="tab"][id$="tab-overview"][aria-selected="true"]');
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+    }, 40_000);
+
+    it("cancels a review handle drag and dismisses with the compact swipe alternative", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await clickText("Scan résumé", '[role="dialog"]');
+      await page.waitForSelector(".resume-review");
+      const handle = ".resume-review .resume-sheet-handle";
+      await page.$eval(handle, (el) => {
+        const target = el as HTMLElement;
+        const capture = target.setPointerCapture.bind(target);
+        target.setPointerCapture = () => {};
+        const event = (type: string, y: number) =>
+          target.dispatchEvent(
+            new PointerEvent(type, {
+              bubbles: true,
+              pointerId: 1,
+              isPrimary: true,
+              button: 0,
+              clientY: y,
+            }),
+          );
+        event("pointerdown", 50);
+        event("pointermove", 100);
+        event("pointercancel", 100);
+        target.setPointerCapture = capture;
+      });
+      await page.waitForFunction(
+        () => (document.querySelector(".resume-review") as HTMLElement).style.transform === "",
+      );
+      expect(await page.$(".resume-review")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!;
+      const cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-review", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("resumes the review after a nested save-failure notice closes", async () => {
+      await openDraft();
+      await page.evaluate(() => {
+        const original = Object.getOwnPropertyDescriptor(Storage.prototype, "setItem")!;
+        window.addEventListener(
+          "restore-storage",
+          () => Object.defineProperty(Storage.prototype, "setItem", original),
+          { once: true },
+        );
+        Storage.prototype.setItem = () => {
+          throw new DOMException("Quota full", "QuotaExceededError");
+        };
+      });
+      try {
+        await page.type('input[name="profile-name"]', " edit");
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('[role="alertdialog"]', { visible: true });
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(await page.$(".resume-review")).not.toBeNull();
+        await page.keyboard.press("Tab");
+        expect(await page.evaluate(() => !!document.activeElement?.closest(".resume-review"))).toBe(
+          true,
+        );
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(
+          'button[aria-label="Scan résumé for ATS and writing issues"]:focus',
+        );
+      } finally {
+        await page.evaluate(() => {
+          window.dispatchEvent(new Event("restore-storage"));
+          window.dispatchEvent(new Event("pagehide"));
+        });
+      }
+    });
+
+    it("keeps review dismissal and background isolation available during lazy loading", async () => {
+      await openDraft();
+      await page.setRequestInterception(true);
+      let held: import("puppeteer-core").HTTPRequest | undefined;
+      const intercept = (request: import("puppeteer-core").HTTPRequest) => {
+        if (/AtsReviewContent[-.]/.test(request.url())) held = request;
+        else void request.continue();
+      };
+      page.on("request", intercept);
+      try {
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('button[aria-label="Close ATS review"]:focus');
+        expect(await page.$eval('[role="dialog"]', (el) => el.textContent)).toContain(
+          "Loading the local review workspace",
+        );
+        expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(true);
+        await page.keyboard.press("Tab");
+        expect(await page.$('button[aria-label="Close ATS review"]:focus')).not.toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(
+          'button[aria-label="Scan résumé for ATS and writing issues"]:focus',
+        );
+        for (let attempts = 0; !held && attempts < 100; attempts++)
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        expect(held).toBeDefined();
+        await held!.continue();
+        held = undefined;
+        await page.waitForNetworkIdle();
+        expect(await page.$('[role="dialog"]')).toBeNull();
+        expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(false);
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('[role="tab"]', { timeout: 30_000 });
+      } finally {
+        if (held) await held.continue();
+        page.off("request", intercept);
+        await page.setRequestInterception(false);
+      }
+    }, 40_000);
 
     it("scans edits made while the writing engine is still downloading", async () => {
       await openDraft();

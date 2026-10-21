@@ -538,3 +538,48 @@ Next: complete review shell and all four panes, then overflow/export, PWA/static
 recovery and actual assets. Physical touch/software keyboard, OS IME and spoken
 assistive gates remain open. No push/deploy; CloakIMG stays last and untouched.
 Scratch: `/tmp/cloakresume-air-library/`; read-only next-review notes are there.
+
+## 2026-10-21 — Air résumé review
+
+The persistent Air frame keeps Close, Escape, focus containment and background
+inertness available while the report chunk loads. Overview, Keywords, Insights and
+Parse use neutral shared segments, open report groups and readable relative text.
+All scores, thresholds, dimensions, keyword counts, report ordering and complete
+Parse text remain intact. Full phrases, reasons, field labels and captions wrap;
+the first 25 writing details and remaining count are preserved. Short and long
+panels share a stable tab anchor. Close remains outside the scrolling report.
+
+The scan uses actual progress: known decoded byte totals show measured fractions;
+unknown/compressed totals remain indeterminate. Loading, preparation and review
+have named live statuses, with no invented minimum delay. Timestamps belong only
+to successful scans of the current document. Duplicate opens cannot enqueue the
+same revision twice; background completion, stale-edit invalidation and retry
+remain intact. The scan action reserves both labels and preserves focus. Direct
+and compact openers, resize fallback, field/JD jumps, nested save notices and
+emulated swipe/cancel pass. Retired the old combined modal/loading shell, 900ms
+delay, tinted cards, tiny mono labels, ignored boxed prop and unused wide aliases.
+
+Validation: **349/349 production tests, 9 files, zero skips, 503.99s**;
+165 editor cases, four report-fidelity component cases and all 34 template/paper
+cases with five fixtures each. Runtime (134 source/public/config files) and dist
+(99 files) stayed unchanged throughout the serial suite. **1,154 layouts and 14
+contrast pairs pass**: 960 report layouts and 194 known/unknown/error/forced-colour
+cases, all 16 sizes, both themes, 16/32px text and coarse/fine input. Native Safari
+actual scan/JD/field focus and Firefox actual 200% tab/panel/Escape flows pass;
+own tabs closed and zoom restored. Check/build, 80-source inventory, 18 portability
+checks and exact family sync pass. [Evidence](evidence/resume-review-2026-10-21.json)
+retains 68 captures, results, logs and hashes. All 34 output image/geometry records
+and actual A4/Letter PDF rasters match the baseline. Scoring logic is unchanged.
+
+Early harness checks used a hidden tabpanel and the wrong application root ID;
+those selectors were corrected without changing the feature assertions. Contrast
+measurement now resolves light-dark ink through an actual element and waits for
+the theme frame; progress measurement waits for the lazy report content. The final
+checks pass. All-clear/no-insights and long/repeated finding data are covered by
+static component renders; real report/progress/error layouts use the production
+app and actual Harper engine. Physical touch/software keyboard, OS IME and spoken
+assistive acceptance remain open.
+
+Next: compact Options sheet and export busy/recovery; then PWA/static recovery
+and actual OG/PWA/README assets. No push/deploy. CloakIMG stays last and untouched.
+Scratch: `/tmp/cloakresume-air-review/`.

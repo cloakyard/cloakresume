@@ -12,6 +12,7 @@ import {
   PencilLine,
   ShieldCheck,
 } from "lucide-react";
+import { useId } from "react";
 import type { AtsReport, GrammarIssue, GrammarIssueKind } from "../../types.ts";
 
 type InsightIcon = "check" | "alert" | "chart" | "shield";
@@ -99,9 +100,9 @@ export function AtsInsightsPane({ report, onJumpToField }: AtsInsightsPaneProps)
 
   if (items.length === 0) {
     return (
-      <section className="border-t border-(--brand-200) bg-(--brand-50) p-4">
-        <h3 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">No insights yet</h3>
-        <p className="m-0 text-sm leading-[1.5] text-(--ink-3)">
+      <section className="resume-review-guidance">
+        <h3 className="resume-review-fix-title">No insights yet</h3>
+        <p className="resume-review-description">
           Add résumé content to get personalised wins and suggestions.
         </p>
       </section>
@@ -109,7 +110,7 @@ export function AtsInsightsPane({ report, onJumpToField }: AtsInsightsPaneProps)
   }
 
   return (
-    <div className="flex flex-col border-t border-(--line)">
+    <div className="resume-review-insights">
       {items.map((it) => (
         <InsightCard key={it.key} tone={it.tone} icon={it.icon} title={it.title} body={it.body} />
       ))}
@@ -125,13 +126,6 @@ const KIND_LABEL: Record<GrammarIssueKind, string> = {
   grammar: "Grammar",
   style: "Style",
   readability: "Long sentence",
-};
-
-const KIND_TONE: Record<GrammarIssueKind, { bg: string; fg: string; border: string }> = {
-  spelling: { bg: "bg-(--danger-bg)", fg: "text-(--danger)", border: "border-(--danger-border)" },
-  grammar: { bg: "bg-(--warn-bg)", fg: "text-(--warn)", border: "border-(--warn-border)" },
-  style: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
-  readability: { bg: "bg-(--brand-50)", fg: "text-(--brand)", border: "border-(--brand-200)" },
 };
 
 /**
@@ -156,23 +150,21 @@ function WritingDetails({
     return { key: `${base}-${n}`, issue };
   });
   return (
-    <section className="mt-4 overflow-hidden border-t border-(--line)">
-      <div className="flex items-center gap-2 border-b border-(--line-soft) bg-(--surface-2) px-3 py-2.5">
-        <PencilLine aria-hidden="true" className="h-3.5 w-3.5 text-(--ink-4)" />
-        <h3 className="m-0 text-sm font-semibold text-(--ink-1)">Writing details</h3>
-        <span className="ml-auto font-mono text-[10.5px] text-(--ink-5) tracking-[0.02em]">
+    <section className="resume-review-section">
+      <div className="resume-review-section-heading">
+        <PencilLine aria-hidden="true" size={18} strokeWidth={1.6} />
+        <h3 className="resume-review-fix-title">Writing details</h3>
+        <span className="resume-review-meta">
           {issues.length} finding{issues.length === 1 ? "" : "s"}
         </span>
       </div>
-      <ul className="divide-y divide-(--line-soft)">
+      <ul className="resume-review-findings">
         {keyed.map(({ key, issue }) => (
           <WritingDetailRow key={key} issue={issue} onJumpToField={onJumpToField} />
         ))}
       </ul>
       {overflow > 0 && (
-        <div className="border-t border-(--line-soft) bg-(--surface-2) px-3 py-2 text-center text-xs text-(--ink-5)">
-          +{overflow} more — fix the ones above and re-scan.
-        </div>
+        <div className="resume-review-meta">+{overflow} more — fix the ones above and re-scan.</div>
       )}
     </section>
   );
@@ -185,46 +177,37 @@ function WritingDetailRow({
   issue: GrammarIssue;
   onJumpToField?: (segmentId: string) => void;
 }) {
-  const tone = KIND_TONE[issue.kind];
-  const preview = issue.actual.length > 72 ? `${issue.actual.slice(0, 72)}…` : issue.actual;
-  const interactive = Boolean(onJumpToField);
+  const detailId = useId();
   const content = (
     <>
-      <span
-        className={`shrink-0 inline-flex items-center h-5 px-1.5 rounded-md border font-mono text-[9.5px] font-semibold tracking-[0.04em] uppercase ${tone.bg} ${tone.fg} ${tone.border}`}
-      >
-        {KIND_LABEL[issue.kind]}
-      </span>
-      <div className="flex-1 min-w-0 text-left">
-        <div className="text-sm leading-snug text-(--ink-1)">
-          <mark className="bg-(--warn-bg) text-(--ink-1) px-1 rounded">{preview}</mark>
+      <span className="resume-review-kind">{KIND_LABEL[issue.kind]}</span>
+      <div id={detailId} className="resume-review-finding-copy">
+        <p>
+          <mark>{issue.actual}</mark>
           {issue.suggestions.length > 0 && (
-            <span className="text-(--ink-3)">
-              {" "}
-              → {issue.suggestions.map((s) => `"${s}"`).join(", ")}
-            </span>
+            <> → {issue.suggestions.map((s) => `“${s}”`).join(", ")}</>
           )}
-        </div>
-        <div className="mt-0.5 truncate text-xs text-(--ink-4)">{issue.segmentLabel}</div>
+        </p>
+        <p className="resume-review-description">{issue.reason}</p>
+        <p className="resume-review-meta">{issue.segmentLabel}</p>
       </div>
-      {interactive && (
-        <ArrowUpRight aria-hidden="true" className="shrink-0 w-3.5 h-3.5 text-(--ink-5) mt-0.5" />
-      )}
+      {onJumpToField && <ArrowUpRight aria-hidden="true" size={18} strokeWidth={1.6} />}
     </>
   );
   return (
     <li>
-      {interactive ? (
+      {onJumpToField ? (
         <button
           type="button"
-          onClick={() => onJumpToField?.(issue.segmentId)}
-          className="flex min-h-11 w-full items-start gap-2.5 px-3 py-2.5 text-left transition-colors hover:bg-(--surface-2) focus-visible:outline-none focus-visible:bg-(--surface-2) focus-visible:shadow-(--sh-focus)"
+          className="resume-review-finding"
+          onClick={() => onJumpToField(issue.segmentId)}
           aria-label={`Jump to ${issue.segmentLabel}`}
+          aria-describedby={detailId}
         >
           {content}
         </button>
       ) : (
-        <div className="flex items-start gap-2.5 px-3 py-2.5">{content}</div>
+        <div className="resume-review-finding">{content}</div>
       )}
     </li>
   );
@@ -251,19 +234,17 @@ function InsightCard({
           : AlertTriangle;
 
   const iconColors: Record<InsightTone, string> = {
-    ok: "text-(--ok)",
-    warn: "text-(--warn)",
-    err: "text-(--danger)",
+    ok: "resume-review-success",
+    warn: "resume-review-warning",
+    err: "resume-review-missing",
   };
 
   return (
-    <article className="flex items-start gap-3 border-b border-(--line-soft) px-1 py-3.5">
-      <IconComp aria-hidden="true" className={`mt-px h-5 w-5 shrink-0 ${iconColors[tone]}`} />
-      <div className="min-w-0 flex-1">
-        <h3 className="m-0 mb-0.5 text-sm font-semibold tracking-[-0.005em] text-(--ink-1)">
-          {title}
-        </h3>
-        {body && <p className="m-0 text-sm leading-[1.55] text-(--ink-3)">{body}</p>}
+    <article className="resume-review-insight">
+      <IconComp aria-hidden="true" size={20} strokeWidth={1.6} className={iconColors[tone]} />
+      <div className="resume-review-fix-copy">
+        <h3 className="resume-review-fix-title">{title}</h3>
+        {body && <p className="resume-review-description">{body}</p>}
       </div>
     </article>
   );

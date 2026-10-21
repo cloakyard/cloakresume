@@ -1,0 +1,4 @@
+finished known
+finished unknown
+finished error
+194 edge layouts; 20 captures; 14 contrast pairs

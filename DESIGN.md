@@ -1097,8 +1097,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   `src/styles/air.css`; `air-entry.css` owns entry composition. The editor shell,
   header actions, section rail/picker/panel frame, paper/view segments and preview
   dock use Air with `air-editor.css` composition. All 13 content sections and their
-  writing widgets and template library use Air; review sheets and PWA notices retain the legacy
-  bridge until their slices.
+  writing widgets, template library and résumé review use Air; the overflow sheet
+  and PWA notices retain the legacy bridge until their slices.
   Template fonts and output geometry remain independent of both bridges.
 - Entry supports landscape and native in-flow compact navigation. Blank/sample
   and validated file replacement require confirmation when a current draft exists;
@@ -1237,7 +1237,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   covers all six real production consumers plus explicitly labelled long-copy
   stress, short screens, both themes, enlarged text and coarse/forced-colour modes.
   Native Safari and Firefox zoom are separate from physical touch/software keyboard,
-  OS IME and spoken assistive acceptance. The full review sheet remains a later slice.
+  OS IME and spoken assistive acceptance. The full review sheet has separate acceptance below.
 
 - All 13 content sections use the shared writing, repeated-entry and picker shells.
   Awards/Certifications year fields and Quick stats/Extras pairs reflow by available
@@ -1256,7 +1256,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   custom values, both themes, text enlargement, breakpoint edges, coarse/fine input
   and forced colours. Complete source review plus existing field/date/logo/hint and
   entry tests establish software acceptance; physical touch/software keyboard, OS
-  IME and spoken assistive gates remain separate. Review/overflow/export,
+  IME and spoken assistive gates remain separate. Overflow/export,
   PWA/static recovery and real preview assets are still later slices.
 
 - The template library uses the shared wide Air dialog, compound search field,
@@ -1281,4 +1281,39 @@ journeys across all apps; it is not inferred from the pilot alone.
   blank/populated drafts, every viewport class, both themes, text enlargement,
   coarse/fine targets and forced colours. Native Safari and actual Firefox zoom
   are separate from physical touch/software keyboard, OS IME and spoken assistive
-  acceptance. Review, overflow/export, PWA/static recovery and real assets remain.
+  acceptance. Overflow/export, PWA/static recovery and real assets remain.
+
+### Résumé review
+
+- The review uses the shared Air wide dialog/sheet and neutral segments. Its frame
+  loads eagerly so Close, Escape, focus containment and background inertness work
+  while the four panes download. Close stays outside the scrolling report. Short
+  panels share the tab anchor with long panels; tabs wrap at enlarged text and
+  never cover focused report content. Opening and dismissal are immediate.
+- Keep Overview, Keywords, Insights and Parse, their numeric scores, thresholds,
+  dimensions, keyword matching/counts, ordering and complete plain-text output.
+  Score colours are semantic data ink, not tinted application surfaces. Metadata
+  uses readable relative text; captions, findings, reasons and field labels wrap
+  without truncation. Keep the first 25 writing details and the remaining count.
+- The scan button reserves both labels and stays focusable while guarded busy.
+  Progress comes from actual received bytes only when the decoded total is known.
+  Unknown or encoded lengths use an indeterminate track and a named live status;
+  never invent a percentage, duration or minimum scan delay. Download completion,
+  worker preparation and writing review remain distinct. A timestamp records only
+  successful completion for the current document revision.
+- One in-flight scan per current revision prevents duplicate open/re-scan work.
+  Closing keeps the existing background scan; editing invalidates stale results.
+  Failure preserves the ATS report and supports a real retry. No document or JD
+  leaves the browser, and the existing JD exclusion from grammar stays intact.
+- Tab arrows/Home/End preserve roving focus and their associated panels. Field/JD
+  handoffs focus the destination after its section mounts. Dismissal returns to
+  the surviving Scan/More options opener across responsive changes. Nested save
+  notices and compact swipe/cancel retain the shared modal lifecycle.
+- `node scripts/test-air-review.mjs` covers all panes and empty/short/populated
+  reports across required sizes, themes and enlarged text. The companion
+  `node scripts/test-air-review-progress.mjs` covers known/unknown download totals,
+  failure, forced colours and text contrast. Browser regressions cover compressed
+  responses, lazy dismissal, real retry/completion, stale edits and field handoffs.
+  These are software checks; physical touch/software keyboard, OS IME and spoken
+  assistive acceptance remain open. Overflow/export/PWA/static recovery and actual
+  OG/PWA/README assets are the next slices; CloakIMG stays last.

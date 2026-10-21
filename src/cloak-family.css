@@ -101,18 +101,13 @@ body {
   z-index: var(--z-dialog, 200) !important;
 }
 
-.cr-dialog,
-.cr-dialog-wide {
+.cr-dialog {
   color: var(--ink-1);
   background: var(--surface);
   border: 1px solid var(--color-rule-strong);
   border-radius: var(--radius-card);
   box-shadow: var(--shadow-overlay);
   overscroll-behavior: contain;
-}
-
-.cr-dialog-wide {
-  width: min(var(--dialog-wide-max), calc(100vw - (var(--dialog-viewport-gutter) * 2)));
 }
 
 .cr-dialog__eyebrow {
@@ -404,8 +399,7 @@ button:not(.absolute):active:not(:disabled) {
 }
 
 @media (max-width: 39.9375rem) {
-  .cr-dialog,
-  .cr-dialog-wide {
+  .cr-dialog {
     width: 100%;
     max-width: none;
     border-right: 0;

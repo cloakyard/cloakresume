@@ -820,40 +820,10 @@ export function computeAts(
   };
 }
 
-export function scoreBand(score: number): {
-  label: string;
-  color: string;
-  bg: string;
-  border: string;
-} {
-  if (score >= 85) {
-    return {
-      label: "Excellent",
-      color: "var(--color-status-success)",
-      bg: "var(--color-status-success-soft)",
-      border: "var(--ok-border)",
-    };
-  }
-  if (score >= 70) {
-    return {
-      label: "Strong",
-      color: "var(--color-accent-label)",
-      bg: "var(--color-accent-soft)",
-      border: "var(--brand-200)",
-    };
-  }
-  if (score >= 55) {
-    return {
-      label: "Decent",
-      color: "var(--color-status-warning)",
-      bg: "var(--color-status-warning-soft)",
-      border: "var(--warn-border)",
-    };
-  }
-  return {
-    label: score >= 40 ? "Needs work" : "Critical",
-    color: "var(--color-status-danger)",
-    bg: "var(--color-status-danger-soft)",
-    border: "var(--danger-border)",
-  };
+/** Semantic score labels and chart ink; these never style application surfaces. */
+export function scoreBand(score: number): { label: string; color: string } {
+  if (score >= 85) return { label: "Excellent", color: "var(--air-success)" };
+  if (score >= 70) return { label: "Strong", color: "var(--air-accent)" };
+  if (score >= 55) return { label: "Decent", color: "var(--air-warning)" };
+  return { label: score >= 40 ? "Needs work" : "Critical", color: "var(--air-danger)" };
 }

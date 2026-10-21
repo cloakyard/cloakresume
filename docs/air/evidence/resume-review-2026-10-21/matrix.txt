@@ -1,0 +1,7 @@
+finished empty coarse
+finished empty fine
+finished short coarse
+finished short fine
+finished populated coarse
+finished populated fine
+960 layouts; 48 screenshots; no errors
