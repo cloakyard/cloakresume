@@ -60,5 +60,5 @@ export function useAutosave<T extends object>(key: string, value: T, enabled: bo
     };
   }, [flush]);
 
-  return { error, savedAt };
+  return { error, savedAt, flush };
 }

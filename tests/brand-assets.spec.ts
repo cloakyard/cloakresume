@@ -149,7 +149,7 @@ describe("brand, social, and install asset contracts", () => {
       source("public/icons/safari-pinned-tab.svg"),
       source("src/components/BrandLogo.tsx"),
       source("index.html"),
-      source("public/404.html"),
+      source("404.html"),
       source("pwa-assets.config.ts"),
       source("vite.config.ts"),
       source("docs/brand-assets.md"),

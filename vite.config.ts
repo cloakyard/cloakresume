@@ -97,6 +97,12 @@ export default defineConfig({
         ],
       },
       workbox: {
+        // Only the editor root is an app route. Missing URLs must reach the real 404.
+        navigateFallbackAllowlist: [
+          new RegExp(
+            `^${(process.env.VITE_APP_BASE_PATH || "/").replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:index\\.html)?(?:\\?.*)?$`,
+          ),
+        ],
         globPatterns: ["**/*.{js,css,html,svg,woff2}"],
         // Presentation assets and the optional landing renderer are not offline-shell essentials.
         // The horizon retains its SVG fallback without downloading the GPU module.
@@ -124,6 +130,8 @@ export default defineConfig({
       },
     }),
   ],
+  // Build the standalone recovery page with the same pinned Air CSS; no React required.
+  build: { rolldownOptions: { input: { main: "index.html", notFound: "404.html" } } },
   // ES module worker output so the grammar worker can use top-level await
   // (dictionary-en ships an ESM module that decodes its data at load time).
   worker: { format: "es" },

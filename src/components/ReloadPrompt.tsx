@@ -1,246 +1,339 @@
-/* Hallmark · component: PWA update notice · genre: modern-minimal · theme: CloakResume
- * states: default · hover · focus · active · disabled · loading · error · success
- * pre-emit critique: P5 H5 E5 S5 R5 V4 · contrast: pass (40–41) */
-// ReloadPrompt.tsx — PWA service-worker update banner.
-//
-// Renders a solid token-based card pinned to the bottom-right of the
-// viewport when one of two things happens:
-//
-//   • A new service-worker version becomes available — shows an
-//     explicit "Update & Reload" CTA, plus progress and retry states.
-//   • The current version finishes caching — shows a self-dismissing
-//     "Ready offline" toast for 4 s without implying OS installation.
-//
-// Polls the SW URL every 10 minutes (skipping the poll when the
-// user is offline or another install is already in flight) so a
-// long-lived editor session can pick up an update without a full
-// reload from the user.
-
+/** Explicit PWA updates: save current work before activation and again before reload. */
 import { CircleAlert, RefreshCw, ShieldCheck, X } from "lucide-react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useId, useRef, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
-import { useAnimatedPresence, type PresenceState } from "../utils/useAnimatedPresence.ts";
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
-const RELOAD_FALLBACK_MS = 1500;
-
 type ReloadNoticeState = "offline" | "update" | "updating" | "error";
-
-type ReloadPromptViewProps = {
-  state: ReloadNoticeState;
-  presenceState?: PresenceState;
-  onClose: () => void;
-  onUpdate: () => void;
-};
 
 export function ReloadPromptView({
   state,
-  presenceState = "open",
+  error,
   onClose,
   onUpdate,
-}: ReloadPromptViewProps) {
+  onPause,
+}: {
+  state: ReloadNoticeState;
+  error?: string;
+  onClose: () => void;
+  onUpdate: () => void;
+  onPause: (paused: boolean) => void;
+}) {
   const titleId = useId();
-  const descriptionId = useId();
-  const isUpdating = state === "updating";
-  const isError = state === "error";
-  const isUpdateNotice = state !== "offline";
-  const Icon = isError ? CircleAlert : state === "offline" ? ShieldCheck : RefreshCw;
+  const root = useRef<HTMLElement>(null);
+  const previousFocus = useRef<HTMLElement | null>(null);
+  const busy = state === "updating";
   const title =
     state === "offline"
-      ? "Ready Offline"
-      : isUpdating
+      ? "Ready offline"
+      : busy
         ? "Updating CloakResume"
-        : isError
-          ? "Update Didn’t Finish"
-          : "Update Ready";
+        : state === "error"
+          ? "Update paused"
+          : "Update ready";
   const body =
     state === "offline"
       ? "This version is cached and ready to use offline."
-      : isUpdating
-        ? "Installing the latest version and reloading…"
-        : isError
-          ? "Check your connection, then try again."
-          : "A new version is ready. Update now to reload CloakResume.";
+      : busy
+        ? "Activating the new version. Your latest changes will be saved before reloading."
+        : state === "error"
+          ? error
+          : "A new version is ready. Save your draft and reload CloakResume when you’re ready.";
+  const Icon = state === "error" ? CircleAlert : state === "offline" ? ShieldCheck : RefreshCw;
+  const label = busy ? "Updating…" : state === "error" ? "Try again" : "Update and reload";
+
+  useLayoutEffect(() => {
+    const node = root.current;
+    const remember = () => {
+      if (document.activeElement instanceof HTMLElement && !node?.contains(document.activeElement))
+        previousFocus.current = document.activeElement;
+    };
+    remember();
+    document.addEventListener("focusin", remember);
+    const resize = new ResizeObserver(() => {
+      const focused = document.activeElement;
+      if (focused instanceof HTMLElement && node?.contains(focused))
+        focused.scrollIntoView({ block: "nearest", inline: "nearest" });
+    });
+    if (node) {
+      resize.observe(node);
+      if (node.firstElementChild) resize.observe(node.firstElementChild);
+    }
+    return () => {
+      document.removeEventListener("focusin", remember);
+      resize.disconnect();
+      if (node?.contains(document.activeElement) && previousFocus.current?.isConnected)
+        previousFocus.current.focus({ preventScroll: true });
+    };
+  }, []);
 
   return (
-    <div
-      className="fixed right-4 bottom-4 left-4 flex justify-center sm:right-6 sm:bottom-6 sm:left-auto sm:justify-end print:hidden"
-      role={isError ? "alert" : "status"}
-      aria-live={isError ? "assertive" : "polite"}
-      aria-atomic="true"
+    <section
+      ref={root}
+      className="resume-update"
       aria-labelledby={titleId}
-      aria-describedby={descriptionId}
-      style={{ zIndex: "var(--z-toast)" }}
+      onPointerEnter={() => onPause(true)}
+      onPointerLeave={() => onPause(Boolean(root.current?.contains(document.activeElement)))}
+      onFocusCapture={() => onPause(true)}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget as Node | null))
+          onPause(event.currentTarget.matches(":hover"));
+      }}
     >
-      <div
-        data-state={presenceState}
-        className="cr-popover cr-toast relative flex w-full max-w-sm flex-col overflow-hidden rounded-md p-4 sm:w-auto sm:min-w-80"
-        style={{ paddingBottom: "calc(1rem + env(safe-area-inset-bottom, 0px))" }}
-      >
-        <div className="flex items-start gap-3">
-          <span
-            className={`mt-1 grid h-5 w-5 shrink-0 place-items-center ${
-              isError ? "text-(--danger)" : "text-(--brand)"
-            }`}
-          >
-            <Icon
-              aria-hidden="true"
-              className={`h-4 w-4 ${isUpdating ? "motion-safe:animate-spin" : ""}`}
-            />
-          </span>
-          <div className="min-w-0 flex-1 pt-0.5">
-            <p
-              id={titleId}
-              className="text-sm font-semibold tracking-tight text-pretty text-(--ink-1)"
-            >
-              {title}
-            </p>
-            <p
-              id={descriptionId}
-              className="mt-0.5 text-sm leading-[1.5] text-pretty text-(--ink-4)"
-            >
-              {body}
-            </p>
-          </div>
+      <div className="resume-update-content">
+        <Icon aria-hidden="true" size={20} strokeWidth={1.6} />
+        <div
+          className="resume-update-copy"
+          role={state === "error" ? "alert" : "status"}
+          aria-atomic="true"
+        >
+          <h2 id={titleId}>{title}</h2>
+          <p>{body}</p>
+        </div>
+        <div className="resume-update-actions">
+          {state !== "offline" && (
+            <>
+              <button
+                type="button"
+                className="air-button air-button--quiet"
+                aria-disabled={busy || undefined}
+                onClick={(event) => {
+                  event.currentTarget.focus();
+                  if (!busy) onClose();
+                }}
+              >
+                Later
+              </button>
+              <button
+                type="button"
+                className="air-button air-button--primary"
+                aria-label={label}
+                aria-disabled={busy || undefined}
+                aria-busy={busy || undefined}
+                onClick={(event) => {
+                  event.currentTarget.focus();
+                  if (!busy) onUpdate();
+                }}
+              >
+                <span className="air-action-labels">
+                  {["Update and reload", "Updating…", "Try again"].map((text) => (
+                    <span
+                      key={text}
+                      data-active={label === text || undefined}
+                      aria-hidden={label !== text || undefined}
+                    >
+                      {text}
+                    </span>
+                  ))}
+                </span>
+              </button>
+            </>
+          )}
           <button
             type="button"
-            onClick={onClose}
-            disabled={isUpdating}
-            aria-label={`Dismiss ${title.toLowerCase()} notice`}
-            className="-mt-2 -mr-2 inline-flex h-11 w-11 shrink-0 cursor-pointer items-center justify-center rounded-md border-none bg-transparent text-(--ink-4) transition-colors hover:bg-(--surface-2) hover:text-(--ink-1)"
+            className="air-icon-button air-button--quiet"
+            aria-label="Dismiss update notice"
+            aria-disabled={busy || undefined}
+            onClick={(event) => {
+              event.currentTarget.focus();
+              if (!busy) onClose();
+            }}
           >
-            <X aria-hidden="true" className="h-3.5 w-3.5" />
+            <X aria-hidden="true" size={18} strokeWidth={1.6} />
           </button>
         </div>
-        {isUpdateNotice && (
-          <div className="mt-3 flex items-center justify-end gap-2">
-            <button
-              type="button"
-              onClick={onClose}
-              disabled={isUpdating}
-              className="tb ghost h-11! min-h-11! whitespace-nowrap min-[640px]:h-10! min-[640px]:min-h-10!"
-            >
-              Later
-            </button>
-            <button
-              type="button"
-              onClick={onUpdate}
-              disabled={isUpdating}
-              aria-busy={isUpdating || undefined}
-              className="tb primary h-11! min-h-11! whitespace-nowrap min-[640px]:h-10! min-[640px]:min-h-10!"
-            >
-              <RefreshCw
-                aria-hidden="true"
-                className={`h-3.5 w-3.5 ${isUpdating ? "motion-safe:animate-spin" : ""}`}
-              />
-              {isUpdating ? "Updating…" : isError ? "Try Again" : "Update & Reload"}
-            </button>
-          </div>
-        )}
       </div>
-    </div>
+    </section>
   );
 }
 
-export function ReloadPrompt() {
-  // Stash the SW update interval so the unmount cleanup can clear it.
-  // `useRegisterSW`'s onRegisteredSW callback fires once outside React's
-  // lifecycle, so we need our own ref to plumb the timer ID back out.
-  const updateIntervalRef = useRef<number | null>(null);
-  const reloadFallbackRef = useRef<number | null>(null);
-  const updateInFlightRef = useRef(false);
-  const [updateState, setUpdateState] =
-    useState<Extract<ReloadNoticeState, "update" | "updating" | "error">>("update");
+export function ReloadPrompt({ beforeReload }: { beforeReload: () => string | null }) {
+  const interval = useRef<number | null>(null);
+  const stopWatching = useRef<(() => void) | undefined>(undefined);
+  const stopRegistrationWatch = useRef<(() => void) | undefined>(undefined);
+  const registration = useRef<ServiceWorkerRegistration | undefined>(undefined);
+  const inFlight = useRef(false);
+  const activated = useRef(false);
+  const reloadStarted = useRef(false);
+  const mounted = useRef(true);
+  const [state, setState] = useState<ReloadNoticeState>("update");
+  const [error, setError] = useState("");
+  const [paused, setPaused] = useState(false);
+
+  const fail = useCallback((message: string) => {
+    stopWatching.current?.();
+    inFlight.current = false;
+    setError(message);
+    setState("error");
+  }, []);
+  const reloadSafely = useCallback(() => {
+    if (!mounted.current || !inFlight.current || reloadStarted.current) return;
+    if (registration.current?.active?.state !== "activated") return;
+    const blocked = beforeReload();
+    if (blocked) {
+      fail(blocked);
+      return;
+    }
+    reloadStarted.current = true;
+    stopWatching.current?.();
+    window.location.reload();
+  }, [beforeReload, fail]);
 
   const {
     needRefresh: [needRefresh, setNeedRefresh],
     offlineReady: [offlineReady, setOfflineReady],
-    updateServiceWorker,
   } = useRegisterSW({
-    onRegisteredSW(swUrl, registration) {
-      if (!registration) return;
-      if (updateIntervalRef.current !== null) {
-        window.clearInterval(updateIntervalRef.current);
-      }
-      updateIntervalRef.current = window.setInterval(async () => {
-        if (registration.installing) return;
-        if (!navigator.onLine) return;
+    onNeedRefresh() {
+      activated.current = false;
+    },
+    onNeedReload() {
+      if (!mounted.current) return;
+      activated.current = true;
+      // A different tab may activate an update. This tab still requires consent.
+      if (inFlight.current) reloadSafely();
+      else setNeedRefresh(true);
+    },
+    onRegisteredSW(swUrl, nextRegistration) {
+      if (!nextRegistration || !mounted.current) return;
+      registration.current = nextRegistration;
+      // Workbox stops observing updatefound after a later/external install. Keep
+      // subsequent updates discoverable, including recovery after a failed install.
+      stopRegistrationWatch.current?.();
+      const workers = new Map<ServiceWorker, () => void>();
+      const watchInstall = () => {
+        const worker = nextRegistration.installing;
+        if (!worker || workers.has(worker)) return;
+        const changed = () => {
+          if (
+            worker.state === "installed" &&
+            nextRegistration.active &&
+            nextRegistration.waiting === worker &&
+            !inFlight.current
+          ) {
+            activated.current = false;
+            setState("update");
+            setNeedRefresh(true);
+          }
+          if (worker.state === "installed" || worker.state === "redundant") {
+            worker.removeEventListener("statechange", changed);
+            workers.delete(worker);
+          }
+        };
+        workers.set(worker, changed);
+        worker.addEventListener("statechange", changed);
+      };
+      nextRegistration.addEventListener("updatefound", watchInstall);
+      watchInstall();
+      stopRegistrationWatch.current = () => {
+        nextRegistration.removeEventListener("updatefound", watchInstall);
+        for (const [worker, changed] of workers) worker.removeEventListener("statechange", changed);
+      };
+      if (interval.current !== null) window.clearInterval(interval.current);
+      let checking = false;
+      interval.current = window.setInterval(async () => {
+        if (checking || nextRegistration.installing || !navigator.onLine) return;
+        checking = true;
         try {
-          const resp = await fetch(swUrl, { cache: "no-store" });
-          if (resp.status === 200) await registration.update();
+          const response = await fetch(swUrl, { cache: "no-store" });
+          if (response.status === 200 && mounted.current) await nextRegistration.update();
         } catch {
-          // Network blip — try again next interval.
+          /* A transient network failure can wait for the next check. */
+        } finally {
+          checking = false;
         }
       }, UPDATE_CHECK_INTERVAL_MS);
     },
   });
 
   useEffect(() => {
+    const container = navigator.serviceWorker;
+    if (!container) return;
+    let controller = container.controller;
+    const onControllerChange = () => {
+      const next = container.controller;
+      const wasControlled = controller !== null;
+      const changed = next !== controller;
+      controller = next;
+      if (!wasControlled || !changed || !next) return;
+      activated.current = true;
+      if (inFlight.current) reloadSafely();
+      else setNeedRefresh(true);
+    };
+    container.addEventListener("controllerchange", onControllerChange);
+    return () => container.removeEventListener("controllerchange", onControllerChange);
+  }, [reloadSafely, setNeedRefresh]);
+
+  useEffect(() => {
+    mounted.current = true;
     return () => {
-      if (updateIntervalRef.current !== null) {
-        window.clearInterval(updateIntervalRef.current);
-        updateIntervalRef.current = null;
-      }
-      if (reloadFallbackRef.current !== null) {
-        window.clearTimeout(reloadFallbackRef.current);
-        reloadFallbackRef.current = null;
-      }
+      mounted.current = false;
+      if (interval.current !== null) window.clearInterval(interval.current);
+      stopWatching.current?.();
+      stopRegistrationWatch.current?.();
     };
   }, []);
 
-  // Edge cases on freshly-launched origins can drop workbox-window's
-  // controlling event. Fall back to an explicit reload so the Update
-  // button is never a no-op.
-  const handleUpdate = useCallback(async () => {
-    if (updateInFlightRef.current) return;
-    updateInFlightRef.current = true;
-    setUpdateState("updating");
-    reloadFallbackRef.current = window.setTimeout(
-      () => window.location.reload(),
-      RELOAD_FALLBACK_MS,
-    );
-    try {
-      await updateServiceWorker(true);
-    } catch {
-      if (reloadFallbackRef.current !== null) {
-        window.clearTimeout(reloadFallbackRef.current);
-        reloadFallbackRef.current = null;
-      }
-      updateInFlightRef.current = false;
-      setUpdateState("error");
+  const handleUpdate = () => {
+    if (inFlight.current) return;
+    const blocked = beforeReload();
+    if (blocked) {
+      fail(blocked);
+      return;
     }
-  }, [updateServiceWorker]);
-
-  const close = useCallback(() => {
-    if (updateInFlightRef.current) return;
-    setUpdateState("update");
+    inFlight.current = true;
+    setState("updating");
+    const worker = activated.current ? registration.current?.active : registration.current?.waiting;
+    if (!worker) {
+      fail(
+        "The update is no longer waiting. Keep working and try again when a new version is ready.",
+      );
+      return;
+    }
+    const checkWorker = () => {
+      if (!mounted.current || !inFlight.current) return;
+      if (worker.state === "activated") {
+        activated.current = true;
+        reloadSafely();
+      } else if (worker.state === "redundant") {
+        fail(
+          "The update didn’t finish. Your draft stays here. Check your connection, then try again.",
+        );
+      }
+    };
+    worker.addEventListener("statechange", checkWorker);
+    stopWatching.current = () => worker.removeEventListener("statechange", checkWorker);
+    try {
+      // Workbox's helper discards the message promise; send to the known waiting
+      // worker directly so a synchronous delivery failure remains recoverable.
+      if (worker.state === "installed") worker.postMessage({ type: "SKIP_WAITING" });
+      // The worker's actual activation also covers a missed Workbox controlling event.
+      checkWorker();
+    } catch {
+      if (mounted.current)
+        fail(
+          "The update didn’t finish. Your draft stays here. Check your connection, then try again.",
+        );
+    }
+  };
+  const close = () => {
+    if (inFlight.current) return;
+    setState("update");
     setOfflineReady(false);
     setNeedRefresh(false);
-  }, [setOfflineReady, setNeedRefresh]);
-
+  };
   useEffect(() => {
-    if (!offlineReady) return;
-    const id = setTimeout(close, 4000);
-    return () => clearTimeout(id);
-  }, [offlineReady, close]);
+    if (!offlineReady || needRefresh || paused) return;
+    const timer = window.setTimeout(() => setOfflineReady(false), 4000);
+    return () => window.clearTimeout(timer);
+  }, [offlineReady, needRefresh, paused, setOfflineReady]);
 
-  const noticeState: ReloadNoticeState | null = needRefresh
-    ? updateState
-    : offlineReady
-      ? "offline"
-      : null;
-  const noticePresence = useAnimatedPresence(noticeState !== null);
-  const lastNoticeStateRef = useRef<ReloadNoticeState>("offline");
-  if (noticeState !== null) lastNoticeStateRef.current = noticeState;
-
-  if (!noticePresence.mounted) return null;
-
-  return (
+  return needRefresh || offlineReady ? (
     <ReloadPromptView
-      state={noticeState ?? lastNoticeStateRef.current}
-      presenceState={noticePresence.state}
+      state={needRefresh ? state : "offline"}
+      error={error}
       onClose={close}
       onUpdate={handleUpdate}
+      onPause={setPaused}
     />
-  );
+  ) : null;
 }

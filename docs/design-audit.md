@@ -21,6 +21,11 @@ scrolls the destination into view, and Air dialogs keep the shared blue focus ru
 Current evidence and retained legacy consumers are in `air/validation.md` and
 `air/code-cleanup.md`.
 
+**2026-10-21 PWA/static recovery follow-up:** ReloadPrompt now uses Air; the historical
+`public/404.html` entry is replaced by root `404.html`, built with pinned Air CSS.
+Legacy toast/toolbar skins and the timed reload are removed. Current proof and
+retained live consumers are recorded in `air/validation.md` and `air/code-cleanup.md`.
+
 **Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result

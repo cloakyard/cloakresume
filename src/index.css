@@ -150,28 +150,6 @@
     background: transparent;
   }
 
-  /* Canonical toolbar button: 40px at every density. */
-  .tb {
-    @apply inline-flex items-center gap-2 h-10 min-h-10 px-3
-      rounded-md border border-(--line) bg-(--surface)
-      text-[13px] font-medium text-(--ink-2) whitespace-nowrap
-      transition-[background-color,border-color,transform] duration-160
-      cursor-pointer select-none
-      hover:bg-(--surface-2) hover:border-(--color-rule-strong)
-      focus-visible:outline-none focus-visible:shadow-(--sh-focus);
-  }
-  .tb .caret {
-    @apply text-(--ink-5) ml-0.5;
-  }
-  .tb.ghost {
-    @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
-  }
-  /* Outline Emerald CTA for the editor toolbar. */
-  .tb.primary {
-    @apply text-(--brand-700) border-(--brand) border-[1.5px]
-      [background:transparent]
-      hover:[background:var(--brand-50)] hover:border-(--brand-hover);
-  }
   /* ─── Form primitives ───
    * Mobile-first: inputs are 16 px on mobile (prevents iOS zoom-on-focus)
    * and have generous 12 px padding for comfortable touch. Shrinks on

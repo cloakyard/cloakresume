@@ -1,0 +1,42 @@
+/* Standalone recovery composition; shared Air supplies all typography and controls. */
+.resume-recovery {
+  min-block-size: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+.resume-recovery main {
+  flex: 1;
+}
+.resume-recovery svg {
+  inline-size: 18px;
+  block-size: 18px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.resume-recovery nav a {
+  gap: 8px;
+}
+.resume-recovery .air-page-brand {
+  min-inline-size: 44px;
+}
+.resume-request {
+  max-inline-size: 65ch;
+  margin-block: 32px 0;
+  color: var(--air-ink-secondary);
+  font-size: var(--air-text-body);
+  overflow-wrap: anywhere;
+}
+@media (max-width: 22rem) {
+  .resume-recovery .air-page-brand span {
+    display: none;
+  }
+}
+@media (max-height: 500px) {
+  .resume-recovery .air-page-intro {
+    padding-block: 32px;
+  }
+}

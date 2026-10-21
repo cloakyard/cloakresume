@@ -1,0 +1,163 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume PWA update safety, Air notices, standalone 404 and scoped cleanup. Full product/physical acceptance remains open.",
+  "status": "Passed; local checkpoint",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5af9d852a9ec15a38649c9bdaa052e3392db3ff9fd52cd91193af",
+  "baselineCommit": "54be0f1",
+  "changes": [
+    "In-flow neutral offline/update/busy/error notice; independent paused offline timer, focus restoration and guarded actions",
+    "Flush final edit before activation and reload; stop for storage failure or active file work; wait for actual activation",
+    "Direct waiting-worker message with recoverable delivery failure; same-tab consent after another tab activates; later valid installs remain observable",
+    "Resize observation keeps focused notice actions visible in short/enlarged layouts, with full outline clearance",
+    "Root standalone Vite 404 imports pinned Air CSS, supports no-script recovery, safe path display and true installed 404 routing",
+    "Removed legacy 527-line public 404, 74 obsolete CSS lines, toast/toolbar skins, animation helper consumer, spinner and timed reload; no dependencies added"
+  ],
+  "gates": {
+    "check": "147 files, zero formatting/lint/type errors or warnings",
+    "build": "77 precache entries, 2402.14 KiB; existing large-chunk advisory remains",
+    "design": 83,
+    "portability": 18,
+    "familySync": "Six exact portable specifications; shared contract unchanged",
+    "focusedPwaTests": 11,
+    "productionSuite": {
+      "tests": 372,
+      "files": 10,
+      "skipped": 0,
+      "durationSeconds": 544.88,
+      "command": "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism"
+    },
+    "freeze": {
+      "sourceFiles": 138,
+      "distFiles": 103,
+      "unchanged": true
+    }
+  },
+  "matrix": {
+    "cases": 384,
+    "forcedColoursCases": 12,
+    "states": ["offline", "update", "updating", "delivery-error", "storage-blocked", "404"],
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPixels": [16, 32],
+    "coarsePointerThroughWidth": 1024,
+    "failures": 0,
+    "pageErrors": 0,
+    "contrastPairs": 10,
+    "minimumContrast": 6.634593002003077,
+    "focus": "Every notice action focused at each layout with no test-side scrolling; full four-pixel outline clearance. Busy focused action resize regression also passes.",
+    "screenshots": "60 matrix captures; representative phone/laptop/desktop, dark/light, short/enlarged and forced-colour views inspected."
+  },
+  "hyperlinks": {
+    "layoutStateChecks": 104,
+    "keyboardChecks": 28,
+    "rule": "Neutral in default/hover/visited/focus text; angled links, blue focus outlines; system colours in forced-colour mode."
+  },
+  "native": {
+    "Safari": [
+      "Static recovery enlarged layout and keyboard skip/return",
+      "Real worker update on isolated local fixture; final name edit persisted after activation/reload"
+    ],
+    "Firefox": [
+      "Actual browser 200% indicator verified on static 404 and update notice",
+      "Keyboard skip/return",
+      "Real worker update; final name edit persisted and verified after reopening the fixture"
+    ],
+    "cleanup": "Owned tabs closed, zoom restored. No real user documents used.",
+    "finalFrozenBuild": "Both native browsers repeated successful activation/reload on the final build after the resize fix; stored name fixtures remained intact."
+  },
+  "output": {
+    "templatePaperCaptures": 34,
+    "linkFixtureCaptures": 2,
+    "allEqual": true,
+    "pdfComparisons": [
+      {
+        "fixture": "plain",
+        "size": "a4",
+        "equal": true,
+        "pages": 1,
+        "geometry": [[0, 0, 595.28, 841.89]],
+        "links": [[]],
+        "rasterSha256": "9b3db52a256f80e573a80aa99fd4b41d757651a17722f91a78e0495a72a6085c"
+      },
+      {
+        "fixture": "plain",
+        "size": "letter",
+        "equal": true,
+        "pages": 1,
+        "geometry": [[0, 0, 612.0, 792.0]],
+        "links": [[]],
+        "rasterSha256": "fd5f1b62a42c8bee990932075c992bf9dc5ced3e468a9d9fe3843f2b8d8b812a"
+      },
+      {
+        "fixture": "links-",
+        "size": "a4",
+        "equal": true,
+        "pages": 1,
+        "geometry": [[0, 0, 595.28, 841.89]],
+        "links": [["mailto:air@example.com", "https://example.com/air", "tel:+15551234567"]],
+        "rasterSha256": "aac24c011e07f29f499cc0b1dd1c78c9a0e9a8f46f329bf96d1405419f6d3306"
+      },
+      {
+        "fixture": "links-",
+        "size": "letter",
+        "equal": true,
+        "pages": 1,
+        "geometry": [[0, 0, 612.0, 792.0]],
+        "links": [["mailto:air@example.com", "https://example.com/air", "tel:+15551234567"]],
+        "rasterSha256": "cba607bfa5bc68dd87fe16caa832f76def54c91aa538578146b169f9ccb6bea9"
+      }
+    ]
+  },
+  "routing": [
+    {
+      "path": "/",
+      "status": 200,
+      "recovery": false,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/404.html",
+      "status": 200,
+      "recovery": true,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/missing-page",
+      "status": 404,
+      "recovery": true,
+      "cacheControl": "public, max-age=0, must-revalidate"
+    }
+  ],
+  "diagnostics": [
+    "Workbox source inspection showed updatefound observation stops after later/external install; native registration watch fixes failed-install recovery. First install is excluded to avoid a phantom update.",
+    "Message helper drops its asynchronous result; direct postMessage makes synchronous delivery failure testable and recoverable.",
+    "Reload waits for activated state, not the earlier controllerchange event; edits during held activation are flushed again.",
+    "Visual review exposed focused action clipping after short-screen resize. Fixed with a scoped ResizeObserver and scroll padding; interrupted the earlier full run and started a fresh frozen-build suite.",
+    "Forced-colour focus checks enter keyboard modality; tests do not force production styles, fake focus rings, relax assertions or extend existing suite timeouts."
+  ],
+  "limits": [
+    "Physical touch/software keyboards, OS IME, spoken assistive technology and real-device GPU/battery remain open",
+    "Actual OG/PWA/README assets and metadata are next; full-product final acceptance remains open",
+    "Native PWA lifecycle uses real workers with controlled local versions; this is not a production deployment"
+  ],
+  "evidenceDirectory": "pwa-recovery-2026-10-21/",
+  "routingNote": "Fetch followed local Cloudflare HTML URL normalization: /404.html redirects to /404 and resolves to 200. Unknown /missing-page returns 404 directly."
+}

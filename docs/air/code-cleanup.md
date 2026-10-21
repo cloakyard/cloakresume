@@ -19,7 +19,7 @@ items must name a live consumer and the condition for safe removal.
   shared Air components. Updated current inventory and source audit references.
   Removed the unsupported approximate export-bundle-size comment and stale toolbar
   description. The family handoff now names the actual App/Layout composition.
-- Retained `useAnimatedPresence`: MonthYearField and ReloadPrompt still use it.
+- At this checkpoint, retained `useAnimatedPresence`: MonthYearField and ReloadPrompt still used it.
   Retained `.tb`, popover/toast styles and compatibility tokens for their current
   consumers. The next PWA migration must trace those references again.
 - Retained ToolbarCenterBridge: both events have actual ToolbarOverflow callers.
@@ -39,3 +39,30 @@ notification regression covers focus restoration after resize.
 Next: PWA registration/update/recovery and static 404, followed by actual social,
 PWA and README assets. Trace removed assets and obsolete generator references at
 that point. Full-product cleanup and physical/assistive acceptance remain open.
+
+## 2026-10-21 — PWA and static recovery
+
+- Retired the legacy `cr-toast` and `.tb` selectors, toolbar/toast presence rules,
+  Hallmark notice header, spinning icons and timed reload fallback. ReloadPrompt
+  now uses shared Air actions in normal flow and real worker activation.
+- Removed `public/404.html` (527 legacy lines). Root `404.html` is a Vite HTML
+  input importing the pinned Air CSS and one small recovery stylesheet; requested
+  path enhancement has no React dependency. Updated active test references.
+- Stopped using the Workbox message helper that discards its asynchronous result;
+  direct waiting-worker delivery catches synchronous failure. Registration listeners
+  remain active after failed/later installs and are removed on unmount.
+- `useAnimatedPresence` and `.cr-popover` remain live in MonthYearField. They are
+  not dead code. Existing lazy exporter, templates, fonts and file schema are unchanged.
+- Remaining asset work: `build-pwa-screenshots.mjs` still uses the retired `.cr-input`
+  selector. Replace it with actual editor captures in the next asset piece, and
+  trace Archivo/JetBrains registrations, legacy tokens and all image/metadata consumers
+  before removing anything. Do not infer unused assets from the initial bundle.
+- Ignore the local `.wrangler/` development cache. No new dependency was added.
+
+Evidence: `docs/air/evidence/pwa-recovery-2026-10-21.json` in CloakResume.
+Next: actual OG/PWA/README assets and metadata, then full-product cleanup and
+acceptance. Physical/assistive gates remain open; CloakIMG stays parked and last.
+
+Asset-piece cleanup follow-up: `.cr-input` styles have no current TSX consumer;
+the remaining script selector is stale. Remove that obsolete selector and its
+unused skin together when replacing the screenshot generator.

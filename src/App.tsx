@@ -167,7 +167,7 @@ export function App() {
     () => ({ resume, templateId, primary, paperSize, jobDescription, activeSection }),
     [resume, templateId, primary, paperSize, jobDescription, activeSection],
   );
-  const { error: saveError, savedAt } = useAutosave(LS_KEY, persisted, !showLanding);
+  const { error: saveError, savedAt, flush } = useAutosave(LS_KEY, persisted, !showLanding);
   useEffect(() => {
     if (saveError) setNotice({ title: "Draft not saved", description: saveError });
   }, [saveError]);
@@ -361,14 +361,17 @@ export function App() {
     setShowLanding(false);
   }, []);
 
+  const beforeReload = useCallback(() => {
+    if (exportInFlight.current || fileLoadInFlight.current)
+      return "Finish the current file operation, then try updating again. Your draft stays here.";
+    return flush()
+      ? null
+      : "Your latest changes could not be saved. Keep editing or download a JSON copy before leaving. Free browser storage, then retry the update.";
+  }, [flush]);
+
   return (
-    <>
-      {/* Service-worker lifecycle prompt — surfaces "Update
-       * available" when a new SW version lands and a brief "Ready
-       * offline" toast on first install. Owns the SW registration
-       * via `useRegisterSW` so registration and the UI that reacts
-       * to it stay co-located. */}
-      <ReloadPrompt />
+    <div className={showLanding ? "resume-app" : "resume-app resume-app--editing"}>
+      <ReloadPrompt beforeReload={beforeReload} />
 
       {/* The editor and the welcome screen are mutually exclusive — only
        * one is mounted at a time. Keeping both mounted (with the editor
@@ -536,6 +539,6 @@ export function App() {
         onConfirm={() => setNotice(null)}
         onCancel={() => setNotice(null)}
       />
-    </>
+    </div>
   );
 }

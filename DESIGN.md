@@ -1097,8 +1097,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   `src/styles/air.css`; `air-entry.css` owns entry composition. The editor shell,
   header actions, section rail/picker/panel frame, paper/view segments and preview
   dock use Air with `air-editor.css` composition. All 13 content sections and their
-  writing widgets, template library and résumé review use Air; the overflow sheet
-  and PWA notices retain the legacy bridge until their slices.
+  writing widgets, template library, résumé review, Options/export and PWA notices
+  use Air. The standalone 404 imports the same pinned CSS through Vite.
   Template fonts and output geometry remain independent of both bridges.
 - Entry supports landscape and native in-flow compact navigation. Blank/sample
   and validated file replacement require confirmation when a current draft exists;
@@ -1348,3 +1348,24 @@ journeys across all apps; it is not inferred from the pilot alone.
   handoffs, focus, resize, busy geometry, duplicate attempts and actual render
   failure/retry. Physical touch/software keyboard and spoken assistive gates remain
   open. Next are PWA safety, static recovery and actual OG/PWA/README assets.
+
+### PWA update and static recovery — 2026-10-21
+
+- Place update/offline status in normal flow, with readable neutral copy and shared
+  Air actions. Keep editor/modal controls uncovered; constrain a long notice to
+  45dvh with reachable scrollable actions. No decorative spinner or timed reload.
+- Do not steal focus on arrival. Preserve the invoking focus while busy and restore
+  the previous connected target on dismissal. Pause the offline notice timer while
+  hovered/focused; its timer must never dismiss a pending update.
+- Require explicit same-tab consent. Flush the latest draft before activation and
+  immediately before reload; stop for failed storage or an active file operation.
+  Wait for actual activation, guard duplicates, and offer retry on delivery failure.
+  Another tab's activation must preserve this tab's work. Keep observing later
+  worker installs, including a valid update following a failed install.
+- Build root `404.html` as a standalone Air entry with neutral angled links,
+  noindex and no-JavaScript recovery. Render requested paths with textContent.
+  Restrict the service-worker app-shell fallback to real app entry URLs so missing
+  paths retain HTTP 404 after installation. No React dependency in static recovery.
+- Software evidence is `docs/air/evidence/pwa-recovery-2026-10-21.json`. Physical
+  touch/software keyboards and spoken assistive acceptance remain open. Next:
+  actual OG/PWA/README assets and metadata, then full-product acceptance/cleanup.

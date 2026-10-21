@@ -638,3 +638,53 @@ Next: PWA safety/static recovery, then actual OG/PWA/README assets. No push/depl
 CloakIMG remains last. Scratch: `/tmp/cloakresume-air-options/`.
 
 Final gate: **361/361 production tests, 9 files, zero skips, 510.69s**; 177 editor cases. All 136 recorded runtime/token/config files and 99 dist files remained unchanged. Check/build, 80-source inventory, 18 portability checks and exact family sync pass.
+
+## 2026-10-21 — PWA safety and static recovery
+
+The PWA notices now use in-flow Air typography/actions and preserve editor space.
+Offline status pauses while hovered/focused and cannot dismiss an update. Busy
+commands retain focus, guard duplicates and expose a separate live status. A scoped
+resize observer keeps focused controls and their outline visible in short screens.
+Updates save the last committed edit before activation and again before reload;
+storage/file-operation blockers retain the draft and offer a real retry. Another
+tab's activation does not reload this tab without consent. Later valid installs
+remain observable after an install failure. No timed reload or cosmetic spinner.
+
+Root `404.html` replaces the 527-line legacy public page. Vite bundles its pinned
+Air CSS and tiny text-only requested-path enhancement without React. The recovery
+link works without JavaScript, metadata remains noindex, paths are rendered as
+text, and service-worker fallback only handles real app entry URLs. Local Wrangler
+returns root 200, explicit recovery 200 after URL normalization, and an unknown route 404; the real generated
+worker preserves missing-route 404 after caching the root for offline use.
+
+- 384 layouts: six states, sixteen sizes, light/dark, 16/32px root text; coarse
+  input through 1024px. Twelve forced-colour cases, 60 saved captures, no geometry
+  failures or page errors. Each notice action is focused at every size without
+  test-side scrolling; focus outline clearance is checked. Ten text contrast pairs
+  pass, minimum 6.63:1. Representative rendered states inspected.
+- 104 hyperlink-state and 28 keyboard checks on explicit and missing-route 404s:
+  neutral text including hover, angled cues and visible focus; forced colours use
+  system colours. Safari keyboard skip/return and enlarged recovery, Firefox actual
+  200% recovery/update views inspected. Both native browsers complete real local
+  worker updates and preserve a final name edit; own tabs closed and zoom restored.
+- All 34 template/paper raster/text/geometry captures match `54be0f1`. Four actual
+  PDF comparisons (plain and contact-link fixtures, A4 and Letter) retain exact
+  raster hashes, extracted text, page boxes and URI annotations.
+- Eleven focused PWA tests pass. The complete production suite passes **372/372
+  tests in 10 files, zero skips, 544.88 seconds**. All 138 recorded source/config/
+  asset files and 103 build files match the pre-run freeze. Exact manifests and
+  results are in `evidence/pwa-recovery-2026-10-21.json`.
+- Format/lint/types, build, 83-source inventory, 18 standalone portability checks
+  and exact family sync pass. Build retains its existing large-chunk advisory;
+  budgets were not weakened. Shared Air 1.0.6 contract and dependencies unchanged.
+
+The initial lifecycle tests exposed Workbox's dropped message result, missed later
+install and controller-change/activation timing. Fixes are covered by real-worker
+regressions. Visual review caught resize focus clipping; the earlier full run was
+interrupted and replaced by a fresh final-build run. No increased suite timeouts,
+skips or test-side manual scrolling hide these failures.
+
+Cleanup and traced remaining consumers: `code-cleanup.md`. Inventory now explicitly
+includes root static recovery and its enhancement. Physical touch/software keyboard,
+OS IME, spoken assistive and real-device gates remain open. Next: actual
+OG/PWA/README assets and metadata, then final product acceptance and cleanup.

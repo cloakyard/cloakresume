@@ -100,7 +100,8 @@ describe("CloakResume family contract", () => {
 
     expect(indexCss).toMatch(/^\/\*[\s\S]*?\*\/\s*@import "\.\.\/tokens\.css";/);
     expect(indexCss).toContain("Normative values live in tokens.css");
-    expect(familyCss).toContain("var(--color-accent)");
+    expect(familyCss).toContain("var(--color-focus)");
+    expect(familyCss).not.toContain(".tb.primary");
     expect(`${indexCss}\n${familyCss}\n${tokens}`).not.toMatch(/surface-glass|--glass-/);
   });
 
@@ -354,7 +355,7 @@ describe("CloakResume family contract", () => {
         source("src/components/ErrorBoundary.tsx"),
         source("src/components/ReloadPrompt.tsx"),
         source("src/utils/fieldIssues.tsx"),
-        source("public/404.html"),
+        source("404.html"),
       ],
     );
 
@@ -376,22 +377,22 @@ describe("CloakResume family contract", () => {
     );
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
-    expect(reload).toContain("rounded-md p-4");
+    expect(reload).toContain('className="resume-update"');
     expect(reload).toContain(
       'type ReloadNoticeState = "offline" | "update" | "updating" | "error"',
     );
-    expect(reload).toContain("Update & Reload");
+    expect(reload).toContain("Update and reload");
     expect(reload).toContain("Updating…");
     expect(reload).toContain("Check your connection, then try again.");
     expect(reload).toContain("This version is cached and ready to use offline.");
-    expect(reload).toContain("disabled={isUpdating}");
-    expect(reload).toContain('aria-live={isError ? "assertive" : "polite"}');
+    expect(reload).toContain("aria-disabled={busy || undefined}");
+    expect(reload).toContain('role={state === "error" ? "alert" : "status"}');
     expect(reload).not.toContain("now installed for offline use");
     expect(fieldIssues).toContain('className="resume-hint-list"');
     expect(await source("src/styles/air-editor.css")).toContain(".resume-hint-list > li + li");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
-    expect(notFound).toContain("font-size: clamp(2.75rem, 6.4vw, 6.75rem)");
-    expect(notFound).toContain("background: var(--color-accent)");
+    expect(notFound).toContain('class="air-page resume-recovery"');
+    expect(notFound).toContain('href="/src/styles/air.css"');
   });
 
   it("keeps muted and status text legible and preserves keyboard focus cues", async () => {
@@ -504,7 +505,7 @@ describe("CloakResume family contract", () => {
     expect(templateModal).toContain("<TemplatePreview");
     expect(templateModal).toContain("aria-pressed={active}");
     expect(`${templateModal}\n${familyCss}`).not.toContain("cr-template-card");
-    expect(reloadPrompt).toContain("cr-toast");
+    expect(reloadPrompt).not.toContain("cr-toast");
     expect(dragList).toContain("data-dragging");
 
     const sourceFiles = [

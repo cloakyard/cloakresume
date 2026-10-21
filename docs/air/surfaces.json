@@ -4,18 +4,63 @@
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
+      "path": "404.html",
+      "kind": "static-recovery",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "no-script",
+        "missing-route",
+        "long-path",
+        "installed-routing"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open."
+    },
+    {
       "path": "src/App.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": [],
-      "viewports": [],
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
       "evidence": [
         "docs/air/evidence/writing-hints-2026-10-21.json",
-        "docs/air/evidence/resume-review-2026-10-21.json"
+        "docs/air/evidence/resume-review-2026-10-21.json",
+        "evidence/pwa-recovery-2026-10-21.json"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
     },
     {
       "path": "src/cloak-family.css",
@@ -527,13 +572,30 @@
     {
       "path": "src/components/ReloadPrompt.tsx",
       "kind": "app-surface",
-      "sourceReviewed": false,
-      "airImplemented": false,
+      "sourceReviewed": true,
+      "airImplemented": true,
       "validated": false,
-      "states": [],
-      "viewports": [],
-      "evidence": [],
-      "notes": ""
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
     },
     {
       "path": "src/components/RichTextArea.tsx",
@@ -1458,6 +1520,33 @@
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration."
     },
     {
+      "path": "src/static-recovery.ts",
+      "kind": "static-recovery",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "no-script",
+        "missing-route",
+        "long-path",
+        "installed-routing"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open."
+    },
+    {
       "path": "src/styles/air-editor.css",
       "kind": "app-surface",
       "sourceReviewed": true,
@@ -1469,7 +1558,15 @@
         "section navigation",
         "preview zoom/scroll",
         "paper/view choice",
-        "compact picker/expanded preview"
+        "compact picker/expanded preview",
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
       ],
       "viewports": [
         "desktop/laptop/tablet/phone",
@@ -1477,16 +1574,23 @@
         "16/32px root text",
         "short landscape",
         "forced colours",
-        "native Firefox 200% / Safari"
+        "native Firefox 200% / Safari",
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text"
       ],
       "evidence": [
         "docs/air/evidence/editor-shell-2026-10-19.json",
         "docs/air/evidence/logo-photo-2026-10-19.json",
         "docs/air/evidence/colour-controls-2026-10-21.json",
         "docs/air/evidence/writing-hints-2026-10-21.json",
-        "docs/air/evidence/resume-review-2026-10-21.json"
+        "docs/air/evidence/resume-review-2026-10-21.json",
+        "evidence/pwa-recovery-2026-10-21.json"
       ],
-      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices."
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
     },
     {
       "path": "src/styles/air-entry.css",
@@ -1520,6 +1624,34 @@
         "docs/air/neutral-links-2026-10-19.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
+    },
+    {
+      "path": "src/styles/air-recovery.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
     },
     {
       "path": "src/styles/air.css",
