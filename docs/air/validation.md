@@ -740,3 +740,34 @@ Next: final product cleanup/acceptance, starting with exact font/token/selector
 consumers and pending inventory/44px target gates. Physical touch/software keyboard,
 OS IME, spoken assistive and GPU/battery/thermal gates remain open. No push/deploy;
 CloakIMG stays parked and last. Static asset validation does not complete the product.
+
+## 2026-10-21 - Unused foundation cleanup
+
+Removed 61 unused token names / 62 declarations, the 241-line unused JSON mirror
+and both unreachable non-Air popup skin rules. Pinned Air now owns the explicit
+design-authority assertion; retained compatibility values, fonts, templates,
+export/schema and date/drag behavior are unchanged. See `code-cleanup.md`.
+
+- **372/372 production tests in 10 files, zero skips, 537.78s**. All 283 recorded
+  source/config/test/document/asset/build files (105 dist) remained frozen.
+- Check: 147 files, zero format/lint/type errors. Build: 77 precache entries,
+  2398.16 KiB; existing chunk warning. Inventory: 86 sources. Portability: 18
+  assertions. Exact six-document/bundle family sync passes.
+- 88 baseline/current geometry and computed-style comparisons pass across all
+  required sizes, themes and 16/32px root text. 81 pixel-exact; seven rounded-edge
+  antialiasing differences (at most 57 pixels / 2 channel levels), recorded openly.
+- 256 partial-date layouts pass, including imported/empty/Present values, coarse
+  targets, Current job, focus and short/enlarged screens. Public links: 124
+  layout/state and 32 keyboard checks on home/404. No page errors or overflow.
+- All 34 template/paper captures, two linked captures and four actual A4/Letter
+  PDF comparisons are exact in raster/text/geometry/URI links.
+- Inspected desktop/laptop/tablet/phone editor and landing themes, enlarged editor
+  text and desktop/laptop/phone date controls. Native Safari/Firefox were not
+  repeated for unused-token/unreachable-selector removal; prior behavior evidence
+  remains separate. Physical/assistive/hardware gates remain open.
+
+Evidence: `evidence/unused-foundations-2026-10-21.json`; larger scratch and scripts:
+`/tmp/cloakresume-air-cleanup/`. Live font/token bridge and three transitive orphan
+candidates remain for the next bounded cleanup. Full-product acceptance is not
+complete. Dependency upgrades and final dev -> PR -> main integration are tracked
+in the family rollout after the remaining migrations; CloakIMG stays last.

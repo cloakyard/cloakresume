@@ -36,17 +36,6 @@ body {
   box-shadow: none;
 }
 
-.cr-popover:not(.air-popover) {
-  background: var(--surface);
-  backdrop-filter: none;
-  border: 1px solid var(--color-rule-strong);
-}
-
-.cr-popover:not(.air-popover) {
-  border-radius: var(--radius-control);
-  box-shadow: var(--shadow-popover);
-}
-
 .cr-popover {
   z-index: var(--z-popover, 900) !important;
 }

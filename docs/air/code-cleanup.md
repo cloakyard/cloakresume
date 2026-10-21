@@ -111,3 +111,26 @@ conservative token candidates after checking source, token chains and compiled
 Tailwind references; these are candidates, not blanket deletion permission.
 DragList’s `.cr-drag-item` is explicitly live. Review only its earlier transform
 override and the non-Air-only date-popup skin during the next bounded cleanup.
+
+## 2026-10-21 — Unused foundation cleanup
+
+- Removed 61 unused token names (62 declarations, including one dark override),
+  traced through source, scripts and compiled Tailwind CSS. Each removal has no
+  non-declaration runtime reference; the exact list is in the dated evidence.
+- Removed the 241-line `tokens.json` mirror: no build/runtime/generator consumer
+  exists. Updated README and historical-audit links together. The surviving
+  `tokens.css` header now identifies a compatibility/output bridge; it no longer
+  claims to be the application's normative design authority.
+- Removed both `.cr-popover:not(.air-popover)` skin rules. The only live
+  `.cr-popover` markup is MonthYearField and always includes `.air-popover`.
+  Keep its placement/presence rules and hook; no interaction was replaced.
+- Reconciled legacy source tests with pinned Air token ownership. Removed only
+  assertions for the deleted mirror, unused ink alias and unused stagger token.
+  Preserve semantic status, focus, popup lifecycle, document and feature checks.
+- Retained fonts, loaded-template assets, document styles, actual token consumers
+  and the live `.cr-drag-item` class. Font/bridge migration and transitive orphan
+  cleanup remain the next bounded audit; do not call all foundations migrated.
+
+Evidence: `evidence/unused-foundations-2026-10-21.json`. Full-product, physical
+touch/software keyboard, OS IME, spoken assistive and hardware acceptance remain
+open. No dependency or export/schema/template change belongs to this slice.

@@ -1,0 +1,12 @@
+{
+  "rawArtifact": "links.json.gz",
+  "rawSha256": "c3c6727250b1c362029b6ffa9b7ecd04e42ffeb54c5d3beb3e7421586ccde1f6",
+  "note": "Lossless full report is gzip-compressed to avoid committing repeated expanded measurements. Decode with gzip -dc.",
+  "layoutCases": 124,
+  "errors": [],
+  "base": "http://127.0.0.1:8213",
+  "keyboardChecks": 32,
+  "routes": ["/", "/404.html"],
+  "allLinksNeutral": true,
+  "overflowCases": 0
+}

@@ -136,7 +136,6 @@ cloakresume/
 │   └── index.css              # Base styles and Tailwind theme bridge
 ├── DESIGN.md                  # Authoritative layout and interaction contract
 ├── tokens.css                 # Legacy/output bridge; pinned Air CSS owns application UI
-├── tokens.json                # Legacy bridge inventory (not the Air contract)
 ├── docs/
 │   ├── brand-assets.md        # Social/PWA asset source and regeneration workflow
 │   └── design-audit.md        # Full app and component coverage audit
@@ -149,7 +148,7 @@ cloakresume/
 
 - [DESIGN.md](DESIGN.md) defines the complete portable Air contract and CloakResume requirements. [src/styles/air.css](src/styles/air.css) is the pinned family stylesheet.
 - [docs/air/surfaces.json](docs/air/surfaces.json), [validation](docs/air/validation.md) and [cleanup record](docs/air/code-cleanup.md) track current migration coverage and remaining acceptance gates. [docs/design-audit.md](docs/design-audit.md) preserves the historical Workbench audit.
-- [tokens.css](tokens.css) and [tokens.json](tokens.json) remain compatibility/output bridges; they do not override Air’s application design.
+- [tokens.css](tokens.css) retains live compatibility/output values; the pinned Air bundle owns application design.
 - [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
 - [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
 - [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.

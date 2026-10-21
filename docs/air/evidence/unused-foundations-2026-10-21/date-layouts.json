@@ -1,0 +1,30 @@
+{
+  "rawArtifact": "date-layouts.json.gz",
+  "rawSha256": "bb0bb0e8132cf374eb6dd239c4dc7a869bae2cc81d14284b483267b23362a08b",
+  "note": "Lossless full report is gzip-compressed to avoid committing repeated expanded measurements. Decode with gzip -dc.",
+  "layoutCases": 256,
+  "errors": [],
+  "viewports": [
+    [320, 568],
+    [375, 812],
+    [390, 844],
+    [430, 932],
+    [639, 800],
+    [640, 800],
+    [767, 1024],
+    [768, 1024],
+    [844, 390],
+    [1023, 768],
+    [1024, 768],
+    [1279, 720],
+    [1280, 800],
+    [1366, 768],
+    [1440, 900],
+    [1920, 1080]
+  ],
+  "themes": ["dark", "light"],
+  "rootFontSizes": [16, 32],
+  "states": ["empty", "months", "present", "years"],
+  "overflowCases": 0,
+  "smallTargets": 0
+}

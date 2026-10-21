@@ -32,7 +32,10 @@ The old device-named captures and unused field skin are retired; current asset
 sources and dimensions are in `brand-assets.md`. Historical rows below retain
 their original filenames and validation results.
 
-**Legacy token snapshot:** [tokens.json](../tokens.json)
+**2026-10-21 cleanup follow-up:** the unused legacy JSON token mirror and 61
+unconsumed CSS token names are retired. Historical token values remain in Git
+history. `tokens.css` retains live compatibility/output consumers; the pinned
+Air bundle owns application design. See `air/code-cleanup.md` for remaining work.
 
 ## Result
 

@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-21",
+  "baselineCommit": "448daea",
+  "status": "passed-local-bounded-piece",
+  "scope": "Unused foundations only; complete product acceptance remains open.",
+  "removed": {
+    "unusedTokenNames": 61,
+    "declarations": 62,
+    "tokenMirror": "tokens.json (241 lines, no runtime/build/generator consumers)",
+    "unreachableSkin": ".cr-popover:not(.air-popover), two rules",
+    "netRuntimeAndTestReadmeLinesRemoved": 336
+  },
+  "preserved": [
+    "All document templates, fonts, exporter and schema",
+    "Live tokens/Archivo/JetBrains registrations",
+    "MonthYearField presence/placement",
+    "DragList and .cr-drag-item",
+    "Public assets, metadata and package versions"
+  ],
+  "checks": {
+    "formatLintTypes": "147 files, zero diagnostics",
+    "productionBuild": "pass; 77 precache entries, 2398.16 KiB; existing chunk-size warning",
+    "focusedContract": "17/17",
+    "inventorySources": 86,
+    "portabilityChecks": 18,
+    "familySync": "six complete portable specifications; shared contract unchanged",
+    "responsive": {
+      "cases": 88,
+      "geometryAndComputedStyles": "exact",
+      "pixelExact": 81,
+      "remainingSeven": "rounded-edge antialiasing only, at most 57 pixels and 2 channel levels",
+      "horizontalOverflow": false,
+      "pageErrors": [],
+      "coverage": "11 required sizes, light/dark, landing/editor, 16/32px root text, coarse input, reduced motion"
+    },
+    "dateLayouts": {
+      "cases": 256,
+      "pageErrors": [],
+      "coverage": "month/year/year-only/Present/empty and Current job, both themes, enlarged text, 16 required/breakpoint sizes, coarse/fine, escape and focus return"
+    },
+    "links": {
+      "layoutStates": 124,
+      "keyboardChecks": 32,
+      "routes": ["/", "/404.html"]
+    },
+    "output": {
+      "templatePaperCaptures": 34,
+      "linkedFixtureCaptures": 2,
+      "pdfComparisons": 4,
+      "result": "exact raster, text, geometry and URI links"
+    },
+    "fullSuite": {
+      "command": "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism",
+      "passed": 372,
+      "files": 10,
+      "skipped": 0,
+      "durationSeconds": 537.78
+    }
+  },
+  "visualReview": [
+    "Desktop and laptop editor/landing light/dark",
+    "Phone editor/landing light/dark and tablet editor",
+    "Date month/year/present/empty controls on desktop/laptop/phone in light/dark; enlarged geometry covered by the matrix",
+    "320px dark and 1280px light editor at 200% root font; document geometry remains unchanged"
+  ],
+  "frozenSourceAndBuild": {
+    "files": 283,
+    "distFiles": 105,
+    "before": "unused-foundations-2026-10-21/freeze-before.json",
+    "after": "unused-foundations-2026-10-21/freeze-after.json",
+    "unchanged": true
+  },
+  "limitations": [
+    "Native Safari/Firefox not repeated for unreachable-selector/unused-token removal; prior interaction evidence retained",
+    "Physical touch/software keyboard, actual OS IME, spoken assistive and GPU/battery/thermal acceptance remain open",
+    "Remaining live font/token bridge and transitive orphan cleanup require a separate bounded piece",
+    "Dependency discovery is recorded in the family repository; no dependency was upgraded here"
+  ],
+  "scratch": "/tmp/cloakresume-air-cleanup/",
+  "next": "Live foundation/font bridge audit, then final product acceptance; CloakIMG remains last. Final dependency updates and dev \u2192 PR \u2192 main integration are authorized after remaining work passes.",
+  "nextAuditFindings": {
+    "retainedTokenNames": 63,
+    "transitiveOrphanCandidates": ["--color-ink-2", "--color-overlay", "--color-rule"],
+    "fontConsumers": [
+      "Archivo base html/body/form defaults; verify inherited/transitional consumers before replacement",
+      "JetBrains Preview.font-mono and generated Tailwind default-mono bridge",
+      "RichText output explicitly uses ui-monospace, SFMono-Regular, Menlo, monospace; preserve it",
+      "All 17 template root families and pdfFonts computed-font preparation are live"
+    ]
+  }
+}

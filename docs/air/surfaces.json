@@ -112,9 +112,10 @@
         "docs/air/evidence/logo-photo-2026-10-19.json",
         "docs/air/evidence/writing-hints-2026-10-21.json",
         "docs/air/evidence/resume-review-2026-10-21.json",
-        "evidence/preview-assets-2026-10-21.json"
+        "evidence/preview-assets-2026-10-21.json",
+        "evidence/unused-foundations-2026-10-21.json"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance."
     },
     {
       "path": "src/components/AtsReviewContent.tsx",
@@ -1544,9 +1545,10 @@
         "docs/air/neutral-links-2026-10-19.md",
         "docs/air/evidence/colour-controls-2026-10-21.json",
         "docs/air/evidence/writing-hints-2026-10-21.json",
-        "evidence/preview-assets-2026-10-21.json"
+        "evidence/preview-assets-2026-10-21.json",
+        "evidence/unused-foundations-2026-10-21.json"
       ],
-      "notes": " Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved."
+      "notes": " Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance."
     },
     {
       "path": "src/main.tsx",

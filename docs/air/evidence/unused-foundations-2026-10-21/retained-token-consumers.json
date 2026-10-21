@@ -1,0 +1,653 @@
+[
+  {
+    "name": "--brand",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 257,
+        "source": "color: var(--brand);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 258,
+        "source": "border-bottom-color: var(--brand);"
+      }
+    ]
+  },
+  {
+    "name": "--brand-100",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 37,
+        "source": "--color-primary-100: var(--brand-100);"
+      }
+    ]
+  },
+  {
+    "name": "--brand-200",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 38,
+        "source": "--color-primary-200: var(--brand-200);"
+      }
+    ]
+  },
+  {
+    "name": "--brand-300",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 39,
+        "source": "--color-primary-300: var(--brand-300);"
+      }
+    ]
+  },
+  {
+    "name": "--brand-50",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 36,
+        "source": "--color-primary-50: var(--brand-50);"
+      }
+    ]
+  },
+  {
+    "name": "--color-accent",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 40,
+        "source": "--color-primary-400: var(--color-accent);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 41,
+        "source": "--color-primary-500: var(--color-accent);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 42,
+        "source": "--color-primary-600: var(--color-accent);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 46,
+        "source": "--color-primary: var(--color-accent);"
+      }
+    ]
+  },
+  {
+    "name": "--color-accent-active",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 44,
+        "source": "--color-primary-800: var(--color-accent-active);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 45,
+        "source": "--color-primary-900: var(--color-accent-active);"
+      }
+    ]
+  },
+  {
+    "name": "--color-accent-hover",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 43,
+        "source": "--color-primary-700: var(--color-accent-hover);"
+      }
+    ]
+  },
+  {
+    "name": "--color-accent-label",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-accent-night",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-accent-soft",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-focus",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 28,
+        "source": "outline-color: var(--color-focus);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 34,
+        "source": "outline: 2px solid var(--color-focus);"
+      }
+    ]
+  },
+  {
+    "name": "--color-ink",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-ink-2",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-ink-3",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 126,
+        "source": "scrollbar-color: color-mix(in oklab, var(--color-ink-3) 40%, transparent) transparent;"
+      },
+      {
+        "path": "src/index.css",
+        "line": 133,
+        "source": "background: color-mix(in oklab, var(--color-ink-3) 35%, transparent);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 139,
+        "source": "background: color-mix(in oklab, var(--color-ink-3) 55%, transparent);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 143,
+        "source": "background: color-mix(in oklab, var(--color-ink-3) 70%, transparent);"
+      }
+    ]
+  },
+  {
+    "name": "--color-night",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-overlay",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-paper",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-paper-2",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-proof-ink-2",
+    "srcReferences": [
+      {
+        "path": "src/components/Preview.tsx",
+        "line": 47,
+        "source": "<span className=\"font-mono text-xs text-(--color-proof-ink-2)\" role=\"status\">"
+      }
+    ]
+  },
+  {
+    "name": "--color-proof-paper",
+    "srcReferences": [
+      {
+        "path": "src/components/Preview.tsx",
+        "line": 46,
+        "source": "<div className=\"resume-page grid place-items-center bg-(--color-proof-paper)\">"
+      },
+      {
+        "path": "src/components/TemplatePreview.tsx",
+        "line": 60,
+        "source": "background: \"var(--color-proof-paper)\","
+      },
+      {
+        "path": "src/components/TemplatePreview.tsx",
+        "line": 74,
+        "source": "<Suspense fallback={<div className=\"resume-page bg-(--color-proof-paper)\" />}>"
+      }
+    ]
+  },
+  {
+    "name": "--color-rule",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-rule-strong",
+    "srcReferences": [
+      {
+        "path": "src/components/ToolbarCenter.tsx",
+        "line": 93,
+        "source": "style={{ background: primary, border: \"1px solid var(--color-rule-strong)\" }}"
+      }
+    ]
+  },
+  {
+    "name": "--color-status-danger",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-status-danger-soft",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-status-success",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-status-success-soft",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-status-warning",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-status-warning-soft",
+    "srcReferences": []
+  },
+  {
+    "name": "--color-surface",
+    "srcReferences": []
+  },
+  {
+    "name": "--danger",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 53,
+        "source": "--color-danger: var(--danger);"
+      },
+      {
+        "path": "src/styles/air.css",
+        "line": 133,
+        "source": ".air-button--danger {"
+      },
+      {
+        "path": "src/styles/air.css",
+        "line": 726,
+        "source": ".air-menu-item--danger {"
+      },
+      {
+        "path": "src/styles/air.css",
+        "line": 1124,
+        "source": ".air-button--danger:hover:not(:disabled):not([aria-disabled=\"true\"]) {"
+      },
+      {
+        "path": "src/components/ConfirmDialog.tsx",
+        "line": 87,
+        "source": "className={`air-button ${tone === \"danger\" && variant === \"confirm\" ? \"air-button--danger\" : \"air-button--primary\"}`}"
+      },
+      {
+        "path": "src/components/DragList.tsx",
+        "line": 206,
+        "source": "pendingDelete ? \"air-button air-button--danger\" : \"air-icon-button air-button--quiet\""
+      }
+    ]
+  },
+  {
+    "name": "--danger-bg",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 54,
+        "source": "--color-danger-bg: var(--danger-bg);"
+      }
+    ]
+  },
+  {
+    "name": "--danger-border",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 55,
+        "source": "--color-danger-border: var(--danger-border);"
+      }
+    ]
+  },
+  {
+    "name": "--duration-fast",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 45,
+        "source": "transition-duration: var(--duration-fast);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 76,
+        "source": "opacity var(--duration-fast) var(--ease-out),"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 77,
+        "source": "transform var(--duration-fast) var(--ease-out);"
+      }
+    ]
+  },
+  {
+    "name": "--duration-press",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 51,
+        "source": "transition-duration: var(--duration-press);"
+      }
+    ]
+  },
+  {
+    "name": "--ease-in-out",
+    "srcReferences": []
+  },
+  {
+    "name": "--ease-out",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 52,
+        "source": "transition-timing-function: var(--ease-out);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 76,
+        "source": "opacity var(--duration-fast) var(--ease-out),"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 77,
+        "source": "transform var(--duration-fast) var(--ease-out);"
+      }
+    ]
+  },
+  {
+    "name": "--ease-standard",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 46,
+        "source": "transition-timing-function: var(--ease-standard);"
+      }
+    ]
+  },
+  {
+    "name": "--font-body",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 17,
+        "source": "font-family: var(--font-body);"
+      }
+    ]
+  },
+  {
+    "name": "--font-mono",
+    "srcReferences": []
+  },
+  {
+    "name": "--ink-1",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 21,
+        "source": "color: var(--ink-1);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 95,
+        "source": "color: var(--ink-1);"
+      }
+    ]
+  },
+  {
+    "name": "--motion-distance-small",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 97,
+        "source": "--cr-popover-motion-y: var(--motion-distance-small);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 104,
+        "source": "--cr-popover-motion-y: calc(var(--motion-distance-small) * -1);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 109,
+        "source": "--cr-popover-motion-y: var(--motion-distance-small);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 115,
+        "source": "--cr-popover-motion-y: calc(var(--motion-distance-small) * -1);"
+      }
+    ]
+  },
+  {
+    "name": "--motion-scale-press",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 50,
+        "source": "transform: scale(var(--motion-scale-press));"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 61,
+        "source": "transform: scale(var(--motion-scale-press));"
+      }
+    ]
+  },
+  {
+    "name": "--motion-scale-surface",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 98,
+        "source": "--cr-popover-scale: var(--motion-scale-surface);"
+      },
+      {
+        "path": "src/cloak-family.css",
+        "line": 110,
+        "source": "--cr-popover-scale: var(--motion-scale-surface);"
+      }
+    ]
+  },
+  {
+    "name": "--ok",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 47,
+        "source": "--color-ok: var(--ok);"
+      }
+    ]
+  },
+  {
+    "name": "--ok-bg",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 48,
+        "source": "--color-ok-bg: var(--ok-bg);"
+      }
+    ]
+  },
+  {
+    "name": "--ok-border",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 49,
+        "source": "--color-ok-border: var(--ok-border);"
+      }
+    ]
+  },
+  {
+    "name": "--preview-bg",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 265,
+        "source": "background: var(--preview-bg);"
+      }
+    ]
+  },
+  {
+    "name": "--radius-card",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 69,
+        "source": "--radius-md: var(--radius-card);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 70,
+        "source": "--radius-lg: var(--radius-card);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 71,
+        "source": "--radius-xl: var(--radius-card);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 72,
+        "source": "--radius-2xl: var(--radius-card);"
+      }
+    ]
+  },
+  {
+    "name": "--radius-control",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 67,
+        "source": "--radius-xs: var(--radius-control);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 68,
+        "source": "--radius-sm: var(--radius-control);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 134,
+        "source": "border-radius: var(--radius-control);"
+      }
+    ]
+  },
+  {
+    "name": "--sh-focus",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 66,
+        "source": "--shadow-focus: var(--sh-focus);"
+      }
+    ]
+  },
+  {
+    "name": "--shadow-overlay",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 64,
+        "source": "--shadow-lg: var(--shadow-overlay);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 65,
+        "source": "--shadow-xl: var(--shadow-overlay);"
+      }
+    ]
+  },
+  {
+    "name": "--shadow-popover",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 63,
+        "source": "--shadow-md: var(--shadow-popover);"
+      }
+    ]
+  },
+  {
+    "name": "--surface",
+    "srcReferences": []
+  },
+  {
+    "name": "--surface-2",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 22,
+        "source": "background: var(--surface-2);"
+      },
+      {
+        "path": "src/index.css",
+        "line": 94,
+        "source": "background: var(--surface-2);"
+      }
+    ]
+  },
+  {
+    "name": "--text-lg",
+    "srcReferences": []
+  },
+  {
+    "name": "--text-sm",
+    "srcReferences": []
+  },
+  {
+    "name": "--text-xl",
+    "srcReferences": []
+  },
+  {
+    "name": "--text-xs",
+    "srcReferences": []
+  },
+  {
+    "name": "--warn",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 50,
+        "source": "--color-warn: var(--warn);"
+      }
+    ]
+  },
+  {
+    "name": "--warn-bg",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 51,
+        "source": "--color-warn-bg: var(--warn-bg);"
+      }
+    ]
+  },
+  {
+    "name": "--warn-border",
+    "srcReferences": [
+      {
+        "path": "src/index.css",
+        "line": 52,
+        "source": "--color-warn-border: var(--warn-border);"
+      }
+    ]
+  },
+  {
+    "name": "--z-popover",
+    "srcReferences": [
+      {
+        "path": "src/cloak-family.css",
+        "line": 40,
+        "source": "z-index: var(--z-popover, 900) !important;"
+      }
+    ]
+  }
+]

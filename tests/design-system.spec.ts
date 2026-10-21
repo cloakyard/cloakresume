@@ -70,13 +70,14 @@ describe("CloakResume family contract", () => {
     expect(pkg.devDependencies).not.toHaveProperty("vitest");
   });
 
-  it("keeps every normative token value in tokens.css", async () => {
-    const tokenCss = await source("tokens.css");
+  it("keeps the pinned Air tokens authoritative and compatibility values isolated", async () => {
+    const tokenCss = await source("src/styles/air.css");
     const cssFiles = await filesBelow("src", ".css");
     const canonicalNames = new Set(cssDeclarations(tokenCss).map(({ name }) => name));
     const duplicateDefinitions: string[] = [];
 
     for (const file of cssFiles) {
+      if (file === "src/styles/air.css") continue;
       const css = await source(file);
       for (const declaration of cssDeclarations(css)) {
         if (canonicalNames.has(declaration.name)) {
@@ -87,8 +88,12 @@ describe("CloakResume family contract", () => {
       }
     }
 
-    expect(tokenCss).toContain("single normative source for product chrome");
-    expect(duplicateDefinitions, "canonical tokens redefined outside tokens.css").toEqual([]);
+    expect(canonicalNames.has("--air-ink")).toBe(true);
+    expect(canonicalNames.has("--air-font")).toBe(true);
+    expect(
+      cssDeclarations(await source("tokens.css")).some(({ name }) => canonicalNames.has(name)),
+    ).toBe(false);
+    expect(duplicateDefinitions, "Air tokens redefined outside the pinned bundle").toEqual([]);
   });
 
   it("keeps CSS bridges token-driven instead of introducing another palette", async () => {
@@ -99,7 +104,7 @@ describe("CloakResume family contract", () => {
     ]);
 
     expect(indexCss).toMatch(/^\/\*[\s\S]*?\*\/\s*@import "\.\.\/tokens\.css";/);
-    expect(indexCss).toContain("Normative values live in tokens.css");
+    expect(indexCss).toContain("Air owns UI");
     expect(familyCss).toContain("var(--color-focus)");
     expect(familyCss).not.toContain(".tb.primary");
     expect(`${indexCss}\n${familyCss}\n${tokens}`).not.toMatch(/surface-glass|--glass-/);
@@ -396,23 +401,14 @@ describe("CloakResume family contract", () => {
   });
 
   it("keeps muted and status text legible and preserves keyboard focus cues", async () => {
-    const [tokens, tokenJson, ats, contact, viewSegment, overflow, colourPopover] =
-      await Promise.all([
-        source("tokens.css"),
-        source("tokens.json"),
-        source("src/utils/ats.ts"),
-        source("src/components/editor/ContactSection.tsx"),
-        source("src/components/ViewSegment.tsx"),
-        source("src/components/ToolbarOverflow.tsx"),
-        source("src/components/ColorPickerPopover.tsx"),
-      ]);
+    const [ats, contact, viewSegment, overflow, colourPopover] = await Promise.all([
+      source("src/utils/ats.ts"),
+      source("src/components/editor/ContactSection.tsx"),
+      source("src/components/ViewSegment.tsx"),
+      source("src/components/ToolbarOverflow.tsx"),
+      source("src/components/ColorPickerPopover.tsx"),
+    ]);
 
-    expect(tokens).toContain(
-      "--ink-5: color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper))",
-    );
-    expect(tokenJson).toContain(
-      '"$value": "color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper))"',
-    );
     expect(ats).toContain('color: "var(--air-success)"');
     expect(ats).toContain('color: "var(--air-warning)"');
     expect(ats).toContain('color: "var(--air-danger)"');
@@ -428,7 +424,6 @@ describe("CloakResume family contract", () => {
   it("locks preview fidelity, editor hierarchy, viewport safety, and family motion", async () => {
     const [
       tokenCss,
-      tokenJson,
       indexCss,
       familyCss,
       preview,
@@ -448,7 +443,6 @@ describe("CloakResume family contract", () => {
       projects,
     ] = await Promise.all([
       source("tokens.css"),
-      source("tokens.json"),
       source("src/index.css"),
       source("src/cloak-family.css"),
       source("src/components/Preview.tsx"),
@@ -467,21 +461,12 @@ describe("CloakResume family contract", () => {
       source("src/utils/fieldIssues.tsx"),
       source("src/components/editor/ProjectsSection.tsx"),
     ]);
-    const portable = JSON.parse(tokenJson) as {
-      duration: Record<string, { $value: { value: number; unit: string } }>;
-      easing: Record<string, { $value: number[] }>;
-    };
-
+    // The date adapter still consumes these compatibility motion values.
     expect(tokenCss).toContain("--duration-press: 100ms");
-    expect(tokenCss).toContain("--duration-stagger: 60ms");
     expect(tokenCss).toContain("--motion-distance-small: 4px");
     expect(tokenCss).toContain("--motion-scale-surface: 0.98");
     expect(tokenCss).not.toContain("--ease-in:");
     expect(tokenCss).toContain("--ease-standard: cubic-bezier(0.16, 1, 0.3, 1)");
-    expect(portable.duration.press.$value).toEqual({ value: 100, unit: "ms" });
-    expect(portable.duration.stagger.$value).toEqual({ value: 60, unit: "ms" });
-    expect(portable.easing.in).toBeUndefined();
-    expect(portable.easing.standard.$value).toEqual([0.16, 1, 0.3, 1]);
 
     expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
     expect(indexCss).not.toContain("cr-field-glow");
