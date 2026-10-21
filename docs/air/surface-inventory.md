@@ -17,7 +17,6 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/cloak-family.css`                            | app-surface         | Done         | Pending            | Pending    |
 | `src/components/AtsReviewContent.tsx`             | app-surface         | Done         | Done               | Pending    |
 | `src/components/AtsReviewDialog.tsx`              | app-surface         | Done         | Done               | Pending    |
-| `src/components/BottomSheet.tsx`                  | app-surface         | Pending      | Pending            | Pending    |
 | `src/components/BrandLogo.tsx`                    | app-surface         | Done         | Done               | Pending    |
 | `src/components/CloakWorkbenchLanding.tsx`        | app-surface         | Done         | Done               | Pending    |
 | `src/components/ColorPickerContent.tsx`           | app-surface         | Done         | Done               | Done       |
@@ -31,6 +30,7 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/components/Layout.tsx`                       | app-surface         | Done         | Done               | Pending    |
 | `src/components/LogoPicker.tsx`                   | app-surface         | Done         | Done               | Pending    |
 | `src/components/MonthYearField.tsx`               | app-surface         | Done         | Done               | Pending    |
+| `src/components/OptionsDialog.tsx`                | app-surface         | Done         | Done               | Pending    |
 | `src/components/PaginatedCanvas.tsx`              | app-surface         | Pending      | Pending            | Pending    |
 | `src/components/PaperSizeToggle.tsx`              | app-surface         | Done         | Done               | Pending    |
 | `src/components/Preview.tsx`                      | app-surface         | Done         | Pending            | Pending    |
@@ -41,9 +41,9 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/components/SectionRail.tsx`                  | app-surface         | Done         | Done               | Pending    |
 | `src/components/TemplateModal.tsx`                | app-surface         | Done         | Done               | Pending    |
 | `src/components/TemplatePreview.tsx`              | app-surface         | Done         | Done               | Pending    |
-| `src/components/ToolbarActions.tsx`               | app-surface         | Done         | Pending            | Pending    |
+| `src/components/ToolbarActions.tsx`               | app-surface         | Done         | Done               | Pending    |
 | `src/components/ToolbarCenter.tsx`                | app-surface         | Done         | Done               | Pending    |
-| `src/components/ToolbarOverflow.tsx`              | app-surface         | Done         | Pending            | Pending    |
+| `src/components/ToolbarOverflow.tsx`              | app-surface         | Done         | Done               | Pending    |
 | `src/components/ViewSegment.tsx`                  | app-surface         | Done         | Done               | Pending    |
 | `src/components/ats/AtsCard.tsx`                  | app-surface         | Done         | Done               | Pending    |
 | `src/components/ats/AtsInsightsPane.tsx`          | app-surface         | Done         | Done               | Pending    |

@@ -15,6 +15,12 @@ The historical rows below are preserved as the original audit, not current styli
 
 **2026-10-21 review follow-up:** the old combined modal is replaced by a persistent Air dialog and lazy review content. Its four panes and report controls follow Air; the updated source rows point to the current inventory.
 
+**2026-10-21 Options follow-up:** the legacy BottomSheet is retired. Options/export
+now use Air, immediate handoffs and guarded busy/recovery. Modal keyboard wrap
+scrolls the destination into view, and Air dialogs keep the shared blue focus rule.
+Current evidence and retained legacy consumers are in `air/validation.md` and
+`air/code-cleanup.md`.
+
 **Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result
@@ -80,7 +86,7 @@ Status key:
 | --: | ------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |   1 | `src/App.tsx`                                     | Aligned | Root workflow, fixed brand boundary, persistence, route-level review, and overlay composition.                                                                                    |
 |   2 | `src/components/AtsReviewContent.tsx`             | Aligned | Air report panes, complete findings, keyboard tabs and honest progress; current evidence is in the Air inventory.                                                                 |
-|   3 | `src/components/BottomSheet.tsx`                  | Aligned | Shared 92dvh sheet geometry, title order, focus containment, escape, scroll lock, and safe area.                                                                                  |
+|   3 | `src/components/OptionsDialog.tsx`                | Aligned | Air Options dialog/sheet, inertness, fixed heading, scrollable commands and immediate handoff; software proof in options-export-2026-10-21.json.                                  |
 |   4 | `src/components/BrandLogo.tsx`                    | Aligned | Canonical 40px mark, 0.6rem lockup gap, exact CloakPDF Archivo 800 metrics, accessible home label, and no independent distortion.                                                 |
 |   5 | `src/components/CloakWorkbenchLanding.tsx`        | Aligned | N1b header, 88rem frame, real start/load instrument, ledgers, local receipt, and CloakPDF-parity Ft5 footer with version/author provenance.                                       |
 |   6 | `src/components/ColorPickerContent.tsx`           | Aligned | Emerald-aware document control, keyboard/pointer parity, slider semantics, focus, and input naming.                                                                               |

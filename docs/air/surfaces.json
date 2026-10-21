@@ -97,17 +97,6 @@
       "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
     },
     {
-      "path": "src/components/BottomSheet.tsx",
-      "kind": "app-surface",
-      "sourceReviewed": false,
-      "airImplemented": false,
-      "validated": false,
-      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
-      "viewports": ["390x844 dark coarse"],
-      "evidence": ["docs/air/editor-audit.md", "docs/air/editor-conditional-audit.json"],
-      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete."
-    },
-    {
       "path": "src/components/BrandLogo.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
@@ -433,6 +422,33 @@
       "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Writing-hint popup software acceptance is recorded separately; physical/software-keyboard/assistive acceptance remains open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
+      "path": "src/components/OptionsDialog.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
+      ],
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
+    },
+    {
       "path": "src/components/PaginatedCanvas.tsx",
       "kind": "app-surface",
       "sourceReviewed": false,
@@ -694,12 +710,28 @@
       "path": "src/components/ToolbarActions.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": [],
-      "viewports": [],
-      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices."
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
+      ],
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
     },
     {
       "path": "src/components/ToolbarCenter.tsx",
@@ -719,17 +751,28 @@
       "path": "src/components/ToolbarOverflow.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
-      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
-      "viewports": ["390x844 dark coarse"],
-      "evidence": [
-        "docs/air/editor-audit.md",
-        "docs/air/editor-conditional-audit.json",
-        "docs/air/evidence/colour-controls-2026-10-21.json",
-        "docs/air/evidence/resume-review-2026-10-21.json"
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Template handoff explicitly restores More options before opening the Air library; complete overflow migration remains pending. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices."
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
     },
     {
       "path": "src/components/ViewSegment.tsx",

@@ -1,0 +1,90 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume Options sheet, toolbar export busy/recovery, native file/handoff/focus and scoped dead-code cleanup. Full product and physical acceptance remain open.",
+  "status": "Passed; local checkpoint",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5af9d852a9ec15a38649c9bdaa052e3392db3ff9fd52cd91193af",
+  "changes": [
+    "Shared Air dialog/sheet; inert background, persistent heading, readable neutral command rows, full labels and wrapping paper controls",
+    "Immediate teardown before dialog handoff; Options preserves state across responsive changes",
+    "Guarded focusable PDF actions with reserved busy geometry and truthful separate live status",
+    "Real canvas failure/retry, template readiness, overflow rejection and native JSON cancel/invalid/replacement/same-file paths preserve the draft",
+    "Keyboard wrap scrolls its target into view; Air blue focus and full outline clearance verified",
+    "Viewport snapshots read current matches during render so modal dismissal cannot restore stale responsive chrome",
+    "Removed BottomSheet, unused configurable props, 183 lines of obsolete dialog/sheet/overflow CSS, six keyframes, delayed handoff and two unused breakpoint exports"
+  ],
+  "gates": {
+    "check": "Zero formatting/lint/type errors or warnings; 143 code files",
+    "build": "73 precache entries; dependencies unchanged",
+    "design": "80 source surfaces",
+    "portability": "18 checks",
+    "familySync": "Six exact specifications; canonical shared contract unchanged",
+    "productionSuite": {
+      "tests": 361,
+      "files": 9,
+      "skipped": 0,
+      "editorCases": 177,
+      "templatePaperCases": 34,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 510.69
+    },
+    "freeze": {
+      "runtimeFiles": 136,
+      "distFiles": 99,
+      "unchanged": true,
+      "rootTokensAndAssetConfigBaseline": "Source, public assets, root tokens and build configuration recorded before the final run; complete manifests retained"
+    }
+  },
+  "matrix": {
+    "cases": 192,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "states": ["ready", "busy", "template-not-ready notice"],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "pointers": "Coarse through 1024px, fine above; browser features also cover keyboard and compact fine input",
+    "contrastUniquePairs": 8,
+    "contrastMeasurements": 16,
+    "minimumTextContrast": 6.873758629397385,
+    "forcedColourCaptures": 2,
+    "runtimeErrors": 0,
+    "captures": 23
+  },
+  "native": {
+    "Safari": "Enlarged native layout, colour handoff, Escape focus return and actual native file-picker cancellation; tab closed and zoom restored",
+    "Firefox": "Actual 200% zoom, library handoff, Escape, Shift+Tab wrap/scroll, final blue focus outline and clearance; tab closed and zoom restored"
+  },
+  "output": {
+    "templatePaperImagesAndGeometry": "34 exact baseline matches",
+    "actualPDFs": "A4 and Letter for plain and linked fixtures: raster, extracted text, media box and email/phone/web annotations match baseline",
+    "actualOverflowGuard": "Synthetic out-of-page content rejected by the real export path; draft and focus preserved",
+    "exporterSchemaTemplatesFonts": "Unchanged"
+  },
+  "cleanupRecord": "docs/air/code-cleanup.md",
+  "artifacts": "docs/air/evidence/options-export-2026-10-21",
+  "limitations": [
+    "Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open",
+    "PWA/update/static 404 and actual OG/PWA/README assets are next",
+    "No push or deployment; CloakIMG stays last and its parked changes are untouched"
+  ],
+  "verificationNotes": [
+    "The initial complete 360-test run passed; native inspection found legacy green focus and 1px outline clipping. Both were corrected, asserted and re-rendered. A later complete run passed 359 tests and exposed a review reflow/focus race. useSyncExternalStore now reads the current viewport even before its native notification. A deterministic delayed-notification regression was added; the final complete 361-test run passed.",
+    "Harness corrections addressed the actual app root, touch-emulation resize reload, template/dynamic viewport readiness and export-only host selection without weakening assertions or inflating timeouts."
+  ]
+}

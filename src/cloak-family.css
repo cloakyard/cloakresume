@@ -29,7 +29,7 @@ body {
 }
 
 :where(a, button, input, textarea, select, [tabindex]):not(
-    :where(.air-popover, .air-popover *)
+    :where(.air-popover, .air-popover *, .air-modal, .air-modal *)
   ):focus-visible {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
@@ -92,94 +92,6 @@ body {
   z-index: var(--z-popover, 900) !important;
 }
 
-.cr-overlay {
-  background: var(--backdrop-bg);
-  backdrop-filter: none;
-}
-
-.cr-overlay {
-  z-index: var(--z-dialog, 200) !important;
-}
-
-.cr-dialog {
-  color: var(--ink-1);
-  background: var(--surface);
-  border: 1px solid var(--color-rule-strong);
-  border-radius: var(--radius-card);
-  box-shadow: var(--shadow-overlay);
-  overscroll-behavior: contain;
-}
-
-.cr-dialog__eyebrow {
-  margin: 0;
-  color: var(--ink-4);
-  font-family: var(--font-mono);
-  font-size: 0.625rem;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  line-height: 1.4;
-  text-transform: uppercase;
-}
-
-.cr-dialog__title {
-  margin: 0.2rem 0 0;
-  color: var(--ink-1);
-  font-size: 1rem;
-  font-weight: 680;
-  letter-spacing: -0.015em;
-  line-height: 1.25;
-}
-
-.cr-dialog__description {
-  margin: 0.25rem 0 0;
-  color: var(--ink-4);
-  font-size: 0.8125rem;
-  line-height: 1.5;
-}
-
-.cr-dialog__close {
-  display: grid;
-  width: 2.75rem;
-  height: 2.75rem;
-  flex: none;
-  padding: 0;
-  place-items: center;
-  color: var(--ink-4);
-  background: transparent;
-  border: 0;
-  border-radius: var(--radius-control);
-  cursor: pointer;
-  transition:
-    color var(--duration-fast) var(--ease-standard),
-    background-color var(--duration-fast) var(--ease-standard);
-}
-
-.cr-dialog__close:hover:not(:disabled) {
-  color: var(--ink-1);
-  background: color-mix(in oklab, var(--ink-1) 5%, transparent);
-}
-
-.cr-dialog__footer {
-  display: flex;
-  flex: none;
-  align-items: center;
-  justify-content: flex-end;
-  gap: var(--space-2);
-  border-top: 1px solid var(--line);
-  background: var(--surface-2);
-}
-
-.cr-sheet {
-  color: var(--ink-1);
-  background: var(--surface);
-  border: 1px solid var(--color-rule-strong);
-  border-bottom: 0;
-  border-radius: var(--radius-card) var(--radius-card) 0 0;
-  box-shadow: var(--shadow-overlay);
-  overscroll-behavior: contain;
-  transition: transform var(--duration-slow) var(--ease-out);
-}
-
 button:not(.absolute) {
   transition-property: color, background-color, border-color, opacity, transform;
   transition-duration: var(--duration-fast);
@@ -192,7 +104,6 @@ button:not(.absolute):active:not(:disabled) {
   transition-timing-function: var(--ease-out);
 }
 
-.cr-dialog button:disabled,
 .cr-popover button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
@@ -229,55 +140,8 @@ button:not(.absolute):active:not(:disabled) {
   border-color: var(--danger);
 }
 
-/* Motion language: one staged reveal, one contextual surface transition, and
- * one interaction response. Geometry stays fixed; only opacity and transforms
- * move, and reduced-motion users bypass every nonessential spatial effect. */
-.cr-overflow-item {
-  transition-property: color, background-color, border-color, transform;
-  transition-duration: var(--duration-fast);
-  transition-timing-function: var(--ease-standard);
-}
-
 .cr-drag-item[data-dragging="true"] {
   transform: scale(var(--motion-scale-press));
-}
-
-@keyframes cr-fade-in {
-  from {
-    opacity: 0;
-  }
-}
-
-@keyframes cr-fade-out {
-  to {
-    opacity: 0;
-  }
-}
-
-@keyframes cr-sheet-enter {
-  from {
-    transform: translateY(100%);
-  }
-}
-
-@keyframes cr-dialog-enter {
-  from {
-    transform: scale(var(--motion-scale-surface));
-  }
-}
-
-@keyframes cr-sheet-dismiss {
-  to {
-    opacity: 0;
-    transform: translateY(100%);
-  }
-}
-
-@keyframes cr-dialog-dismiss {
-  to {
-    opacity: 0;
-    transform: scale(var(--motion-scale-surface));
-  }
 }
 
 /* Anchored overlays compose placement and motion on the same transform so
@@ -352,35 +216,6 @@ button:not(.absolute):active:not(:disabled) {
   }
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .cr-overlay {
-    animation: cr-fade-in var(--duration-base) var(--ease-out) both;
-  }
-
-  .cr-overlay > .cr-dialog {
-    animation: cr-sheet-enter var(--duration-slow) var(--ease-out) both;
-  }
-
-  .cr-overlay[data-state="closing"] {
-    animation: cr-fade-out var(--duration-fast) var(--ease-out) both;
-    pointer-events: none;
-  }
-
-  .cr-overlay[data-state="closing"] > .cr-dialog {
-    animation: cr-sheet-dismiss var(--duration-fast) var(--ease-out) both;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (min-width: 40rem) {
-  .cr-overlay > .cr-dialog {
-    animation-name: cr-dialog-enter;
-  }
-
-  .cr-overlay[data-state="closing"] > .cr-dialog {
-    animation-name: cr-dialog-dismiss;
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .cr-popover,
   .cr-popover[data-placement="above"],
@@ -388,24 +223,6 @@ button:not(.absolute):active:not(:disabled) {
   .cr-toast[data-state="closing"] {
     --cr-popover-motion-y: 0px !important;
     --cr-popover-scale: 1 !important;
-  }
-}
-
-@media (min-width: 40rem) {
-  .cr-sheet {
-    border-bottom: 1px solid var(--color-rule-strong);
-    border-radius: var(--radius-card);
-  }
-}
-
-@media (max-width: 39.9375rem) {
-  .cr-dialog {
-    width: 100%;
-    max-width: none;
-    border-right: 0;
-    border-bottom: 0;
-    border-left: 0;
-    border-radius: var(--radius-card) var(--radius-card) 0 0;
   }
 }
 

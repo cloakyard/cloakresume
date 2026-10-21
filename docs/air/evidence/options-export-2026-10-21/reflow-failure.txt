@@ -1,0 +1,37 @@
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+ ❯ tests/editor-browser.spec.ts (176 tests | 1 failed) 464688ms
+   ❯ editor browser regressions (requires Chrome or CHROME_PATH) (176)
+     × keeps review tab keyboard navigation and focus through compact reflow 32806ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/editor-browser.spec.ts > editor browser regressions (requires Chrome or CHROME_PATH) > keeps review tab keyboard navigation and focus through compact reflow
+TimeoutError: Waiting for selector `[aria-label="More options"]:focus` failed
+ ❯ CSSQueryHandler.waitFor node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/src/common/QueryHandler.ts:213:36
+ ❯ CdpFrame.waitForSelector node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/src/api/Frame.ts:765:13
+ ❯ CdpPage.waitForSelector node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/src/api/Page.ts:3321:12
+ ❯ tests/editor-browser.spec.ts:3550:7
+    3548|       ).toContain("Built TypeScript tools.");
+    3549|       await page.keyboard.press("Escape");
+    3550|       await page.waitForSelector('[aria-label="More options"]:focus');
+       |       ^
+    3551|       await page.click('[aria-label="More options"]');
+    3552|       await clickText("Scan résumé", '[role="dialog"]');
+
+Caused by: TimeoutError: Waiting failed: 30000ms exceeded
+ ❯ new WaitTask node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/lib/puppeteer/common/WaitTask.js:46:34
+ ❯ IsolatedWorld.waitForFunction node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/lib/puppeteer/api/Realm.js:49:26
+ ❯ CSSQueryHandler.waitFor node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/lib/puppeteer/common/QueryHandler.js:176:95
+ ❯ CdpFrame.waitForSelector node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/lib/puppeteer/api/Frame.js:546:21
+ ❯ CdpPage.waitForSelector node_modules/.pnpm/puppeteer-core@25.12.0/node_modules/puppeteer-core/lib/puppeteer/api/Page.js:1477:20
+ ❯ tests/editor-browser.spec.ts:3550:7
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+
+ Test Files  1 failed | 8 passed (9)
+      Tests  1 failed | 359 passed (360)
+   Start at  14:29:11
+   Duration  549.42s (tests 100%)

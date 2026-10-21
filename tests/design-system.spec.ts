@@ -318,24 +318,20 @@ describe("CloakResume family contract", () => {
         "src/components/AtsReviewDialog.tsx",
         "src/components/PrivacyPolicyModal.tsx",
         "src/components/ConfirmDialog.tsx",
-        "src/components/BottomSheet.tsx",
+        "src/components/OptionsDialog.tsx",
       ].map(source),
     );
 
     expect(
-      files.every(
-        (file) =>
-          file.includes("air-modal-viewport") ||
-          file.includes("cr-overlay") ||
-          file.includes("resume-overlay"),
-      ),
+      files.every((file) => file.includes("air-modal-viewport") || file.includes("resume-overlay")),
     ).toBe(true);
     expect(files[0]).toContain('className="air-modal resume-library"');
     expect(files[0]).toContain("useModalDialog<HTMLDivElement>");
     expect(files[0]).toContain("inertBackground: true");
     expect(files[1]).toContain('className="air-modal resume-review"');
     expect(files[1]).toContain("inertBackground: true");
-    expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
+    expect(files[4]).toContain('className="air-modal resume-options"');
+    expect(files[4]).toContain("inertBackground: true");
     const review = await source("src/components/AtsReviewContent.tsx");
     expect(review).toContain("ref={scrollRef}");
     expect(review).toContain("ref={tabAnchorRef}");
@@ -491,9 +487,10 @@ describe("CloakResume family contract", () => {
     expect(await source("src/utils/highlightField.ts")).toContain(
       "field.focus({ preventScroll: true })",
     );
-    expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
+    expect(familyCss).not.toContain("cr-sheet-enter");
     expect(familyCss).not.toContain(".cr-family-landing .cr-landing-hero__declaration");
-    expect(familyCss).toContain(".cr-overlay {");
+    expect(familyCss).not.toContain(".cr-overlay");
+    expect(familyCss).not.toContain(".cr-sheet");
     expect(familyCss).toContain('.cr-popover[data-state="closing"]');
     expect(familyCss).toContain("@starting-style");
     expect(familyCss).not.toContain('.cr-dialog [role="tabpanel"]:not([hidden])');

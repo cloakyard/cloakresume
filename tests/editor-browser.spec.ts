@@ -1,6 +1,6 @@
 /// <reference types="node" />
 
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import puppeteer, { type Browser, type BrowserContext, type Page } from "puppeteer-core";
@@ -2584,6 +2584,336 @@ describe.skipIf(!existsSync(chromePath))(
       expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
     });
 
+    it.each(["Template", "Primary colour", "Scan résumé", "New résumé"])(
+      "Options hands off %s immediately and restores the compact opener",
+      async (action) => {
+        await openDraft(undefined, {}, 390, true);
+        await page.click('[aria-label="More options"]');
+        await clickText(action, ".resume-options");
+        await page.waitForSelector(".resume-options", { hidden: true });
+        await page.waitForSelector('[role="dialog"]');
+        await page.waitForFunction(() => document.activeElement?.closest('[role="dialog"]'));
+        expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(true);
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="dialog"]', { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          "More options",
+        );
+        expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+      },
+    );
+
+    it("Options preserves paper state through resizing and restores a visible desktop action", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await clickText("Letter", ".resume-options");
+      await page.setViewport({ width: 1440, height: 900, hasTouch: true });
+      await page.waitForSelector('button[aria-label="Export to PDF"]');
+      expect(await page.$(".resume-options")).not.toBeNull();
+      expect(
+        await page.$eval(".resume-options [data-paper-size-control]", (e) => e.textContent),
+      ).toContain("Letter");
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(
+        await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+      ).toBe(true);
+      const saved = await page.evaluate(() => {
+        window.dispatchEvent(new Event("pagehide"));
+        return JSON.parse(localStorage.getItem("cloakresume:v1")!);
+      });
+      expect(saved.paperSize).toBe("letter");
+    });
+
+    it("Options keeps a not-ready export notice nested and returns to its export action", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await page.$eval(".resume-root", (e) => {
+        (e as HTMLElement).dataset.templateReady = "false";
+      });
+      await page.click(".resume-options [data-export-pdf]");
+      await page.waitForSelector('[role="alertdialog"]');
+      expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+        "Document is still preparing",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+      expect(
+        await page.evaluate(() =>
+          document.activeElement?.matches(".resume-options [data-export-pdf]"),
+        ),
+      ).toBe(true);
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(true);
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+    });
+
+    it.each([390, 1920])(
+      "Options/export at %ipx reserves busy geometry, guards duplicates and retries a real render failure",
+      async (width) => {
+        await openDraft(undefined, {}, width, width === 390);
+        await page.waitForSelector('.resume-root[data-template-ready="true"]');
+        if (width === 390) await page.click('[aria-label="More options"]');
+        const action = "button[data-export-pdf]";
+        const size = () =>
+          page.$eval(action, (e) => {
+            const r = e.getBoundingClientRect();
+            return [r.width, r.height];
+          });
+        const before = await size();
+        await page.evaluate(() => {
+          let release!: () => void;
+          Object.defineProperty(document.fonts, "ready", {
+            configurable: true,
+            value: new Promise<void>((r) => {
+              release = r;
+            }),
+          });
+          Object.assign(window, {
+            releasePdfFonts: () => {
+              Reflect.deleteProperty(document.fonts, "ready");
+              release();
+            },
+          });
+          // A real canvas serialization failure must clean up its clone and allow retry.
+          // Restored on its prototype; never invoked without a canvas receiver.
+          // oxlint-disable-next-line typescript/unbound-method
+          const original = HTMLCanvasElement.prototype.toDataURL;
+          HTMLCanvasElement.prototype.toDataURL = function () {
+            HTMLCanvasElement.prototype.toDataURL = original;
+            throw new Error("Canvas could not be encoded");
+          };
+          let clones = 0;
+          const observer = new MutationObserver((records) => {
+            for (const r of records)
+              for (const n of r.addedNodes)
+                if (n instanceof HTMLElement && n.style.left === "-99999px") clones++;
+          });
+          observer.observe(document.body, { childList: true });
+          Object.assign(window, { pdfCloneCount: () => clones });
+        });
+        await page.click(action);
+        await page.waitForSelector(`${action}[aria-busy="true"]`);
+        expect(await size()).toEqual(before);
+        expect(
+          await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+        ).toBe(true);
+        await page.$eval(action, (e) => {
+          (e as HTMLButtonElement).click();
+          (e as HTMLButtonElement).click();
+        });
+        await page.keyboard.press("Enter");
+        await page.evaluate(() =>
+          (window as unknown as { releasePdfFonts: () => void }).releasePdfFonts(),
+        );
+        await page.waitForSelector('[role="alertdialog"]');
+        expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+          "Canvas could not be encoded",
+        );
+        expect(
+          await page.evaluate(() =>
+            (window as unknown as { pdfCloneCount: () => number }).pdfCloneCount(),
+          ),
+        ).toBe(1);
+        expect(await page.$('body > [aria-hidden="true"][style*="-99999px"]')).toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(
+          await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+        ).toBe(true);
+        const directory = mkdtempSync(join(tmpdir(), "cloakresume-export-retry-"));
+        try {
+          const cdp = await page.createCDPSession();
+          await cdp.send("Browser.setDownloadBehavior", {
+            behavior: "allowAndName",
+            browserContextId: context.id,
+            downloadPath: directory,
+            eventsEnabled: true,
+          });
+          const done = new Promise<string>((resolve) =>
+            cdp.on("Browser.downloadProgress", (e) => {
+              if (e.state === "completed") resolve(e.guid);
+            }),
+          );
+          await page.click(action);
+          const guid = await done;
+          expect(readFileSync(join(directory, guid)).subarray(0, 5).toString()).toBe("%PDF-");
+          await page.waitForFunction(() =>
+            [...document.querySelectorAll('[role="status"]')].some(
+              (e) => e.textContent === "PDF download started.",
+            ),
+          );
+          expect(await size()).toEqual(before);
+          expect(
+            await page.evaluate(() =>
+              (window as unknown as { pdfCloneCount: () => number }).pdfCloneCount(),
+            ),
+          ).toBe(2);
+        } finally {
+          rmSync(directory, { recursive: true, force: true });
+        }
+      },
+    );
+
+    it("Options native file cancellation, invalid data, replacement cancellation and same-file retry preserve the draft", async () => {
+      await openDraft(undefined, {}, 390, true);
+      const directory = mkdtempSync(join(tmpdir(), "cloakresume-options-file-"));
+      const good = join(directory, "saved.json"),
+        bad = join(directory, "broken.json");
+      writeFileSync(
+        good,
+        JSON.stringify({
+          kind: "cloakresume.v1",
+          templateId: "classic-sidebar",
+          primary: "#123456",
+          paperSize: "letter",
+          jobDescription: "Imported requirements",
+          resume: { profile: { name: "Imported Person", summary: "Imported summary" } },
+        }),
+      );
+      writeFileSync(bad, "invalid");
+      const choose = async (path?: string) => {
+        const waiting = page.waitForFileChooser();
+        await page.click('.resume-options [aria-label="Load from file"]');
+        const picker = await waiting;
+        if (path) await picker.accept([path]);
+        else await picker.cancel();
+      };
+      try {
+        await page.click('[aria-label="More options"]');
+        await choose();
+        expect(await page.$(".resume-options")).not.toBeNull();
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+        await choose(bad);
+        await page.waitForSelector('[role="alertdialog"]');
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          "More options",
+        );
+        await page.click('[aria-label="More options"]');
+        await choose(good);
+        await page.waitForSelector('[role="dialog"]');
+        await clickText("Cancel", '[role="dialog"]');
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+        await page.click('[aria-label="More options"]');
+        await choose(good);
+        await clickText("Replace draft", '[role="dialog"]');
+        await page.waitForFunction(
+          () =>
+            document.querySelector<HTMLInputElement>('input[name="profile-name"]')?.value ===
+            "Imported Person",
+        );
+        expect((await savedResume()).profile.summary).toBe("Imported summary");
+        expect(
+          await page.$eval('input[name="resume-file"]', (e) => (e as HTMLInputElement).value),
+        ).toBe("");
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    });
+
+    it("Options traps keyboard focus, scrolls every command into view and supports swipe cancellation/dismissal", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.setViewport({ width: 390, height: 568, hasTouch: true });
+      await page.click('[aria-label="More options"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Close options",
+      );
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Load from file",
+      );
+      const visible = await page.evaluate(() => {
+        const e = document.activeElement!,
+          a = e.getBoundingClientRect(),
+          b = document.querySelector(".resume-options-body")!.getBoundingClientRect();
+        return a.top >= b.top - 1 && a.bottom <= b.bottom + 1;
+      });
+      expect(visible).toBe(true);
+      const ringFits = await page.evaluate(() => {
+        const e = document.activeElement!,
+          r = e.getBoundingClientRect(),
+          s = getComputedStyle(e);
+        const b = document.querySelector(".resume-options-body")!,
+          br = b.getBoundingClientRect();
+        const outset = parseFloat(s.outlineOffset) + parseFloat(s.outlineWidth);
+        return r.left - outset >= br.left && r.right + outset <= br.left + b.clientWidth;
+      });
+      expect(ringFits).toBe(true);
+      for (const theme of ["light", "dark"]) {
+        await page.emulateMediaFeatures([
+          { name: "prefers-color-scheme", value: theme },
+          { name: "prefers-reduced-motion", value: "reduce" },
+        ]);
+        const focus = await page.evaluate(() => {
+          const probe = document.createElement("span");
+          probe.style.color = "var(--air-accent)";
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).color,
+            actual = getComputedStyle(document.activeElement!).outlineColor;
+          probe.remove();
+          return { expected, actual };
+        });
+        expect(focus.actual).toBe(focus.expected);
+      }
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Close options",
+      );
+      const handle = ".resume-options .resume-sheet-handle";
+      const cancelBox = (await (await page.$(handle))!.boundingBox())!;
+      const cancelCdp = await page.createCDPSession();
+      await cancelCdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [
+          { x: cancelBox.x + cancelBox.width / 2, y: cancelBox.y + cancelBox.height / 2 },
+        ],
+      });
+      await cancelCdp.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+      expect(await page.$(".resume-options")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!,
+        cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("Options recovers from a JSON save failure without discarding the draft", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await page.evaluate(() => {
+        URL.createObjectURL = () => {
+          throw new Error("Downloads unavailable");
+        };
+      });
+      await clickText("Save to file", ".resume-options");
+      await page.waitForSelector('[role="alertdialog"]');
+      expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+        "Downloads unavailable",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+      expect((await savedResume()).profile.summary).toBe("Draft for audit");
+    });
+
     it("cancels New without clearing work and imports a saved document with all settings", async () => {
       await openDraft();
       await page.click('button[aria-label="Start a new blank resume"]');
@@ -3182,6 +3512,22 @@ describe.skipIf(!existsSync(chromePath))(
       },
       40_000,
     );
+
+    it("restores review focus to current chrome before a media-query notification arrives", async () => {
+      await page.evaluateOnNewDocument(() => {
+        // Hold media-query notifications while the native matches value still
+        // changes. A modal close render must read that current value directly.
+        MediaQueryList.prototype.addEventListener = () => {};
+      });
+      await openDraft();
+      await page.click('[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[aria-label="Close ATS review"]:focus');
+      await page.setViewport({ width: 390, height: 844 });
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+      expect(await page.$('[aria-label="Scan résumé for ATS and writing issues"]')).toBeNull();
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+    });
 
     it("keeps review tab keyboard navigation and focus through compact reflow", async () => {
       await openDraft(

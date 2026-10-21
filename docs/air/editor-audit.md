@@ -4,19 +4,18 @@
 runtime. Fixture: the existing built-in synthetic Rohan Okafor sample, Classic
 Sidebar, A4, multiple pages. No résumé content was changed and no export was run.
 
-## Current migration checkpoint — 2026-10-19
+## Current migration checkpoint — 2026-10-21
 
-Entry/recovery, editor shell, shared writing fields, repeated entries, contact/native
-selects, dates/current-job and logo/photo controls are implemented. The findings and
-unchecked baseline list below describe the original inspection, not current status.
+Entry/recovery, editor shell, writing/repeated-entry controls, contact/selects,
+dates, logo/photo, colour, writing hints, every content section, template library,
+résumé review and Options/export are implemented and software-validated.
 Use `surfaces.json`, `validation.md` and the dated evidence for exact coverage.
+The unchecked baseline below records the original inspection, not current status.
 
-Logo/photo evidence: `evidence/logo-photo-2026-10-19.json`. Shared placement is
-retested against all date layouts. Stable imported names, search/selection/clear,
-photo bytes, decoding/errors/cancellation and focus are covered. Touch opens the
-logo surface without focusing its editable search; physical software-keyboard and
-spoken assistive checks remain open. Next: the primary-colour wheel, then hints,
-remaining sections/review/library/export/PWA/static recovery and actual assets.
+Current piece: `evidence/options-export-2026-10-21.json`; cleanup is tracked in
+`code-cleanup.md`. Native Safari and Firefox actual 200% checks complement the
+responsive/theme matrix. Physical touch/software keyboard, OS IME and spoken
+assistive gates remain open. Next: PWA safety/static recovery and actual assets.
 
 ## Baseline coverage and evidence
 

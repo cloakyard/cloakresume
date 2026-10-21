@@ -13,6 +13,8 @@ import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 interface ToolbarActionsProps {
   onExportPdf: () => void;
   exporting?: boolean;
+  exportStatus: string;
+  loadingFile: boolean;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
   onNewResume: () => void;
@@ -26,6 +28,8 @@ function ToolbarDivider() {
 export function ToolbarActions({
   onExportPdf,
   exporting = false,
+  exportStatus,
+  loadingFile,
   onSaveFile,
   onLoadFile,
   onNewResume,
@@ -57,7 +61,10 @@ export function ToolbarActions({
       <div className="flex items-center gap-0.5">
         <button
           type="button"
-          onClick={onNewResume}
+          onClick={(event) => {
+            event.currentTarget.focus();
+            onNewResume();
+          }}
           className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Start a new blank resume"
           aria-label="Start a new blank resume"
@@ -67,7 +74,10 @@ export function ToolbarActions({
         </button>
         <button
           type="button"
-          onClick={onSaveFile}
+          onClick={(event) => {
+            event.currentTarget.focus();
+            onSaveFile();
+          }}
           className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Save resume data as JSON file"
           aria-label="Save resume data as JSON file"
@@ -77,7 +87,12 @@ export function ToolbarActions({
         </button>
         <button
           type="button"
-          onClick={() => loadInputRef.current?.click()}
+          aria-disabled={loadingFile || undefined}
+          aria-busy={loadingFile || undefined}
+          onClick={(event) => {
+            event.currentTarget.focus();
+            if (!loadingFile) loadInputRef.current?.click();
+          }}
           className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Load a previously saved resume file"
           aria-label="Load a previously saved resume file"
@@ -93,6 +108,7 @@ export function ToolbarActions({
         ref={loadInputRef}
         type="file"
         name="resume-file"
+        aria-label="Load résumé JSON file"
         accept="application/json,.json"
         className="hidden"
         onChange={(e) => {
@@ -104,16 +120,32 @@ export function ToolbarActions({
 
       <button
         type="button"
-        onClick={onExportPdf}
-        disabled={exporting}
+        data-export-pdf=""
+        onClick={(event) => {
+          event.currentTarget.focus();
+          if (!exporting) onExportPdf();
+        }}
+        aria-disabled={exporting || undefined}
         aria-busy={exporting}
         className="air-icon-button air-button--primary resume-toolbar-action"
-        aria-label="Export to PDF"
+        aria-label={exporting ? "Exporting PDF…" : "Export to PDF"}
         title={exporting ? "Exporting PDF…" : "Export to PDF"}
       >
         <Download aria-hidden="true" size={18} strokeWidth={1.6} />
-        <span className="resume-toolbar-label">{exporting ? "Exporting…" : "Export PDF"}</span>
+        <span className="resume-toolbar-label">
+          <span className="air-action-labels">
+            <span data-active={!exporting || undefined} aria-hidden={exporting || undefined}>
+              Export PDF
+            </span>
+            <span data-active={exporting || undefined} aria-hidden={!exporting || undefined}>
+              Exporting PDF…
+            </span>
+          </span>
+        </span>
       </button>
+      <span className="sr-only" role="status">
+        {exportStatus}
+      </span>
     </>
   );
 }

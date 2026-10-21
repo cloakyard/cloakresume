@@ -250,11 +250,13 @@ export function App() {
   const TemplateComponent = TEMPLATES[templateId].component;
   const exportInFlight = useRef(false);
   const [exporting, setExporting] = useState(false);
+  const [exportStatus, setExportStatus] = useState("");
 
   const handleExportPdf = useCallback(async () => {
     if (exportInFlight.current) return;
     const root = document.querySelector<HTMLElement>('.resume-root[data-template-ready="true"]');
     if (!root) {
+      setExportStatus("Document is still preparing. Try again when the preview is ready.");
       setNotice({
         title: "Document is still preparing",
         description:
@@ -264,12 +266,14 @@ export function App() {
     }
     exportInFlight.current = true;
     setExporting(true);
+    setExportStatus("Preparing your PDF…");
     try {
-      // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
-      // in the client after the user actually asks for an export.
+      // Keep the PDF renderer out of the initial editor bundle.
       const { exportResumeToPdf } = await import("./utils/pdfExport.ts");
       await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"), paperSize);
+      setExportStatus("PDF download started.");
     } catch (err) {
+      setExportStatus("PDF export failed. Dismiss the message, then try again.");
       setNotice({
         title: "PDF export failed",
         description: `CloakResume couldn't generate the PDF. ${
@@ -283,7 +287,14 @@ export function App() {
   }, [resume.profile.name, paperSize]);
 
   const handleSaveFile = useCallback(() => {
-    downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
+    try {
+      downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
+    } catch (err) {
+      setNotice({
+        title: "Resume file couldn’t be saved",
+        description: `Your draft is still here. ${err instanceof Error ? err.message : "Please try again."}`,
+      });
+    }
   }, [resume, templateId, primary, paperSize, jobDescription]);
 
   const applyFile = useCallback((payload: Awaited<ReturnType<typeof readResumeFile>>) => {
@@ -386,6 +397,8 @@ export function App() {
               <ToolbarActions
                 onExportPdf={handleExportPdf}
                 exporting={exporting}
+                exportStatus={exportStatus}
+                loadingFile={loadingFile}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
                 onNewResume={handleNewResume}
@@ -398,6 +411,8 @@ export function App() {
                 onPaperSizeChange={setPaperSize}
                 onExportPdf={handleExportPdf}
                 exporting={exporting}
+                exportStatus={exportStatus}
+                loadingFile={loadingFile}
                 onNewResume={handleNewResume}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}

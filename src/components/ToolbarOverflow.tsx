@@ -17,10 +17,11 @@ import {
   ScanSearch,
   Upload,
 } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import { flushSync } from "react-dom";
 import { type PaperSize } from "../utils/paperSize.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
-import { BottomSheet } from "./BottomSheet.tsx";
+import { OptionsDialog } from "./OptionsDialog.tsx";
 import { ColorPickerPopover } from "./ColorPickerPopover.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 
@@ -31,6 +32,8 @@ interface ToolbarOverflowProps {
   onPaperSizeChange: (size: PaperSize) => void;
   onExportPdf: () => void;
   exporting?: boolean;
+  exportStatus: string;
+  loadingFile: boolean;
   onNewResume: () => void;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
@@ -43,6 +46,8 @@ export function ToolbarOverflow({
   onPaperSizeChange,
   onExportPdf,
   exporting = false,
+  exportStatus,
+  loadingFile,
   onNewResume,
   onSaveFile,
   onLoadFile,
@@ -51,20 +56,23 @@ export function ToolbarOverflow({
   const [open, setOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
   const colorId = useId();
+  const optionsId = useId();
   const moreRef = useRef<HTMLButtonElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isMobile) {
-      setOpen(false);
       setColorOpen(false);
+      if (colorOpen)
+        document.querySelector<HTMLButtonElement>('button[aria-label="Primary colour"]')?.focus();
     }
-  }, [isMobile]);
+  }, [isMobile, colorOpen]);
 
   const closeThenOpen = (next: () => void) => {
-    setOpen(false);
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.setTimeout(next, reduceMotion ? 0 : 200);
+    // Finish restoring the opener before the next modal captures it. Keep the
+    // native picker in this user activation; no delayed callbacks can reopen UI.
+    flushSync(() => setOpen(false));
+    next();
   };
 
   const openTemplate = () => {
@@ -74,25 +82,25 @@ export function ToolbarOverflow({
     });
   };
 
-  if (!isMobile) return null;
-
   return (
     <>
-      <button
-        ref={moreRef}
-        type="button"
-        onClick={(event) => {
-          event.currentTarget.focus();
-          setOpen(true);
-        }}
-        className="air-icon-button air-button--quiet"
-        aria-label="More options"
-        aria-expanded={open || colorOpen}
-        aria-controls={colorOpen ? colorId : undefined}
-        aria-haspopup="dialog"
-      >
-        <MoreVertical aria-hidden="true" size={18} strokeWidth={1.6} />
-      </button>
+      {isMobile && (
+        <button
+          ref={moreRef}
+          type="button"
+          onClick={(event) => {
+            event.currentTarget.focus();
+            setOpen(true);
+          }}
+          className="air-icon-button air-button--quiet"
+          aria-label="More options"
+          aria-expanded={open || colorOpen}
+          aria-controls={colorOpen ? colorId : open ? optionsId : undefined}
+          aria-haspopup="dialog"
+        >
+          <MoreVertical aria-hidden="true" size={18} strokeWidth={1.6} />
+        </button>
+      )}
 
       <input
         ref={fileRef}
@@ -104,80 +112,80 @@ export function ToolbarOverflow({
         onChange={(e) => {
           const f = e.target.files?.[0];
           if (f) {
-            onLoadFile(f);
-            setOpen(false);
+            closeThenOpen(() => onLoadFile(f));
           }
           e.target.value = "";
         }}
       />
 
-      <BottomSheet open={open} onClose={() => setOpen(false)} title="Options">
-        <div className="flex flex-col gap-0.5">
-          <OverflowItem
-            icon={<Download className="w-4 h-4" style={{ color: "var(--brand)" }} />}
-            label={exporting ? "Exporting PDF…" : "Export PDF"}
-            disabled={exporting}
-            onClick={() => {
-              setOpen(false);
-              onExportPdf();
-            }}
-          />
-          <OverflowItem
-            icon={<ScanSearch className="w-4 h-4" style={{ color: "var(--brand)" }} />}
-            label="Scan résumé"
-            onClick={() =>
-              closeThenOpen(() => {
-                moreRef.current?.focus();
-                window.dispatchEvent(new Event("cr:scan-ats"));
-              })
-            }
-          />
-          <OverflowDivider />
-          <OverflowItem
-            icon={<LayoutTemplate className="w-4 h-4" />}
-            label="Template"
-            onClick={openTemplate}
-          />
-          <OverflowItem
-            icon={<Palette className="w-4 h-4" />}
-            label="Primary colour"
-            trailing={
-              <span
-                className="w-4 h-4 rounded-full"
-                style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
-              />
-            }
-            onClick={() =>
-              closeThenOpen(() => {
-                moreRef.current?.focus();
-                setColorOpen(true);
-              })
-            }
-          />
-          <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
-            <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
-          </OverflowRow>
-          <OverflowDivider />
-          <OverflowItem
-            icon={<FilePlus2 className="w-4 h-4" />}
-            label="New résumé"
-            onClick={() => closeThenOpen(onNewResume)}
-          />
-          <OverflowItem
-            icon={<Save className="w-4 h-4" />}
-            label="Save to file"
-            onClick={() => {
-              setOpen(false);
-              onSaveFile();
-            }}
-          />
-          <OverflowItem
-            icon={<Upload className="w-4 h-4" />}
-            label="Load from file"
-            onClick={() => fileRef.current?.click()}
-          />
-        </div>
-      </BottomSheet>
+      {open && (
+        <OptionsDialog id={optionsId} onClose={() => setOpen(false)}>
+          <div className="resume-options-actions">
+            <OverflowItem
+              icon={<Download />}
+              label="Export PDF"
+              busyLabel="Exporting PDF…"
+              busy={exporting}
+              onClick={onExportPdf}
+              primary
+            />
+            <p className="resume-options-status" role="status">
+              {exportStatus || "Download a PDF. Your draft stays here."}
+            </p>
+            <OverflowItem
+              icon={<ScanSearch />}
+              label="Scan résumé"
+              onClick={() =>
+                closeThenOpen(() => {
+                  window.dispatchEvent(new Event("cr:scan-ats"));
+                })
+              }
+            />
+            <hr />
+            <OverflowItem icon={<LayoutTemplate />} label="Template" onClick={openTemplate} />
+            <OverflowItem
+              icon={<Palette />}
+              label="Primary colour"
+              trailing={<span className="resume-options-swatch" style={{ background: primary }} />}
+              onClick={() =>
+                closeThenOpen(() => {
+                  if (isMobile) setColorOpen(true);
+                  else
+                    document
+                      .querySelector<HTMLButtonElement>('button[aria-label="Primary colour"]')
+                      ?.click();
+                })
+              }
+            />
+            <div className="resume-options-paper">
+              <span>
+                <FileText aria-hidden="true" />
+                Paper size
+              </span>
+              <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
+            </div>
+            <hr />
+            <OverflowItem
+              icon={<FilePlus2 />}
+              label="New résumé"
+              onClick={() => closeThenOpen(onNewResume)}
+            />
+            <OverflowItem
+              icon={<Save />}
+              label="Save to file"
+              onClick={() => closeThenOpen(onSaveFile)}
+            />
+            <OverflowItem
+              icon={<Upload />}
+              label="Load from file"
+              busyLabel="Opening file…"
+              busy={loadingFile}
+              onClick={() => fileRef.current?.click()}
+            />
+            <p className="resume-options-status">Open or save a CloakResume JSON file.</p>
+          </div>
+        </OptionsDialog>
+      )}
 
       {colorOpen && (
         <ColorPickerPopover
@@ -193,69 +201,50 @@ export function ToolbarOverflow({
   );
 }
 
-const overflowItemClass = [
-  "cr-overflow-item",
-  "appearance-none flex items-center gap-3 w-full px-3 py-3 min-h-13",
-  "border-0 rounded-md text-left cursor-pointer bg-transparent",
-  "text-[14.5px] font-medium text-(--ink-1) no-underline",
-  "transition-[background-color] duration-160",
-  "hover:bg-(--ink-1)/4 active:bg-(--ink-1)/6",
-].join(" ");
-
 function OverflowItem({
   icon,
   label,
   onClick,
   trailing,
-  disabled = false,
+  busy = false,
+  busyLabel,
+  primary = false,
 }: {
-  icon: React.ReactNode;
+  icon: ReactNode;
   label: string;
-  onClick?: () => void;
-  trailing?: React.ReactNode;
-  disabled?: boolean;
+  onClick: () => void;
+  trailing?: ReactNode;
+  busy?: boolean;
+  busyLabel?: string;
+  primary?: boolean;
 }) {
   return (
     <button
       type="button"
-      disabled={disabled}
-      onClick={onClick}
-      className={`${overflowItemClass} disabled:opacity-50 disabled:cursor-not-allowed`}
+      aria-label={busy ? busyLabel : label}
+      aria-disabled={busy || undefined}
+      aria-busy={busy || undefined}
+      data-export-pdf={primary ? "" : undefined}
+      onClick={(event) => {
+        event.currentTarget.focus();
+        if (!busy) onClick();
+      }}
+      className={`air-button resume-options-action${primary ? " air-button--primary" : " air-button--quiet"}`}
     >
-      <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
+      <span aria-hidden="true" className="resume-options-icon">
         {icon}
       </span>
-      <span className="flex-1 min-w-0">{label}</span>
-      {trailing && <span className="flex items-center shrink-0">{trailing}</span>}
+      <span className="air-action-labels">
+        <span data-active={!busy || undefined} aria-hidden={busy || undefined}>
+          {label}
+        </span>
+        {busyLabel && (
+          <span data-active={busy || undefined} aria-hidden={!busy || undefined}>
+            {busyLabel}
+          </span>
+        )}
+      </span>
+      {trailing && <span aria-hidden="true">{trailing}</span>}
     </button>
-  );
-}
-
-function OverflowDivider() {
-  return <hr className="my-2 mx-2 border-0 border-t border-(--line) h-0" />;
-}
-
-/**
- * Non-button overflow row — same visual grid as OverflowItem but hosts
- * interactive trailing content (e.g. a segmented toggle) without
- * wrapping the whole row in a `<button>`.
- */
-function OverflowRow({
-  icon,
-  label,
-  children,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <div className="flex items-center gap-3 w-full px-3 py-3 min-h-13 rounded-md">
-      <span aria-hidden="true" className="grid place-items-center w-6 h-6 shrink-0 text-(--ink-2)">
-        {icon}
-      </span>
-      <span className="flex-1 min-w-0 text-[14.5px] font-medium text-(--ink-1)">{label}</span>
-      <span className="flex items-center shrink-0">{children}</span>
-    </div>
   );
 }

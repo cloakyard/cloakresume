@@ -583,3 +583,58 @@ assistive acceptance remain open.
 Next: compact Options sheet and export busy/recovery; then PWA/static recovery
 and actual OG/PWA/README assets. No push/deploy. CloakIMG stays last and untouched.
 Scratch: `/tmp/cloakresume-air-review/`.
+
+## 2026-10-21 — Air Options and export controls
+
+Options uses the shared Air dialog/sheet with a fixed heading, one scrolling
+command region, background inertness and full relative-size labels. It retains
+PDF, Scan, Template, Primary colour, A4/Letter, New, Save and Load. Immediate
+teardown restores the opener before a destination modal captures focus; the
+queued 200ms handoff is removed. Options survives desktop/compact resizing,
+keeps the selected paper, and restores a visible toolbar action on dismissal.
+Safari pointer focus, native file-picker cancellation, malformed data,
+replacement cancellation and repeated selection of the same file are covered.
+
+Both PDF actions reserve ready/busy label geometry and remain focusable while
+real duplicate guards block activation. The separate status reports preparation,
+download initiation or failure; Options stays open during export. Template-not-ready,
+long-title and actual page-overflow rejection preserve the draft. A forced canvas
+serialization failure removes the export clone, shows a recoverable notice and
+permits an actual successful PDF retry. JSON save failures also preserve the draft.
+The exporter, file schema, templates, fonts and paper geometry remain unchanged.
+
+The keyboard check found and fixed an off-screen wrap target: modal Tab/Shift+Tab
+now scrolls the target into view. Native inspection caught a legacy green focus
+rule and a one-pixel scroll-edge clip. Air dialogs now use the shared blue rule,
+and Options reserves enough clearance for its complete outline. Both theme colours
+and visible outline bounds are asserted; native Firefox 200% confirms the result.
+Safari colour handoff/native-picker cancellation and Firefox library handoff/Escape
+return to More options. Own native tabs are closed and zoom restored.
+
+Removed BottomSheet, unused configuration, 183 lines of obsolete dialog/sheet/
+overflow CSS (including six keyframes), the handoff timer, two unused breakpoint
+exports and stale current references. Active legacy consumers remain explicitly
+tracked in [the cleanup record](code-cleanup.md); no new dependency was added.
+
+The evidence records the final production suite, frozen source/build hashes,
+192 ready/busy/failure layouts at 16 sizes in both themes and 16/32px text,
+coarse/fine input, eight unique contrast pairs (minimum 6.87:1), forced colours,
+native checks, all 34 exact template/paper image/geometry comparisons and actual
+A4/Letter PDF raster/text/geometry/link comparisons for two fixtures.
+See [Options/export evidence](evidence/options-export-2026-10-21.json).
+
+Initial harness corrections used the real `#app`, preserved touch emulation when
+resizing (changing it reloads a Puppeteer page), waited for actual template and
+dynamic-viewport readiness, and distinguished the export host from existing
+measurement nodes. Feature assertions and required timeouts were preserved.
+An intermediate complete run passed 359 tests and exposed a review reflow/focus
+race. The media-query hook now reads current browser matches through
+`useSyncExternalStore`, replacing mirrored state/effect that could lag a resize.
+A deterministic case holds native change notifications while closing the review;
+focus reaches the current compact toolbar. Required timeouts remain unchanged.
+The final full suite runs after these corrections against a frozen build.
+Physical touch/software keyboard, OS IME and spoken assistive gates remain open.
+Next: PWA safety/static recovery, then actual OG/PWA/README assets. No push/deploy;
+CloakIMG remains last. Scratch: `/tmp/cloakresume-air-options/`.
+
+Final gate: **361/361 production tests, 9 files, zero skips, 510.69s**; 177 editor cases. All 136 recorded runtime/token/config files and 99 dist files remained unchanged. Check/build, 80-source inventory, 18 portability checks and exact family sync pass.

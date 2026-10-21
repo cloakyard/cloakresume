@@ -144,10 +144,10 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
 
       if (event.shiftKey && (active === first || !dialog.contains(active))) {
         event.preventDefault();
-        last.focus({ preventScroll: true });
+        last.focus();
       } else if (!event.shiftKey && (active === last || !dialog.contains(active))) {
         event.preventDefault();
-        first.focus({ preventScroll: true });
+        first.focus();
       }
     };
 

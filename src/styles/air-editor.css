@@ -1421,3 +1421,87 @@ button.resume-review-finding:focus-visible {
     display: none;
   }
 }
+
+/* Options use the same Air frame, with a fixed heading and one scroll region. */
+.resume-options-viewport {
+  background: var(--air-scrim);
+}
+.resume-options {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.resume-options > .resume-dialog-heading,
+.resume-options > .resume-sheet-handle {
+  flex: none;
+}
+.resume-options-body {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 6px;
+  margin: -6px;
+}
+.resume-options-actions {
+  display: grid;
+  gap: 4px;
+}
+.resume-options-action {
+  inline-size: 100%;
+  justify-content: start;
+  text-align: start;
+}
+.resume-options-action .air-action-labels {
+  flex: 1;
+  min-width: 0;
+}
+.resume-options-action .air-action-labels > span {
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+.resume-options-icon,
+.resume-options-paper > span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.resume-options-icon svg,
+.resume-options-paper svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  stroke-width: 1.6;
+}
+.resume-options-status {
+  margin: 4px 12px 8px;
+  color: var(--air-ink-secondary);
+  font-size: var(--air-text-meta);
+  line-height: 1.5;
+}
+.resume-options-actions hr {
+  border: 0;
+  border-top: 1px solid var(--air-line);
+  margin: 8px 0;
+}
+.resume-options-swatch {
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--air-line-control);
+  border-radius: 50%;
+}
+.resume-options-paper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  font-size: var(--air-text-body);
+}
+.resume-options :is(button, button:active),
+.resume-options-viewport {
+  transition: none;
+  animation: none;
+  transform: none;
+}

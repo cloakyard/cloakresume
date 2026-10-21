@@ -1317,3 +1317,34 @@ journeys across all apps; it is not inferred from the pilot alone.
   These are software checks; physical touch/software keyboard, OS IME and spoken
   assistive acceptance remain open. Overflow/export/PWA/static recovery and actual
   OG/PWA/README assets are the next slices; CloakIMG stays last.
+
+### Options and export controls
+
+- Options uses the standard Air dialog/sheet with a persistent heading, background
+  inertness and one scrolling command region. Keep PDF, Scan, Template, Primary
+  colour, A4/Letter, New, Save JSON and Load JSON available with full relative-size
+  labels and shared neutral controls. The open sheet survives desktop/compact
+  resize; paper state remains unchanged. Read current viewport matches when
+  rendering, even before native change notifications, so dismissal returns to the
+  visible toolbar. Colour handoffs use the existing picker.
+- Frequent command handoffs are immediate. Finish closing Options and restoring
+  its opener before the destination captures focus; never queue a 200ms callback.
+  Keep native file acquisition inside user activation. Cancel preserves the draft;
+  malformed files fail before replacement confirmation; reset the input so the same
+  file can be chosen again. Pointer actions explicitly focus their initiators for
+  Safari. Modal Tab/Shift+Tab wrapping scrolls the destination into view.
+- Both PDF triggers reserve ready/busy labels and remain focusable while guarded
+  busy. A separate live status reports real preparation, download initiation or
+  failure. Options stays open during export. Do not invent percentages, cancellation
+  or a successful saved-file claim: the browser owns the download destination.
+  Keep duplicate guards, template readiness, actual layout rejection, cleanup and
+  retry. JSON save failures also preserve work and show a recoverable notice.
+- Keep the lazy raster/text/link exporter, filenames, data schema, all templates,
+  paper dimensions, fonts and output unchanged. The Options surface is immediate,
+  including reduced motion; emulated swipe/cancel and keyboard dismissal remain.
+- Track removals and retained legacy consumers in `docs/air/code-cleanup.md`.
+  `scripts/test-air-options.mjs` covers ready/busy/failure layouts in both themes
+  and enlarged text; production browser regressions cover native acquisition,
+  handoffs, focus, resize, busy geometry, duplicate attempts and actual render
+  failure/retry. Physical touch/software keyboard and spoken assistive gates remain
+  open. Next are PWA safety, static recovery and actual OG/PWA/README assets.
