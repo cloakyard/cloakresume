@@ -134,3 +134,19 @@ override and the non-Air-only date-popup skin during the next bounded cleanup.
 Evidence: `evidence/unused-foundations-2026-10-21.json`. Full-product, physical
 touch/software keyboard, OS IME, spoken assistive and hardware acceptance remain
 open. No dependency or export/schema/template change belongs to this slice.
+
+## 2026-10-21 — Dependency rollout preparation
+
+Updated Harper to 2.13.0, React to 19.3.1, Lucide to 1.61.0, Vite+ to 1.3.0,
+pnpm to 12.14.0 and compatible transitive packages. CI checkout/setup-node actions
+use current release commit pins. Removed obsolete minimum-age exclusions and the
+fast-uri/sharp overrides; normal resolution provides their current compatible
+versions. Scoped Workbox to glob 13.0.6 to retire its deprecated glob 11 dependency;
+real service-worker tests pass with the unchanged async glob API. Keep the active
+brace-expansion security override. No unused runtime package was found.
+
+All 372 production tests pass, including the actual Harper worker and PWA flows.
+The 34 template/paper captures, two linked fixtures and four PDF comparisons keep
+exact raster/text/geometry/links. See [dependency evidence](evidence/dependencies-2026-10-21.json).
+Live fonts/tokens and final product acceptance remain the next bounded migration;
+this dependency commit does not mark them complete.

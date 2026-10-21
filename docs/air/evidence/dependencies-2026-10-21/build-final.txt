@@ -1,0 +1,101 @@
+$ tsc && vp build
+transforming...
+✓ 2247 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                                              1.45 kB
+dist/404.html                                                          3.37 kB │ gzip:     1.16 kB
+dist/assets/lora-vietnamese-700-normal-BHDzxyiD.woff2                  5.28 kB
+dist/assets/lora-vietnamese-600-normal-B_IFhWKN.woff2                  5.56 kB
+dist/index.html                                                        5.81 kB │ gzip:     1.89 kB
+dist/assets/lora-vietnamese-700-normal-DyKKCAD2.woff                   7.28 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2              7.42 kB
+dist/assets/lora-vietnamese-600-normal-BnEhOXH8.woff                   7.61 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2                8.00 kB
+dist/assets/lora-symbols-700-normal-zYsi5zvy.woff2                     9.39 kB
+dist/assets/lora-symbols-600-normal-DaMEG5Dn.woff2                     9.76 kB
+dist/assets/instrument-serif-latin-ext-400-normal-CFCUzsTy.woff        9.86 kB
+dist/assets/instrument-serif-latin-ext-400-italic-D7-lnxEk.woff       10.50 kB
+dist/assets/lora-symbols-700-normal-DaE8wqnc.woff                     11.27 kB
+dist/assets/lora-cyrillic-700-normal-CicHrsUU.woff2                   11.38 kB
+dist/assets/instrument-serif-latin-ext-400-normal-C2je3j2s.woff2      11.60 kB
+dist/assets/lora-symbols-600-normal-CURAubwP.woff                     11.71 kB
+dist/assets/lora-latin-ext-700-normal-DbHby4fw.woff2                  11.96 kB
+dist/assets/lora-cyrillic-600-normal-DuzuWObJ.woff2                   12.05 kB
+dist/assets/lora-latin-ext-600-normal-CURVZmIT.woff2                  12.27 kB
+dist/assets/instrument-serif-latin-ext-400-italic-C9HzH3YL.woff2      12.38 kB
+dist/assets/lora-cyrillic-ext-700-normal-CH2Ef3pd.woff2               12.60 kB
+dist/assets/lora-cyrillic-ext-600-normal-CYLe3Bq4.woff2               13.30 kB
+dist/assets/lora-cyrillic-700-normal-CoUvLzhc.woff                    13.97 kB
+dist/assets/lora-cyrillic-600-normal-j6UMqgXb.woff                    14.56 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2                 15.08 kB
+dist/assets/lora-latin-ext-700-normal-XBj10pPw.woff                   15.64 kB
+dist/assets/lora-latin-ext-600-normal-BX8pxmH4.woff                   15.96 kB
+dist/assets/lora-cyrillic-ext-700-normal-B20D6wuF.woff                15.99 kB
+dist/assets/lora-math-700-normal-BdgFUNlJ.woff2                       16.36 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2                16.51 kB
+dist/assets/lora-cyrillic-ext-600-normal-BobJ8QCm.woff                16.67 kB
+dist/assets/lora-math-600-normal-B9Wi-uy2.woff2                       16.92 kB
+dist/assets/instrument-serif-latin-400-normal-BVbkICAY.woff           18.33 kB
+dist/assets/instrument-serif-latin-400-italic-u__WvvIK.woff           19.26 kB
+dist/assets/lora-math-700-normal-JjB0YUk-.woff                        19.94 kB
+dist/assets/lora-math-600-normal-soY6uGQW.woff                        20.54 kB
+dist/assets/instrument-serif-latin-400-normal-DnYpCC2O.woff2          21.03 kB
+dist/assets/lora-latin-700-normal-BHK4Pzk4.woff2                      21.04 kB
+dist/assets/lora-latin-600-normal-B-3RcLOQ.woff2                      21.91 kB
+dist/assets/instrument-serif-latin-400-italic-DKMiL14s.woff2          22.12 kB
+dist/assets/lora-latin-700-normal-Yfa97ytg.woff                       25.94 kB
+dist/assets/lora-latin-600-normal-Dc3EneHn.woff                       26.81 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2                    29.40 kB
+dist/assets/harper_wasm_bg-Cqq8NHnk.wasm                          20,252.22 kB │ gzip: 8,450.78 kB
+dist/assets/notFound-BVtImPSN.css                                      0.63 kB │ gzip:     0.33 kB
+dist/assets/air-SrFtzEvt.css                                          38.35 kB │ gzip:     7.62 kB
+dist/assets/main-Dy8JFDOE.css                                         76.58 kB │ gzip:    15.15 kB
+dist/assets/binary-B8DJK2P5.js                                         0.17 kB │ gzip:     0.17 kB
+dist/assets/notFound-DvPcCyxU.js                                       0.17 kB │ gzip:     0.16 kB
+dist/assets/paginationAtoms-CMUzE7N-.js                                0.42 kB │ gzip:     0.28 kB
+dist/assets/rolldown-runtime-WkwZ5CU-.js                               0.59 kB │ gzip:     0.36 kB
+dist/assets/air-NR8Gk4pN.js                                            0.67 kB │ gzip:     0.38 kB
+dist/assets/shared-aw3QO7bL.js                                         3.71 kB │ gzip:     1.68 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js                        5.65 kB │ gzip:     2.20 kB
+dist/assets/react-BbggMMhK.js                                          7.87 kB │ gzip:     3.01 kB
+dist/assets/AtsPlain-B05AxmeI.js                                       9.34 kB │ gzip:     2.18 kB
+dist/assets/AtsProfessional-DEnyZUCf.js                               10.62 kB │ gzip:     2.46 kB
+dist/assets/Ledger-B9Ow85cW.js                                        10.77 kB │ gzip:     3.03 kB
+dist/assets/Minimalist-D8Yl8ZSs.js                                    10.98 kB │ gzip:     2.51 kB
+dist/assets/Academic-BCrdIf1L.js                                      11.35 kB │ gzip:     2.81 kB
+dist/assets/ClassicImpact-Btqeaq-x.js                                 12.66 kB │ gzip:     3.38 kB
+dist/assets/ExecutiveSerif-B03awsj7.js                                12.96 kB │ gzip:     3.00 kB
+dist/assets/ModernMinimal-8Q5WW5lO.js                                 13.01 kB │ gzip:     2.97 kB
+dist/assets/GradientHeader-BDAv1xGD.js                                14.25 kB │ gzip:     3.31 kB
+dist/assets/CompactTimeline-D-VJTKvX.js                               14.59 kB │ gzip:     3.32 kB
+dist/assets/Typographic-DAw9b3BL.js                                   15.84 kB │ gzip:     3.18 kB
+dist/assets/ClassicSidebar-C3nlkOXW.js                                15.92 kB │ gzip:     3.51 kB
+dist/assets/Monograph-thaXisP5.js                                     16.65 kB │ gzip:     3.51 kB
+dist/assets/Aurora-CjRTEhAY.js                                        17.46 kB │ gzip:     3.82 kB
+dist/assets/Prism-DgtdR0G4.js                                         17.67 kB │ gzip:     3.73 kB
+dist/assets/Bauhaus-DyIxNSml.js                                       17.87 kB │ gzip:     3.87 kB
+dist/assets/Horizon-D3uhMAI5.js                                       19.03 kB │ gzip:     3.92 kB
+dist/assets/AtsReviewContent-DKLXVRwf.js                              21.45 kB │ gzip:     6.69 kB
+dist/assets/purify.es-BZxk_wWO.js                                     29.02 kB │ gzip:    11.45 kB
+dist/assets/BinaryModule-S5UABkWQ-CinnEJrQ.js                         42.92 kB │ gzip:     8.19 kB
+dist/assets/dist-iJUfVBlH.js                                         129.97 kB │ gzip:    28.21 kB
+dist/assets/index.es-GHrxyqvi.js                                     151.42 kB │ gzip:    48.91 kB
+dist/assets/html2canvas-yXbslnz4.js                                  199.47 kB │ gzip:    46.77 kB
+dist/assets/main-xslzXOxA.js                                         477.79 kB │ gzip:   151.15 kB
+dist/assets/pdfExport-Bviq5vCi.js                                    614.49 kB │ gzip:   196.09 kB
+dist/assets/air-light-shader-BwlRjQzD.js                           1,261.55 kB │ gzip:   294.31 kB
+
+[plugin builtin:vite-reporter] 
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 642ms
+
+PWA v2.0.0
+mode      generateSW
+precache  77 entries (2399.73 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-271d3e69.js

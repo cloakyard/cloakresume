@@ -1,0 +1,98 @@
+{
+  "date": "2026-10-21",
+  "baselineCommit": "f05f97e",
+  "status": "passed-local-dependency-upgrade",
+  "scope": "Direct/transitive dependencies, CI action pins and synchronized portable Air assets. Full Air migration remains incomplete.",
+  "changes": {
+    "harper.js": {
+      "before": "^2.10.0",
+      "after": "^2.13.0"
+    },
+    "lucide-react": {
+      "before": "^1.52.0",
+      "after": "^1.61.0"
+    },
+    "react": {
+      "before": "^19.3.0",
+      "after": "^19.3.1"
+    },
+    "react-dom": {
+      "before": "^19.3.0",
+      "after": "^19.3.1"
+    },
+    "@types/node": {
+      "before": "^26.6.4",
+      "after": "^26.6.5"
+    },
+    "puppeteer-core": {
+      "before": "^25.12.0",
+      "after": "^25.15.0"
+    }
+  },
+  "vitePlus": "1.3.0",
+  "packageManager": "pnpm@12.14.0",
+  "ciActions": {
+    "checkout": "7.0.1",
+    "setup-node": "7.1.0"
+  },
+  "checks": {
+    "formatLintTypes": "147 files, zero diagnostics",
+    "build": "105 dist files; production build and asset budget pass",
+    "fullSuite": {
+      "command": "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism",
+      "passed": 372,
+      "files": 10,
+      "skipped": 0,
+      "seconds": 524.99
+    },
+    "inventorySources": 86,
+    "portability": 18,
+    "responsive": {
+      "cases": 88,
+      "geometryAndComputedStyles": "exact",
+      "pixelExact": 77,
+      "remaining11": "Antialiasing only; at most 61 pixels / 17 channel levels; reviewed final desktop/laptop/phone light/dark landing and editor",
+      "overflow": false
+    },
+    "output": {
+      "templatePaperCaptures": 34,
+      "linkedFixtureCaptures": 2,
+      "pdfComparisons": 4,
+      "result": "exact raster, text, geometry, URI links"
+    },
+    "horizons": {
+      "layouts": 12,
+      "actualGpuThemes": 2
+    },
+    "audit": {
+      "vulnerabilities": 0
+    },
+    "wranglerDryRun": "4.151.3 pass; not deployed",
+    "links": {
+      "states": 124,
+      "keyboardChecks": 32,
+      "routes": ["/", "/404.html"]
+    }
+  },
+  "frozenSourceAndBuild": {
+    "files": 283,
+    "distFiles": 105,
+    "unchanged": true,
+    "before": "dependencies-2026-10-21/freeze-before.json",
+    "after": "dependencies-2026-10-21/freeze-after.json"
+  },
+  "cleanup": [
+    "Removed stale release-age exemptions and fast-uri/sharp overrides; upstream ranges resolve current compatible releases",
+    "Replaced deprecated Workbox glob 11 with scoped glob 13.0.6 override; full real worker update suite passes",
+    "Updated only toolchain version assertions; no feature assertions weakened"
+  ],
+  "preserved": [
+    "All 17 template families, fonts, document schema, output and export adapters",
+    "Live font/token bridge and date presence/placement remain traced, not removed speculatively"
+  ],
+  "openGates": [
+    "Live font/token bridge migration and final full-product target/acceptance audit",
+    "Physical touch/software keyboard, OS IME, spoken assistive and GPU/battery/thermal acceptance"
+  ],
+  "rollout": "Local candidate only; integrate through dev then PR to main after remaining migration gates. No push, merge or deployment."
+}
