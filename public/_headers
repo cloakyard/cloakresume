@@ -1,0 +1,3 @@
+# Preserve audited static asset bytes; prevent edge-injected scripts.
+/*
+  Cache-Control: no-transform
