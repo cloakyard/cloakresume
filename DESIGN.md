@@ -1127,8 +1127,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   focus to the selected section or back to its selected row; resizing does not steal
   focus. The zoom dock is outside document scrolling and stays reachable at any zoom.
 - `node scripts/test-air-editor-shell.mjs` checks shell geometry and all 13 navigation
-  routes plus preview/paper operations. These checks do not certify the remaining
-  editor interiors, review sheets, PWA notice, real touch/keyboard or assistive speech.
+  routes plus preview/paper operations. These checks do not certify other
+  editor interiors, review sheets, PWA notices, real touch/keyboard or assistive speech.
 
 - Shared text/CSV/textarea fields and scoped rich-text formatting use Air labels,
   help, contours and capability-based editable text. Blank hint reserves and the
@@ -1256,8 +1256,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   custom values, both themes, text enlargement, breakpoint edges, coarse/fine input
   and forced colours. Complete source review plus existing field/date/logo/hint and
   entry tests establish software acceptance; physical touch/software keyboard, OS
-  IME and spoken assistive gates remain separate. Overflow/export,
-  PWA/static recovery and real preview assets are still later slices.
+  IME and spoken assistive gates remain separate. Final product acceptance
+  and cleanup remain open.
 
 - The template library uses the shared wide Air dialog, compound search field,
   neutral selection and readable category/name/description/level metadata. Names
@@ -1281,7 +1281,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   blank/populated drafts, every viewport class, both themes, text enlargement,
   coarse/fine targets and forced colours. Native Safari and actual Firefox zoom
   are separate from physical touch/software keyboard, OS IME and spoken assistive
-  acceptance. Overflow/export, PWA/static recovery and real assets remain.
+  acceptance. Final product acceptance and cleanup remain open.
 
 ### Résumé review
 
@@ -1315,8 +1315,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   failure, forced colours and text contrast. Browser regressions cover compressed
   responses, lazy dismissal, real retry/completion, stale edits and field handoffs.
   These are software checks; physical touch/software keyboard, OS IME and spoken
-  assistive acceptance remain open. Overflow/export/PWA/static recovery and actual
-  OG/PWA/README assets are the next slices; CloakIMG stays last.
+  assistive acceptance remain open. Final product acceptance and cleanup
+  are still required; CloakIMG stays last.
 
 ### Options and export controls
 
@@ -1347,7 +1347,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   and enlarged text; production browser regressions cover native acquisition,
   handoffs, focus, resize, busy geometry, duplicate attempts and actual render
   failure/retry. Physical touch/software keyboard and spoken assistive gates remain
-  open. Next are PWA safety, static recovery and actual OG/PWA/README assets.
+  open. Final product acceptance and cleanup remain required.
 
 ### PWA update and static recovery — 2026-10-21
 
@@ -1367,5 +1367,27 @@ journeys across all apps; it is not inferred from the pilot alone.
   Restrict the service-worker app-shell fallback to real app entry URLs so missing
   paths retain HTTP 404 after installation. No React dependency in static recovery.
 - Software evidence is `docs/air/evidence/pwa-recovery-2026-10-21.json`. Physical
-  touch/software keyboards and spoken assistive acceptance remain open. Next:
-  actual OG/PWA/README assets and metadata, then full-product acceptance/cleanup.
+  touch/software keyboards and spoken assistive acceptance remain open. Final
+  product acceptance and cleanup are still required.
+
+### Social, install and README previews — 2026-10-21
+
+- Capture real production landing/editor states in light and dark. Use isolated
+  browser contexts and the built-in synthetic sample, with capture-only seed/date
+  for reproducibility; never capture personal drafts or replace visible controls.
+  Reduced motion and capture-only worker suppression avoid transient artwork/notices.
+- Social artwork is a fixed 1200×630 composition using pinned local Air CSS, the
+  canonical mark and the real editor image. Keep product claims accurate, type
+  neutral and document output unchanged. Artwork source stays out of the app build.
+- Manifest screenshots use content/appearance labels and exact image dimensions.
+  README selects its matching theme with a light fallback. Install metadata uses
+  Air’s light page colour; HTML supplies both system theme colours. Social/store
+  images remain outside the offline application-shell precache.
+- Build, run `generate-screenshots`, then `generate-og`, and rebuild. Inspect every
+  generated image and actual responsive/theme states. Verify repeatable pixels,
+  metadata/resource integrity and preserved template/PDF output. The complete
+  workflow lives in `docs/brand-assets.md` and dated evidence in `docs/air/`.
+- Trace and remove obsolete screenshots, generator selectors and unused skins
+  together. Preserve live template/font/popup adapters until their consumers are
+  migrated. Final product cleanup/acceptance and physical/assistive gates remain
+  open; these assets alone do not finish the product migration.

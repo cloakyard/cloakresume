@@ -552,16 +552,25 @@ describe("CloakResume family contract", () => {
   });
 
   it("documents every live TSX surface and makes output boundaries explicit", async () => {
-    const [tsxFiles, audit, readme] = await Promise.all([
+    const [tsxFiles, audit, readme, airSource] = await Promise.all([
       filesBelow("src", ".tsx"),
       source("docs/design-audit.md"),
       source("README.md"),
+      source("docs/air/surfaces.json"),
     ]);
     const inventory = designInventory(audit);
 
     expect([...inventory.keys()].sort()).toEqual(tsxFiles);
     expect(audit).toContain(`All ${tsxFiles.length} TSX files in \`src/\` were examined`);
-    expect(readme).toContain(`complete ${tsxFiles.length}-file TSX audit`);
+    const air = JSON.parse(airSource) as { surfaces: { path: string }[] };
+    expect(
+      air.surfaces
+        .map((surface) => surface.path)
+        .filter((path) => path.endsWith(".tsx"))
+        .sort(),
+    ).toEqual(tsxFiles);
+    expect(readme).toContain("[docs/air/surfaces.json](docs/air/surfaces.json)");
+    expect(readme).toContain("[DESIGN.md](DESIGN.md)");
 
     for (const file of tsxFiles.filter((path) => path.startsWith("src/templates/"))) {
       expect(inventory.get(file), `${file} must retain the document-output exemption`).toBe(

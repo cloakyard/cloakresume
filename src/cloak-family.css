@@ -36,15 +36,6 @@ body {
   box-shadow: none;
 }
 
-.cr-input:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.cr-input:disabled {
-  background: var(--surface-3);
-}
-
 .cr-popover:not(.air-popover) {
   background: var(--surface);
   backdrop-filter: none;
@@ -75,37 +66,6 @@ button:not(.absolute):active:not(:disabled) {
 .cr-popover button:disabled {
   opacity: 0.55;
   cursor: not-allowed;
-}
-
-.cr-input {
-  border-color: var(--line);
-  border-radius: var(--radius-control);
-  box-shadow: none;
-}
-
-.cr-input:hover {
-  border-color: var(--color-rule-strong);
-}
-
-/* Fields use the same visible ring as keyboard-focused actions. Keep it
- * independent of validation colour, and avoid stacking a second halo. */
-.cr-input:focus {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-  border-color: var(--brand);
-  box-shadow: none;
-}
-
-.cr-input[aria-expanded="true"] {
-  border-color: var(--brand);
-}
-
-/* These overrides follow the shared border rules so errors and writing hints
- * remain visible while hovering or editing, in either appearance. */
-.cr-input--invalid,
-.cr-input--invalid:hover,
-.cr-input--invalid:focus {
-  border-color: var(--danger);
 }
 
 .cr-drag-item[data-dragging="true"] {

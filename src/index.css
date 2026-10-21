@@ -150,27 +150,9 @@
     background: transparent;
   }
 
-  /* ─── Form primitives ───
-   * Mobile-first: inputs are 16 px on mobile (prevents iOS zoom-on-focus)
-   * and have generous 12 px padding for comfortable touch. Shrinks on
-   * `lg:` where pointer input is the norm. */
+  /* Structural field wrappers; visible controls use pinned Air primitives. */
   .cr-field {
     @apply block;
-  }
-  .cr-input {
-    @apply block w-full px-3 py-3 text-base leading-[1.45]
-      text-(--ink-1) bg-(--surface)
-      border border-(--line) rounded-md
-      placeholder:text-(--ink-5)
-      transition-[border-color,background-color] duration-160
-      hover:border-(--color-rule-strong)
-      lg:px-3 lg:py-2.5 lg:text-sm lg:leading-[1.5];
-  }
-  /* Validation and writing hints keep their status colour; the shared
-   * chrome stylesheet supplies the same focus ring for every state. */
-  .cr-input--invalid {
-    @apply border-(--danger-border) bg-(--danger-bg)/50
-      hover:border-(--danger-border);
   }
   /* Vertical rhythm inside a section body */
   .cr-stack > * + * {

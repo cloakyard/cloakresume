@@ -1,0 +1,62 @@
+import {createRequire} from 'node:module';
+import {createHash} from 'node:crypto';
+import {mkdir,writeFile,readFile} from 'node:fs/promises';
+import assert from 'node:assert/strict';
+const require=createRequire('<CLOAKRESUME_ROOT>/package.json');
+const {launch}=require('puppeteer-core');const sharp=require('sharp');
+const out='<SCRATCH_ROOT>/visual';await mkdir(out,{recursive:true});
+const browser=await launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true,args:["--disable-gpu"]});
+const sizes=[[320,568],[375,812],[390,844],[430,932],[844,390],[768,1024],[1024,768],[1280,720],[1366,768],[1440,900],[1920,1080]];
+const rows=[],errors=[];
+try{
+for(const theme of ['light','dark'])for(const text of [16,32]){
+ const contexts=[],pages=[];
+ for(const port of [8208,8209]){
+  const context=await browser.createBrowserContext();contexts.push(context);const p=await context.newPage();pages.push(p);
+  p.on('pageerror',e=>errors.push(String(e)));await p.setViewport({width:1440,height:900,hasTouch:true});
+  await p.emulateMediaFeatures([{name:'prefers-color-scheme',value:theme},{name:'prefers-reduced-motion',value:'reduce'}]);
+  await p.evaluateOnNewDocument(()=>{
+   Object.defineProperty(navigator,'serviceWorker',{value:undefined});
+   const N=Date;window.Date=class extends N{constructor(...args){super(...(args.length?args:[N.UTC(2026,9,21,12)]))}static now(){return N.UTC(2026,9,21,12)}};
+   let seed=0xc10a2026;Math.random=()=>{seed+=0x6d2b79f5;let v=seed;v=Math.imul(v^(v>>>15),v|1);v^=v+Math.imul(v^(v>>>7),v|61);return((v^(v>>>14))>>>0)/4294967296};
+  });
+  await p.goto(`http://127.0.0.1:${port}/`,{waitUntil:'networkidle0'});await p.waitForSelector('#landing-title');
+  await p.evaluate(text=>document.documentElement.style.fontSize=`${text}px`,text);
+ }
+ for(const state of ['landing','editor']){
+  if(state==='editor')for(const p of pages){await p.locator('::-p-aria(Load sample)').click();await p.waitForSelector('.resume-root[data-template-ready="true"] .resume-page')}
+  for(const [width,height]of sizes){
+   const hashes=[], images=[], measurements=[];
+   for(let i=0;i<pages.length;i++){
+    const p=pages[i];await p.setViewport({width,height,hasTouch:true});
+    await p.evaluate(async()=>{await document.fonts.ready;window.scrollTo(0,0);document.querySelector('.resume-editor-panel .cr-scroll')?.scrollTo(0,0);await new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(()=>requestAnimationFrame(r))))});
+    const geometry=await p.evaluate(()=>{
+     const root=document.querySelector('.resume-site')||document.querySelector('.resume-editor');const bad=[],controls=[];
+     for(const el of root.querySelectorAll('button,summary,input,textarea,select,a,h1,h2,p')){
+      if(!el.checkVisibility()||el.closest('.resume-root,[inert],.sr-only')||el.matches('.resume-skip,.resume-editor-skip'))continue;
+      const r=el.getBoundingClientRect();if(r.width<1||r.height<1)continue;
+      const style=getComputedStyle(el);controls.push({tag:el.tagName,text:el.textContent?.trim(),rect:r.toJSON(),font:style.font,color:style.color,background:style.backgroundColor,border:style.border,borderRadius:style.borderRadius});
+      if(r.left<-.5||r.right>innerWidth+.5)bad.push({text:el.textContent?.trim().slice(0,50),left:r.left,right:r.right});
+     }
+     return {overflow:document.documentElement.scrollWidth>innerWidth+1,bad,controls};
+    });
+    measurements.push(geometry.controls);delete geometry.controls;
+    assert.deepEqual(geometry,{overflow:false,bad:[]},`${state}/${width}/${theme}/${text}/${i}`);
+    const bytes=await p.screenshot({captureBeyondViewport:false});hashes.push(createHash('sha256').update(bytes).digest('hex'));images.push(bytes);
+    if(i===1&&[320,430,768,1280,1440].includes(width)&&(text===16||width===320||width===1280))await writeFile(`${out}/${state}-${width}-${theme}${text===32?'-200text':''}.png`,bytes);
+   }
+   if(hashes[0]!==hashes[1])for(let i=0;i<2;i++)await writeFile(`${out}/mismatch-${state}-${width}-${theme}-${text}-${i}.png`,images[i]);
+   let differingPixels=0,maxChannelDifference=0;
+   if(hashes[0]!==hashes[1]){
+    const a=await sharp(images[0]).ensureAlpha().raw().toBuffer(),b=await sharp(images[1]).ensureAlpha().raw().toBuffer();
+    for(let j=0;j<a.length;j+=4){let delta=0;for(let k=0;k<4;k++)delta=Math.max(delta,Math.abs(a[j+k]-b[j+k]));if(delta)differingPixels++;maxChannelDifference=Math.max(maxChannelDifference,delta)}
+   }
+   assert.deepEqual(measurements[0],measurements[1],`Rendered geometry/style regression ${state}/${width}/${theme}/${text}`);
+   rows.push({state,width,height,theme,rootFont:text,coarse:true,geometryAndStylesEqual:true,exact:hashes[0]===hashes[1],differingPixels,maxChannelDifference,sha256:hashes[1]});
+  }
+ }
+ for(const c of contexts)await c.close();
+}
+assert.deepEqual(errors,[]);await writeFile(`${out}/comparison.json`,JSON.stringify({rows,errors},null,2));console.log(`${rows.length} baseline/current geometry and computed-style comparisons; pixel deltas recorded separately; no horizontal overflow or page errors`);
+}finally{await browser.close()}
+process.exit(0);

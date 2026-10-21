@@ -1,0 +1,37 @@
+[
+  {
+    "path": "public/icons/og-image.png",
+    "bytes": 186480,
+    "sha256": "11328378bb16319432a672221b6b690e762a39d8b876b4a7caaf69d5dc156227",
+    "repeatIdentical": true,
+    "distIdentical": true
+  },
+  {
+    "path": "public/screenshots/landing-narrow-light.png",
+    "bytes": 130423,
+    "sha256": "078ce1a1738cb5a39d8d1922c81a201f78f4236df810c7135254ccf2457e6a7c",
+    "repeatIdentical": true,
+    "distIdentical": true
+  },
+  {
+    "path": "public/screenshots/landing-narrow-dark.png",
+    "bytes": 126123,
+    "sha256": "24733c4bae3014ab029ad055b9804e6dde6e8b25386ed08cfe6be809ca2ebd20",
+    "repeatIdentical": true,
+    "distIdentical": true
+  },
+  {
+    "path": "public/screenshots/editor-wide-light.png",
+    "bytes": 323527,
+    "sha256": "aa7cd82d47a87e5411fcccec23d2efc1694b54186044ca038add992bc02dd3ef",
+    "repeatIdentical": true,
+    "distIdentical": true
+  },
+  {
+    "path": "public/screenshots/editor-wide-dark.png",
+    "bytes": 324910,
+    "sha256": "dbe6615c0b9f2fe5fc649678a958a7d2bdc7316cbaf67952e12afef68256586b",
+    "repeatIdentical": true,
+    "distIdentical": true
+  }
+]

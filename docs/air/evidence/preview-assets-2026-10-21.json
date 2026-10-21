@@ -1,0 +1,119 @@
+{
+  "date": "2026-10-21",
+  "piece": "CloakResume social, PWA and README assets",
+  "baseline": "24c89e6",
+  "scope": "Local only; no push/deploy. CloakIMG untouched.",
+  "contract": {
+    "version": "1.0.6",
+    "sha256": "e7c8a4bcfbc5af9d852a9ec15a38649c9bdaa052e3392db3ff9fd52cd91193af",
+    "sharedContractChanged": false
+  },
+  "changes": [
+    "Actual production light/dark landing and editor screenshots",
+    "Air social artwork using canonical mark, local CSS and real editor proof",
+    "Air install colours, accurate metadata/labels and theme-aware README",
+    "Retired old device-named images and unused cr-input skin",
+    "Simplified capture scripts and corrected active contributor/design/asset guidance"
+  ],
+  "assets": {
+    "count": 5,
+    "repeatGenerationByteEquality": true,
+    "builtCopyByteEquality": true,
+    "totalBytes": 1091463,
+    "previousThreeAssetsBytes": 1231012,
+    "hashes": "preview-assets-2026-10-21/asset-hashes.json",
+    "social": "../../../public/icons/og-image.png"
+  },
+  "metadata": {
+    "chromiumManifestErrors": 0,
+    "decodedManifestImages": 8,
+    "READMEThemes": 2,
+    "presentationExcludedFromPrecache": true,
+    "details": "preview-assets-2026-10-21/metadata.json"
+  },
+  "responsive": {
+    "comparisons": 88,
+    "viewportClasses": 11,
+    "states": ["landing", "editor"],
+    "themes": ["light", "dark"],
+    "rootFonts": [16, 32],
+    "coarse": true,
+    "reducedMotion": true,
+    "geometryAndComputedStylesEqual": true,
+    "horizontalOverflow": 0,
+    "pageErrors": 0,
+    "pixelExactCases": 73,
+    "maxDifferentPixels": 58,
+    "maxChannelDifference": 2,
+    "note": "Pixels are recorded separately: rounded field-border rasterization differs by at most 58 pixels / 2 channel levels. Geometry and computed control styles match exactly. This is not a claim of universal byte-identical UI screenshots.",
+    "details": "preview-assets-2026-10-21/responsive-comparison.json"
+  },
+  "links": {
+    "layoutStates": 124,
+    "keyboardChecks": 32,
+    "routes": ["/", "/404.html"],
+    "details": "preview-assets-2026-10-21/links.json"
+  },
+  "output": {
+    "templatePaperComparisons": 34,
+    "additionalLinkedDocumentComparisons": 2,
+    "PDFComparisons": 4,
+    "rasterTextGeometryURIsEqual": true,
+    "details": "preview-assets-2026-10-21/output-comparison.json"
+  },
+  "checks": {
+    "formatLintTypes": "pass; 147 files, zero warnings/errors",
+    "build": "pass; 77 precache entries, 2400.24 KiB; existing chunk-size warning",
+    "designInventory": 86,
+    "portabilityChecks": 18,
+    "familySync": "pass; six portable specifications",
+    "fullProductionSuite": {
+      "command": "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism",
+      "passed": 372,
+      "files": 10,
+      "skipped": 0,
+      "durationSeconds": 530.12,
+      "log": "preview-assets-2026-10-21/full-suite.txt"
+    },
+    "focusedDesignAndAssets": {
+      "passed": 25,
+      "files": 2,
+      "durationSeconds": 0.215
+    },
+    "generatorFailurePaths": "pass; actual dev server rejected before capture; missing Chrome exits nonzero and closes owned preview"
+  },
+  "freeze": {
+    "files": 284,
+    "distFiles": 105,
+    "details": "preview-assets-2026-10-21/freeze-before.json",
+    "after": "preview-assets-2026-10-21/freeze-after.json",
+    "unchanged": true
+  },
+  "visualReview": [
+    "All five generated assets, including final software-rendered OG, inspected at native size",
+    "Desktop/laptop/tablet/minimum-phone actual landing/editor in light and dark",
+    "Separate 200% root-font phone/laptop captures; this is not browser zoom or physical-device acceptance"
+  ],
+  "diagnostics": [
+    "First broad run was deliberately interrupted before changing the OG renderer; only the fresh final run counts.",
+    "OG repeat differences were isolated to image downsampling; software rasterization gives identical output.",
+    "The ad hoc geometry probe initially included the intentional sr-only heading; excluded that accessibility-only node.",
+    "Strict viewport pixel equality exposed 15\u201358 border-edge pixels with 1\u20132 channel-level differences; exact geometry/styles and separate raster statistics are recorded. No product test timeout, skip or functional assertion was weakened.",
+    "First completed production run: 371/372; one stale README wording assertion failed. Updated it to verify the live Air inventory covers every TSX source, keeping historical source coverage and output-boundary assertions. Focused 25/25 pass before the required fresh full rerun."
+  ],
+  "limits": [
+    "Final product cleanup/acceptance and pending inventory/44px target gates remain open",
+    "Physical touch/software keyboards, OS IME and spoken assistive acceptance remain open",
+    "Physical GPU/battery/thermal acceptance remains open",
+    "Native Safari/Firefox behavioral checks from the preceding slices were not repeated for static assets and unused-selector removal"
+  ],
+  "next": "CloakResume final cleanup and acceptance, starting with exact legacy token/font/selector consumers. CloakIMG remains last.",
+  "cleanup": {
+    "removedCSSLinesNet": 58,
+    "generatorLinesBefore": 293,
+    "generatorLinesAfter": 178,
+    "liveConsumerRecord": "../code-cleanup.md",
+    "serversStopped": [8208, 8209, 8210],
+    "followupCandidates": "preview-assets-2026-10-21/cleanup-followup.json"
+  }
+}

@@ -66,3 +66,48 @@ acceptance. Physical/assistive gates remain open; CloakIMG stays parked and last
 Asset-piece cleanup follow-up: `.cr-input` styles have no current TSX consumer;
 the remaining script selector is stale. Remove that obsolete selector and its
 unused skin together when replacing the screenshot generator.
+
+## 2026-10-21 — Preview assets and metadata
+
+- Replaced `iPhone.png` / `iPad.png` with four content/theme-named production
+  captures. Updated every active manifest, README, artwork, generator and test
+  reference together. Historical evidence retains its original asset names.
+- Removed 58 lines of obsolete `.cr-input` field/invalid/disabled/hover/focus skin
+  and superseded comments. Searches of TSX, scripts, tests and generated markup
+  found no remaining consumer; actual capture readiness now uses Air fields.
+- Reduced the two generators from 293 to 178 lines (including comments/formatting).
+  OG renders local artwork directly; the screenshot generator owns one production
+  preview. Independent contexts, seeded/fixed-date synthetic content, decoded
+  images/fonts and failure propagation replace shared session/dev-server assumptions.
+  No new package, runtime abstraction or application feature was added.
+- README, CONTRIBUTING and brand-assets documentation now point to Air rather than
+  the retired Workbench palette, typography, frame and tablet screenshot. The
+  historical design audit remains clearly marked history, with a current follow-up.
+- Preserved the canonical mark, launcher/maskable assets and `favicon.svg` /
+  `logo.svg` compatibility copies for older saved URLs. The existing brand tests
+  verify their glyph, RGB output and safe-zone geometry.
+
+Retained after consumer tracing:
+
+| Code/assets                                                 | Live consumer and follow-up                                                                                                                                                                  |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Archivo registration/file and `--font-body` / `--font-sans` | Base/body/form bridge in `index.css` and `cloak-family.css`; audit inherited and transitional states in final cleanup before replacing.                                                      |
+| JetBrains registration/file and legacy font tokens          | Remaining typography bridge; `Preview` has a `font-mono` loading state. Audit actual computed resolution and unused token exports in final cleanup, then remove proven unused registrations. |
+| Geist, Instrument Serif, Lora and document font preparation | Named template styles and PDF rendering; protected output, not obsolete application decoration.                                                                                              |
+| `.cr-field`, `.cr-field-row`, `.cr-stack`                   | Shared fields, Profile/Projects/BulletList formatting and section layout.                                                                                                                    |
+| `.cr-popover` and `useAnimatedPresence`                     | MonthYearField’s live positioning/presence adapter.                                                                                                                                          |
+| Toolbar bridge, Editor, GithubIcon and lazy export          | ToolbarOverflow, SectionPanel, ErrorBoundary and explicit export respectively.                                                                                                               |
+
+No dependency, template, exporter or file-schema changes. Evidence:
+`evidence/preview-assets-2026-10-21.json`. Next: full-product cleanup/acceptance,
+including token/font consumer resolution, remaining inventory gates and the
+44px target sweep. Physical touch/software keyboard, OS IME, assistive speech and
+GPU/battery acceptance remain separate. CloakIMG stays last and untouched.
+
+The asset pass also updates the README audit assertion to verify actual Air
+inventory coverage for every live TSX file. Historical source coverage and output
+exemptions remain enforced. `cleanup-followup.json` in the asset evidence lists
+conservative token candidates after checking source, token chains and compiled
+Tailwind references; these are candidates, not blanket deletion permission.
+DragList’s `.cr-drag-item` is explicitly live. Review only its earlier transform
+override and the non-Air-only date-popup skin during the next bounded cleanup.

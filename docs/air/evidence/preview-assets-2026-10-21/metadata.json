@@ -1,0 +1,183 @@
+{
+  "manifestErrors": [],
+  "manifest": {
+    "name": "CloakResume",
+    "short_name": "CloakResume",
+    "description": "Build, tailor, review and export your résumé in your browser. Your draft and job description stay on your device.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#fafbfc",
+    "theme_color": "#fafbfc",
+    "lang": "en",
+    "scope": "/",
+    "orientation": "any",
+    "icons": [
+      {
+        "src": "icons/pwa-64x64.png",
+        "sizes": "64x64",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "icons/pwa-192x192.png",
+        "sizes": "192x192",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "icons/pwa-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "any"
+      },
+      {
+        "src": "icons/maskable-icon-512x512.png",
+        "sizes": "512x512",
+        "type": "image/png",
+        "purpose": "maskable"
+      }
+    ],
+    "screenshots": [
+      {
+        "src": "screenshots/landing-narrow-light.png",
+        "sizes": "860x1864",
+        "type": "image/png",
+        "form_factor": "narrow",
+        "label": "CloakResume landing and Start blank action on a phone, light appearance"
+      },
+      {
+        "src": "screenshots/landing-narrow-dark.png",
+        "sizes": "860x1864",
+        "type": "image/png",
+        "form_factor": "narrow",
+        "label": "CloakResume landing and Start blank action on a phone, dark appearance"
+      },
+      {
+        "src": "screenshots/editor-wide-light.png",
+        "sizes": "1440x900",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "CloakResume editor and sample résumé preview on a desktop, light appearance"
+      },
+      {
+        "src": "screenshots/editor-wide-dark.png",
+        "sizes": "1440x900",
+        "type": "image/png",
+        "form_factor": "wide",
+        "label": "CloakResume editor and sample résumé preview on a desktop, dark appearance"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "src": "screenshots/landing-narrow-light.png",
+      "sizes": "860x1864",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "CloakResume landing and Start blank action on a phone, light appearance",
+      "width": 860,
+      "height": 1864,
+      "url": "http://127.0.0.1:8209/screenshots/landing-narrow-light.png"
+    },
+    {
+      "src": "screenshots/landing-narrow-dark.png",
+      "sizes": "860x1864",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "CloakResume landing and Start blank action on a phone, dark appearance",
+      "width": 860,
+      "height": 1864,
+      "url": "http://127.0.0.1:8209/screenshots/landing-narrow-dark.png"
+    },
+    {
+      "src": "screenshots/editor-wide-light.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "CloakResume editor and sample résumé preview on a desktop, light appearance",
+      "width": 1440,
+      "height": 900,
+      "url": "http://127.0.0.1:8209/screenshots/editor-wide-light.png"
+    },
+    {
+      "src": "screenshots/editor-wide-dark.png",
+      "sizes": "1440x900",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "CloakResume editor and sample résumé preview on a desktop, dark appearance",
+      "width": 1440,
+      "height": 900,
+      "url": "http://127.0.0.1:8209/screenshots/editor-wide-dark.png"
+    },
+    {
+      "src": "icons/pwa-64x64.png",
+      "sizes": "64x64",
+      "type": "image/png",
+      "purpose": "any",
+      "width": 64,
+      "height": 64,
+      "url": "http://127.0.0.1:8209/icons/pwa-64x64.png"
+    },
+    {
+      "src": "icons/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any",
+      "width": 192,
+      "height": 192,
+      "url": "http://127.0.0.1:8209/icons/pwa-192x192.png"
+    },
+    {
+      "src": "icons/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any",
+      "width": 512,
+      "height": 512,
+      "url": "http://127.0.0.1:8209/icons/pwa-512x512.png"
+    },
+    {
+      "src": "icons/maskable-icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable",
+      "width": 512,
+      "height": 512,
+      "url": "http://127.0.0.1:8209/icons/maskable-icon-512x512.png"
+    }
+  ],
+  "social": {
+    "theme-color:(prefers-color-scheme: light)": "#fafbfc",
+    "theme-color:(prefers-color-scheme: dark)": "#101216",
+    "og:type": "website",
+    "og:url": "https://resume.cloakyard.com/",
+    "og:title": "CloakResume — Your next chapter. In your words.",
+    "og:description": "Build, tailor, review, and export a serious résumé in one browser tab. Nothing uploaded.",
+    "og:image": "https://resume.cloakyard.com/icons/og-image.png",
+    "og:image:type": "image/png",
+    "og:image:width": "1200",
+    "og:image:height": "630",
+    "og:image:alt": "CloakResume: Your next chapter. In your words. Air editor with a synthetic sample résumé.",
+    "og:site_name": "CloakResume",
+    "twitter:card:": "summary_large_image",
+    "twitter:title:": "CloakResume — Your next chapter. In your words.",
+    "twitter:description:": "Build, tailor, review, and export a serious résumé in one browser tab. Nothing uploaded.",
+    "twitter:image:": "https://resume.cloakyard.com/icons/og-image.png",
+    "twitter:image:alt:": "CloakResume: Your next chapter. In your words. Air editor with a synthetic sample résumé."
+  },
+  "readme": [
+    {
+      "theme": "light",
+      "src": "file:///Users/sumitsahoo/Developer/cloakresume/public/screenshots/editor-wide-light.png",
+      "width": 1440,
+      "height": 900
+    },
+    {
+      "theme": "dark",
+      "src": "file:///Users/sumitsahoo/Developer/cloakresume/public/screenshots/editor-wide-dark.png",
+      "width": 1440,
+      "height": 900
+    }
+  ],
+  "presentationOutsidePrecache": true
+}

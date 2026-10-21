@@ -1,7 +1,7 @@
 <div align="center">
 
-  <p><strong>A complete résumé workbench. Nothing uploaded.</strong></p>
-  <p>Build, tailor, review, and export a serious résumé in one browser tab.</p>
+  <p><strong>Your next chapter. In your words.</strong></p>
+  <p>Build, tailor, review and export your résumé in your browser.</p>
 
   <p><a href="https://resume.cloakyard.com/">resume.cloakyard.com</a></p>
 
@@ -14,7 +14,10 @@
 </div>
 
 <p align="center">
-  <img src="public/screenshots/iPad.png" alt="CloakResume résumé editor and live document proof on a tablet" width="800" />
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="public/screenshots/editor-wide-dark.png" />
+    <img src="public/screenshots/editor-wide-light.png" alt="CloakResume’s Air editor and a synthetic sample résumé in Classic Sidebar" width="800" />
+  </picture>
 </p>
 
 ---
@@ -28,11 +31,11 @@ CloakResume is a browser-native editor for the complete résumé workflow:
 - **Design** — choose from 17 live résumé layouts, set the template colour, reorder sections, and preview A4 or US Letter pages.
 - **Carry** — export PDF, save or load editable JSON, start with realistic sample content, and return to a browser-saved local draft.
 
-The application chrome follows the same technical-editorial language as
-[CloakPDF](https://github.com/cloakyard/cloakpdf): Archivo and JetBrains Mono,
-cool paper, slate rules, compact geometry, and solid overlays. CloakResume keeps its
-own Emerald `#047857` identity. Résumé templates remain document outputs and preserve
-their individual typography, palettes, and pagination behavior.
+The application follows [Cloakyard Air](DESIGN.md): quiet neutral surfaces,
+readable system typography, shared controls and a green landing light drawn from
+CloakResume’s mark. Public hyperlinks stay neutral, including hover, with angled
+cues where appropriate. Résumé templates preserve their individual typography,
+author-selected colours and pagination in both application themes.
 
 ## Portable files
 
@@ -105,10 +108,10 @@ vp dev
 | `vp outdated`                 | Report packages with newer releases                           |
 | `vp pm audit`                 | Audit the installed dependency graph                          |
 | `vp run generate-icons`       | Regenerate favicon and install icons from the app-icon source |
-| `vp run generate-og`          | Capture the 1200×630 social image from the live landing page  |
-| `vp run generate-screenshots` | Capture the narrow and wide PWA screenshots                   |
+| `vp run generate-og`          | Render the Air social card using the real editor capture      |
+| `vp run generate-screenshots` | Capture production landing/editor images in light and dark    |
 
-The browser regression tests cover long-field editing, current-job dates, autosave recovery, imports, photo uploads, writing-engine retries, and page clipping. They use Google Chrome on macOS by default; set `CHROME_PATH` to a Chrome or Chromium executable elsewhere. These tests are skipped when that executable is unavailable. Use `vp test run` for a single complete run. To check production behavior, run `vp run build`, then `CLOAKRESUME_BROWSER_BUILD=production vp test run tests/editor-browser.spec.ts`.
+The browser regression tests cover long-field editing, current-job dates, autosave recovery, imports, photo uploads, writing-engine retries, and page clipping. They use Google Chrome on macOS by default; set `CHROME_PATH` to a Chrome or Chromium executable elsewhere. A missing browser is a blocked validation gate, even if an individual suite reports a skip. After `vp run build`, run the complete production suite with `CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism`; acceptance requires zero skipped tests.
 
 Vitest is pinned to the version bundled by Vite+. Upgrade that pin together with Vite+ rather than independently. The PWA asset generator runs through `vp run generate-icons`; the Vite plugin's optional asset-generation integration is disabled.
 
@@ -116,6 +119,7 @@ Vitest is pinned to the version bundled by Vite+. Upgrade that pin together with
 
 ```text
 cloakresume/
+├── artwork/og.html            # Air social composition using the real editor capture
 ├── public/
 │   ├── cloakresume-mark.svg  # Canonical 64px product mark and favicon source
 │   ├── icons/                 # Favicons, install icons, and Open Graph image
@@ -128,11 +132,11 @@ cloakresume/
 │   ├── templates/             # 17 output layouts and shared pagination helpers
 │   ├── utils/                 # ATS, grammar, export, colour, storage, and rich-text logic
 │   ├── App.tsx                # State and workflow composition
-│   ├── cloak-family.css       # CloakPDF-family application language
+│   ├── cloak-family.css       # Remaining compatibility adapters; see cleanup record
 │   └── index.css              # Base styles and Tailwind theme bridge
 ├── DESIGN.md                  # Authoritative layout and interaction contract
-├── tokens.css                 # Runtime design-token source of truth
-├── tokens.json                # Portable DTCG token export
+├── tokens.css                 # Legacy/output bridge; pinned Air CSS owns application UI
+├── tokens.json                # Legacy bridge inventory (not the Air contract)
 ├── docs/
 │   ├── brand-assets.md        # Social/PWA asset source and regeneration workflow
 │   └── design-audit.md        # Full app and component coverage audit
@@ -143,9 +147,9 @@ cloakresume/
 
 ## Design and asset references
 
-- [DESIGN.md](DESIGN.md) defines the shared CloakPDF-family design language, Emerald identity, geometry, overlays, responsive behavior, and résumé-output boundary.
-- [tokens.css](tokens.css) is normative at runtime; [tokens.json](tokens.json) is its portable token inventory.
-- [docs/design-audit.md](docs/design-audit.md) records the complete 75-file TSX audit, lean-code sweep, completed browser/PDF checks, and release regression matrix.
+- [DESIGN.md](DESIGN.md) defines the complete portable Air contract and CloakResume requirements. [src/styles/air.css](src/styles/air.css) is the pinned family stylesheet.
+- [docs/air/surfaces.json](docs/air/surfaces.json), [validation](docs/air/validation.md) and [cleanup record](docs/air/code-cleanup.md) track current migration coverage and remaining acceptance gates. [docs/design-audit.md](docs/design-audit.md) preserves the historical Workbench audit.
+- [tokens.css](tokens.css) and [tokens.json](tokens.json) remain compatibility/output bridges; they do not override Air’s application design.
 - [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
 - [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
 - [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.

@@ -45,10 +45,10 @@ export default defineConfig({
         name: "CloakResume",
         short_name: "CloakResume",
         description:
-          "A private résumé workbench for building, tailoring, reviewing, and exporting in your browser. Résumé content stays on your device.",
-        theme_color: "#047857",
-        // Hex equivalent of the Paper token: oklch(0.975 0.009 255).
-        background_color: "#F3F7FD",
+          "Build, tailor, review and export your résumé in your browser. Your draft and job description stay on your device.",
+        // Install metadata starts on Air’s light page; HTML supplies both system themes.
+        theme_color: "#fafbfc",
+        background_color: "#fafbfc",
         display: "standalone",
         orientation: "any",
         scope: process.env.VITE_APP_BASE_PATH || "/",
@@ -81,18 +81,32 @@ export default defineConfig({
         ],
         screenshots: [
           {
-            src: "screenshots/iPhone.png",
-            sizes: "1290x2796",
+            src: "screenshots/landing-narrow-light.png",
+            sizes: "860x1864",
             type: "image/png",
             form_factor: "narrow",
-            label: "CloakResume private résumé start workbench on a phone",
+            label: "CloakResume landing and Start blank action on a phone, light appearance",
           },
           {
-            src: "screenshots/iPad.png",
-            sizes: "2732x2048",
+            src: "screenshots/landing-narrow-dark.png",
+            sizes: "860x1864",
+            type: "image/png",
+            form_factor: "narrow",
+            label: "CloakResume landing and Start blank action on a phone, dark appearance",
+          },
+          {
+            src: "screenshots/editor-wide-light.png",
+            sizes: "1440x900",
             type: "image/png",
             form_factor: "wide",
-            label: "CloakResume résumé editor and live document proof on a tablet",
+            label: "CloakResume editor and sample résumé preview on a desktop, light appearance",
+          },
+          {
+            src: "screenshots/editor-wide-dark.png",
+            sizes: "1440x900",
+            type: "image/png",
+            form_factor: "wide",
+            label: "CloakResume editor and sample résumé preview on a desktop, dark appearance",
           },
         ],
       },

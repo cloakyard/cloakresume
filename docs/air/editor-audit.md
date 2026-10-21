@@ -8,14 +8,16 @@ Sidebar, A4, multiple pages. No résumé content was changed and no export was r
 
 Entry/recovery, editor shell, writing/repeated-entry controls, contact/selects,
 dates, logo/photo, colour, writing hints, every content section, template library,
-résumé review, Options/export and PWA/static recovery are implemented and software-validated.
+résumé review, Options/export, PWA/static recovery and actual preview assets are implemented.
+Their software validation is recorded separately.
 Use `surfaces.json`, `validation.md` and the dated evidence for exact coverage.
 The unchecked baseline below records the original inspection, not current status.
 
-Current piece: `evidence/pwa-recovery-2026-10-21.json`; cleanup is tracked in
+Current piece: `evidence/preview-assets-2026-10-21.json`; cleanup is tracked in
 `code-cleanup.md`. Native Safari and Firefox actual 200% checks complement the
 responsive/theme matrix. Physical touch/software keyboard, OS IME and spoken
-assistive gates remain open. Next: actual OG/PWA/README assets and metadata, then full-product acceptance/cleanup.
+assistive gates remain open. Next: full-product acceptance/cleanup, including token/font consumers and the
+remaining target/output/journey gates. CloakIMG stays last.
 
 ## Baseline coverage and evidence
 

@@ -24,10 +24,15 @@ async function scan(directory) {
   );
   return nested.flat();
 }
-// Static recovery has its own HTML entry and a small non-React enhancement.
-const paths = [...(await scan(scanRoot)), "404.html", "src/static-recovery.ts"].sort((a, b) =>
-  a < b ? -1 : a > b ? 1 : 0,
-);
+// Include static recovery and the maintained social/metadata surfaces.
+const paths = [
+  ...(await scan(scanRoot)),
+  "404.html",
+  "src/static-recovery.ts",
+  "artwork/og.html",
+  "index.html",
+  "vite.config.ts",
+].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));
 const surfaces = paths.map(
   (path) =>
     saved.get(path) ?? {

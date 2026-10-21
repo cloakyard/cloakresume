@@ -34,18 +34,25 @@ its output in the report.
 
 ## Product-chrome changes
 
-Read [DESIGN.md](DESIGN.md) and [docs/design-audit.md](docs/design-audit.md) before
-changing landing, editor, control, overlay, empty, error, or loading UI.
+Read [DESIGN.md](DESIGN.md) before changing visible UI. Its complete portable
+Cloakyard Air contract supersedes historical styling guidance. Current coverage,
+evidence and cleanup live in [docs/air](docs/air/validation.md).
 
-- Product chrome uses CloakResume Emerald `#047857`, Archivo, JetBrains Mono, cool
-  paper, slate rules, 6–8px geometry, and solid surfaces.
-- The 88rem frame, 40px header logo, 64/72px headers, 72px rail, 328px desktop panel,
-  and overlay widths are shared contracts.
-- Verify at 320, 375, 414, 768, 1280, and 1440px, in light and dark schemes, with
-  keyboard navigation and reduced motion.
-- Preserve native browser zoom and check long labels and 200% text zoom.
-- If the landing page changes materially, regenerate and inspect the social and PWA
-  captures with `vp run generate-og` and `vp run generate-screenshots`.
+- Use the pinned `src/styles/air.css` tokens and controls. Keep application text
+  neutral in both themes; hyperlinks never become blue on hover. Preserve angled
+  hyperlink cues and the shared blue keyboard focus outline.
+- Keep the product colour in its mark/landing light. Résumé output retains its
+  selected fonts, colours, paper and geometry.
+- Inspect every required viewport class, light/dark, keyboard/coarse input,
+  reduced motion, enlarged text and browser zoom as specified by DESIGN.md.
+- Remove replaced code only after tracing all consumers. Record remaining live
+  adapters in [the cleanup record](docs/air/code-cleanup.md).
+- After visible changes, build and regenerate actual previews with
+  `vp run generate-screenshots`, then `vp run generate-og`. Follow
+  [the asset workflow](docs/brand-assets.md) and inspect every generated image.
+- Run `vp check`, `vp run build` and the complete production suite:
+  `CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism`.
+  A missing browser or skipped required test does not pass acceptance.
 
 ## Résumé-template changes
 

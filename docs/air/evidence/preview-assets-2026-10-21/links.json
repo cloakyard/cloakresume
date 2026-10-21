@@ -1,0 +1,7476 @@
+{
+  "base": "http://127.0.0.1:8209",
+  "layouts": [
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 320,
+      "height": 568,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 320,
+      "height": 568,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 375,
+      "height": 812,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 375,
+      "height": 812,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 430,
+      "height": 932,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 430,
+      "height": 932,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 844,
+      "height": 390,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 844,
+      "height": 390,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 768,
+      "height": 1024,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 768,
+      "height": 1024,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 1280,
+      "height": 720,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 1366,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "width": 320,
+      "textSize": 32,
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "#main-content",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "#start",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "#features",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "#privacy",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://github.com/sumitsahoo",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://cloakyard.com",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 320,
+      "height": 568,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 320,
+      "height": 568,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 375,
+      "height": 812,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 375,
+      "height": 812,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 430,
+      "height": 932,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 430,
+      "height": 932,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 844,
+      "height": 390,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 844,
+      "height": 390,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 768,
+      "height": 1024,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 768,
+      "height": 1024,
+      "state": "menu",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 1280,
+      "height": 720,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 1366,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "width": 320,
+      "textSize": 32,
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "#main-content",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "#start",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "#features",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "#privacy",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://github.com/sumitsahoo",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://cloakyard.com",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to content",
+          "href": "#main-content",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Get started",
+          "href": "#start",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Features",
+          "href": "#features",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Privacy",
+          "href": "#privacy",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Source",
+          "href": "https://github.com/cloakyard/cloakresume",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Sumit Sahoo",
+          "href": "https://github.com/sumitsahoo",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "MIT licensed",
+          "href": "https://github.com/cloakyard/cloakresume/blob/main/LICENSE",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 320,
+      "height": 568,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 375,
+      "height": 812,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 390,
+      "height": 844,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 430,
+      "height": 932,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 844,
+      "height": 390,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 768,
+      "height": 1024,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 1024,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 1280,
+      "height": 720,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 1366,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 1440,
+      "height": 900,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 1920,
+      "height": 1080,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "width": 320,
+      "textSize": 32,
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "#error-main",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://cloakyard.com",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume/issues/new",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(255, 255, 255)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(82, 91, 104)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(32, 35, 41)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 320,
+      "height": 568,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 375,
+      "height": 812,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 390,
+      "height": 844,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 430,
+      "height": 932,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 844,
+      "height": 390,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 768,
+      "height": 1024,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 1024,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 1280,
+      "height": 720,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 1366,
+      "height": 768,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 1440,
+      "height": 900,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 1920,
+      "height": 1080,
+      "state": "rest",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "width": 320,
+      "textSize": 32,
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "#error-main",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "/",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://cloakyard.com",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "hover",
+      "href": "https://github.com/cloakyard/cloakresume/issues/new",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "state": "focus",
+      "links": [
+        {
+          "label": "Skip to error details",
+          "href": "#error-main",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        },
+        {
+          "label": "Home",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Return to CloakResume",
+          "href": "/",
+          "colour": "rgb(24, 33, 46)",
+          "neutral": true
+        },
+        {
+          "label": "CloakResume",
+          "href": "/",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Cloakyard",
+          "href": "https://cloakyard.com",
+          "colour": "rgb(182, 190, 203)",
+          "neutral": true
+        },
+        {
+          "label": "Report a broken link",
+          "href": "https://github.com/cloakyard/cloakresume/issues/new",
+          "colour": "rgb(241, 243, 247)",
+          "neutral": true
+        }
+      ],
+      "overflow": false
+    }
+  ],
+  "interactions": [
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Skip to content",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Get started",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Features",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Privacy",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Source",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Sumit Sahoo",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "MIT licensed",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "light",
+      "label": "Cloakyard",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Skip to content",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Get started",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Features",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Privacy",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Source",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Sumit Sahoo",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "MIT licensed",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/",
+      "theme": "dark",
+      "label": "Cloakyard",
+      "visible": true,
+      "outline": "solid",
+      "width": 3
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "Skip to error details",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "Home",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "Return to CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "Cloakyard",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "light",
+      "label": "Report a broken link",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "Skip to error details",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "Home",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "Return to CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "CloakResume",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "Cloakyard",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    },
+    {
+      "route": "/404.html",
+      "theme": "dark",
+      "label": "Report a broken link",
+      "visible": true,
+      "outline": "solid",
+      "width": 2
+    }
+  ],
+  "errors": []
+}

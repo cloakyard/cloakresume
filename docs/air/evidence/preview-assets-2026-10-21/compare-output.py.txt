@@ -1,0 +1,19 @@
+from pathlib import Path
+import json,hashlib,subprocess
+from pypdf import PdfReader
+root=Path('<SCRATCH_ROOT>')
+records=[]
+for prefix in ['', 'links-']:
+ a=json.loads((root/(prefix+'baseline')/'output.json').read_text()); b=json.loads((root/(prefix+'after')/'output.json').read_text())
+ assert a==b, 'Template output differs'
+ for size in ['a4','letter']:
+  values=[]
+  for phase in ['baseline','after']:
+   p=root/(prefix+phase)/f'export-{size}.pdf'; r=PdfReader(p)
+   dest=p.with_suffix('')
+   subprocess.run(['<PDFTOPPM>','-scale-to','1600','-singlefile','-png',str(p),str(dest)],check=True,capture_output=True)
+   values.append({'pages':len(r.pages),'text':[p.extract_text() for p in r.pages],'geometry':[list(p.mediabox) for p in r.pages],'links':[[str(a.get_object().get('/A',{}).get('/URI','')) for a in p.get('/Annots',[])] for p in r.pages],'raster':hashlib.sha256(dest.with_suffix('.png').read_bytes()).hexdigest()})
+  assert values[0]==values[1], f'PDF output differs {prefix}{size}'
+  records.append({'fixture':prefix or 'plain','size':size,'equal':True,'pages':values[1]['pages'],'geometry':values[1]['geometry'],'links':values[1]['links'],'rasterSha256':values[1]['raster']})
+(root/'output-comparison.json').write_text(json.dumps({'templatePaperCaptures':34,'linkFixtureCaptures':2,'allEqual':True,'pdfComparisons':records},indent=2))
+print('34 template/paper captures and 4 real PDF comparisons equal (raster/text/geometry/links).')

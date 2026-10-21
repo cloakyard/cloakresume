@@ -26,6 +26,12 @@ Current evidence and retained legacy consumers are in `air/validation.md` and
 Legacy toast/toolbar skins and the timed reload are removed. Current proof and
 retained live consumers are recorded in `air/validation.md` and `air/code-cleanup.md`.
 
+**2026-10-21 preview follow-up:** social artwork, light/dark PWA/README captures,
+manifest colours and maintained contributor/asset guidance now follow Air.
+The old device-named captures and unused field skin are retired; current asset
+sources and dimensions are in `brand-assets.md`. Historical rows below retain
+their original filenames and validation results.
+
 **Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result

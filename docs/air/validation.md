@@ -688,3 +688,55 @@ Cleanup and traced remaining consumers: `code-cleanup.md`. Inventory now explici
 includes root static recovery and its enhancement. Physical touch/software keyboard,
 OS IME, spoken assistive and real-device gates remain open. Next: actual
 OG/PWA/README assets and metadata, then final product acceptance and cleanup.
+
+## 2026-10-21 — Actual social, PWA and README assets
+
+Replaced the legacy device-named captures with actual production landing and
+editor screenshots in light/dark. The Air social card uses the canonical mark,
+local pinned CSS and real editor proof. Manifest install colours, image dimensions,
+content labels, social title/alt text and README theme selection agree. README,
+CONTRIBUTING and brand-assets guidance now identify Air as authoritative.
+
+Removed the stale `.cr-input` capture selector and 58 net lines of unused skin/
+comments. The two generators shrink from 293 to 178 lines; there is no new
+package or runtime feature. Fresh contexts, synthetic sample seed/date, image/
+font readiness and failure propagation replace the old shared dev capture path.
+The generator rejects an actual dev server; a missing browser fails and closes
+its owned preview. Retained consumers and next candidates are in `code-cleanup.md`.
+
+All five assets repeat byte-for-byte and match `dist` (1,091,463 bytes total,
+versus 1,231,012 for the three former images). Chromium parses the built manifest
+without errors; all eight declared icon/screenshot images decode at their declared
+sizes. Both README picture sources select correctly. Presentation assets remain
+outside the application-shell precache. Launcher artwork is unchanged.
+
+88 baseline/current layout comparisons cover all 11 required viewport sizes,
+landing/editor, light/dark, coarse input and 16/32px root fonts with reduced motion.
+Geometry and computed control styles match; no horizontal overflow/page errors.
+73 screenshots are pixel-exact; the remaining 15 differ only at rounded field
+edges (at most 58 pixels, two channel levels). Those raster statistics are kept
+separate from geometry assertions. Native-size assets and actual desktop/laptop/
+tablet/minimum-phone and enlarged-text captures were visually inspected.
+124 neutral link states and 32 keyboard checks pass on landing and static recovery.
+
+All 34 template/paper comparisons, two additional linked-document captures and
+four actual PDF raster/text/page-geometry/URI comparisons match `24c89e6`.
+**372/372 production tests in 10 files, zero skips, 530.12s**. The first completed
+run passed 371/372 and exposed a stale README audit-wording assertion. Its fix
+checks the live Air inventory’s complete TSX coverage while preserving historical
+source/output-boundary checks; 25 focused checks then passed before the fresh full
+pass. No feature assertion, timeout or skip was weakened. An earlier broad run
+was deliberately interrupted to settle the OG renderer’s GPU scaling difference;
+only the final run above closes the gate.
+
+Format/lint/types pass with zero warnings/errors; production build, 86-source
+inventory, 18 isolated portability assertions and exact six-repository sync pass.
+The existing build chunk-size warning remains. All 284 recorded source/config/
+test/document/asset/build files, including 105 `dist` files, stayed frozen through
+the final run. Temporary preview/dev servers 8208, 8209 and 8210 are stopped.
+
+Evidence: `evidence/preview-assets-2026-10-21.json` and its adjacent directory.
+Next: final product cleanup/acceptance, starting with exact font/token/selector
+consumers and pending inventory/44px target gates. Physical touch/software keyboard,
+OS IME, spoken assistive and GPU/battery/thermal gates remain open. No push/deploy;
+CloakIMG stays parked and last. Static asset validation does not complete the product.
