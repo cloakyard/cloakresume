@@ -1284,6 +1284,126 @@ describe.skipIf(!existsSync(chromePath))(
       ]);
     });
 
+    it.each(["awards", "certifications"])(
+      "preserves imported year strings when editing and reloading %s",
+      async (section) => {
+        const award = {
+          id: "award",
+          title: "Recognition",
+          year: "2020–2026 (ongoing)",
+          detail: "Original detail",
+        };
+        const certification = {
+          id: "cert",
+          name: "Qualification",
+          issuer: "Independent institute",
+          year: "Renewed October 2026",
+          url: "https://example.com/verify",
+        };
+        await openDraft(
+          { ...blankResume, awards: [award], certifications: [certification] },
+          { activeSection: section },
+          768,
+          true,
+        );
+        await page.evaluate(() => {
+          document.documentElement.style.fontSize = "32px";
+        });
+        const selector = '.cr-editor-panel input[name="year"]';
+        const original = section === "awards" ? award.year : certification.year;
+        expect(await page.$eval(selector, (el) => (el as HTMLInputElement).value)).toBe(original);
+        await page.$eval(selector, (el) => {
+          (el as HTMLInputElement).focus();
+          (el as HTMLInputElement).select();
+        });
+        await page.keyboard.type("2026 / annual renewal");
+        expect((await savedResume())[section][0].year).toBe("2026 / annual renewal");
+        await resumeEditing();
+        expect(await page.$eval(selector, (el) => (el as HTMLInputElement).value)).toBe(
+          "2026 / annual renewal",
+        );
+        expect((await savedResume())[section][0]).toEqual({
+          ...(section === "awards" ? award : certification),
+          year: "2026 / annual renewal",
+        });
+      },
+    );
+
+    it("keeps stats and extras independent through edits, moves, cancellation and reload", async () => {
+      const quickStats = [
+        { id: "q1", value: "15+", label: "years of experience" },
+        { id: "q2", value: "Over one hundred", label: "systems shipped" },
+      ];
+      const extras = [
+        { id: "x1", label: "Work authorization", value: "No sponsorship required" },
+        { id: "x2", label: "Availability", value: "After six weeks" },
+      ];
+      await openDraft({ ...blankResume, quickStats, extras }, { activeSection: "stats" });
+      const groups = await page.$$(".resume-content-group");
+      const value = await groups[1].$('input[name="value"]');
+      await value!.focus();
+      await page.keyboard.press("End");
+      await page.keyboard.type(" · permanent");
+      await groups[1].$('button[aria-label^="Move down "]').then((el) => el!.click());
+      await groups[1].$('button[aria-label^="Remove "]').then((el) => el!.click());
+      await page.keyboard.press("Escape");
+      expect((await savedResume()).quickStats).toEqual(quickStats);
+      expect((await savedResume()).extras).toEqual([
+        extras[1],
+        { ...extras[0], value: extras[0].value + " · permanent" },
+      ]);
+      await resumeEditing();
+      expect((await savedResume()).quickStats).toEqual(quickStats);
+      expect((await savedResume()).extras.map((item: { id: string }) => item.id)).toEqual([
+        "x2",
+        "x1",
+      ]);
+    });
+
+    it.each([1440, 1024])(
+      "analyzes the saved Target JD and returns to editing at %spx",
+      async (width) => {
+        const jd = "TypeScript Kubernetes leadership. Local requirements with **literal markers**.";
+        await openDraft(
+          undefined,
+          { activeSection: "jd", jobDescription: jd },
+          width,
+          width === 1024,
+        );
+        const selector = 'textarea[name="target-job-description"]';
+        await page.$eval(selector, (el) => {
+          const field = el as HTMLTextAreaElement;
+          field.focus();
+          field.setSelectionRange(field.value.length, field.value.length);
+        });
+        await page.keyboard.type(" Additional requirement.");
+        const analyze = ".cr-editor-panel .air-button--primary";
+        await page.focus(analyze);
+        await page.keyboard.press("Enter");
+        await page.waitForSelector('[role="dialog"][aria-labelledby]');
+        await page.waitForSelector('[role="tab"][id$="tab-keywords"]');
+        await page.locator('[role="tab"][id$="tab-keywords"]').click();
+        await page.waitForSelector('[role="tabpanel"][id$="panel-keywords"]');
+        await page.click('button[aria-label="Close ATS review"]');
+        await page.waitForSelector('[role="dialog"]', { hidden: true });
+        expect(await page.$eval(analyze, (el) => el === document.activeElement)).toBe(true);
+        expect(await page.$eval(selector, (el) => (el as HTMLTextAreaElement).value)).toBe(
+          jd + " Additional requirement.",
+        );
+        await savedResume();
+        expect(
+          await page.evaluate(
+            () => JSON.parse(localStorage.getItem("cloakresume:v1")!).jobDescription,
+          ),
+        ).toBe(jd + " Additional requirement.");
+        await resumeEditing();
+        expect(await page.$eval(selector, (el) => (el as HTMLTextAreaElement).value)).toBe(
+          jd + " Additional requirement.",
+        );
+        expect(await page.$(".cr-editor-panel .resume-hint-trigger")).toBeNull();
+      },
+    );
+
     it("preserves comma entry, custom labels, and both interests and tools on reload", async () => {
       await openDraft();
       await page.click('nav button[aria-label="Interests & Tools"]');

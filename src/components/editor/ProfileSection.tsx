@@ -192,10 +192,8 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             value={resume.profile.summary}
             onChange={(v) => updateProfile({ summary: v })}
             rows={8}
+            hint="Select text to apply bold, italic, underline, or code."
           />
-          <div className="text-sm text-(--ink-4) mt-2">
-            Select text to apply bold, italic, underline, or code.
-          </div>
         </div>
       </div>
     </FormatScope>

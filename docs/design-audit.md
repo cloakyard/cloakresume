@@ -8,6 +8,11 @@ This July/September record describes the retired Workbench specification. `Align
 
 **Current shared UI:** [Air](../DESIGN.md) and [pinned CSS](../src/styles/air.css). Legacy unmigrated widgets still use [tokens.css](../tokens.css).
 
+**2026-10-21 content-section checkpoint:** all 13 section sources now use Air.
+Current behavior, scope and software evidence are tracked in
+[content-section validation](air/validation.md) and the Air surface inventory.
+The historical rows below are preserved as the original audit, not current styling authority.
+
 **Legacy token snapshot:** [tokens.json](../tokens.json)
 
 ## Result

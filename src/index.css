@@ -179,9 +179,6 @@
   .cr-field {
     @apply block;
   }
-  .cr-field-label {
-    @apply block font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] mb-1;
-  }
   .cr-input {
     @apply block w-full px-3 py-3 text-base leading-[1.45]
       text-(--ink-1) bg-(--surface)
@@ -204,9 +201,6 @@
   /* Row used to pair a section-scope label with an inline action. */
   .cr-field-row {
     @apply flex flex-wrap items-center justify-between gap-x-2 gap-y-1 min-h-[22px] mb-1.5;
-  }
-  .cr-field-row .cr-field-label {
-    @apply mb-0;
   }
 }
 

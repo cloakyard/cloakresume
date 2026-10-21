@@ -55,7 +55,7 @@ export function AwardsSection({ resume, onChange }: SectionProps) {
                   deleteButton={deleteBtn}
                 />
                 <div className="cr-stack">
-                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-3">
+                  <div className="resume-field-pair">
                     <TextField
                       label="Title"
                       value={a.title}

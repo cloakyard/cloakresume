@@ -68,7 +68,7 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
                       patch("certifications", next);
                     }}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-3">
+                  <div className="resume-field-pair">
                     <TextField
                       label="Issuer"
                       value={c.issuer}

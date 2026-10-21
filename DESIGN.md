@@ -1096,8 +1096,9 @@ journeys across all apps; it is not inferred from the pilot alone.
 - Entry, privacy, confirmations and render recovery consume the pinned
   `src/styles/air.css`; `air-entry.css` owns entry composition. The editor shell,
   header actions, section rail/picker/panel frame, paper/view segments and preview
-  dock use Air with `air-editor.css` composition. Section interiors, custom widgets,
-  library/review sheets and PWA notices retain the legacy bridge until their slices.
+  dock use Air with `air-editor.css` composition. All 13 content sections and their
+  writing widgets use Air; library/review sheets and PWA notices retain the legacy
+  bridge until their slices.
   Template fonts and output geometry remain independent of both bridges.
 - Entry supports landscape and native in-flow compact navigation. Blank/sample
   and validated file replacement require confirmation when a current draft exists;
@@ -1237,3 +1238,23 @@ journeys across all apps; it is not inferred from the pilot alone.
   stress, short screens, both themes, enlarged text and coarse/forced-colour modes.
   Native Safari and Firefox zoom are separate from physical touch/software keyboard,
   OS IME and spoken assistive acceptance. The full review sheet remains a later slice.
+
+- All 13 content sections use the shared writing, repeated-entry and picker shells.
+  Awards/Certifications year fields and Quick stats/Extras pairs reflow by available
+  width and relative text size. Year values remain free-form strings; opening,
+  editing another field and reordering never normalize imported values.
+- Quick stats and Extras retain independent arrays, IDs, add/move/remove actions
+  and output behavior. Their headings use ordinary Air text and open grouping.
+  Profile formatting help is associated with the summary field. The unused legacy
+  uppercase/mono field-label skin is retired after tracing its final consumers.
+- Target JD uses a neutral local-processing note and the shared primary action.
+  Coarse targets stay at least 44px at desktop widths. Analyze keeps its review
+  behavior, focuses its trigger before opening (including Safari pointer use) and
+  restores that focus on dismissal. JD persistence and exclusion from Harper stay
+  intact; only résumé prose participates in the existing grammar scan.
+- `node scripts/test-air-sections.mjs` checks every section empty/populated, imported
+  custom values, both themes, text enlargement, breakpoint edges, coarse/fine input
+  and forced colours. Complete source review plus existing field/date/logo/hint and
+  entry tests establish software acceptance; physical touch/software keyboard, OS
+  IME and spoken assistive gates remain separate. Library/review/overflow/export,
+  PWA/static recovery and real preview assets are still later slices.

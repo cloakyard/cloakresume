@@ -203,19 +203,6 @@ button:not(.absolute):active:not(:disabled) {
   cursor: not-allowed;
 }
 
-.cr-field-label {
-  color: var(--ink-4);
-  font-family: var(--font-mono);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  transition: color var(--duration-fast) var(--ease-standard);
-}
-
-.cr-field:focus-within > .cr-field-label,
-.cr-field:focus-within > .cr-field-row > .cr-field-label {
-  color: var(--brand);
-}
-
 .cr-input {
   border-color: var(--line);
   border-radius: var(--radius-control);

@@ -498,6 +498,45 @@ textarea.resume-writing-field[data-resizable="false"] {
   gap: 12px;
 }
 
+/* Section-specific content keeps the same open grouping as shared entries. */
+.resume-content-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-inline-size: 0;
+}
+.resume-content-group > .resume-add-row {
+  margin-top: 12px;
+}
+.resume-content-group--divided {
+  padding-top: 24px;
+  border-top: 1px solid var(--air-line);
+}
+.resume-group-title {
+  margin: 0;
+  color: var(--air-ink);
+  font: 500 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-section-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  color: var(--air-ink-secondary);
+  font: 400 var(--air-text-body)/1.5 var(--air-font);
+}
+.resume-section-note svg {
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+  stroke-width: 1.6;
+}
+.resume-section-note strong {
+  color: var(--air-ink);
+  font-weight: 500;
+}
+
 /* Partial-date values remain strings; only their surrounding controls use Air. */
 .resume-date-field {
   min-inline-size: 0;

@@ -463,3 +463,37 @@ paired Award/Certification year fields and Profile helper copy, followed by comp
 section acceptance and template/library/review/overflow/export/PWA/static recovery
 and actual assets. Physical input/IME/assistive speech remain open. Local only;
 CloakIMG stays last. Scratch: `/tmp/cloakresume-air-hints/`.
+
+## 2026-10-21 — Air content-section interiors
+
+All 13 section sources have complete composition review and software acceptance,
+including blank drafts and populated/imported content. Awards/Certifications year
+fields and Quick stats/Extras pairs reuse the content-aware field layout; arbitrary
+year strings remain intact. Stats and Extras have ordinary headings and open groups,
+with independent IDs/actions. Profile formatting help is associated with its field.
+Target JD uses a neutral privacy note, the Air primary action and an 18px/1.6 icon.
+Safari pointer opening explicitly focuses Analyze so review dismissal returns there.
+The unused uppercase/mono cr-field-label skin and focus tint have been removed.
+
+No schema, Harper, template, pagination, palette or export change. Target JD remains
+outside grammar scanning. All existing rich text, dates, logo/photo, field hints,
+CSV/custom values, add/reorder/removal and save/restore workflows are preserved.
+The section inventory marks Air implementation and records software evidence;
+physical touch/software keyboard, OS IME and spoken assistive gates remain open.
+
+Validation: **323/323 production tests, eight files, zero skips, 443.4s**;
+143 editor cases and 34 template/paper cases with five fixtures each. Final runtime
+and dist stayed unchanged throughout the serial suite. **1,666 distinct section
+layouts and 16 contrast pairs pass**; 130 JD cases were rechecked after the final
+icon correction (1,796 executions total). All required size classes, short landscape,
+both themes, 16/32px root text, coarse/fine input and forced colours are covered.
+Check/build, 79-source inventory, 18 portability checks and exact family sync pass.
+[Evidence](evidence/content-sections-2026-10-21.json) includes 64 proof captures
+and the full-suite log. All 34 output image/geometry records and actual A4/Letter
+PDF rasters match the pre-change baseline exactly. Native Safari and Firefox actual
+200% pass their described editing/focus flows; review tabs closed and zoom restored.
+
+Next: template library, then all four review tabs, overflow/export busy/recovery,
+PWA/static 404 and real OG/PWA/README assets. Ready Offline enlarged-text styling is
+reserved for its PWA slice. No push/deploy. CloakIMG stays last and untouched.
+Scratch: `/tmp/cloakresume-air-sections/`.
