@@ -150,3 +150,28 @@ The 34 template/paper captures, two linked fixtures and four PDF comparisons kee
 exact raster/text/geometry/links. See [dependency evidence](evidence/dependencies-2026-10-21.json).
 Live fonts/tokens and final product acceptance remain the next bounded migration;
 this dependency commit does not mark them complete.
+
+## 2026-10-21 — Privacy, overlays and UI foundations
+
+This supersedes the retained UI-font rows above. Body, form defaults, code metadata,
+scrollbars and colour-swatch chrome now use the pinned Air tokens. Removed both
+unused Archivo/JetBrains registrations and their 75,332 bytes of font assets,
+53 legacy token names and 33 unused Tailwind aliases, including all three tracked
+transitive orphans. No template uses those UI registrations: Geist, Instrument
+Serif, Lora, platform template fallbacks and PDF font preparation remain intact.
+
+The privacy policy uses `air-prose` inside the standard shared dialog, with a
+separate scroll body and persistent close control. Its duplicate link/list/section
+skins are removed. The update notice uses the same neutral panel tokens and
+shared actions; the existing service-worker and draft-saving lifecycle remains.
+Template loading is ordinary UI status, using Air sans on a light paper plane.
+
+Retained: the actual white-paper/thumbnail colour and author-link hover alias;
+MonthYearField's live presence/placement adapter and its motion values; DragList's
+active drag transform. These are traced consumers, not proven dead code.
+Tailwind's broad scan still emits unused utility selectors mentioned by historical
+evidence/tests (`--surface`, `--color-proof-ink-2`); they have no runtime consumer.
+A future scan-scope cleanup should remove that generated residue with output proof.
+
+Validation/evidence: [privacy/dialog evidence](evidence/privacy-dialogs-2026-10-21.json).
+Whole-product target/motion and physical/assistive/hardware gates remain open.

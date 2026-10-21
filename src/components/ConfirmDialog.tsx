@@ -52,7 +52,8 @@ export function ConfirmDialog({
       className="air-modal-viewport resume-overlay"
       role="presentation"
       onClick={(event) => {
-        if (event.target === event.currentTarget) onCancel();
+        if (event.target === event.currentTarget && !(tone === "danger" && variant === "confirm"))
+          onCancel();
       }}
     >
       <div

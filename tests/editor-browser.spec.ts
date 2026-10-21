@@ -1452,6 +1452,24 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).profile.name).toBe(original + addition);
     });
 
+    it("keeps draft replacement open on backdrop press and cancels safely with Escape", async () => {
+      await openDraft();
+      const original = await savedResume();
+      await page.click('button[aria-label="Start a new blank resume"]');
+      await clickText("Continue", '[role="dialog"]');
+      await page.waitForSelector(".resume-site");
+      await clickText("Start blank");
+      await page.waitForSelector('[role="dialog"]');
+      expect(await page.$eval('[role="dialog"]', (dialog) => dialog.textContent)).toContain(
+        "Replace this draft?",
+      );
+      await page.click(".resume-overlay", { offset: { x: 2, y: 2 } });
+      expect(await page.$('[role="dialog"]')).not.toBeNull();
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[role="dialog"]', { hidden: true });
+      expect(await savedResume()).toEqual(original);
+    });
+
     async function openTemplateLibrary(width = 1440) {
       if (width < 1024) {
         await page.click('button[aria-label="More options"]');

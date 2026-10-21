@@ -146,6 +146,12 @@ try {
                 if (root.scrollWidth > root.clientWidth + 1)
                   problems.push("notice horizontal overflow");
                 if (state !== "404") {
+                  const card = root.querySelector(".resume-update-content");
+                  const skin = getComputedStyle(card);
+                  if (skin.borderRadius !== "18px" || skin.borderTopWidth !== "1px")
+                    problems.push("notice does not use the Air panel shell");
+                  if (/Archivo|JetBrains/.test(getComputedStyle(root).fontFamily))
+                    problems.push("legacy notice typography");
                   const editor = document.querySelector(".resume-editor").getBoundingClientRect();
                   if (rect.bottom > editor.top + 1) problems.push("notice covers editor");
                   if (editor.height < 1) problems.push("editor not reachable");

@@ -1,4 +1,4 @@
-/* Legacy editor bridge. Entry, privacy and recovery use the pinned Air bundle. */
+/* Editor structure and the retained date-presence adapter. Air owns all UI skins. */
 html {
   overflow-x: clip;
 }
@@ -14,24 +14,24 @@ button,
 input,
 textarea,
 select {
-  font-family: var(--font-body);
+  font-family: var(--air-font);
 }
 
 body {
-  color: var(--ink-1);
-  background: var(--surface-2);
+  color: var(--air-ink);
+  background: var(--air-page);
 }
 
 /* Keep the ring colour stable before focus too, so controls with colour
  * transitions do not briefly animate a grey outline into the accent. */
 :where(a, button, input, textarea, select, [tabindex]) {
-  outline-color: var(--color-focus);
+  outline-color: var(--air-accent);
 }
 
 :where(a, button, input, textarea, select, [tabindex]):not(
     :where(.air-popover, .air-popover *, .air-modal, .air-modal *)
   ):focus-visible {
-  outline: 2px solid var(--color-focus);
+  outline: 2px solid var(--air-accent);
   outline-offset: 2px;
   box-shadow: none;
 }

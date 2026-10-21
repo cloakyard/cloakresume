@@ -1523,15 +1523,19 @@ button.resume-review-finding:focus-visible {
   overflow: auto;
   scroll-padding-block: 6px;
   overscroll-behavior: contain;
-  padding: 12px 16px;
-  border-bottom: 1px solid var(--air-line);
-  background: var(--air-surface);
+  padding: 12px var(--air-gutter);
+  background: var(--air-page);
   color: var(--air-ink);
   font: 400 var(--air-text-body)/1.5 var(--air-font);
 }
 .resume-update-content {
   max-inline-size: var(--air-page-max);
   margin-inline: auto;
+  padding: 16px;
+  border: 1px solid var(--air-line);
+  border-radius: var(--air-radius-panel);
+  background: var(--air-surface);
+  box-shadow: var(--air-shadow-surface);
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1539,6 +1543,11 @@ button.resume-review-finding:focus-visible {
 }
 .resume-update-content > svg {
   flex: none;
+  align-self: start;
+  margin-block-start: 2px;
+}
+.resume-update[data-state="error"] .resume-update-content > svg {
+  color: var(--air-danger);
 }
 .resume-update-copy {
   flex: 1 1 16rem;
@@ -1579,4 +1588,11 @@ button.resume-review-finding:focus-visible {
     display: block;
     height: auto;
   }
+}
+
+/* This is application status on white paper, not authored document text. */
+.resume-template-loading {
+  color-scheme: light;
+  color: var(--air-ink-secondary);
+  font: 400 var(--air-text-body)/1.5 var(--air-font);
 }

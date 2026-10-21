@@ -17,7 +17,7 @@ body:has(.resume-site) {
 .resume-site :where(button, summary, a, [tabindex]):focus-visible,
 .resume-overlay :where(button, a, [tabindex]):focus-visible {
   outline: 2px solid var(--air-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 .resume-site svg,
 .resume-overlay svg {
@@ -265,31 +265,40 @@ body:has(.resume-site) {
   margin-top: 24px;
 }
 .resume-policy {
-  inline-size: 760px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.resume-policy > .resume-dialog-heading,
+.resume-policy > .resume-sheet-handle {
+  flex: none;
+}
+.resume-policy-body {
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  margin: -4px;
+  font: 400 1rem/1.6 var(--air-font);
+}
+.resume-policy-body > p,
+.resume-policy article {
+  max-inline-size: 65ch;
+}
+.resume-policy-date {
+  font-size: var(--air-text-body);
+  color: var(--air-ink-muted);
 }
 .resume-policy article {
-  max-width: 65ch;
-}
-.resume-policy section {
-  margin-top: 32px;
+  margin-block-start: 32px;
 }
 .resume-policy h3 {
-  margin: 0 0 12px;
-  font-size: 1.125rem;
-  font-weight: 500;
+  margin: 0 0 16px;
+  font: 500 1.25rem/1.3 var(--air-font);
+  letter-spacing: -0.02em;
 }
 .resume-policy ul {
   list-style: disc;
-  padding-left: 24px;
-  margin: 16px 0;
-}
-.resume-policy a {
-  color: inherit;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-.resume-policy time {
-  color: var(--air-ink-muted);
 }
 .resume-error-details {
   padding: 16px;
