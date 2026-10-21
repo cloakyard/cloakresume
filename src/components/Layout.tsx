@@ -109,18 +109,9 @@ export function Layout({
         {/* Flex spacer pushes the remaining groups to the right edge. */}
         <div className="resume-header-spacer" />
 
-        {/* toolbarCenter is ALWAYS rendered so the template picker's window-event
-            bridge stays mounted (the mobile overflow menu dispatches the open event
-            and the bridge lives inside ToolbarCenter). The wrapping div + divider
-            are desktop-only visual chrome. */}
-        {isMobile ? (
-          toolbarCenter
-        ) : (
-          <>
-            <div className="resume-header-group">{toolbarCenter}</div>
-            <span aria-hidden="true" className="resume-header-divider" />
-          </>
-        )}
+        {/* Keep the library and its search mounted across responsive chrome changes. */}
+        <div className={isMobile ? "contents" : "resume-header-group"}>{toolbarCenter}</div>
+        {!isMobile && <span aria-hidden="true" className="resume-header-divider" />}
 
         {/* Mobile: edit/preview segmented control sits right before the actions cluster. */}
         {isMobile && <ViewSegment view={mobileView} onChange={onMobileViewChange} />}

@@ -44,11 +44,7 @@ export function TemplatePreview({ TemplateComponent, resume, accent }: Props) {
     return () => ro.disconnect();
   }, []);
 
-  /**
-   * Override the palette purely for this preview — using the template's
-   * suggested accent means cards stay distinguishable even when the
-   * user picks a brand colour that clashes with one template.
-   */
+  // Gallery previews use the same author-selected colour as the document.
   const palette: PrimaryPalette = useMemo(() => derivePalette(accent), [accent]);
 
   return (

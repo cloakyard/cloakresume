@@ -68,7 +68,10 @@ export function ToolbarOverflow({
   };
 
   const openTemplate = () => {
-    closeThenOpen(() => window.dispatchEvent(new Event("cr:open-template-picker")));
+    closeThenOpen(() => {
+      moreRef.current?.focus();
+      window.dispatchEvent(new Event("cr:open-template-picker"));
+    });
   };
 
   if (!isMobile) return null;

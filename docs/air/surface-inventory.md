@@ -38,10 +38,10 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/components/RichTextArea.tsx`                 | app-surface         | Done         | Done               | Pending    |
 | `src/components/SectionPanel.tsx`                 | app-surface         | Done         | Done               | Pending    |
 | `src/components/SectionRail.tsx`                  | app-surface         | Done         | Done               | Pending    |
-| `src/components/TemplateModal.tsx`                | app-surface         | Pending      | Pending            | Pending    |
-| `src/components/TemplatePreview.tsx`              | app-surface         | Pending      | Pending            | Pending    |
+| `src/components/TemplateModal.tsx`                | app-surface         | Done         | Done               | Pending    |
+| `src/components/TemplatePreview.tsx`              | app-surface         | Done         | Done               | Pending    |
 | `src/components/ToolbarActions.tsx`               | app-surface         | Done         | Pending            | Pending    |
-| `src/components/ToolbarCenter.tsx`                | app-surface         | Done         | Pending            | Pending    |
+| `src/components/ToolbarCenter.tsx`                | app-surface         | Done         | Done               | Pending    |
 | `src/components/ToolbarOverflow.tsx`              | app-surface         | Done         | Pending            | Pending    |
 | `src/components/ViewSegment.tsx`                  | app-surface         | Done         | Done               | Pending    |
 | `src/components/ats/AtsCard.tsx`                  | app-surface         | Pending      | Pending            | Pending    |

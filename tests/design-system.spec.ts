@@ -323,8 +323,16 @@ describe("CloakResume family contract", () => {
     );
 
     expect(
-      files.every((file) => file.includes("cr-overlay") || file.includes("resume-overlay")),
+      files.every(
+        (file) =>
+          file.includes("air-modal-viewport") ||
+          file.includes("cr-overlay") ||
+          file.includes("resume-overlay"),
+      ),
     ).toBe(true);
+    expect(files[0]).toContain('className="air-modal resume-library"');
+    expect(files[0]).toContain("useModalDialog<HTMLDivElement>");
+    expect(files[0]).toContain("inertBackground: true");
     expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
     expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
     expect(files[1]).toContain("ref={resultsScrollRef}");
@@ -360,10 +368,18 @@ describe("CloakResume family contract", () => {
     expect(confirm).toContain('variant === "notice" ? confirmRef : cancelRef');
     expect(confirm).toContain('role={variant === "notice" ? "alertdialog" : "dialog"}');
 
-    for (const sheet of [app, templates, ats]) {
+    for (const sheet of [app, ats]) {
       expect(sheet).toContain("pb-[env(safe-area-inset-bottom,0px)]");
       expect(sheet).toContain("min-[640px]:pb-0");
     }
+    expect(templates).toContain('className="air-modal resume-library"');
+    expect(templates).toContain('className="resume-library-body"');
+    expect(await source("src/styles/air.css")).toMatch(
+      /\.air-modal\s*\{[^}]*max-block-size: calc\(100dvh - 16px\);[^}]*padding-bottom: max\(24px, env\(safe-area-inset-bottom\)\);/,
+    );
+    expect(await source("src/styles/air-editor.css")).toMatch(
+      /\.resume-library-body\s*\{[^}]*min-block-size: 0;[^}]*overflow: auto;[^}]*overscroll-behavior: contain;/,
+    );
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
     expect(reload).toContain("rounded-md p-4");
@@ -489,7 +505,10 @@ describe("CloakResume family contract", () => {
     expect(rail).toContain("cr-section-nav-button");
     expect(viewSegment).toContain("air-segments");
     expect(paperToggle).toContain("air-segments");
-    expect(templateModal).toContain("cr-template-card");
+    expect(templateModal).toContain("resume-template-card");
+    expect(templateModal).toContain("<TemplatePreview");
+    expect(templateModal).toContain("aria-pressed={active}");
+    expect(`${templateModal}\n${familyCss}`).not.toContain("cr-template-card");
     expect(reloadPrompt).toContain("cr-toast");
     expect(dragList).toContain("data-dragging");
 

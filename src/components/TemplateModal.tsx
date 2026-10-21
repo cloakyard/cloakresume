@@ -1,42 +1,14 @@
-/**
- * Responsive template picker — bottom-sheet on mobile with drag-to-dismiss,
- * centred wide dialog on tablet+. Renders a grid of live template previews.
- */
-
-import { Search, X } from "lucide-react";
+/** Responsive library of actual document templates; previews never edit the draft. */
+import { Check, X } from "lucide-react";
 import { useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { resumeHasContent } from "../data/blankResume.ts";
 import { generateSampleResume } from "../data/sampleResume.ts";
 import { TEMPLATE_CATEGORIES, TEMPLATES } from "../templates/index.ts";
 import type { ResumeData, TemplateId } from "../types.ts";
-import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 import { TemplatePreview } from "./TemplatePreview.tsx";
-
-const COUNT_FORMATTER = new Intl.NumberFormat(undefined, {
-  minimumIntegerDigits: 2,
-  useGrouping: false,
-});
-
-/**
- * A fresh "Start fresh" resume leaves every section empty, which makes the
- * template cards look identical and broken. Detect that state so previews
- * can fall back to the sample data and showcase the actual layout.
- */
-function isResumeEmpty(r: ResumeData): boolean {
-  return (
-    r.experience.length === 0 &&
-    r.education.length === 0 &&
-    r.skills.length === 0 &&
-    r.projects.length === 0 &&
-    r.certifications.length === 0 &&
-    r.awards.length === 0 &&
-    r.languages.length === 0 &&
-    r.contact.length === 0 &&
-    !r.profile.summary.trim()
-  );
-}
 
 interface TemplateModalProps {
   open: boolean;
@@ -56,189 +28,180 @@ export function TemplateModal({
   primary,
 }: TemplateModalProps) {
   const closeRef = useRef<HTMLButtonElement>(null);
-  const titleId = useId();
-  const descriptionId = useId();
-  const presence = useAnimatedPresence(open);
+  const searchRef = useRef<HTMLInputElement>(null);
+  const composing = useRef(false);
+  const id = useId();
   const sheetRef = useModalDialog<HTMLDivElement>({
-    open: presence.mounted,
+    open,
     onClose,
     initialFocusRef: closeRef,
+    inertBackground: true,
+    // Responsive chrome can replace the opener while the library stays open.
+    fallbackFocus: () =>
+      document.querySelector<HTMLButtonElement>(
+        'button[aria-label^="Template:"], button[aria-label="More options"]',
+      ),
   });
   const swipeHandlers = useSwipeToDismiss(sheetRef, onClose);
   const [query, setQuery] = useState("");
-
+  const [filter, setFilter] = useState("");
   const grouped = useMemo(() => {
-    const q = query.trim().toLowerCase();
+    const q = filter.trim().toLowerCase();
     return TEMPLATE_CATEGORIES.map((category) => ({
       category,
-      templates: Object.values(TEMPLATES).filter((t) => {
-        if (t.category !== category.id) return false;
-        if (!q) return true;
-        return (
-          t.name.toLowerCase().includes(q) ||
-          t.description.toLowerCase().includes(q) ||
-          t.level.toLowerCase().includes(q) ||
-          category.label.toLowerCase().includes(q)
-        );
-      }),
-    })).filter((g) => g.templates.length > 0);
-  }, [query]);
-
-  const hasResults = grouped.length > 0;
-
+      templates: Object.values(TEMPLATES).filter(
+        (t) =>
+          t.category === category.id &&
+          (!q ||
+            [t.name, t.description, t.level, category.label].some((text) =>
+              text.toLowerCase().includes(q),
+            )),
+      ),
+    })).filter((group) => group.templates.length > 0);
+  }, [filter]);
+  const count = grouped.reduce((total, group) => total + group.templates.length, 0);
+  const hasContent = resumeHasContent(resume);
   const previewResume = useMemo(
-    () => (isResumeEmpty(resume) ? generateSampleResume() : resume),
-    [resume],
+    () => (hasContent ? resume : generateSampleResume()),
+    [hasContent, resume],
   );
 
-  if (!presence.mounted) return null;
-
+  if (!open) return null;
   return createPortal(
     <div
-      className="cr-overlay print-hide fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
-      data-state={presence.state}
+      className="air-modal-viewport resume-library-viewport"
       role="presentation"
-      onMouseDown={(event) => {
+      onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
       <div
         ref={sheetRef}
-        className="cr-dialog cr-dialog-wide cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0"
+        className="air-modal resume-library"
         role="dialog"
         aria-modal="true"
-        aria-labelledby={titleId}
-        aria-describedby={descriptionId}
+        aria-labelledby={`${id}-title`}
+        aria-describedby={`${id}-description`}
         tabIndex={-1}
       >
-        <div
-          {...swipeHandlers}
-          className="grid place-items-center pt-2.5 pb-1 cursor-grab touch-none sm:hidden"
-        >
-          <span aria-hidden="true" className="w-11 h-1 rounded-full bg-(--ink-5)/40" />
+        <div {...swipeHandlers} className="resume-sheet-handle" aria-hidden="true">
+          <span />
         </div>
-        <div className="flex flex-col gap-3 px-4 md:px-7 pt-2 sm:pt-5 md:pt-5.5 pb-3.5 border-b border-(--line-soft)/70">
-          <div className="flex items-start gap-3">
-            <div className="flex-1">
-              <p className="cr-dialog__eyebrow">
-                Template library / {COUNT_FORMATTER.format(Object.keys(TEMPLATES).length)} layouts
-              </p>
-              <h2 id={titleId} className="cr-dialog__title md:text-lg">
-                Choose a template
-              </h2>
-              <p id={descriptionId} className="cr-dialog__description text-sm">
-                Your content stays — only the layout changes
-              </p>
-            </div>
-            <button
-              ref={closeRef}
-              type="button"
-              onClick={onClose}
-              className="cr-dialog__close"
-              aria-label="Close"
-            >
-              <X aria-hidden="true" className="w-4 h-4" />
-            </button>
-          </div>
-          <div className="relative">
-            <Search
-              className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-(--ink-4) pointer-events-none"
-              aria-hidden="true"
-            />
+        <div className="resume-dialog-heading">
+          <h2 id={`${id}-title`}>Choose a template</h2>
+          <button
+            ref={closeRef}
+            type="button"
+            onClick={onClose}
+            className="air-icon-button air-button--quiet"
+            aria-label="Close template library"
+          >
+            <X size={18} strokeWidth={1.6} aria-hidden="true" />
+          </button>
+        </div>
+        <div className="resume-library-body">
+          <p id={`${id}-description`} className="resume-library-description">
+            Your content stays — only the layout changes.
+            {!hasContent && " Sample content is shown until you add your own."}
+          </p>
+          <label className="air-label" htmlFor={`${id}-search`}>
+            Search templates
+          </label>
+          <div className="air-field-group">
             <input
+              ref={searchRef}
+              id={`${id}-search`}
               type="search"
               name="template-search"
               autoComplete="off"
               spellCheck={false}
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Search templates by name, style, or level…"
               aria-label="Search templates"
-              className="h-11 w-full rounded-md border border-(--line) bg-(--surface-2) pl-9 pr-11 text-sm text-(--ink-1) placeholder:text-(--ink-4) transition-colors duration-160 hover:border-(--color-rule-strong) focus-visible:border-(--brand) focus-visible:bg-(--surface)"
+              aria-describedby={`${id}-search-help`}
+              className="air-field"
+              onCompositionStart={() => {
+                composing.current = true;
+              }}
+              onCompositionEnd={(event) => {
+                composing.current = false;
+                setFilter(event.currentTarget.value);
+              }}
+              onChange={(event) => {
+                setQuery(event.target.value);
+                if (!composing.current) setFilter(event.target.value);
+              }}
             />
-            {query ? (
+            <span className="air-field-actions">
               <button
                 type="button"
-                onClick={() => setQuery("")}
+                className="air-icon-button air-button--quiet air-field-clear"
+                hidden={!query}
                 aria-label="Clear search"
-                className="absolute right-0 top-1/2 grid h-11 w-11 -translate-y-1/2 place-items-center rounded-md border-0 bg-transparent text-(--ink-4) cursor-pointer transition-colors duration-160 hover:bg-(--ink-1)/5 hover:text-(--ink-1)"
+                onClick={() => {
+                  setQuery("");
+                  setFilter("");
+                  searchRef.current?.focus();
+                }}
               >
-                <X aria-hidden="true" className="w-3.5 h-3.5" />
+                <X size={18} strokeWidth={1.6} aria-hidden="true" />
               </button>
-            ) : null}
+            </span>
           </div>
-        </div>
-        <div className="cr-scroll overflow-y-auto overscroll-contain px-4 md:px-7 py-4 md:py-5.5">
-          {!hasResults && (
-            <div className="py-12 text-center" role="status">
-              <div className="text-sm font-medium text-(--ink-1)">No templates match “{query}”</div>
-              <div className="mt-1 text-sm text-(--ink-4)">
-                Try a different name, style, or experience level
-              </div>
-            </div>
-          )}
+          <p id={`${id}-search-help`} className="air-help">
+            Search by name, style or experience level.
+          </p>
+          <p className="resume-library-count" role="status" aria-atomic="true">
+            {count
+              ? `${count} ${count === 1 ? "template" : "templates"}`
+              : `No templates match “${filter}”. Clear search or try a different name, style or experience level.`}
+          </p>
           {grouped.map(({ category, templates }) => (
-            <section key={category.id} className="mb-6 last:mb-0">
-              <div className="flex items-baseline gap-3 mb-3 md:mb-3.5 pb-2 border-b border-(--line-soft)">
-                <h3 className="text-[11.5px] md:text-xs font-semibold tracking-[0.12em] uppercase text-(--ink-1)">
-                  {category.label}
-                </h3>
-                <span className="hidden text-sm tracking-[0.01em] text-(--ink-4) sm:inline">
-                  {category.description}
-                </span>
-                <span className="ml-auto text-[11px] font-mono text-(--ink-4) tabular-nums">
-                  {COUNT_FORMATTER.format(templates.length)}
-                </span>
+            <section
+              key={category.id}
+              className="resume-library-category"
+              aria-labelledby={`${id}-${category.id}`}
+            >
+              <div className="resume-library-category-heading">
+                <h3 id={`${id}-${category.id}`}>{category.label}</h3>
+                <span>{templates.length}</span>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4.5">
+              <p className="resume-library-description">{category.description}</p>
+              <div className="resume-library-grid">
                 {templates.map((t) => {
                   const active = t.id === templateId;
                   return (
-                    <article
-                      key={t.id}
-                      className={`cr-template-card relative flex flex-col rounded-lg border bg-(--surface) text-left transition-[border-color,transform] duration-160 ${
-                        active
-                          ? "border-(--brand) shadow-[0_0_0_2px_var(--brand-100)]"
-                          : "border-(--line)"
-                      }`}
-                    >
-                      <div aria-hidden="true" className="overflow-hidden rounded-lg">
-                        <div className="aspect-8.5/11 bg-(--surface-2) overflow-hidden relative border-b border-(--line)">
+                    <article key={t.id} className="resume-template-card" data-selected={active}>
+                      <div aria-hidden="true">
+                        <div className="resume-template-details">
+                          <div className="resume-template-name">
+                            <h4>{t.name}</h4>
+                            {active && (
+                              <span className="resume-template-selected">
+                                <Check size={18} strokeWidth={1.6} />
+                                Selected
+                              </span>
+                            )}
+                          </div>
+                          {t.badge && (
+                            <span className="resume-template-badge">{t.badge.label}</span>
+                          )}
+                          <p>{t.description}</p>
+                          <p className="resume-template-level">{t.level}</p>
+                        </div>
+                        <div className="resume-template-paper">
                           <TemplatePreview
                             TemplateComponent={t.component}
                             resume={previewResume}
                             accent={primary}
                           />
                         </div>
-                        <div className="px-4 pt-3.5 pb-4">
-                          <div className="font-semibold text-sm text-(--ink-1) flex items-center gap-2 justify-between">
-                            <span>{t.name}</span>
-                            {t.badge && (
-                              <span
-                                className={`text-[10.5px] font-semibold tracking-[0.04em] px-2 py-0.5 rounded-full border whitespace-nowrap ${
-                                  t.badge.tone === "ats"
-                                    ? "bg-(--ok-bg) text-(--ok) border-(--ok-border)"
-                                    : "bg-(--brand-50) text-(--brand-700) border-(--brand-200)"
-                                }`}
-                              >
-                                {t.badge.label}
-                              </span>
-                            )}
-                          </div>
-                          <div className="mt-1 text-sm leading-[1.5] text-(--ink-4)">
-                            {t.description}
-                          </div>
-                          <div className="mt-2.5 border-t border-(--line-soft) pt-2 font-mono text-[11px] font-medium tracking-[0.01em] text-(--ink-3)">
-                            {t.level}
-                          </div>
-                        </div>
                       </div>
                       <button
                         type="button"
                         onClick={() => onChange(t.id)}
-                        aria-label={`${t.name} template. ${t.description}. ${t.level}`}
                         aria-pressed={active}
-                        className="absolute inset-0 cursor-pointer rounded-lg border-2 border-transparent bg-transparent transition-[border-color] duration-160 hover:border-(--brand-300) focus-visible:border-(--brand) focus-visible:shadow-[0_0_0_3px_var(--brand-100)]"
+                        aria-label={`${t.name} template. ${t.description}. ${t.level}${t.badge ? `. ${t.badge.label}` : ""}`}
+                        className="resume-template-choice"
                       />
                     </article>
                   );

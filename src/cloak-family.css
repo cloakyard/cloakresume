@@ -374,10 +374,6 @@ button:not(.absolute):active:not(:disabled) {
   .cr-overlay[data-state="closing"] > .cr-dialog {
     animation: cr-sheet-dismiss var(--duration-fast) var(--ease-out) both;
   }
-
-  .cr-template-card {
-    transform-origin: center;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) and (min-width: 40rem) {
@@ -387,18 +383,6 @@ button:not(.absolute):active:not(:disabled) {
 
   .cr-overlay[data-state="closing"] > .cr-dialog {
     animation-name: cr-dialog-dismiss;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine) {
-  .cr-template-card:has(> button:hover) {
-    transform: translateY(-2px);
-  }
-
-  .cr-template-card:has(> button:active) {
-    transform: none;
-    transition-duration: var(--duration-press);
-    transition-timing-function: var(--ease-out);
   }
 }
 

@@ -7,7 +7,7 @@ import puppeteer, { type Browser, type BrowserContext, type Page } from "puppete
 import { createServer, preview, type PreviewServer, type ViteDevServer } from "vite-plus";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vite-plus/test";
 import { blankResume } from "../src/data/blankResume.ts";
-import { TEMPLATE_LIST } from "../src/templates/index.ts";
+import { TEMPLATE_CATEGORIES, TEMPLATE_LIST } from "../src/templates/index.ts";
 
 // Use the same local Chrome override as the project's screenshot scripts.
 const chromePath =
@@ -1450,6 +1450,290 @@ describe.skipIf(!existsSync(chromePath))(
         original + addition,
       );
       expect((await savedResume()).profile.name).toBe(original + addition);
+    });
+
+    async function openTemplateLibrary(width = 1440) {
+      if (width < 1024) {
+        await page.click('button[aria-label="More options"]');
+        await clickText("Template", '[role="dialog"]');
+      } else {
+        await page.click('button[aria-label^="Template:"]');
+      }
+      await page.waitForSelector(".resume-library", { visible: true });
+    }
+
+    it.each([1440, 390])(
+      "searches the real template library and saves a filtered selection at %ipx",
+      async (width) => {
+        const draft = {
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Library content stays intact" },
+        };
+        await openDraft(draft, { primary: "#123456", paperSize: "letter" }, width, width === 390);
+        await openTemplateLibrary(width);
+        await page.waitForFunction(() =>
+          [...document.querySelectorAll(".resume-template-preview")].every((el) =>
+            el.textContent?.includes("Library content stays intact"),
+          ),
+        );
+        expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+        expect(
+          await page.$$eval(".resume-library-category h3", (els) =>
+            els.map((el) => el.textContent),
+          ),
+        ).toEqual(TEMPLATE_CATEGORIES.map((c) => c.label));
+        expect(
+          await page.$$eval(".resume-template-preview", (els) =>
+            els.every(
+              (el) => el.hasAttribute("inert") && el.getAttribute("aria-hidden") === "true",
+            ),
+          ),
+        ).toBe(true);
+        const search = '[name="template-search"]';
+        for (const query of ["classic", "Scholarly", "PhDs", "  MODERN  ", "Prism"]) {
+          await page.$eval(search, (el) => (el as HTMLInputElement).select());
+          await page.keyboard.type(query);
+          const q = query.trim().toLowerCase();
+          const expected = TEMPLATE_CATEGORIES.flatMap((c) =>
+            TEMPLATE_LIST.filter(
+              (t) =>
+                t.category === c.id &&
+                [t.name, t.description, t.level, c.label].some((v) => v.toLowerCase().includes(q)),
+            ).map((t) => t.name),
+          );
+          await page.waitForFunction(
+            (count) => document.querySelectorAll(".resume-template-choice").length === count,
+            {},
+            expected.length,
+          );
+          expect(
+            await page.$$eval(".resume-template-name h4", (els) => els.map((el) => el.textContent)),
+          ).toEqual(expected);
+        }
+        await page.locator('.resume-template-choice[aria-label^="Prism template."]').click();
+        await page.waitForSelector(".resume-library", { hidden: true });
+        expect(await savedResume()).toEqual(draft);
+        expect(
+          await page.evaluate(() => {
+            const saved = JSON.parse(localStorage.getItem("cloakresume:v1")!);
+            return {
+              templateId: saved.templateId,
+              primary: saved.primary,
+              paperSize: saved.paperSize,
+            };
+          }),
+        ).toEqual({ templateId: "prism", primary: "#123456", paperSize: "letter" });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          width < 1024 ? "More options" : "Template: Prism",
+        );
+        await resumeEditing();
+        await openTemplateLibrary(width);
+        expect(
+          await page.$eval('.resume-template-choice[aria-pressed="true"]', (el) =>
+            el.getAttribute("aria-label"),
+          ),
+        ).toMatch(/^Prism template/);
+      },
+    );
+
+    it("keeps template search composition stable and clears results with focus and modal containment", async () => {
+      await openDraft();
+      await openTemplateLibrary();
+      expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(true);
+      await page.focus('[name="template-search"]');
+      await page.$eval('[name="template-search"]', (el) =>
+        el.dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true })),
+      );
+      await page.keyboard.type("no-matching-template");
+      expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+      await page.$eval('[name="template-search"]', (el) =>
+        el.dispatchEvent(new CompositionEvent("compositionend", { bubbles: true })),
+      );
+      await page.waitForFunction(
+        () => document.querySelectorAll(".resume-template-choice").length === 0,
+      );
+      expect(await page.$eval('.resume-library [role="status"]', (el) => el.textContent)).toContain(
+        "No templates match",
+      );
+      await page.click('[aria-label="Clear search"]');
+      expect(
+        await page.$eval(
+          '[name="template-search"]',
+          (el) => document.activeElement === el && (el as HTMLInputElement).value === "",
+        ),
+      ).toBe(true);
+      expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+      await page.focus('[aria-label="Close template library"]');
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(
+        await page.$eval(".resume-template-choice:last-child", () =>
+          document.activeElement?.getAttribute("aria-label"),
+        ),
+      ).toMatch(/^Academic CV/);
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Close template library",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(false);
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toMatch(
+        /^Template:/,
+      );
+    });
+
+    it.each([
+      [
+        "name",
+        { profile: { ...blankResume.profile, name: "Library identity" } },
+        "Library identity",
+      ],
+      [
+        "headline",
+        { profile: { ...blankResume.profile, title: "Library headline" } },
+        "Library headline",
+      ],
+      [
+        "stats",
+        { quickStats: [{ id: "s", value: "42", label: "Library metrics" }] },
+        "Library metrics",
+      ],
+      [
+        "extras",
+        { extras: [{ id: "e", label: "Library extra", value: "Retained value" }] },
+        "Library extra",
+      ],
+      [
+        "custom",
+        { custom: [{ id: "c", header: "Library section", bullets: ["Retained custom content"] }] },
+        "Retained custom content",
+      ],
+      ["interests", { interests: ["Library interest"] }, "Library interest"],
+      ["tools", { tools: ["Library tool"] }, "Library tool"],
+    ] as const)(
+      "previews a %s-only draft instead of substituting sample content",
+      async (_name, content, expected) => {
+        await openDraft({ ...blankResume, ...content });
+        await openTemplateLibrary();
+        await page.waitForFunction(
+          (text) =>
+            [...document.querySelectorAll(".resume-template-preview")].some((el) =>
+              el.textContent?.includes(text),
+            ),
+          {},
+          expected,
+        );
+        expect(
+          await page.$eval(".resume-library-description", (el) => el.textContent),
+        ).not.toContain("Sample content");
+        expect(await savedResume()).toEqual({ ...blankResume, ...content });
+      },
+    );
+
+    it("shows sample layouts for a fresh draft without writing the sample into it", async () => {
+      await page.setViewport({ width: 1440, height: 900 });
+      await page.goto(url, { waitUntil: "networkidle0" });
+      await clickText("Start blank");
+      await page.waitForSelector('button[aria-label^="Template:"]');
+      await openTemplateLibrary();
+      expect(await page.$eval(".resume-library-description", (el) => el.textContent)).toContain(
+        "Sample content",
+      );
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll(".resume-template-preview")].every(
+          (el) => (el.textContent?.length ?? 0) > 200,
+        ),
+      );
+      await page.locator('.resume-template-choice[aria-label^="Prism template."]').click();
+      expect(await savedResume()).toEqual(blankResume);
+    });
+
+    it.each([
+      [1440, 390],
+      [390, 1440],
+    ])(
+      "keeps template search through %i to %ipx reflow and returns to visible chrome",
+      async (from, to) => {
+        await openDraft(undefined, {}, from, from === 390);
+        await openTemplateLibrary(from);
+        await page.type('[name="template-search"]', "Prism");
+        await page.setViewport({ width: to, height: 900, hasTouch: from === 390 });
+        await page.waitForSelector(
+          to < 1024 ? '[aria-label="More options"]' : '[aria-label^="Template:"]',
+        );
+        expect(
+          await page.$eval('[name="template-search"]', (el) => (el as HTMLInputElement).value),
+        ).toBe("Prism");
+        expect(await page.$$(".resume-template-choice")).toHaveLength(1);
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(".resume-library", { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          to < 1024 ? "More options" : "Template: ATS Plain",
+        );
+      },
+    );
+
+    it("cancels a library handle drag and dismisses with the compact swipe alternative", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await openTemplateLibrary(390);
+      const handle = ".resume-library .resume-sheet-handle";
+      await page.$eval(handle, (el) => {
+        const target = el as HTMLElement;
+        const capture = target.setPointerCapture.bind(target);
+        target.setPointerCapture = () => {};
+        const event = (type: string, y: number) =>
+          target.dispatchEvent(
+            new PointerEvent(type, {
+              bubbles: true,
+              pointerId: 1,
+              isPrimary: true,
+              button: 0,
+              clientY: y,
+            }),
+          );
+        event("pointerdown", 50);
+        event("pointermove", 100);
+        event("pointercancel", 100);
+        target.setPointerCapture = capture;
+      });
+      await page.waitForFunction(
+        () => (document.querySelector(".resume-library") as HTMLElement).style.transform === "",
+      );
+      expect(await page.$(".resume-library")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!;
+      const cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("returns library focus to visible chrome when a compact handoff loses its opener", async () => {
+      await openDraft();
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement).blur();
+        window.dispatchEvent(new Event("cr:open-template-picker"));
+      });
+      await page.waitForSelector(".resume-library");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Close template library",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Template: ATS Plain",
+      );
     });
 
     it("keeps the template picker open when dismissing a nested save-failure notice", async () => {

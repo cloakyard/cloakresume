@@ -943,3 +943,145 @@ textarea.resume-writing-field[data-resizable="false"] {
   white-space: pre-wrap;
   overflow-wrap: anywhere;
 }
+
+/* Library chrome stays separate from the real, inert document previews. */
+.resume-library-viewport {
+  background: var(--air-scrim);
+  padding: 24px;
+}
+.resume-library {
+  inline-size: 1040px;
+  block-size: calc(100dvh - 32px);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.resume-library > .resume-dialog-heading,
+.resume-library > .resume-sheet-handle {
+  flex-shrink: 0;
+}
+.resume-library-body {
+  min-block-size: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px;
+  margin: -4px;
+}
+.resume-library-description {
+  margin: 0 0 16px;
+  color: var(--air-ink-secondary);
+}
+.resume-library-count {
+  margin: 16px 0 24px;
+  color: var(--air-ink-secondary);
+  font-variant-numeric: tabular-nums;
+}
+.resume-library-category + .resume-library-category {
+  margin-block-start: 32px;
+}
+.resume-library-category-heading {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-block-end: 8px;
+}
+.resume-library-category-heading h3 {
+  flex: 1;
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+.resume-library-category-heading > span {
+  color: var(--air-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+.resume-library-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+  gap: 16px;
+}
+.resume-template-card {
+  position: relative;
+  min-inline-size: 0;
+  border: 1px solid var(--air-line-control);
+  border-radius: var(--air-radius-panel);
+  background: var(--air-surface);
+}
+.resume-template-card[data-selected="true"] {
+  background: var(--air-surface-soft);
+}
+.resume-template-card:has(> button:hover) {
+  background: var(--air-surface-hover);
+}
+.resume-template-paper {
+  overflow: hidden;
+  border-radius: 0 0 17px 17px;
+  border-top: 1px solid var(--air-line);
+}
+.resume-template-details {
+  padding: 16px;
+}
+.resume-template-name {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+}
+.resume-template-name h4 {
+  margin: 0;
+  font-size: var(--air-text-body);
+  font-weight: 500;
+}
+.resume-template-selected {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: var(--air-text-meta);
+}
+.resume-template-selected svg {
+  flex-shrink: 0;
+  color: var(--air-accent);
+}
+.resume-template-badge {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: var(--air-text-meta);
+  color: var(--air-ink-secondary);
+}
+.resume-template-details p {
+  margin: 8px 0 0;
+  color: var(--air-ink-secondary);
+}
+.resume-template-details .resume-template-level {
+  font-size: var(--air-text-meta);
+}
+.resume-template-choice {
+  position: absolute;
+  inset: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  border: 0;
+  border-radius: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+.resume-template-choice:focus-visible {
+  outline: 2px solid var(--air-accent);
+  outline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .resume-library-viewport {
+    padding: 0;
+  }
+  .resume-library {
+    block-size: calc(100dvh - 16px);
+  }
+}
+@media (forced-colors: active) {
+  .resume-template-selected svg {
+    color: Highlight;
+  }
+  .resume-template-card[data-selected="true"] {
+    border-color: Highlight;
+  }
+}

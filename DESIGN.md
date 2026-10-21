@@ -1097,7 +1097,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   `src/styles/air.css`; `air-entry.css` owns entry composition. The editor shell,
   header actions, section rail/picker/panel frame, paper/view segments and preview
   dock use Air with `air-editor.css` composition. All 13 content sections and their
-  writing widgets use Air; library/review sheets and PWA notices retain the legacy
+  writing widgets and template library use Air; review sheets and PWA notices retain the legacy
   bridge until their slices.
   Template fonts and output geometry remain independent of both bridges.
 - Entry supports landscape and native in-flow compact navigation. Blank/sample
@@ -1256,5 +1256,29 @@ journeys across all apps; it is not inferred from the pilot alone.
   custom values, both themes, text enlargement, breakpoint edges, coarse/fine input
   and forced colours. Complete source review plus existing field/date/logo/hint and
   entry tests establish software acceptance; physical touch/software keyboard, OS
-  IME and spoken assistive gates remain separate. Library/review/overflow/export,
+  IME and spoken assistive gates remain separate. Review/overflow/export,
   PWA/static recovery and real preview assets are still later slices.
+
+- The template library uses the shared wide Air dialog, compound search field,
+  neutral selection and readable category/name/description/level metadata. Names
+  precede their live paper previews, so choices remain identifiable on short screens.
+  The header and close action stay reachable while the body scrolls; gallery height
+  stays stable when filtering. The grid reflows with available width and text size.
+- Preserve all 17 actual templates, category ordering, badge labels, name/description/
+  level/category matching, selected state and immediate selection. Search defers
+  filtering during composition, announces counts/no results, and clearing restores
+  input focus. Sample previews appear only for untouched drafts; identity, stats,
+  extras, custom, interests and tools-only drafts retain their own content.
+- Template previews remain inert, use the author's primary colour and retain real
+  lazy template modules, fonts, A4 scaling and document geometry. No gallery style
+  may alter document typography, symbols, images or JSON/PDF output.
+- The library reuses the established modal lifecycle, background inertness and
+  compact swipe handling. Frequent library opening/dismissal is immediate. Native
+  Safari opener focus, keyboard wrap/return, nested save-error notices and drag
+  cancellation remain supported. The toolbar stays mounted across responsive
+  changes; dismissal returns to the surviving Template or More options control.
+- `node scripts/test-air-library.mjs` checks gallery, filtered and no-results states,
+  blank/populated drafts, every viewport class, both themes, text enlargement,
+  coarse/fine targets and forced colours. Native Safari and actual Firefox zoom
+  are separate from physical touch/software keyboard, OS IME and spoken assistive
+  acceptance. Review, overflow/export, PWA/static recovery and real assets remain.

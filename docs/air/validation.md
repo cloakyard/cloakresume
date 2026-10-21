@@ -497,3 +497,44 @@ Next: template library, then all four review tabs, overflow/export busy/recovery
 PWA/static 404 and real OG/PWA/README assets. Ready Offline enlarged-text styling is
 reserved for its PWA slice. No push/deploy. CloakIMG stays last and untouched.
 Scratch: `/tmp/cloakresume-air-sections/`.
+
+## 2026-10-21 — Air template library
+
+The library uses the shared wide dialog/sheet, labelled compound search and neutral
+choice states. Template names, descriptions and levels precede the actual previews.
+Its height stays stable while filtering; Close remains reachable while content
+scrolls. All 17 templates, categories, badges and name/description/level/category
+matching remain available. Composition defers filtering; clear restores search focus.
+The shared content predicate preserves identity, stats, extras, custom, interests
+and tools-only drafts. Sample previews never become saved content.
+
+Real templates remain lazy, inert and output-accurate in the author's colour. The
+obsolete card lift/tint, uppercase/mono metadata, duplicate Escape handler and
+incorrect palette comment are removed. Library opening/dismissal is immediate.
+The toolbar remains mounted through desktop/compact reflow; modal focus returns
+to a surviving opener even if a compact handoff loses its original control.
+Nested save-error dismissal, keyboard wrap and emulated swipe/cancel pass.
+
+Validation: **338/338 production tests, eight files, zero skips, 474.52s**;
+158 editor cases and all 34 template/paper cases with five fixtures each. Runtime
+(106 tracked source files) and dist (99 files) stayed unchanged during the serial
+suite. **386 layouts and eight contrast pairs pass**: 16 sizes, both themes,
+16/32px root text, empty/populated drafts, gallery/filtered/no-results states,
+plus two forced-colour keyboard cases. Native Safari and Firefox actual 200%
+reviewed; tabs closed and zoom restored. Check/build, inventory, portability and
+family sync pass. [Evidence](evidence/template-library-2026-10-21.json) records
+41 captures, complete results and runtime/build hashes. All 34 output
+image/geometry comparisons and actual A4/Letter PDF rasters match the baseline.
+
+The forced-colour checker scopes its contour measurement to the library, waits
+for the intended close focus, and measures after a rendered keyboard frame.
+The initial complete suite passed all runtime cases but found three source checks
+for the retired gallery skin. Those now verify the shared Air shell, inherited
+safe-area containment, scroll ownership and actual template choices. Responsive
+testing found the toolbar remount and missing logical focus fallback; both are
+fixed and covered by regressions.
+
+Next: complete review shell and all four panes, then overflow/export, PWA/static
+recovery and actual assets. Physical touch/software keyboard, OS IME and spoken
+assistive gates remain open. No push/deploy; CloakIMG stays last and untouched.
+Scratch: `/tmp/cloakresume-air-library/`; read-only next-review notes are there.

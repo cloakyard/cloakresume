@@ -60,6 +60,7 @@ interface ModalDialogOptions<T extends HTMLElement> {
   initialFocusRef?: RefObject<HTMLElement | null>;
   dialogRef?: RefObject<T | null>;
   inertBackground?: boolean;
+  fallbackFocus?: () => HTMLElement | null;
 }
 
 /**
@@ -75,14 +76,17 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
   initialFocusRef,
   dialogRef: providedDialogRef,
   inertBackground = false,
+  fallbackFocus,
 }: ModalDialogOptions<T>): RefObject<T | null> {
   const internalDialogRef = useRef<T>(null);
   const dialogRef = providedDialogRef ?? internalDialogRef;
   const onCloseRef = useRef(onClose);
+  const fallbackFocusRef = useRef(fallbackFocus);
 
   useEffect(() => {
     onCloseRef.current = onClose;
-  }, [onClose]);
+    fallbackFocusRef.current = fallbackFocus;
+  }, [onClose, fallbackFocus]);
 
   useEffect(() => {
     if (!open) return;
@@ -162,8 +166,15 @@ export function useModalDialog<T extends HTMLElement = HTMLDivElement>({
       // of sending subsequent keystrokes back to the dialog's opener.
       const active = document.activeElement;
       const restoreFocus = !active || active === document.body || dialogElement?.contains(active);
-      if (wasTopDialog && restoreFocus && previouslyFocused?.isConnected) {
-        previouslyFocused.focus({ preventScroll: true });
+      if (wasTopDialog && restoreFocus) {
+        const target =
+          previouslyFocused?.isConnected &&
+          previouslyFocused !== document.body &&
+          previouslyFocused !== document.documentElement &&
+          previouslyFocused.checkVisibility()
+            ? previouslyFocused
+            : fallbackFocusRef.current?.();
+        target?.focus({ preventScroll: true });
       }
     };
   }, [dialogRef, initialFocusRef, open, inertBackground]);

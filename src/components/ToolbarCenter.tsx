@@ -52,15 +52,6 @@ export function ToolbarCenter({
   const activeTemplate = TEMPLATE_LIST.find((t) => t.id === templateId) ?? TEMPLATE_LIST[0];
 
   useEffect(() => {
-    if (!templateOpen) return;
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") setTemplateOpen(false);
-    }
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [templateOpen]);
-
-  useEffect(() => {
     if (isMobile) setColorOpen(false);
   }, [isMobile]);
 
@@ -70,7 +61,10 @@ export function ToolbarCenter({
         <>
           <button
             type="button"
-            onClick={() => setTemplateOpen(true)}
+            onClick={(event) => {
+              event.currentTarget.focus();
+              setTemplateOpen(true);
+            }}
             className="air-icon-button resume-toolbar-action"
             aria-haspopup="dialog"
             aria-label={`Template: ${activeTemplate.name}`}
