@@ -44,7 +44,7 @@ function clampZoom(z: number): number {
 function TemplateLoadingPage() {
   return (
     <div className="resume-page grid place-items-center bg-(--color-proof-paper)">
-      <span className="font-mono text-xs text-(--color-proof-ink-2)" role="status">
+      <span className="resume-template-loading" role="status">
         Preparing document…
       </span>
     </div>

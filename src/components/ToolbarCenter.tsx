@@ -90,7 +90,7 @@ export function ToolbarCenter({
               <Palette size={18} strokeWidth={1.6} aria-hidden="true" />
               <span
                 className="w-2.5 h-2.5 rounded-full"
-                style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
+                style={{ background: primary, border: "1px solid var(--air-line-control)" }}
               />
               <span className="resume-toolbar-label">
                 <ColorName hex={primary} />

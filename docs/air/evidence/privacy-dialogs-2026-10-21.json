@@ -1,0 +1,85 @@
+{
+  "date": "2026-10-21",
+  "baselineCommit": "845a04ad74ff0245ebee07f6cdf96540de66006c",
+  "contract": "Air 1.0.6 / e7c8a4bcfbc5",
+  "status": "passed-local-bounded-piece",
+  "scope": [
+    "Privacy reading typography and persistent dismissal",
+    "Neutral PWA panel and update/error/cached states",
+    "Inherited UI fonts/colour/focus and removal of obsolete assets",
+    "Destructive confirmation backdrop safety; other dismissal retained"
+  ],
+  "checks": {
+    "entry": {
+      "layouts": 341,
+      "journeys": 14,
+      "errors": 0
+    },
+    "pwa": {
+      "layouts": 384,
+      "extraDesktopTablet": 8,
+      "errors": 0
+    },
+    "options": {
+      "layouts": 192,
+      "errors": 0
+    },
+    "review": {
+      "layouts": 960,
+      "errors": 0
+    },
+    "links": {
+      "layoutStates": 120,
+      "keyboardChecks": 24,
+      "hoverFocusNeutral": true
+    },
+    "output": "34 exact paper captures; four PDFs exact in raster/text/geometry/URI links",
+    "fullSuite": {
+      "command": "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism",
+      "passed": 373,
+      "total": 373,
+      "files": 10,
+      "skipped": 0,
+      "durationSeconds": 531.02
+    },
+    "library": {
+      "layouts": 386,
+      "contrastPairs": 8,
+      "errors": 0
+    },
+    "contract": {
+      "inventory": 86,
+      "portabilityChecks": 18,
+      "familyCopies": 6,
+      "sharedContractUnchanged": true
+    },
+    "checkBuild": "147 lint/type sources; format, production build and PWA generation pass"
+  },
+  "cleanup": {
+    "legacyTokenNamesRemovedFromBridge": 53,
+    "unusedTailwindAliasesRemoved": 33,
+    "removedUiFontBytes": 75332,
+    "preserved": "All 17 template families, their fonts, pagination, exporter, schema and update activation/draft-save logic"
+  },
+  "evidenceDirectory": "privacy-dialogs-2026-10-21",
+  "retainedGates": [
+    "Date presence/placement and remaining motion/target acceptance",
+    "Physical touch/software keyboard, OS IME and spoken assistive acceptance",
+    "Browser-engine/hardware acceptance not inferred from Chromium emulation"
+  ],
+  "scratch": "/tmp/cloakresume-air-alignment-2026-10-21",
+  "visualReview": [
+    "Desktop/laptop/tablet/phone light/dark: privacy, update and error/busy notices, confirmation, Options, template gallery and review",
+    "Short landscape, enlarged text, coarse/fine targets and forced-colour checks from each matrix",
+    "34 paper-only captures exact; all four exported PDFs preserve raster, text, geometry and URI links"
+  ],
+  "earlierAttempts": [
+    "Initial suite 370/372: a new backdrop assertion targeted the safe start-options dialog, and the offline-copy assertion still expected old wording. Corrected the test target and copy assertion; 19 focused checks pass. Final complete suite passes 373/373 with zero skips.",
+    "Gallery first exceeded an outer harness timeout; a later attempt overlapped a preview rebuild and lost a lazy chunk. The final complete matrix ran against the frozen build and passes all 386 cases."
+  ],
+  "frozenSourceAndBuild": {
+    "files": 269,
+    "drift": [],
+    "manifest": "privacy-dialogs-2026-10-21/tested-files.json.gz"
+  }
+}

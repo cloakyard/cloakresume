@@ -771,3 +771,30 @@ Evidence: `evidence/unused-foundations-2026-10-21.json`; larger scratch and scri
 candidates remain for the next bounded cleanup. Full-product acceptance is not
 complete. Dependency upgrades and final dev -> PR -> main integration are tracked
 in the family rollout after the remaining migrations; CloakIMG stays last.
+
+## 2026-10-21 — Privacy, dialogs, update notice and UI foundations
+
+Privacy now uses canonical Air prose inside the standard 576px dialog with a
+persistent close heading. The update/error/offline notice uses the shared neutral
+panel tokens and actions. Removed legacy UI fonts/aliases; document fonts and all
+17 template families remain. Destructive backdrop presses preserve confirmation;
+safe start navigation and notices retain normal dismissal.
+
+**373/373 production tests, 10 files, zero skips, 531.02s**. Check/build, 86-source
+inventory, 18 portability checks and exact six-copy sync pass. The final 269
+source/asset/test/build files stayed unchanged through regression. Responsive:
+341 entry/recovery layouts + 14 journeys, 384 PWA cases + eight extra desktop/tablet
+captures, 192 Options, 960 review and 386 library cases; 120 neutral-link states
+and 24 keyboard checks. Reviewed desktop/laptop/tablet/phone light/dark captures,
+enlarged text, short landscape and forced-colour cases. The update controller's
+real activation/storage/error tests pass; no artificial update outcome replaces them.
+
+34 paper-only captures are exact; four PDFs preserve raster/text/geometry/URI links.
+The old preview harness also included the app page below its clipped preview;
+that surrounding page changes to Air. A fresh paper-only baseline avoids confusing
+that intentional UI change with authored output. Earlier harness mistakes and their
+corrections are retained in the evidence, not relabeled passes.
+
+Evidence: [privacy/dialog alignment](evidence/privacy-dialogs-2026-10-21.json).
+Remaining date-motion/target, physical keyboard/IME/assistive and hardware gates
+are separate. This does not declare the entire family migration complete.

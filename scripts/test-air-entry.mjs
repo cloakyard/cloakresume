@@ -140,6 +140,24 @@ async function measure(state, width, height, theme, text) {
     const dialog = document.querySelector(".resume-overlay .air-modal"),
       r = dialog?.getBoundingClientRect();
     if (r && (r.top < 0 || r.bottom > innerHeight + 1)) bad.push(["dialog-height", r.toJSON()]);
+    const policy = document.querySelector(".resume-policy");
+    if (policy) {
+      const scroller = policy.querySelector(".resume-policy-body");
+      const close = policy.querySelector('[aria-label="Close privacy policy"]');
+      const before = close.getBoundingClientRect().top;
+      scroller.scrollTop = scroller.scrollHeight;
+      if (close.getBoundingClientRect().top !== before) bad.push(["privacy close scrolls away"]);
+      scroller.scrollTop = 0;
+      const prose = getComputedStyle(policy.querySelector("article p"));
+      const rootSize = parseFloat(getComputedStyle(document.documentElement).fontSize);
+      if (
+        parseFloat(prose.fontSize) !== rootSize ||
+        Math.abs(parseFloat(prose.lineHeight) - rootSize * 1.6) > 0.1
+      )
+        bad.push(["privacy reading typography", prose.font]);
+      if (innerWidth > 640 && policy.getBoundingClientRect().width > 576.1)
+        bad.push(["privacy exceeds Air dialog width"]);
+    }
     const body = document.querySelector(".resume-site"),
       footer = document.querySelector(".resume-footer");
     return {

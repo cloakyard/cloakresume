@@ -33,12 +33,12 @@ export function ReloadPromptView({
           : "Update ready";
   const body =
     state === "offline"
-      ? "This version is cached and ready to use offline."
+      ? "The app is cached. Fonts and language tools may still need a connection."
       : busy
         ? "Activating the new version. Your latest changes will be saved before reloading."
         : state === "error"
           ? error
-          : "A new version is ready. Save your draft and reload CloakResume when you’re ready.";
+          : "A new version is ready. Your draft will be saved before reloading.";
   const Icon = state === "error" ? CircleAlert : state === "offline" ? ShieldCheck : RefreshCw;
   const label = busy ? "Updating…" : state === "error" ? "Try again" : "Update and reload";
 
@@ -71,6 +71,7 @@ export function ReloadPromptView({
     <section
       ref={root}
       className="resume-update"
+      data-state={state}
       aria-labelledby={titleId}
       onPointerEnter={() => onPause(true)}
       onPointerLeave={() => onPause(Boolean(root.current?.contains(document.activeElement)))}

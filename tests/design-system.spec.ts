@@ -105,7 +105,7 @@ describe("CloakResume family contract", () => {
 
     expect(indexCss).toMatch(/^\/\*[\s\S]*?\*\/\s*@import "\.\.\/tokens\.css";/);
     expect(indexCss).toContain("Air owns UI");
-    expect(familyCss).toContain("var(--color-focus)");
+    expect(familyCss).toContain("var(--air-accent)");
     expect(familyCss).not.toContain(".tb.primary");
     expect(`${indexCss}\n${familyCss}\n${tokens}`).not.toMatch(/surface-glass|--glass-/);
   });
@@ -389,7 +389,9 @@ describe("CloakResume family contract", () => {
     expect(reload).toContain("Update and reload");
     expect(reload).toContain("Updating…");
     expect(reload).toContain("Check your connection, then try again.");
-    expect(reload).toContain("This version is cached and ready to use offline.");
+    expect(reload).toContain(
+      "The app is cached. Fonts and language tools may still need a connection.",
+    );
     expect(reload).toContain("aria-disabled={busy || undefined}");
     expect(reload).toContain('role={state === "error" ? "alert" : "status"}');
     expect(reload).not.toContain("now installed for offline use");

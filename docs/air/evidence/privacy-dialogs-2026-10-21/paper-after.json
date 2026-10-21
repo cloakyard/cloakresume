@@ -1,0 +1,410 @@
+[
+  {
+    "id": "classic-sidebar",
+    "paperSize": "a4",
+    "sha256": "3beebab2e20f22b1d40a2f3fe430fea82f2a728d88fc77db0406dc37ba480168",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "classic-sidebar",
+    "paperSize": "letter",
+    "sha256": "9453fa72fe60a4b3eb456415f97713d581e9cffbe6aa813e621b49b6836ab36f",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "classic-impact",
+    "paperSize": "a4",
+    "sha256": "63b40ba459921abc6820283c08e435f88dba922d8165728b02c5844699f80ad3",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "classic-impact",
+    "paperSize": "letter",
+    "sha256": "551eda153eee4a4eca014e19466d407c1297871b65e2645185ab56cfe1cb42cc",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ledger",
+    "paperSize": "a4",
+    "sha256": "a29cdd836ae7c7c378fb151d10ba52898aa771804d35c9be8a826e4199cda763",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ledger",
+    "paperSize": "letter",
+    "sha256": "7dd2ee620667e9784c8f2032d003cfa2caab3a90aec39fc6db3656ebe4b332c0",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "executive-serif",
+    "paperSize": "a4",
+    "sha256": "bb0d2204221d0fcb533a37fccc9a10639762bf7d8a034a91a52809c2844fe7cc",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "executive-serif",
+    "paperSize": "letter",
+    "sha256": "0b4677b35bd031a513e93ad16966200c8cf1998e475e7b8063c8d4e65956f44c",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "monograph",
+    "paperSize": "a4",
+    "sha256": "2c6c455a0cff176f68fbd901efd60024ff2f5ffd69f12944bedb07c6bcf42f7e",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "monograph",
+    "paperSize": "letter",
+    "sha256": "4644f1b70b2fca5160b497c9c5b032f0bf0537c4f2b1dade14bcae469bc33028",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ats-professional",
+    "paperSize": "a4",
+    "sha256": "9b6afbb8d8e369808a07d7f7cfdc9122c80e1325d5b82728f09906a6bbad7327",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ats-professional",
+    "paperSize": "letter",
+    "sha256": "9e3210cf0978567f51173cda39cf83bb51c67314e92a3822216ba39d9050c5ca",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ats-plain",
+    "paperSize": "a4",
+    "sha256": "7989efcd8189c4fa40a5b063c63a670dfecd296c0163757babe7337784cdf4a9",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "ats-plain",
+    "paperSize": "letter",
+    "sha256": "15e5614b958569aabb9834088bc55ba3b04b458e8d14158ca969ea52e061787b",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "modern-minimal",
+    "paperSize": "a4",
+    "sha256": "3ae50710d7c9a6210b3f03ea072c23426246615ff55ebd1fed587659ce4c364f",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "modern-minimal",
+    "paperSize": "letter",
+    "sha256": "ef73aa411eae42e8493641a47ec02a33baf32a9944047c0adbd11c70291aae3e",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "aurora",
+    "paperSize": "a4",
+    "sha256": "3603d860506063776ff259b60fc354ca6038fd0ff877b0b3734cdee7eadc4aa7",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "ACAir Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "aurora",
+    "paperSize": "letter",
+    "sha256": "f6653b086b4c67e78061926768e9b9ba9b2e56bbe76e9d9185313a48b5038689",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "ACAir Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "prism",
+    "paperSize": "a4",
+    "sha256": "63be6ce060c531027b60323632797628efe0346d440540f4028932ac25bed6b1",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "prism",
+    "paperSize": "letter",
+    "sha256": "1ceff624d7a3a001a2f2c8c802c5963a80c75b04b3510e39a38833d85f2c7cf2",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "horizon",
+    "paperSize": "a4",
+    "sha256": "b57fdbc59112e7382db8eb443a67f0c0a4c9f44cbd85e9a60722d7d142ac9805",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "horizon",
+    "paperSize": "letter",
+    "sha256": "f287b71b6afce88d2e4d6a1d1edc501abf2b1b48f5c0b36cba89ceaa9d133793",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "minimalist",
+    "paperSize": "a4",
+    "sha256": "86ea2b1fe00ee7c418c52c931256cadf02df918beec7249a6d609dc9d557d49d",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "minimalist",
+    "paperSize": "letter",
+    "sha256": "b2e3be7b0bd57777456e7c56686ccfd665305c2a956011b71b66098a69d95af2",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "compact-timeline",
+    "paperSize": "a4",
+    "sha256": "2cdde02b01234814d1145f9a0dcd66e84f8cf122414352be8632fbc635658c48",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "compact-timeline",
+    "paperSize": "letter",
+    "sha256": "9a56d06a1238e1e4b4ec51febaa6f45672216a3ace2bf396daa1f7bbbf256ecc",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "typographic",
+    "paperSize": "a4",
+    "sha256": "5f221df68797d4dcef523fee1da1d6096324d851f8120ba527f8db3e7610fd01",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign Engineer01AboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "typographic",
+    "paperSize": "letter",
+    "sha256": "0586e89e9149184836b1774bd41a7ae5c0a361dca5476df62b8456911857023f",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign Engineer01AboutA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "bauhaus",
+    "paperSize": "a4",
+    "sha256": "490c26715ffd44d8b0f53fe1098ea1ab24957cf17f3a47f3b21f915d4248fa9c",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "bauhaus",
+    "paperSize": "letter",
+    "sha256": "e70895772cda86956b3d6a890a0a7d6778b11894984cc3881e4703ad75122d9e",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "gradient-header",
+    "paperSize": "a4",
+    "sha256": "b5a419624e4bd38b7b0df8e47e76823a732e6bc663b690ce47b05accf277448d",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "ACAir Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "gradient-header",
+    "paperSize": "letter",
+    "sha256": "c298124f34a0d23b90fd29ae5d5eb922796f87350709fbbeb68e18439b84a471",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "ACAir Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "academic",
+    "paperSize": "a4",
+    "sha256": "dc29e67d25c8d975d537df1e022d884a6b06a6ef3585d1f5462dd589eb002979",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerResearch StatementA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "academic",
+    "paperSize": "letter",
+    "sha256": "15969df6c74fd6328dc6708fdb069cca31b8ed24a579a713878152bc2e6d1d75",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerResearch StatementA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  }
+]
