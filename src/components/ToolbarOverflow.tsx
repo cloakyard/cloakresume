@@ -2,9 +2,8 @@
  * Mobile/tablet overflow menu — bottom-sheet bundling the toolbar items
  * that don't fit in the header chrome on small screens.
  *
- * Template and Colour open their respective surfaces via window events
- * (`cr:open-template-picker`, `cr:open-color-picker`) handled inside
- * `ToolbarCenter`. Keeps the sheet stateless and picker logic in one place.
+ * Template and review use the toolbar event bridge. Primary colour shares
+ * the desktop Air picker body and opens as a compact modal surface.
  */
 
 import {
@@ -18,11 +17,11 @@ import {
   ScanSearch,
   Upload,
 } from "lucide-react";
-import { useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { type PaperSize } from "../utils/paperSize.ts";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { BottomSheet } from "./BottomSheet.tsx";
-import { ColorPickerContent } from "./ColorPickerContent.tsx";
+import { ColorPickerPopover } from "./ColorPickerPopover.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 
 interface ToolbarOverflowProps {
@@ -51,7 +50,16 @@ export function ToolbarOverflow({
   const isMobile = useMediaQuery(BP.mobile);
   const [open, setOpen] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
+  const colorId = useId();
+  const moreRef = useRef<HTMLButtonElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!isMobile) {
+      setOpen(false);
+      setColorOpen(false);
+    }
+  }, [isMobile]);
 
   const closeThenOpen = (next: () => void) => {
     setOpen(false);
@@ -68,10 +76,16 @@ export function ToolbarOverflow({
   return (
     <>
       <button
+        ref={moreRef}
         type="button"
-        onClick={() => setOpen(true)}
+        onClick={(event) => {
+          event.currentTarget.focus();
+          setOpen(true);
+        }}
         className="air-icon-button air-button--quiet"
         aria-label="More options"
+        aria-expanded={open || colorOpen}
+        aria-controls={colorOpen ? colorId : undefined}
         aria-haspopup="dialog"
       >
         <MoreVertical aria-hidden="true" size={18} strokeWidth={1.6} />
@@ -125,7 +139,12 @@ export function ToolbarOverflow({
                 style={{ background: primary, border: "1px solid var(--color-rule-strong)" }}
               />
             }
-            onClick={() => closeThenOpen(() => setColorOpen(true))}
+            onClick={() =>
+              closeThenOpen(() => {
+                moreRef.current?.focus();
+                setColorOpen(true);
+              })
+            }
           />
           <OverflowRow icon={<FileText className="w-4 h-4" />} label="Paper size">
             <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
@@ -152,9 +171,16 @@ export function ToolbarOverflow({
         </div>
       </BottomSheet>
 
-      <BottomSheet open={colorOpen} onClose={() => setColorOpen(false)} title="Primary colour">
-        <ColorPickerContent primary={primary} onChange={onPrimaryChange} />
-      </BottomSheet>
+      {colorOpen && (
+        <ColorPickerPopover
+          id={colorId}
+          primary={primary}
+          onChange={onPrimaryChange}
+          onClose={() => setColorOpen(false)}
+          triggerRef={moreRef}
+          modal
+        />
+      )}
     </>
   );
 }

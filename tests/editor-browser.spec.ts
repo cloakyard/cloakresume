@@ -1919,6 +1919,264 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).experience[0].start).toBe("2020");
     });
 
+    async function openColour(width = 1440) {
+      if (width < 1024) {
+        await page.click('button[aria-label="More options"]');
+        await clickText("Primary colour", '[role="dialog"]');
+      } else await page.click('button[aria-label="Primary colour"]');
+      await page.waitForSelector(".resume-colour-picker", { visible: true });
+      await page.waitForFunction(() =>
+        document.querySelector(".resume-colour-picker")?.contains(document.activeElement),
+      );
+    }
+
+    const colourHex = () =>
+      page.$eval('[name="resume-primary-hex"]', (el) => (el as HTMLInputElement).value);
+    async function enterColour(value: string) {
+      await page.$eval('[name="resume-primary-hex"]', (el) => (el as HTMLInputElement).select());
+      await page.keyboard.sendCharacter(value);
+    }
+
+    it.each([1440, 390])(
+      "preserves the exact primary colour when opening, dismissing and restoring at %ipx",
+      async (width) => {
+        await openDraft(undefined, { primary: "#123456" }, width, width < 1024);
+        const before = await page.$eval(".resume-root", (el) => el.innerHTML);
+        await openColour(width);
+        expect(await colourHex()).toBe("#123456");
+        expect(await page.$eval(".resume-root", (el) => el.innerHTML)).toBe(before);
+        if (width < 1024) {
+          expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(true);
+          expect(
+            await page.evaluate(() =>
+              document.activeElement?.classList.contains("resume-colour-picker"),
+            ),
+          ).toBe(true);
+          await page.focus(".resume-colour-fine summary");
+          await page.keyboard.press("Tab");
+          expect(
+            await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
+          ).toBe("Close primary colour");
+          await page.keyboard.down("Shift");
+          await page.keyboard.press("Tab");
+          await page.keyboard.up("Shift");
+          expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("SUMMARY");
+        } else
+          expect(await page.evaluate(() => document.activeElement?.getAttribute("name"))).toBe(
+            "resume-primary-brightness",
+          );
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(".resume-colour-picker", { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          width < 1024 ? "More options" : "Primary colour",
+        );
+        expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
+        await resumeEditing();
+        await openColour(width);
+        expect(await colourHex()).toBe("#123456");
+        if (width < 1024) {
+          await page.mouse.click(2, 2);
+          await page.waitForSelector(".resume-colour-picker", { hidden: true });
+          expect(
+            await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
+          ).toBe("More options");
+        }
+      },
+    );
+
+    it("keeps hue and saturation through black, and hue through grey, with native precision keys", async () => {
+      await openDraft(undefined, { primary: "#2563EB" });
+      await openColour();
+      await page.click(".resume-colour-fine summary");
+      const range = (name: string) =>
+        page.$eval(`[name="resume-primary-${name}"]`, (el) => (el as HTMLInputElement).value);
+      const hue = await range("hue"),
+        saturation = await range("saturation");
+      await page.focus('[name="resume-primary-brightness"]');
+      await page.keyboard.press("Home");
+      expect(await colourHex()).toBe("#000000");
+      expect(await range("hue")).toBe(hue);
+      expect(await range("saturation")).toBe(saturation);
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+      await page.focus('[name="resume-primary-saturation"]');
+      await page.keyboard.press("Home");
+      expect(await colourHex()).toBe("#ffffff");
+      expect(await range("hue")).toBe(hue);
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+      await enterColour("#000000");
+      expect(await range("hue")).toBe(hue);
+      expect(await range("saturation")).toBe("100");
+      await page.focus('[name="resume-primary-brightness"]');
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+    });
+
+    it("retains invalid hex drafts and the last output, and preserves all ten preset shortcuts", async () => {
+      await openDraft(undefined, { primary: "#123456" });
+      await openColour();
+      await enterColour("#not-a-colour");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBeNull();
+      await page.keyboard.press("Tab");
+      expect(await colourHex()).toBe("#not-a-colour");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBe("true");
+      const saved = await page.evaluate(() => {
+        window.dispatchEvent(new Event("pagehide"));
+        return JSON.parse(localStorage.getItem("cloakresume:v1")!).primary;
+      });
+      expect(saved).toBe("#123456");
+      await enterColour("#aBc");
+      expect(await colourHex()).toBe("#aBc");
+      await enterColour("#Ab12Cd");
+      expect(await colourHex()).toBe("#Ab12Cd");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBeNull();
+      for (const [name, value] of [
+        ["Emerald", "#047857"],
+        ["Ocean", "#2563EB"],
+        ["Violet", "#7C3AED"],
+        ["Rose", "#E11D48"],
+        ["Amber", "#D97706"],
+        ["Slate", "#334155"],
+        ["Teal", "#0D9488"],
+        ["Indigo", "#4F46E5"],
+        ["Crimson", "#B91C1C"],
+        ["Graphite", "#111827"],
+      ]) {
+        await page.click(`button[aria-label="Set primary colour to ${name}"]`);
+        expect(await colourHex()).toBe(value);
+      }
+    });
+
+    it("owns one wheel pointer, restores cancelled drags exactly, and keeps brightness on selection", async () => {
+      await openDraft(undefined, { primary: "#123456" });
+      await openColour();
+      const box = await (await page.$(".air-colour-wheel"))!.boundingBox();
+      const x = box!.x + box!.width / 2,
+        y = box!.y + 1;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      const selected = await colourHex();
+      expect(selected).not.toBe("#123456");
+      expect(
+        await page.$eval(
+          '[name="resume-primary-brightness"]',
+          (el) => (el as HTMLInputElement).value,
+        ),
+      ).toBe("34");
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(
+          new PointerEvent("pointermove", { bubbles: true, pointerId: 9, clientX: 0, clientY: 0 }),
+        ),
+      );
+      expect(await colourHex()).toBe(selected);
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(new PointerEvent("pointercancel", { bubbles: true, pointerId: 1 })),
+      );
+      expect(await colourHex()).toBe("#123456");
+      await page.mouse.up();
+      await page.mouse.down();
+      await page.mouse.move(x + 1, y + 1);
+      await page.$eval(".air-colour-wheel", (el) => el.releasePointerCapture(1));
+      await page.mouse.move(x + 3, y + 3);
+      expect(await colourHex()).toBe("#123456");
+      await page.mouse.up();
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(
+          new PointerEvent("pointerdown", {
+            bubbles: true,
+            pointerId: 9,
+            isPrimary: false,
+            button: 0,
+          }),
+        ),
+      );
+      expect(await colourHex()).toBe("#123456");
+      await enterColour("#000000");
+      await page.mouse.click(x, y);
+      expect(
+        await page.$eval(
+          '[name="resume-primary-brightness"]',
+          (el) => (el as HTMLInputElement).value,
+        ),
+      ).toBe("100");
+      await page.click(".resume-colour-fine summary");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("0");
+      await page.focus(".air-colour-wheel");
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("ArrowRight");
+      await page.keyboard.up("Shift");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("10");
+      await page.keyboard.press("End");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("359");
+      expect(await page.$eval(".air-colour-wheel", (el) => el.getAttribute("role"))).toBe("group");
+    });
+
+    it("preserves mobile colour swipe dismissal and cancellation without changing the colour", async () => {
+      await openDraft(undefined, { primary: "#123456" }, 390, true);
+      await openColour(390);
+      const session = await page.createCDPSession();
+      const rect = await (await page.$(".resume-colour-drag"))!.boundingBox();
+      const x = rect!.x + rect!.width / 2,
+        y = rect!.y + rect!.height / 2;
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: y + 80 }],
+      });
+      await session.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+      await page.waitForFunction(
+        () =>
+          getComputedStyle(document.querySelector(".resume-colour-picker")!).transform === "none",
+      );
+      expect(await colourHex()).toBe("#123456");
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: y + 140 }],
+      });
+      await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+      await openColour(390);
+      expect(await colourHex()).toBe("#123456");
+    });
+
+    it("leaves the desktop colour popup by Tab and dismisses it on a compact breakpoint", async () => {
+      await openDraft();
+      await openColour();
+      await page.focus(".resume-colour-fine summary");
+      await page.keyboard.press("Tab");
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.textContent)).toBe("A4");
+      await openColour();
+      await page.setViewport({ width: 390, height: 844 });
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      await openColour(390);
+      await page.keyboard.press("Escape");
+      expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
+    });
+
     it("cancels New without clearing work and imports a saved document with all settings", async () => {
       await openDraft();
       await page.click('button[aria-label="Start a new blank resume"]');

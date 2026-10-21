@@ -390,3 +390,36 @@ Air 1.0.6 removes blue hyperlink text, including hover, and specifies neutral
 inline/directional treatments. See [scope and evidence](neutral-links-2026-10-19.md).
 
 Neutral hyperlink checkpoint: final stable production build passes all 303 tests (eight files, no unhandled errors), plus formatting/types, build, 78-surface integrity and 18 portability checks.
+
+## 2026-10-21 — Air primary-colour controls
+
+CloakResume's two toolbar paths share the pinned Air colour math, full-brightness
+208px hue/saturation wheel, Brightness, exact hex and optional native precision
+ranges. The ten preset names and values remain intact. Opening keeps the exact
+stored primary; achromatic editing remembers hue, and black remembers saturation.
+Invalid hex stays editable with an associated blur error while output retains its
+last valid colour. Primary pointer capture, cancel/lost-capture rollback and the
+existing arrow/Shift/Home/End shortcuts are covered.
+
+Desktop uses an immediate non-modal portal; compact mode is a modal surface with
+background inertness and return to More options. Both reuse date/logo viewport
+placement and remain scrollable on short or enlarged screens. Fine input starts
+at Brightness; coarse input starts on the surface. The shared modal focus filter
+now excludes closed details content. Compact drag dismissal remains independent
+of wheel dragging and keeps the visible close alternative.
+
+Removed duplicate HSL conversion, pointer lightness clamping, mismatched thumb
+geometry, global pointer listeners, old lightness CSS/tokens and the unused
+cr:open-color-picker bridge. No dependency, schema, template, palette derivation
+or export changes. Other overflow/library/review/PWA interiors remain open.
+
+Validation: **310/310 tests in eight files, 397.32s, zero skips**; 130 editor cases and all 34 template/paper cases with five fixtures each. 195 responsive/theme/text/edge cases and 14 contrast pairs pass. Check/build/79-source design/18 portability/exact family sync pass. See [compact evidence](evidence/colour-controls-2026-10-21.json) and its 14 representative captures. The 34 before/after template/paper images and
+geometry records match exactly; separately downloaded A4/Letter PDFs have identical
+Poppler-rendered pixel hashes. Native Safari supports exact hex, precision controls
+and Escape return; native Firefox actual 200% supports the compact modal, keyboard
+range editing, scrolling and return. Review tabs closed and zoom restored.
+
+The current piece is local only. Physical touch/software keyboards, OS IME and
+spoken assistive acceptance remain open. Next: writing-hint popup interiors,
+followed by remaining sections/review/library/overflow/export/PWA and real assets.
+CloakIMG stays last, with its parked draft preserved.

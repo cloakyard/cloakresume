@@ -123,3 +123,12 @@ label measured 44px high on the phone. Measure effective targets before flagging
       inspection. Preserve content, links, colours, typography and output geometry.
 - [ ] Production full feature suite after migration, then legacy-design cleanup
       and a final family comparison. At this baseline, no product screen was Air-implemented or fully validated.
+
+## Primary-colour follow-up — 2026-10-21
+
+The baseline HSL/lightness observations above are historical. The colour picker now
+uses the canonical Air HSV wheel, brightness, exact hex and independent native
+ranges. The desktop portal and compact modal share one body, safe viewport
+placement and focus/dismissal behavior. The phone drag handle remains available.
+Current validation and remaining gates are recorded in `validation.md`; this does
+not migrate the remaining overflow, review, library or PWA interiors.

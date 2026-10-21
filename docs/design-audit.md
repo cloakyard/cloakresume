@@ -12,7 +12,7 @@ This July/September record describes the retired Workbench specification. `Align
 
 ## Result
 
-All 73 TSX files in `src/` were examined. No application route, common component,
+All 74 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
 The September product chrome followed the CloakPDF-family language with CloakResume
@@ -145,6 +145,8 @@ Status key:
 |  73 | `src/utils/richText.tsx`                          | Output  | Sanitized selectable rich text, safe links, semantic formatting, and PDF text extraction.                                                                                         |
 
 | 74 | `src/components/editor/BulletList.tsx` | Support | Air follow-up: shared bullet controls and UI-only identities; preserves the saved string schema. Current gates are in the Air inventory. |
+
+| 75 | `src/components/ColorPickerPopover.tsx` | Support | Air follow-up: shared viewport-aware primary-colour portal and compact modal focus lifecycle. Current gates are in the Air inventory. |
 
 ## Non-TSX surfaces
 

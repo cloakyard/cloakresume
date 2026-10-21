@@ -1198,3 +1198,23 @@ journeys across all apps; it is not inferred from the pilot alone.
   portrait; removal returns focus to Add photo. No template/output typography,
   geometry or image pixels change. `node scripts/test-air-logo-photo.mjs` covers
   portrait/initials, selected/search/empty icons, all viewport classes and themes.
+
+- Primary colour uses the pinned Air hue/saturation mapping, full-brightness wheel,
+  Brightness, exact hex and optional independent native hue/saturation ranges.
+  Preserve all ten presets and the exact saved colour until an explicit edit;
+  no HSL lightness clamp or implicit RGB rounding on opening. Achromatic edits
+  retain hue (and saturation at black); pointer cancellation restores the exact
+  pre-drag value. Invalid hex remains editable with an associated blur error.
+- The colour body and portal are shared by both toolbar paths. Desktop is a
+  non-modal popover with Tab exit; compact mode is modal with background inertness,
+  contained focus and return to More options. Phone drag-handle dismissal and
+  cancellation remain available without intercepting wheel gestures. Reuse date/logo
+  viewport placement,
+  16px safe edges and internal scrolling. Fine input starts at Brightness; coarse
+  input focuses the surface. Hidden fine-tuning ranges never enter the Tab order.
+  Wheel arrow/Shift/Home/End shortcuts remain available alongside native ranges.
+- Colour pixels are functional data; surrounding controls remain neutral Air.
+  Preserve normalizePrimaryColor, derivePalette and every template/export path.
+  `node scripts/test-air-colour.mjs` covers responsive/theme/text/forced-colour
+  states and offset visual viewports. Physical touch, software keyboards, IME and
+  spoken assistive acceptance remain separate gates.

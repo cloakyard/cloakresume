@@ -384,7 +384,7 @@ describe("CloakResume family contract", () => {
   });
 
   it("keeps muted and status text legible and preserves keyboard focus cues", async () => {
-    const [tokens, tokenJson, ats, contact, viewSegment, overflow, toolbarCenter] =
+    const [tokens, tokenJson, ats, contact, viewSegment, overflow, colourPopover] =
       await Promise.all([
         source("tokens.css"),
         source("tokens.json"),
@@ -392,7 +392,7 @@ describe("CloakResume family contract", () => {
         source("src/components/editor/ContactSection.tsx"),
         source("src/components/ViewSegment.tsx"),
         source("src/components/ToolbarOverflow.tsx"),
-        source("src/components/ToolbarCenter.tsx"),
+        source("src/components/ColorPickerPopover.tsx"),
       ]);
 
     expect(tokens).toContain(
@@ -409,8 +409,8 @@ describe("CloakResume family contract", () => {
     expect(contact).not.toContain("focus:outline-none");
     expect(viewSegment).not.toContain("focus-visible:outline-none");
     expect(overflow).not.toContain("focus-visible:outline-none");
-    expect(toolbarCenter).toContain('event.key !== "Escape"');
-    expect(toolbarCenter).toContain("maxHeight: Math.floor");
+    expect(colourPopover).toContain('event.key === "Escape"');
+    expect(colourPopover).toContain("maxHeight: coords.maxHeight");
   });
 
   it("locks preview fidelity, editor hierarchy, viewport safety, and family motion", async () => {

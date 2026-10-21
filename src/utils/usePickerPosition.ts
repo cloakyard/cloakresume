@@ -4,7 +4,7 @@ const POPOVER_H_EST = 364;
 const SAFE_EDGE = 16;
 const POPOVER_GAP = 8;
 
-/** Shared viewport placement for the date and logo portals, including short screens. */
+/** Shared viewport placement for the date, logo and colour portals, including short screens. */
 export function usePickerPosition(
   open: boolean,
   triggerRef: RefObject<HTMLButtonElement | null>,

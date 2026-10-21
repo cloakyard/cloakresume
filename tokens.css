@@ -146,8 +146,6 @@
   --danger-bg: var(--color-status-danger-soft);
   --danger-border: color-mix(in oklab, var(--color-status-danger) 36%, var(--color-surface));
   --sh-focus: 0 0 0 2px color-mix(in oklab, var(--color-focus) 48%, transparent);
-  --lightness-thumb-bg: var(--color-surface);
-  --lightness-thumb-border: var(--color-ink);
 }
 
 @media (prefers-color-scheme: dark) {

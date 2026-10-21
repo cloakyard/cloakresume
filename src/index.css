@@ -110,7 +110,7 @@
 }
 
 /* Component-level dark overrides read theme-swapped surface, overlay,
- * popover, and lightness-thumb tokens so each component owns one rule. */
+ * and popover tokens so each component owns one rule. */
 
 /* ────────────────────────────────────────────────────────────────
  * Base — html/body reset, page background, typography.
@@ -216,43 +216,6 @@
     border: 1px solid var(--color-rule-strong);
     border-radius: var(--radius-control);
     box-shadow: var(--shadow-popover);
-  }
-
-  /* Lightness slider in the custom colour picker — thin rounded track with
-     the live gradient painted inline; a round thumb centred on the track. */
-  .color-lightness-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 10px;
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 1px var(--color-rule-strong);
-    cursor: pointer;
-    outline: none;
-  }
-  .color-lightness-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--lightness-thumb-bg);
-    border: 2px solid var(--lightness-thumb-border);
-    box-shadow: none;
-    cursor: grab;
-  }
-  .color-lightness-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--lightness-thumb-bg);
-    border: 2px solid var(--lightness-thumb-border);
-    box-shadow: none;
-    cursor: grab;
-  }
-  .color-lightness-slider:focus-visible {
-    box-shadow:
-      inset 0 0 0 1px var(--color-rule-strong),
-      var(--sh-focus);
   }
 
   /* ─── Form primitives ───

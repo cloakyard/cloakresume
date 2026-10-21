@@ -48,7 +48,7 @@ function getFocusableElements(container: HTMLElement): HTMLElement[] {
         !element.closest('[aria-hidden="true"]') &&
         style.display !== "none" &&
         style.visibility !== "hidden" &&
-        element.getClientRects().length > 0
+        element.checkVisibility()
       );
     },
   );

@@ -609,13 +609,122 @@ textarea.resume-writing-field[data-resizable="false"] {
 .resume-logo-trigger > span:not([aria-hidden]) {
   flex: 1;
 }
-.resume-logo-picker {
+.resume-logo-picker,
+.resume-colour-picker {
   position: fixed;
   z-index: var(--air-z-popover);
   display: flex;
   flex-direction: column;
   gap: 12px;
   scroll-padding: 8px;
+}
+.resume-colour-scrim {
+  background: var(--air-scrim);
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--air-z-popover) - 1);
+}
+.resume-colour-heading {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.resume-colour-heading h2 {
+  flex: 1;
+}
+.resume-colour-drag {
+  display: none;
+}
+@media (max-width: 639px) {
+  .resume-colour-drag {
+    display: grid;
+    place-items: center;
+    min-height: 44px;
+    flex: none;
+    touch-action: none;
+    cursor: grab;
+  }
+  .resume-colour-drag span {
+    width: 44px;
+    height: 4px;
+    border-radius: var(--air-radius-check);
+    background: var(--air-line-control);
+  }
+}
+.resume-colour-heading svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+}
+.resume-colour-content {
+  display: grid;
+  gap: 16px;
+  min-width: 0;
+}
+.resume-colour-presets {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  gap: 4px;
+}
+.resume-colour-presets button {
+  min-width: 44px;
+  min-height: 44px;
+  width: 100%;
+}
+.resume-colour-presets button[aria-pressed="true"] {
+  background: var(--air-surface-soft);
+}
+.resume-colour-swatch {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border: 1px solid var(--air-line-control);
+  border-radius: 50%;
+  forced-color-adjust: none;
+}
+.resume-colour-swatch svg {
+  width: 16px;
+  height: 16px;
+}
+.resume-colour-content .air-colour-wheel {
+  margin-block: 0;
+}
+.resume-colour-range-label {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+.resume-colour-range-label output {
+  font-variant-numeric: tabular-nums;
+}
+.resume-colour-content input[type="range"] {
+  display: block;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  margin: 0;
+  accent-color: var(--air-ink);
+}
+.resume-colour-content input[type="text"] {
+  width: 100%;
+}
+.resume-colour-fine summary {
+  min-height: 44px;
+  padding-block: 10px;
+  cursor: pointer;
+  font-size: var(--air-text-label);
+}
+.resume-colour-fine[open] summary {
+  margin-bottom: 12px;
+}
+.resume-colour-picker :is(summary, input[type="range"], .air-colour-wheel):focus-visible {
+  outline: 2px solid var(--air-accent);
+  outline-offset: 3px;
+}
+.resume-colour-picker :is(button, input) {
+  transition: none;
 }
 .resume-logo-search {
   flex: none;

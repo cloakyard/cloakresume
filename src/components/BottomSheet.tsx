@@ -4,7 +4,7 @@
  * Slides up from the bottom on mobile, with a solid dim backdrop and a
  * top drag handle. Closes on Escape, backdrop click, or swipe-down on
  * the handle. Designed to be the shared container for the mobile section
- * drawer and any other bottom-anchored menus (colour picker, overflow).
+ * drawer and the toolbar overflow menu.
  *
  * Keeps itself body-scroll-locked while open so the page behind doesn't
  * move when the user drags inside the sheet.
