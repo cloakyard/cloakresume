@@ -364,7 +364,7 @@ textarea.resume-writing-field[data-resizable="false"] {
   resize: none;
 }
 .resume-writing-field--hints {
-  padding-inline-end: 56px;
+  padding-inline-end: calc(max(44px, 2.75rem) + 12px);
 }
 .cr-field-row:has(.resume-format-toolbar) {
   gap: 8px;
@@ -818,4 +818,89 @@ textarea.resume-writing-field[data-resizable="false"] {
   width: 18px;
   height: 18px;
   stroke-width: 1.6;
+}
+
+/* Writing suggestions are optional, separate from field validation. */
+.resume-hint-trigger {
+  position: absolute;
+  z-index: 10;
+  inline-size: max(44px, 2.75rem);
+  min-block-size: 44px;
+  padding: 0;
+  gap: 4px;
+  color: var(--air-ink-secondary);
+  font-size: var(--air-text-meta);
+  font-variant-numeric: tabular-nums;
+}
+.resume-hint-trigger svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  stroke-width: 1.6;
+}
+.resume-hint-popover {
+  position: fixed;
+  z-index: var(--air-z-popover);
+  scroll-padding: 8px;
+}
+.resume-hint-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.resume-hint-heading h2 {
+  flex: 1;
+  align-self: center;
+}
+.resume-hint-heading .air-icon-button {
+  flex: none;
+}
+.resume-hint-heading svg,
+.resume-hint-kind svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 1.6;
+  flex: none;
+}
+.resume-hint-list {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0;
+}
+.resume-hint-list > li + li {
+  border-top: 1px solid var(--air-line);
+  padding-top: 20px;
+  margin-top: 20px;
+}
+.resume-hint-kind {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font: 500 var(--air-text-label)/1.4 var(--air-font);
+  color: var(--air-warning);
+}
+.resume-hint-kind[data-kind="spelling"] {
+  color: var(--air-danger);
+}
+.resume-hint-phrase {
+  margin: 0 0 8px;
+  font-weight: 500;
+  white-space: pre-wrap;
+}
+.resume-hint-reason {
+  color: var(--air-ink-secondary);
+  margin: 0;
+}
+.resume-hint-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.resume-hint-actions .air-button {
+  max-inline-size: 100%;
+  text-align: start;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }

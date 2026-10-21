@@ -141,7 +141,7 @@ Status key:
 |  69 | `src/templates/Typographic.tsx`                   | Output  | Numbered hierarchy, semantic equivalents, complete sections, and page flow.                                                                                                       |
 |  70 | `src/templates/paginationAtoms.tsx`               | Output  | Shared head/bullet atoms, keep-with-next, stable keys, and safe split boundaries.                                                                                                 |
 |  71 | `src/templates/shared.tsx`                        | Output  | Shared contact/date/location rendering, safe links, semantics, and consistent text output.                                                                                        |
-|  72 | `src/utils/fieldIssues.tsx`                       | Support | Issue context, focus/highlight target, accessible descriptions, and stable hint layout.                                                                                           |
+|  72 | `src/utils/fieldIssues.tsx`                       | Support | Air hint trigger/popover, exact replacements, shared viewport positioning and surviving field focus; software evidence in writing-hints-2026-10-21.json.                          |
 |  73 | `src/utils/richText.tsx`                          | Output  | Sanitized selectable rich text, safe links, semantic formatting, and PDF text extraction.                                                                                         |
 
 | 74 | `src/components/editor/BulletList.tsx` | Support | Air follow-up: shared bullet controls and UI-only identities; preserves the saved string schema. Current gates are in the Air inventory. |

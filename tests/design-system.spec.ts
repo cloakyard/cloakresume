@@ -377,7 +377,8 @@ describe("CloakResume family contract", () => {
     expect(reload).toContain("disabled={isUpdating}");
     expect(reload).toContain('aria-live={isError ? "assertive" : "polite"}');
     expect(reload).not.toContain("now installed for offline use");
-    expect(fieldIssues).toContain("divide-y divide-(--line)");
+    expect(fieldIssues).toContain('className="resume-hint-list"');
+    expect(await source("src/styles/air-editor.css")).toContain(".resume-hint-list > li + li");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
     expect(notFound).toContain("font-size: clamp(2.75rem, 6.4vw, 6.75rem)");
     expect(notFound).toContain("background: var(--color-accent)");
@@ -472,12 +473,10 @@ describe("CloakResume family contract", () => {
     expect(portable.easing.standard.$value).toEqual([0.16, 1, 0.3, 1]);
 
     expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
-    const fieldGlowKeyframes =
-      indexCss.match(/@keyframes cr-field-glow\s*\{([\s\S]*?)\n\}\n\.cr-field-glow/)?.[1] ?? "";
-    expect(fieldGlowKeyframes).not.toContain("box-shadow");
-    expect(fieldGlowKeyframes).toContain("opacity");
-    expect(fieldGlowKeyframes).toContain("transform");
-    expect(indexCss).toContain(".cr-field-glow::after");
+    expect(indexCss).not.toContain("cr-field-glow");
+    expect(await source("src/utils/highlightField.ts")).toContain(
+      "field.focus({ preventScroll: true })",
+    );
     expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
     expect(familyCss).not.toContain(".cr-family-landing .cr-landing-hero__declaration");
     expect(familyCss).toContain(".cr-overlay {");
@@ -531,7 +530,8 @@ describe("CloakResume family contract", () => {
     expect(app).not.toContain("OrientationLock");
     expect(indexCss).not.toContain("cr-rotate-hint");
     expect(logoPicker).toContain("usePickerPosition(open, buttonRef, popoverRef, query)");
-    expect(fieldIssues).toContain("window.visualViewport");
+    expect(fieldIssues).toContain("usePickerPosition(open, buttonRef, popoverRef, issues)");
+    expect(await source("src/utils/usePickerPosition.ts")).toContain("window.visualViewport");
     expect(logoPicker).not.toContain("focus:outline-none");
   });
 

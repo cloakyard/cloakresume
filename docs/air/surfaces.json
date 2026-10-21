@@ -11,7 +11,7 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": [],
+      "evidence": ["docs/air/evidence/writing-hints-2026-10-21.json"],
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration."
     },
     {
@@ -22,7 +22,10 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": ["docs/air/evidence/logo-photo-2026-10-19.json"],
+      "evidence": [
+        "docs/air/evidence/logo-photo-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
+      ],
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
@@ -359,7 +362,7 @@
         "docs/air/evidence/date-controls-2026-10-19.json",
         "docs/air/evidence/logo-photo-2026-10-19.json"
       ],
-      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Shared writing-hint popup interiors and physical/software-keyboard/assistive acceptance remain separate gates. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
+      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Writing-hint popup software acceptance is recorded separately; physical/software-keyboard/assistive acceptance remains open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
     },
     {
       "path": "src/components/PaginatedCanvas.tsx",
@@ -469,7 +472,10 @@
         "native Safari / Firefox 200%",
         "forced colours"
       ],
-      "evidence": ["docs/air/evidence/writing-fields-2026-10-19.json"],
+      "evidence": [
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
+      ],
       "notes": "Shared rich writing/formatting uses Air; optional writing-hint popup and repeated entry geometry remain separate sources. Physical keyboard/touch/IME and spoken assistive gates remain open."
     },
     {
@@ -830,7 +836,7 @@
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/date-controls-2026-10-19.json"
       ],
-      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Shared writing-hint popup interiors and physical/software-keyboard/assistive acceptance remain separate gates."
+      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Writing-hint popup software acceptance is recorded separately; physical/software-keyboard/assistive acceptance remains open."
     },
     {
       "path": "src/components/editor/ExperienceSection.tsx",
@@ -855,7 +861,7 @@
         "docs/air/evidence/writing-fields-2026-10-19.json",
         "docs/air/evidence/date-controls-2026-10-19.json"
       ],
-      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Shared writing-hint popup interiors and physical/software-keyboard/assistive acceptance remain separate gates."
+      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Writing-hint popup software acceptance is recorded separately; physical/software-keyboard/assistive acceptance remains open."
     },
     {
       "path": "src/components/editor/InterestsSection.tsx",
@@ -1066,7 +1072,8 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/writing-fields-2026-10-19.json",
-        "docs/air/evidence/contact-selects-2026-10-19.json"
+        "docs/air/evidence/contact-selects-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
       ],
       "notes": "Air field/contact/language composition implemented. Native customizable select plus browser/OS fallback preserve all data and semantics. Date/logo/wheel/hint/review widgets are separately tracked; physical touch/IME/assistive speech remain open."
     },
@@ -1080,7 +1087,8 @@
       "viewports": [],
       "evidence": [
         "docs/air/neutral-links-2026-10-19.md",
-        "docs/air/evidence/colour-controls-2026-10-21.json"
+        "docs/air/evidence/colour-controls-2026-10-21.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
       ],
       "notes": " Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked."
     },
@@ -1120,7 +1128,8 @@
       "evidence": [
         "docs/air/evidence/editor-shell-2026-10-19.json",
         "docs/air/evidence/logo-photo-2026-10-19.json",
-        "docs/air/evidence/colour-controls-2026-10-21.json"
+        "docs/air/evidence/colour-controls-2026-10-21.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
       ],
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked."
     },
@@ -1416,16 +1425,29 @@
       "path": "src/utils/fieldIssues.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
-      "validated": false,
-      "states": ["baseline conditional state; coverage and limits in editor-audit.md"],
-      "viewports": ["390x844 dark coarse"],
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "Optional hint vs field error",
+        "Real six-consumer report/open/apply/dismiss",
+        "Exact first-match and rich-text preservation",
+        "No replacement/long phrase/list overflow",
+        "Keyboard/outside touch/focus and disappearing trigger",
+        "No stale hints during loading/error/empty report",
+        "Long replacement stress; normal/reduced motion"
+      ],
+      "viewports": [
+        "16 required/boundary sizes \u00d7 light/dark \u00d7 16/32px text",
+        "Wide coarse pointer, short landscape, forced colours, offset visual viewport",
+        "Native Safari; native Firefox actual 200%"
+      ],
       "evidence": [
         "docs/air/editor-audit.md",
         "docs/air/editor-conditional-audit.json",
-        "docs/air/evidence/writing-fields-2026-10-19.json"
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
       ],
-      "notes": "Limited existing-overlay inspection, not full feature/keyboard/output certification. Source review remains incomplete. Shared text/CSV/textarea controls, help and writing labels use Air. SelectField, widget popups and repeated-entry interiors remain partial; issue badge target stays 44px across breakpoints. See writing-fields evidence."
+      "notes": "Air hint trigger and readable non-modal popup share viewport placement with the date/logo/colour portals. Native and automated software acceptance passed; physical touch/software keyboard/IME and spoken assistive gates remain open. Report source/ranking/replacement semantics and all output are preserved. Full review and section interiors remain separate gates."
     },
     {
       "path": "src/utils/richText.tsx",

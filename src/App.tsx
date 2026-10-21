@@ -258,8 +258,7 @@ export function App() {
   /**
    * Tap-to-fix jump from the Insights tab: translate a grammar segment id
    * (e.g. `experience.0.bullets.2`) into the editor rail section, close
-   * the review modal, then soft-glow the specific field so the user sees
-   * exactly which bullet / summary / description to edit.
+   * the review modal, then focus the specific bullet / summary / description.
    */
   const handleJumpToField = useCallback((segmentId: string) => {
     const prefix = segmentId.split(".")[0];

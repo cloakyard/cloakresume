@@ -18,7 +18,7 @@ interface TextFieldProps {
   invalid?: boolean;
   /** Helper or error text shown under the input. Turns red when `invalid`. */
   hint?: string;
-  /** Opt-in target for the ATS jump-to-fix glow highlight. */
+  /** Opt-in target for the ATS jump-to-fix focus. */
   fieldId?: string;
   /** Stable browser/form identifier. Falls back to `fieldId` or a label slug. */
   name?: string;
@@ -92,6 +92,7 @@ export function TextField({
           className={`air-field resume-writing-field${hasIssues ? " resume-writing-field--hints" : ""}`}
         />
         <FieldIssuesBadge
+          fieldControlId={inputId}
           issues={hasIssues ? issues : []}
           onApplySuggestion={applySuggestion}
           className="top-1/2 -translate-y-1/2 right-2"

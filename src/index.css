@@ -72,43 +72,6 @@
   --radius-2xl: var(--radius-card);
 }
 
-/* Brief field locator used after an ATS issue jump. The ring itself is a
- * pseudo-element so the animation remains on the compositor. */
-@keyframes cr-field-glow {
-  0% {
-    opacity: 0;
-    transform: scale(0.985);
-  }
-  35% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.015);
-  }
-}
-.cr-field-glow {
-  border-radius: var(--radius-control);
-  scroll-margin: 5rem;
-  position: relative;
-  z-index: 1;
-}
-.cr-field-glow::after {
-  position: absolute;
-  inset: -4px;
-  z-index: -1;
-  border: 2px solid color-mix(in oklab, var(--brand) 52%, transparent);
-  border-radius: calc(var(--radius-control) + 4px);
-  content: "";
-  pointer-events: none;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .cr-field-glow::after {
-    animation: cr-field-glow var(--duration-long) var(--ease-out) both;
-  }
-}
-
 /* Component-level dark overrides read theme-swapped surface, overlay,
  * and popover tokens so each component owns one rule. */
 
@@ -209,15 +172,6 @@
       [background:transparent]
       hover:[background:var(--brand-50)] hover:border-(--brand-hover);
   }
-  /* Flat overlay primitives shared by dialogs, sheets, and popovers. */
-  .popover {
-    @apply p-3.5;
-    background: var(--surface);
-    border: 1px solid var(--color-rule-strong);
-    border-radius: var(--radius-control);
-    box-shadow: var(--shadow-popover);
-  }
-
   /* ─── Form primitives ───
    * Mobile-first: inputs are 16 px on mobile (prevents iOS zoom-on-focus)
    * and have generous 12 px padding for comfortable touch. Shrinks on

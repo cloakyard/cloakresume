@@ -90,5 +90,5 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/templates/Typographic.tsx`                   | output-preservation | Pending      | Pending            | Pending    |
 | `src/templates/paginationAtoms.tsx`               | output-preservation | Pending      | Pending            | Pending    |
 | `src/templates/shared.tsx`                        | output-preservation | Pending      | Pending            | Pending    |
-| `src/utils/fieldIssues.tsx`                       | app-surface         | Done         | Pending            | Pending    |
+| `src/utils/fieldIssues.tsx`                       | app-surface         | Done         | Done               | Done       |
 | `src/utils/richText.tsx`                          | app-surface         | Pending      | Pending            | Pending    |

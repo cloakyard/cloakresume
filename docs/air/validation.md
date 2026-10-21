@@ -423,3 +423,43 @@ The current piece is local only. Physical touch/software keyboards, OS IME and
 spoken assistive acceptance remain open. Next: writing-hint popup interiors,
 followed by remaining sections/review/library/overflow/export/PWA and real assets.
 CloakIMG stays last, with its parked draft preserved.
+
+## 2026-10-21 — Air writing hints
+
+The six grammar field consumers now use an immediate Air popover with a named
+heading, optional-suggestion description, close control, readable semantic kind,
+full phrase/reason and neutral replacement actions. Text wraps and targets grow;
+short/offset viewports use the shared date/logo/colour positioning and scroll.
+No changes to Harper, its ranking/source, first-occurrence callbacks, rich text,
+resume schema, templates, typography, palette or export path. Target JD remains
+outside the existing grammar scan.
+
+Escape/close returns to the trigger, Tab can leave the non-modal popup, and outside
+pointer/focus dismisses. Applying focuses the surviving field because the report
+and badge disappear on edit; refreshed reports stay closed. The review-jump audit
+found scrolling without focus. It now focuses the named field with one Air contour,
+retiring the decorative glow. Removed duplicate popup placement/animated presence,
+legacy uppercase/mono chips, truncation, tinted actions and unused .popover skin.
+
+Validation: **318/318 tests in eight files, 421.01s, zero skips**; 138 editor
+cases and all 34 template/paper cases with five fixtures each. The final production
+build remained unchanged throughout the full serial suite. **452 hint layouts and
+26 contrast pairs pass**, including all six real consumers and explicitly injected
+long-replacement DOM text stress. No-browser availability skips or timeout increases.
+Check/build, 79-source inventory, 18 portability checks and exact family sync pass.
+[Evidence](evidence/writing-hints-2026-10-21.json) contains 18 proof captures and
+the full-suite log. All 34 before/after image/geometry records and both actual
+A4/Letter PDF raster comparisons match exactly. Safari and Firefox actual 200%
+pass popup access, replacement, formatting preservation and surviving field focus;
+native tabs are closed and Firefox zoom restored.
+
+Targeted checks first caught an Awards test helper that assumed textarea-only
+sections and then a hidden photo-input selector; the helper now waits for a visible
+writing control. The actual missing review-jump focus was fixed rather than weakening
+the assertion. Historical source tests now follow shared placement and Air focus.
+
+Next: remaining content-section interiors, especially Target JD, Quick stats/Extras,
+paired Award/Certification year fields and Profile helper copy, followed by complete
+section acceptance and template/library/review/overflow/export/PWA/static recovery
+and actual assets. Physical input/IME/assistive speech remain open. Local only;
+CloakIMG stays last. Scratch: `/tmp/cloakresume-air-hints/`.

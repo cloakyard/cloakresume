@@ -21,7 +21,7 @@ interface RichTextAreaProps {
   rows?: number;
   /** Auto-grow the textarea to fit its content (default: true). */
   autoGrow?: boolean;
-  /** Opt-in target for the ATS jump-to-fix glow highlight. */
+  /** Opt-in target for the ATS jump-to-fix focus. */
   fieldId?: string;
   name?: string;
   autoComplete?: string;
@@ -166,7 +166,11 @@ export function RichTextArea({
             }
           }}
         />
-        <FieldIssuesBadge issues={issues} onApplySuggestion={applySuggestion} />
+        <FieldIssuesBadge
+          fieldControlId={inputId}
+          issues={issues}
+          onApplySuggestion={applySuggestion}
+        />
       </div>
       {hint && (
         <p

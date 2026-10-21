@@ -19,16 +19,15 @@ import {
   useContext,
   useEffect,
   useId,
-  useLayoutEffect,
   useMemo,
   useRef,
   useState,
   type ReactNode,
 } from "react";
 import { createPortal } from "react-dom";
-import { AlertCircle, BookOpen, SpellCheck, Sparkles } from "lucide-react";
+import { AlertCircle, BookOpen, SpellCheck, Sparkles, X } from "lucide-react";
 import type { GrammarIssue, GrammarIssueKind, GrammarReport } from "../types.ts";
-import { useAnimatedPresence } from "./useAnimatedPresence.ts";
+import { usePickerPosition } from "./usePickerPosition.ts";
 
 type FieldIssuesMap = Record<string, GrammarIssue[]>;
 
@@ -58,168 +57,84 @@ export function useFieldIssues(fieldId: string | undefined): GrammarIssue[] {
   return map[fieldId] ?? [];
 }
 
-interface KindMeta {
-  label: string;
-  icon: ReactNode;
-  color: string;
-  bg: string;
-  border: string;
-}
-
-const KIND_META: Record<GrammarIssueKind, KindMeta> = {
-  spelling: {
-    label: "Spelling",
-    icon: <SpellCheck className="w-3 h-3" />,
-    color: "var(--color-status-danger)",
-    bg: "var(--color-status-danger-soft)",
-    border: "var(--color-status-danger)",
-  },
-  grammar: {
-    label: "Grammar",
-    icon: <AlertCircle className="w-3 h-3" />,
-    color: "var(--color-status-warning)",
-    bg: "var(--color-status-warning-soft)",
-    border: "var(--color-status-warning)",
-  },
-  style: {
-    label: "Style",
-    icon: <Sparkles className="w-3 h-3" />,
-    color: "var(--color-status-warning)",
-    bg: "var(--color-status-warning-soft)",
-    border: "var(--color-status-warning)",
-  },
-  readability: {
-    label: "Readability",
-    icon: <BookOpen className="w-3 h-3" />,
-    color: "var(--color-status-warning)",
-    bg: "var(--color-status-warning-soft)",
-    border: "var(--color-status-warning)",
-  },
+const KIND_META: Record<GrammarIssueKind, { label: string; icon: ReactNode }> = {
+  spelling: { label: "Spelling", icon: <SpellCheck aria-hidden="true" /> },
+  grammar: { label: "Grammar", icon: <AlertCircle aria-hidden="true" /> },
+  style: { label: "Style", icon: <Sparkles aria-hidden="true" /> },
+  readability: { label: "Readability", icon: <BookOpen aria-hidden="true" /> },
 };
 
-const POPOVER_W = 320;
-const POPOVER_H_EST = 260;
-const SAFE_EDGE = 16;
-const POPOVER_GAP = 6;
-
-type PopoverPlacement = "above" | "below";
-
-/**
- * Field-level writing-issue chip. Sits inside the field frame (absolute,
- * top-right) and pops a portalled popover with a per-issue list on click.
- *
- * Returns `null` when `issues` is empty so callers can unconditionally
- * drop it into their markup. Spelling beats grammar beats style when
- * choosing the chip's tint so the worst category dominates.
- */
+/** Optional suggestions for one field; applying preserves its existing replacement semantics. */
 export function FieldIssuesBadge({
   issues,
+  fieldControlId,
   onApplySuggestion,
   className,
 }: {
   issues: GrammarIssue[];
+  fieldControlId: string;
   /** Replace first occurrence of `actual` with `replacement` in the field value. */
   onApplySuggestion?: (actual: string, replacement: string) => void;
-  /** Extra positioning classes; defaults to top-right inside a relative parent. */
   className?: string;
 }) {
   const [open, setOpen] = useState(false);
-  const presence = useAnimatedPresence(open);
   const dialogId = useId();
   const buttonRef = useRef<HTMLButtonElement>(null);
   const popoverRef = useRef<HTMLDivElement>(null);
-  const didFocusPopoverRef = useRef(false);
-  const [coords, setCoords] = useState<{
-    top: number;
-    left: number;
-    width: number;
-    maxHeight: number;
-    placement: PopoverPlacement;
-  } | null>(null);
+  const didFocus = useRef(false);
+  const coords = usePickerPosition(open, buttonRef, popoverRef, issues);
 
-  const updateCoords = useCallback(() => {
-    const btn = buttonRef.current;
-    if (!btn) return;
-    const rect = btn.getBoundingClientRect();
-    const visualViewport = window.visualViewport;
-    const viewportTop = visualViewport?.offsetTop ?? 0;
-    const viewportLeft = visualViewport?.offsetLeft ?? 0;
-    const viewportHeight = visualViewport?.height ?? window.innerHeight;
-    const viewportWidth = visualViewport?.width ?? window.innerWidth;
-    const viewportBottom = viewportTop + viewportHeight;
-    const viewportRight = viewportLeft + viewportWidth;
-    const width = Math.min(POPOVER_W, Math.max(0, viewportWidth - SAFE_EDGE * 2));
-    const safeTop = viewportTop + SAFE_EDGE;
-    const safeBottom = viewportBottom - SAFE_EDGE;
-    const belowTop = Math.max(safeTop, Math.min(rect.bottom + POPOVER_GAP, safeBottom));
-    const aboveBottom = Math.max(safeTop, Math.min(rect.top - POPOVER_GAP, safeBottom));
-    const availableBelow = Math.max(0, safeBottom - belowTop);
-    const availableAbove = Math.max(0, aboveBottom - safeTop);
-    const placement: PopoverPlacement =
-      availableBelow < POPOVER_H_EST && availableAbove > availableBelow ? "above" : "below";
-    const top = placement === "above" ? aboveBottom : belowTop;
-    const minLeft = viewportLeft + SAFE_EDGE;
-    const maxLeft = Math.max(minLeft, viewportRight - width - SAFE_EDGE);
-    const left = Math.max(minLeft, Math.min(rect.right - width, maxLeft));
-    const maxHeight = placement === "above" ? availableAbove : availableBelow;
-    setCoords({ top, left, width, maxHeight, placement });
-  }, []);
+  // An edit or re-scan invalidates the report. Do not reopen old hints when it returns.
+  if (open && issues.length === 0) setOpen(false);
 
-  useLayoutEffect(() => {
-    if (!open) return;
-    updateCoords();
-  }, [open, updateCoords]);
+  const surfaceRef = useCallback(
+    (node: HTMLDivElement | null) => {
+      popoverRef.current = node;
+      return () => {
+        // A background report can remove the last hint while the popup has focus.
+        if (node?.contains(document.activeElement))
+          document.getElementById(fieldControlId)?.focus({ preventScroll: true });
+        popoverRef.current = null;
+      };
+    },
+    [fieldControlId],
+  );
 
   useEffect(() => {
-    if (!open) return;
-    window.addEventListener("scroll", updateCoords, true);
-    window.addEventListener("resize", updateCoords);
-    window.visualViewport?.addEventListener("resize", updateCoords);
-    window.visualViewport?.addEventListener("scroll", updateCoords);
-    return () => {
-      window.removeEventListener("scroll", updateCoords, true);
-      window.removeEventListener("resize", updateCoords);
-      window.visualViewport?.removeEventListener("resize", updateCoords);
-      window.visualViewport?.removeEventListener("scroll", updateCoords);
-    };
-  }, [open, updateCoords]);
-
-  useEffect(() => {
-    if (!open) return;
-    function handler(e: MouseEvent) {
-      const t = e.target as Node;
-      if (buttonRef.current?.contains(t)) return;
-      if (popoverRef.current?.contains(t)) return;
-      setOpen(false);
+    if (!open) {
+      didFocus.current = false;
+      return;
     }
-    function onKey(e: KeyboardEvent) {
-      if (e.key === "Escape") {
-        setOpen(false);
-        buttonRef.current?.focus();
-      }
-    }
-    document.addEventListener("mousedown", handler);
-    document.addEventListener("keydown", onKey);
-    return () => {
-      document.removeEventListener("mousedown", handler);
-      document.removeEventListener("keydown", onKey);
-    };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open || !coords || didFocusPopoverRef.current) return;
-    didFocusPopoverRef.current = true;
-    requestAnimationFrame(() => popoverRef.current?.focus());
+    if (!coords || didFocus.current) return;
+    const frame = requestAnimationFrame(() => {
+      didFocus.current = true;
+      popoverRef.current?.focus({ preventScroll: true });
+    });
+    return () => cancelAnimationFrame(frame);
   }, [open, coords]);
 
   useEffect(() => {
-    if (!open) didFocusPopoverRef.current = false;
+    if (!open) return;
+    function outside(event: Event) {
+      const target = event.target as Node;
+      if (buttonRef.current?.contains(target) || popoverRef.current?.contains(target)) return;
+      setOpen(false);
+    }
+    document.addEventListener("pointerdown", outside);
+    document.addEventListener("focusin", outside);
+    return () => {
+      document.removeEventListener("pointerdown", outside);
+      document.removeEventListener("focusin", outside);
+    };
   }, [open]);
 
+  function closeAndReturnFocus() {
+    buttonRef.current?.focus({ preventScroll: true });
+    setOpen(false);
+  }
+
   if (issues.length === 0) return null;
-  const worstKind: GrammarIssueKind = issues.some((i) => i.kind === "spelling")
-    ? "spelling"
-    : issues[0].kind;
+  const worstKind = issues.some((issue) => issue.kind === "spelling") ? "spelling" : issues[0].kind;
   const meta = KIND_META[worstKind];
 
   return (
@@ -227,102 +142,126 @@ export function FieldIssuesBadge({
       <button
         ref={buttonRef}
         type="button"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setOpen((v) => !v);
+        onClick={(event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          event.currentTarget.focus({ preventScroll: true });
+          setOpen((value) => !value);
         }}
         aria-label={`${issues.length} writing ${issues.length === 1 ? "hint" : "hints"} — click to view`}
         aria-expanded={open}
         aria-haspopup="dialog"
         aria-controls={open ? dialogId : undefined}
-        className={`absolute z-10 min-w-11 min-h-11 grid place-items-center border-0 bg-transparent p-0 ${
-          className ?? "top-1/2 -translate-y-1/2 right-0"
-        }`}
+        className={`air-icon-button air-button--quiet resume-hint-trigger ${className ?? "top-1/2 -translate-y-1/2 right-0"}`}
       >
-        <span
-          className="inline-flex items-center gap-1 min-h-5 px-1.5 rounded-md border text-[10.5px] font-semibold tabular-nums leading-none"
-          style={{ color: meta.color, background: meta.bg, borderColor: meta.border }}
-        >
-          {meta.icon}
-          <span className="font-mono">{issues.length}</span>
-        </span>
+        {meta.icon}
+        <span>{issues.length}</span>
       </button>
-      {presence.mounted &&
+      {open &&
         coords &&
         createPortal(
           <div
             id={dialogId}
-            ref={popoverRef}
-            data-state={presence.state}
+            ref={surfaceRef}
             data-placement={coords.placement}
-            data-align="end"
-            data-positioning="offset"
             role="dialog"
             tabIndex={-1}
-            aria-label="Writing hints"
-            className="cr-popover popover fixed overscroll-contain"
+            aria-labelledby={`${dialogId}-title`}
+            aria-describedby={`${dialogId}-description`}
+            className="air-popover resume-hint-popover"
             style={{
               top: coords.top,
               left: coords.left,
               width: coords.width,
               maxHeight: coords.maxHeight,
-              overflowY: "auto",
+            }}
+            onKeyDown={(event) => {
+              if (event.key === "Escape") {
+                event.preventDefault();
+                event.stopPropagation();
+                closeAndReturnFocus();
+              }
+              if (event.key !== "Tab") return;
+              const controls = [
+                ...event.currentTarget.querySelectorAll<HTMLButtonElement>("button"),
+              ];
+              if (
+                event.shiftKey &&
+                (event.target === event.currentTarget || event.target === controls[0])
+              ) {
+                event.preventDefault();
+                closeAndReturnFocus();
+              } else if (!event.shiftKey && event.target === controls.at(-1)) {
+                event.preventDefault();
+                const outside = [
+                  ...document.querySelectorAll<HTMLElement>(
+                    'button:not(:disabled), input:not(:disabled), select:not(:disabled), textarea:not(:disabled), a[href], [tabindex="0"]',
+                  ),
+                ].filter(
+                  (element) =>
+                    !popoverRef.current?.contains(element) &&
+                    !element.closest("[inert]") &&
+                    element.checkVisibility(),
+                );
+                (outside[outside.indexOf(buttonRef.current!) + 1] ?? buttonRef.current)?.focus();
+                setOpen(false);
+              }
             }}
           >
-            <div className="flex items-center justify-between mb-1.5 px-0.5">
-              <span className="font-mono text-[10.5px] font-semibold uppercase tracking-[0.08em] text-(--ink-4)">
-                {issues.length} writing {issues.length === 1 ? "hint" : "hints"}
-              </span>
-              <span className="font-mono text-[10.5px] text-(--ink-5)">Esc to close</span>
+            <div className="resume-hint-heading">
+              <h2 id={`${dialogId}-title`} className="air-floating-title">
+                Writing hints
+              </h2>
+              <button
+                type="button"
+                className="air-icon-button air-button--quiet"
+                aria-label="Close writing hints"
+                onClick={closeAndReturnFocus}
+              >
+                <X aria-hidden="true" />
+              </button>
             </div>
-            <div className="-mx-0.5 divide-y divide-(--line) px-0.5">
-              {issues.map((issue, i) => {
-                const im = KIND_META[issue.kind];
+            <p id={`${dialogId}-description`} className="air-help">
+              Suggestions are optional. Choose a replacement to update this field.
+            </p>
+            <ol className="resume-hint-list">
+              {issues.map((issue, index) => {
+                const kind = KIND_META[issue.kind];
                 return (
-                  <div
-                    // oxlint-disable-next-line jsx/no-array-index-key
-                    key={i}
-                    className="py-2.5 first:pt-2 last:pb-0"
-                  >
-                    <div className="flex items-center gap-1.5 mb-1 min-w-0">
-                      <span
-                        className="inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-[9.5px] font-mono font-semibold uppercase tracking-[0.06em] border shrink-0"
-                        style={{ color: im.color, background: im.bg, borderColor: im.border }}
-                      >
-                        {im.icon}
-                        {im.label}
-                      </span>
-                      <span
-                        className="font-mono text-[11.5px] text-(--ink-1) font-semibold truncate"
-                        title={issue.actual}
-                      >
-                        &ldquo;{issue.actual}&rdquo;
-                      </span>
-                    </div>
-                    <div className="text-sm leading-[1.5] text-(--ink-2)">{issue.reason}</div>
+                  // oxlint-disable-next-line jsx/no-array-index-key
+                  <li key={index}>
+                    <h3 className="resume-hint-kind" data-kind={issue.kind}>
+                      {kind.icon}
+                      {kind.label}
+                    </h3>
+                    <p className="resume-hint-phrase">“{issue.actual}”</p>
+                    <p className="resume-hint-reason">{issue.reason}</p>
                     {issue.suggestions.length > 0 && onApplySuggestion && (
-                      <div className="mt-1.5 flex flex-wrap gap-1">
-                        {issue.suggestions.map((s) => (
+                      <div className="resume-hint-actions">
+                        {issue.suggestions.map((suggestion) => (
                           <button
-                            key={s}
+                            key={suggestion}
                             type="button"
+                            className="air-button"
+                            aria-label={`Replace “${issue.actual}” with “${suggestion}”`}
                             onClick={() => {
-                              onApplySuggestion(issue.actual, s);
+                              onApplySuggestion(issue.actual, suggestion);
+                              // Updating the document invalidates all report badges immediately.
+                              document
+                                .getElementById(fieldControlId)
+                                ?.focus({ preventScroll: true });
                               setOpen(false);
-                              requestAnimationFrame(() => buttonRef.current?.focus());
                             }}
-                            className="inline-flex min-h-11 items-center rounded-md border border-(--brand-100) bg-(--brand-50) px-2 text-sm font-semibold text-(--brand) transition-colors hover:bg-(--brand-100) md:min-h-10"
                           >
-                            {s}
+                            {suggestion}
                           </button>
                         ))}
                       </div>
                     )}
-                  </div>
+                  </li>
                 );
               })}
-            </div>
+            </ol>
           </div>,
           document.body,
         )}

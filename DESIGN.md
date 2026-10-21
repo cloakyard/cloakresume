@@ -1136,10 +1136,9 @@ journeys across all apps; it is not inferred from the pilot alone.
 - A format scope retires removed textarea handlers and clears its active field;
   stale toolbar actions cannot resurrect removed text. Pointer and keyboard
   formatting preserve the current selection. Selected formatting is neutral.
-- Writing-hint popup interiors remain partial. Do not
-  infer their adoption from the shared field slice. `node scripts/test-air-writing-fields.mjs` checks six field
-  consumers across all viewport classes and text sizes; native IME/touch and
-  assistive speech remain separate acceptance gates.
+- `node scripts/test-air-writing-fields.mjs` checks shared field consumers across
+  all viewport classes and text sizes; native IME/touch and assistive speech remain
+  separate acceptance gates. Writing-hint acceptance is recorded separately below.
 
 - Repeated entries use open headings, contextual 44px reorder/remove controls,
   neutral Add actions and plain empty guidance. Nested bullets place their actions
@@ -1218,3 +1217,23 @@ journeys across all apps; it is not inferred from the pilot alone.
   `node scripts/test-air-colour.mjs` covers responsive/theme/text/forced-colour
   states and offset visual viewports. Physical touch, software keyboards, IME and
   spoken assistive acceptance remain separate gates.
+
+- Writing hints use the Air popover, readable kind/phrase/reason rows, neutral
+  replacement actions and a visible close control. They are optional suggestions,
+  separate from invalid-field errors. Text and targets grow at enlarged text;
+  long phrases and replacements wrap, and long lists scroll within safe edges.
+- Preserve the local Harper report, ordering, category names and exact first-match
+  replacement callbacks. Opening or dismissing cannot change content. The six
+  consumers are summary, experience bullets, project description/roles, award
+  detail and custom bullets. Target JD stays outside the existing grammar scan.
+- Opening focuses the readable surface, with no editor animation or software
+  keyboard request. Escape/close returns to the trigger, non-modal Tab can leave,
+  and outside pointer/focus dismisses. Applying returns to the writing field as
+  report invalidation removes its hint trigger; a refreshed report stays closed.
+  Review jumps focus the named field with the single Air contour, replacing the
+  obsolete decorative glow. Loading/error/no-report states show no stale badges.
+- Hints reuse date/logo/colour viewport placement. `node scripts/test-air-hints.mjs`
+  covers all six real production consumers plus explicitly labelled long-copy
+  stress, short screens, both themes, enlarged text and coarse/forced-colour modes.
+  Native Safari and Firefox zoom are separate from physical touch/software keyboard,
+  OS IME and spoken assistive acceptance. The full review sheet remains a later slice.

@@ -131,7 +131,10 @@ describe.skipIf(!existsSync(chromePath))(
         );
         button?.click();
       });
-      await page.waitForSelector(".cr-editor-panel textarea", { visible: true });
+      await page.waitForSelector(
+        '.cr-editor-panel input:not([type="file"]), .cr-editor-panel textarea',
+        { visible: true },
+      );
       await page.evaluate(async () => {
         await document.fonts.ready;
         // Auto-growing fields measure a mirror after fonts finish loading. Wait
@@ -2510,6 +2513,180 @@ describe.skipIf(!existsSync(chromePath))(
       expect(await page.$(".cr-editor-panel")).not.toBeNull();
     });
 
+    async function scanWritingHints() {
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector(".cr-editor-panel .resume-hint-trigger");
+      await page.click('button[aria-label="Close ATS review"]');
+      await page.waitForSelector('button[aria-label="Close ATS review"]', { hidden: true });
+    }
+
+    const hintText =
+      "I designed **teh** reliable system and helped teh team build useful tools. We work on quality software and support our customers every day.";
+    for (const [section, fieldId] of [
+      ["profile", "profile.summary"],
+      ["experience", "experience.0.bullets.0"],
+      ["projects", "projects.0.description"],
+      ["projects", "projects.0.roles.0"],
+      ["awards", "awards.0.detail"],
+      ["custom", "custom.0.bullets.0"],
+    ]) {
+      it(`applies writing hints in ${fieldId} without changing rich text or later occurrences`, async () => {
+        await openDraft(
+          {
+            ...blankResume,
+            profile: { ...blankResume.profile, summary: hintText },
+            experience: [
+              {
+                id: "role",
+                title: "Engineer",
+                company: "Team",
+                location: "",
+                start: "2020",
+                end: "Present",
+                bullets: [hintText],
+              },
+            ],
+            projects: [
+              {
+                id: "project",
+                name: "Project",
+                description: hintText,
+                roles: [hintText],
+                stack: [],
+              },
+            ],
+            awards: [{ id: "award", title: "Award", year: "2020", detail: hintText }],
+            custom: [{ id: "custom", header: "Volunteering", bullets: [hintText] }],
+          },
+          { activeSection: section },
+        );
+        await scanWritingHints();
+        const field = `[data-field-id="${fieldId}"]`;
+        const trigger = `${field} + .resume-hint-trigger`;
+        const before = await savedResume();
+        await page.locator(trigger).click();
+        await page.waitForSelector(".resume-hint-popover:focus");
+        expect(await savedResume()).toEqual(before);
+        await page.click('.resume-hint-actions button[aria-label="Replace “teh” with “the”"]');
+        await page.waitForSelector(".resume-hint-popover", { hidden: true });
+        expect(
+          await page.$eval(field, (element) => ({
+            value: (element as HTMLInputElement).value,
+            focused: element === document.activeElement,
+          })),
+        ).toEqual({ value: hintText.replace("teh", "the"), focused: true });
+        await page.waitForSelector(trigger);
+        expect(await page.$(".resume-hint-popover")).toBeNull();
+        await resumeEditing();
+        expect(await page.$eval(field, (element) => (element as HTMLInputElement).value)).toBe(
+          hintText.replace("teh", "the"),
+        );
+      });
+    }
+
+    it("keeps hint keyboard traversal, touch dismissal and disappearing-trigger focus predictable", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: {
+            ...blankResume.profile,
+            summary: hintText.replace("helped teh", "helped the"),
+          },
+        },
+        {},
+        1440,
+        true,
+      );
+      await scanWritingHints();
+      const trigger = '[data-field-id="profile.summary"] + .resume-hint-trigger';
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.keyboard.press("Tab");
+      expect(
+        await page.$eval(
+          'button[aria-label="Close writing hints"]',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.$eval(trigger, (element) => element === document.activeElement)).toBe(true);
+      await page.keyboard.press("Enter");
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.keyboard.press("Escape");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.$eval(trigger, (element) => element === document.activeElement)).toBe(true);
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.$eval(".resume-hint-popover", (element) =>
+        element
+          .querySelectorAll<HTMLButtonElement>("button")
+          .item(element.querySelectorAll("button").length - 1)
+          .focus(),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.$eval('[data-field-id="profile.summary"]', (element) => {
+        element.dispatchEvent(
+          new PointerEvent("pointerdown", { bubbles: true, pointerType: "touch" }),
+        );
+        (element as HTMLTextAreaElement).focus();
+      });
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      expect(
+        await page.$$eval(".resume-hint-popover button", (elements) =>
+          elements.every((element) => element.getBoundingClientRect().height >= 44),
+        ),
+      ).toBe(true);
+      await page.click('.resume-hint-actions button[aria-label="Replace “teh” with “the”"]');
+      await page.waitForSelector(trigger, { hidden: true });
+      expect(
+        await page.$eval(
+          '[data-field-id="profile.summary"]',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+    });
+
+    it("jumps from a writing review to the named field and leaves Target JD outside the hint scan", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "custom", header: "Volunteering", bullets: [hintText] }] },
+        { jobDescription: hintText },
+      );
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[role="tab"][id$="tab-insights"]');
+      await page.click('[role="tab"][id$="tab-insights"]');
+      await page.waitForSelector('button[aria-label="Jump to Volunteering · bullet 1"]');
+      await page.click('button[aria-label="Jump to Volunteering · bullet 1"]');
+      await page.waitForSelector('[data-field-id="custom.0.bullets.0"]:focus');
+      await page.locator('[data-field-id="custom.0.bullets.0"] + .resume-hint-trigger').click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.click('button[aria-label="Close writing hints"]');
+      expect(
+        await page.$eval(
+          '[data-field-id="custom.0.bullets.0"] + .resume-hint-trigger',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      await page.click('.resume-section-link[aria-label="Target JD"]');
+      await page.waitForSelector('textarea[name="target-job-description"]');
+      expect(await page.$(".cr-editor-panel .resume-hint-trigger")).toBeNull();
+      expect(
+        await page.$eval(
+          'textarea[name="target-job-description"]',
+          (element) => (element as HTMLTextAreaElement).value,
+        ),
+      ).toBe(hintText);
+    });
+
     it("scans edits made while the writing engine is still downloading", async () => {
       await openDraft();
       await page.setRequestInterception(true);
@@ -2536,6 +2713,7 @@ describe.skipIf(!existsSync(chromePath))(
         for (let attempts = 0; !held && attempts < 500; attempts++)
           await new Promise((resolve) => setTimeout(resolve, 20));
         expect(held).toBeDefined();
+        expect(await page.$(".resume-hint-trigger")).toBeNull();
         await held!.continue();
         held = undefined;
         await page.waitForSelector('.cr-editor-panel button[aria-label*="writing hint"]', {
@@ -2576,6 +2754,7 @@ describe.skipIf(!existsSync(chromePath))(
         expect(
           await page.$eval('[role="dialog"] h3', (element) => element.textContent),
         ).not.toContain("on writing");
+        expect(await page.$(".resume-hint-trigger")).toBeNull();
         failDownload = false;
         await page.click('button[aria-label="Re-scan"]');
         await page.waitForFunction(
