@@ -1,0 +1,7 @@
+RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+
+ Test Files  8 passed (8)
+      Tests  310 passed (310)
+   Start at  10:41:43
+   Duration  397.32s (tests 100%)

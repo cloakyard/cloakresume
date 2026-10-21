@@ -1,0 +1,289 @@
+COMMAND OUTPUT: check-final.log
+pass: Formatting completed for checked files (2.0s)
+pass: Found no warnings, lint errors, or type errors in 130 files (795ms, 12 threads)
+Air contract and 78 inventory records are valid. Runtime conformance is audited separately.
+{
+  "product": "cloakresume",
+  "checks": [
+    "isolated bundle passes with no dependencies or sibling files",
+    "missing light lifecycle hash rejected",
+    "altered light lifecycle rejected",
+    "unsynchronized canonical source rejected when present",
+    "bundle paired with a different contract rejected",
+    "mismatched document version rejected",
+    "missing motion hash rejected",
+    "altered motion module rejected",
+    "altered colour math rejected",
+    "missing overlay bundle hash rejected",
+    "altered overlay module rejected",
+    "missing reading/recovery behavior hash rejected",
+    "altered reading page rejected",
+    "missing file lifecycle behavior hash rejected",
+    "altered file study rejected",
+    "altered collection study rejected",
+    "missing manifest rejected",
+    "restored bundle passes"
+  ],
+  "files": 24,
+  "fixture": null
+}
+
+COMMAND OUTPUT: build.log
+$ tsc ⊘ cache disabled
+
+$ vp build ⊘ cache disabled
+transforming...
+✓ 2203 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/manifest.webmanifest                                              1.04 kB
+dist/assets/lora-vietnamese-700-normal-BHDzxyiD.woff2                  5.28 kB
+dist/assets/lora-vietnamese-600-normal-B_IFhWKN.woff2                  5.56 kB
+dist/index.html                                                        5.64 kB │ gzip:     1.88 kB
+dist/assets/lora-vietnamese-700-normal-DyKKCAD2.woff                   7.28 kB
+dist/assets/geist-cyrillic-ext-wght-normal-DjL33-gN.woff2              7.42 kB
+dist/assets/lora-vietnamese-600-normal-BnEhOXH8.woff                   7.61 kB
+dist/assets/geist-vietnamese-wght-normal-6IgcOCM7.woff2                8.00 kB
+dist/assets/lora-symbols-700-normal-zYsi5zvy.woff2                     9.39 kB
+dist/assets/lora-symbols-600-normal-DaMEG5Dn.woff2                     9.76 kB
+dist/assets/instrument-serif-latin-ext-400-normal-CFCUzsTy.woff        9.86 kB
+dist/assets/instrument-serif-latin-ext-400-italic-D7-lnxEk.woff       10.50 kB
+dist/assets/lora-symbols-700-normal-DaE8wqnc.woff                     11.27 kB
+dist/assets/lora-cyrillic-700-normal-CicHrsUU.woff2                   11.38 kB
+dist/assets/instrument-serif-latin-ext-400-normal-C2je3j2s.woff2      11.60 kB
+dist/assets/lora-symbols-600-normal-CURAubwP.woff                     11.71 kB
+dist/assets/lora-latin-ext-700-normal-DbHby4fw.woff2                  11.96 kB
+dist/assets/lora-cyrillic-600-normal-DuzuWObJ.woff2                   12.05 kB
+dist/assets/lora-latin-ext-600-normal-CURVZmIT.woff2                  12.27 kB
+dist/assets/instrument-serif-latin-ext-400-italic-C9HzH3YL.woff2      12.38 kB
+dist/assets/lora-cyrillic-ext-700-normal-CH2Ef3pd.woff2               12.60 kB
+dist/assets/lora-cyrillic-ext-600-normal-CYLe3Bq4.woff2               13.30 kB
+dist/assets/lora-cyrillic-700-normal-CoUvLzhc.woff                    13.97 kB
+dist/assets/lora-cyrillic-600-normal-j6UMqgXb.woff                    14.56 kB
+dist/assets/geist-cyrillic-wght-normal-BEAKL7Jp.woff2                 15.08 kB
+dist/assets/lora-latin-ext-700-normal-XBj10pPw.woff                   15.64 kB
+dist/assets/lora-latin-ext-600-normal-BX8pxmH4.woff                   15.96 kB
+dist/assets/lora-cyrillic-ext-700-normal-B20D6wuF.woff                15.99 kB
+dist/assets/lora-math-700-normal-BdgFUNlJ.woff2                       16.36 kB
+dist/assets/geist-latin-ext-wght-normal-DC-KSUi6.woff2                16.51 kB
+dist/assets/lora-cyrillic-ext-600-normal-BobJ8QCm.woff                16.67 kB
+dist/assets/lora-math-600-normal-B9Wi-uy2.woff2                       16.92 kB
+dist/assets/instrument-serif-latin-400-normal-BVbkICAY.woff           18.33 kB
+dist/assets/instrument-serif-latin-400-italic-u__WvvIK.woff           19.26 kB
+dist/assets/lora-math-700-normal-JjB0YUk-.woff                        19.94 kB
+dist/assets/lora-math-600-normal-soY6uGQW.woff                        20.54 kB
+dist/assets/instrument-serif-latin-400-normal-DnYpCC2O.woff2          21.03 kB
+dist/assets/lora-latin-700-normal-BHK4Pzk4.woff2                      21.04 kB
+dist/assets/lora-latin-600-normal-B-3RcLOQ.woff2                      21.91 kB
+dist/assets/instrument-serif-latin-400-italic-DKMiL14s.woff2          22.12 kB
+dist/assets/lora-latin-700-normal-Yfa97ytg.woff                       25.94 kB
+dist/assets/lora-latin-600-normal-Dc3EneHn.woff                       26.81 kB
+dist/assets/geist-latin-wght-normal-BgDaEnEv.woff2                    29.40 kB
+dist/assets/harper_wasm_bg-BEyNQVrT.wasm                          16,164.07 kB │ gzip: 8,198.65 kB
+dist/assets/index-B9iGimJU.css                                       133.33 kB │ gzip:    25.50 kB
+dist/assets/binary-CUKcOTd3.js                                         0.17 kB │ gzip:     0.17 kB
+dist/assets/paginationAtoms-BXni5hm-.js                                0.42 kB │ gzip:     0.28 kB
+dist/assets/rolldown-runtime-CbXtAM7H.js                               0.58 kB │ gzip:     0.36 kB
+dist/assets/shared-Vq_r0Ae1.js                                         3.69 kB │ gzip:     1.67 kB
+dist/assets/workbox-window.prod.es5-Bd17z0YL.js                        5.65 kB │ gzip:     2.20 kB
+dist/assets/react-DK6rpPfu.js                                          7.87 kB │ gzip:     3.00 kB
+dist/assets/AtsPlain-Dr-A-nfP.js                                       9.35 kB │ gzip:     2.19 kB
+dist/assets/AtsProfessional-mmNMvdmv.js                               10.63 kB │ gzip:     2.46 kB
+dist/assets/Ledger-BRGqeQfS.js                                        10.78 kB │ gzip:     3.04 kB
+dist/assets/Minimalist-DZ3jOwtI.js                                    10.99 kB │ gzip:     2.51 kB
+dist/assets/Academic-CyKkLip8.js                                      11.36 kB │ gzip:     2.82 kB
+dist/assets/ClassicImpact-glCRjIyj.js                                 12.67 kB │ gzip:     3.38 kB
+dist/assets/ExecutiveSerif-fie7dkZB.js                                12.97 kB │ gzip:     3.00 kB
+dist/assets/ModernMinimal-gxZE6nrE.js                                 13.02 kB │ gzip:     2.97 kB
+dist/assets/GradientHeader-CqW9C95U.js                                14.27 kB │ gzip:     3.32 kB
+dist/assets/CompactTimeline-xYT6N7NF.js                               14.60 kB │ gzip:     3.32 kB
+dist/assets/Typographic-C8_Xmt4Z.js                                   15.86 kB │ gzip:     3.19 kB
+dist/assets/ClassicSidebar-BdKmJf_z.js                                15.93 kB │ gzip:     3.51 kB
+dist/assets/Monograph-CrI7-MpF.js                                     16.66 kB │ gzip:     3.52 kB
+dist/assets/Aurora-BwPJIG6c.js                                        17.48 kB │ gzip:     3.83 kB
+dist/assets/Prism-CgeWYT6V.js                                         17.68 kB │ gzip:     3.74 kB
+dist/assets/Bauhaus-DhXjRa0B.js                                       17.89 kB │ gzip:     3.88 kB
+dist/assets/Horizon-Fwqudp1-.js                                       19.04 kB │ gzip:     3.93 kB
+dist/assets/purify.es-Bvo9QlJ8.js                                     28.08 kB │ gzip:    11.08 kB
+dist/assets/AtsReviewModal-CBosJ4A7.js                                32.29 kB │ gzip:     9.90 kB
+dist/assets/BinaryModule-BmeyZWwZ-DG7KaLf9.js                         42.91 kB │ gzip:     8.19 kB
+dist/assets/dist-BgWXbGVw.js                                         129.96 kB │ gzip:    28.22 kB
+dist/assets/index.es-DPcho2xw.js                                     151.41 kB │ gzip:    48.90 kB
+dist/assets/html2canvas-BM5yyqGY.js                                  199.49 kB │ gzip:    46.77 kB
+dist/assets/index-BkGAV6TS.js                                        480.88 kB │ gzip:   152.63 kB
+dist/assets/pdfExport-DIEIWy24.js                                    614.75 kB │ gzip:   196.12 kB
+dist/assets/air-light-shader-VlzniAjj.js                           1,261.69 kB │ gzip:   294.30 kB
+
+[plugin builtin:vite-reporter]
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 660ms
+
+PWA v2.0.0
+mode      generateSW
+precache  73 entries (2440.53 KiB)
+files generated
+  dist/sw.js
+  dist/workbox-271d3e69.js
+
+---
+vp run: 0/2 cache hit (0%). (Run `vp run --last-details` for full details)
+
+COMMAND OUTPUT: focused.log
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+ ❯ tests/editor-browser.spec.ts (120 tests | 2 failed | 114 skipped) 16282ms
+   ❯ editor browser regressions (requires Chrome or CHROME_PATH) (120)
+     × keeps focus rings inside scrolling icon and year grids at 1920px 2506ms
+     × keeps focus rings inside scrolling icon and year grids at 320px 2889ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 2 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  tests/editor-browser.spec.ts > editor browser regressions (requires Chrome or CHROME_PATH) > keeps focus rings inside scrolling icon and year grids at 1920px
+ FAIL  tests/editor-browser.spec.ts > editor browser regressions (requires Chrome or CHROME_PATH) > keeps focus rings inside scrolling icon and year grids at 320px
+AssertionError: expected 4 to be 5 // Object.is equality
+
+- Expected
++ Received
+
+- 5
++ 4
+
+ ❯ checkEdges tests/editor-browser.spec.ts:1661:34
+    1659|               };
+    1660|             });
+    1661|             expect(space.extent).toBe(expectedExtent);
+       |                                  ^
+    1662|             for (const gap of space.gaps)
+    1663|               expect(gap, JSON.stringify({ selector, index, space })).…
+ ❯ tests/editor-browser.spec.ts:1676:9
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/2]⎯
+
+
+ Test Files  1 failed (1)
+      Tests  2 failed | 4 passed | 114 skipped (120)
+   Start at  16:01:51
+   Duration  16.54s (tests 99%, import 1%)
+
+COMMAND OUTPUT: focused-final.log
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+
+ Test Files  1 passed (1)
+      Tests  6 passed | 114 skipped (120)
+   Start at  16:03:36
+   Duration  15.86s (tests 99%, import 1%)
+
+COMMAND OUTPUT: production-tests.log
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+
+ Test Files  8 passed (8)
+      Tests  300 passed (300)
+   Start at  16:04:48
+   Duration  381.21s (tests 100%)
+
+COMMAND OUTPUT: layouts-final.log
+PASS 1920×1080 light 16px: four date states and current job
+PASS 1920×1080 light 32px: four date states and current job
+PASS 1920×1080 dark 16px: four date states and current job
+PASS 1920×1080 dark 32px: four date states and current job
+PASS 1440×900 light 16px: four date states and current job
+PASS 1440×900 light 32px: four date states and current job
+PASS 1440×900 dark 16px: four date states and current job
+PASS 1440×900 dark 32px: four date states and current job
+PASS 1366×768 light 16px: four date states and current job
+PASS 1366×768 light 32px: four date states and current job
+PASS 1366×768 dark 16px: four date states and current job
+PASS 1366×768 dark 32px: four date states and current job
+PASS 1280×800 light 16px: four date states and current job
+PASS 1280×800 light 32px: four date states and current job
+PASS 1280×800 dark 16px: four date states and current job
+PASS 1280×800 dark 32px: four date states and current job
+PASS 1279×720 light 16px: four date states and current job
+PASS 1279×720 light 32px: four date states and current job
+PASS 1279×720 dark 16px: four date states and current job
+PASS 1279×720 dark 32px: four date states and current job
+PASS 1024×768 light 16px: four date states and current job
+PASS 1024×768 light 32px: four date states and current job
+PASS 1024×768 dark 16px: four date states and current job
+PASS 1024×768 dark 32px: four date states and current job
+PASS 1023×768 light 16px: four date states and current job
+PASS 1023×768 light 32px: four date states and current job
+PASS 1023×768 dark 16px: four date states and current job
+PASS 1023×768 dark 32px: four date states and current job
+PASS 768×1024 light 16px: four date states and current job
+PASS 768×1024 light 32px: four date states and current job
+PASS 768×1024 dark 16px: four date states and current job
+PASS 768×1024 dark 32px: four date states and current job
+PASS 767×1024 light 16px: four date states and current job
+PASS 767×1024 light 32px: four date states and current job
+PASS 767×1024 dark 16px: four date states and current job
+PASS 767×1024 dark 32px: four date states and current job
+PASS 640×800 light 16px: four date states and current job
+PASS 640×800 light 32px: four date states and current job
+PASS 640×800 dark 16px: four date states and current job
+PASS 640×800 dark 32px: four date states and current job
+PASS 639×800 light 16px: four date states and current job
+PASS 639×800 light 32px: four date states and current job
+PASS 639×800 dark 16px: four date states and current job
+PASS 639×800 dark 32px: four date states and current job
+PASS 430×932 light 16px: four date states and current job
+PASS 430×932 light 32px: four date states and current job
+PASS 430×932 dark 16px: four date states and current job
+PASS 430×932 dark 32px: four date states and current job
+PASS 390×844 light 16px: four date states and current job
+PASS 390×844 light 32px: four date states and current job
+PASS 390×844 dark 16px: four date states and current job
+PASS 390×844 dark 32px: four date states and current job
+PASS 375×812 light 16px: four date states and current job
+PASS 375×812 light 32px: four date states and current job
+PASS 375×812 dark 16px: four date states and current job
+PASS 375×812 dark 32px: four date states and current job
+PASS 320×568 light 16px: four date states and current job
+PASS 320×568 light 32px: four date states and current job
+PASS 320×568 dark 16px: four date states and current job
+PASS 320×568 dark 32px: four date states and current job
+PASS 844×390 light 16px: four date states and current job
+PASS 844×390 light 32px: four date states and current job
+PASS 844×390 dark 16px: four date states and current job
+PASS 844×390 dark 32px: four date states and current job
+PASS 256 date layouts
+
+COMMAND OUTPUT: details.log
+node:internal/modules/run_main:107
+    triggerUncaughtException(
+    ^
+
+AssertionError [ERR_ASSERTION]: Expected values to be strictly deep-equal:
++ actual - expected
+
+  {
++   focused: null,
+-   focused: 'Previous year',
+    width: '2px'
+  }
+
+    at file:///private/tmp/cloakresume-air-dates/details.mjs:10:475 {
+  generatedMessage: true,
+  code: 'ERR_ASSERTION',
+  actual: { width: '2px', focused: null },
+  expected: { width: '2px', focused: 'Previous year' },
+  operator: 'deepStrictEqual',
+  diff: 'simple'
+}
+
+Node.js v24.22.0
+
+COMMAND OUTPUT: details-final.log
+PASS 20 month/year/clear journeys; 52 contrast pairs; emulated touch cancel and forced/reduced states
+
+COMMAND OUTPUT: sync.log
+Updated six portable Air specifications (bb90f52e0b0a).
+Verified six portable Air specifications (bb90f52e0b0a).

@@ -1,0 +1,1 @@
+Actual overflow rejection preserves the draft and export focus

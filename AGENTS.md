@@ -25,3 +25,16 @@ release. Add a tool name to select part of the graph. For example, run
 - [ ] If setup, runtime, or package-manager behavior looks wrong, run `vp env doctor` and include its output when asking for help.
 
 <!--VITE PLUS END-->
+
+# Cloakyard Air refresh
+
+Read `DESIGN.md` before changing UI. It is the portable family-wide Air contract
+and supersedes earlier Workbench styling. It covers every custom component,
+editor panel, canvas surround, overlay, state and responsive layout. Résumé
+templates and exported documents retain their selected typography and geometry.
+
+Track each source/state in `docs/air/surfaces.json` and run
+`node scripts/check-air-design.mjs`. Implement one bounded piece, inspect
+desktop/laptop/tablet/phone themes and input modes, run all applicable checks and
+feature/template/browser tests, record evidence, then commit only on a complete
+pass. An unavailable browser or skipped feature test does not count as a pass.

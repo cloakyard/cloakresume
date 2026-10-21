@@ -1,0 +1,20 @@
+import {createRequire} from 'node:module';import {readFile,writeFile} from 'node:fs/promises';import {createHash} from 'node:crypto';import assert from 'node:assert/strict';
+const root='<CLOAKRESUME_ROOT>',out='<SCRATCH_ROOT>',base='http://127.0.0.1:8209/';
+const require=createRequire(root+'/package.json'),{launch}=require('puppeteer-core');
+const browser=await launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const rows=[];try{
+const p=await browser.newPage();await p.goto(base,{waitUntil:'networkidle0'});const cdp=await p.createCDPSession();const result=await cdp.send('Page.getAppManifest');assert.deepEqual(result.errors,[]);const manifest=JSON.parse(result.data);assert.equal(manifest.theme_color,'#fafbfc');assert.equal(manifest.background_color,'#fafbfc');assert.equal(manifest.orientation,'any');assert.equal(manifest.screenshots.length,4);
+for(const asset of [...manifest.screenshots,...manifest.icons]){
+ const proof=await p.evaluate(async asset=>{const url=new URL(asset.src,document.querySelector('link[rel="manifest"]').href);const image=new Image();image.src=url.href;await image.decode();return {width:image.naturalWidth,height:image.naturalHeight,url:url.href}},asset);
+ assert.equal(asset.sizes,`${proof.width}x${proof.height}`);rows.push({...asset,...proof});
+}
+const social=await p.evaluate(()=>Object.fromEntries([...document.querySelectorAll('meta[property^="og:"],meta[name^="twitter:"],meta[name="theme-color"]')].map(e=>[e.getAttribute('property')||e.getAttribute('name')+':'+(e.getAttribute('media')||''),e.content])));assert.equal(social['og:image'],social['twitter:image:']);assert.match(social['og:image:alt'],/Air editor.*synthetic sample résumé/);
+const sw=await readFile(root+'/dist/sw.js','utf8');for(const n of ['screenshots/','og-image.png','iPhone.png','iPad.png'])assert.ok(!sw.includes(n));
+const picture=(await readFile(root+'/README.md','utf8')).match(/<picture>[\s\S]*?<\/picture>/)[0];await writeFile(out+'/readme-preview.html',`<!doctype html><meta charset="utf-8"><base href="file://${root}/">${picture}`);
+const themes=[];for(const theme of ['light','dark']){await p.emulateMediaFeatures([{name:'prefers-color-scheme',value:theme}]);await p.goto('file://'+out+'/readme-preview.html');const img=await p.$eval('picture img',async e=>{await e.decode();return {src:e.currentSrc,width:e.naturalWidth,height:e.naturalHeight}});assert.ok(img.src.endsWith(`editor-wide-${theme}.png`));themes.push({theme,...img});}
+const hashes=[];for(const rel of ['icons/og-image.png',...manifest.screenshots.map(s=>s.src)]){
+ const b=await readFile(root+'/public/'+rel);assert.deepEqual(b,await readFile(out+'/repeat/'+rel),rel+' generation');assert.deepEqual(b,await readFile(root+'/dist/'+rel),rel+' dist');hashes.push({path:'public/'+rel,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex'),repeatIdentical:true,distIdentical:true});
+}
+await writeFile(out+'/metadata.json',JSON.stringify({manifestErrors:result.errors,manifest,resources:rows,social,readme:themes,presentationOutsidePrecache:true},null,2));await writeFile(out+'/asset-hashes.json',JSON.stringify(hashes,null,2));console.log('Manifest parsed without warnings; 8 images decoded at declared sizes; both README themes select correctly; 5 repeat/dist hashes match; presentation assets excluded from precache.');
+}finally{await browser.close()}
+process.exit(0);

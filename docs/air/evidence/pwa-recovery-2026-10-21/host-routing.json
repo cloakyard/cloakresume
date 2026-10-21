@@ -1,0 +1,20 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "recovery": false,
+    "cacheControl": "public, max-age=0, must-revalidate"
+  },
+  {
+    "path": "/404.html",
+    "status": 200,
+    "recovery": true,
+    "cacheControl": "public, max-age=0, must-revalidate"
+  },
+  {
+    "path": "/missing-page",
+    "status": 404,
+    "recovery": true,
+    "cacheControl": "public, max-age=0, must-revalidate"
+  }
+]

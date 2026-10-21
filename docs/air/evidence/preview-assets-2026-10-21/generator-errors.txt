@@ -1,0 +1,1 @@
+Actual dev server rejected before capture; missing browser exits nonzero and closes its owned preview.

@@ -64,19 +64,20 @@ describe("CloakResume family contract", () => {
 
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
-    expect(pkg.packageManager).toBe("pnpm@12.9.1");
-    expect(workspace).toContain("vite-plus: 1.1.0");
-    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.1.0");
+    expect(pkg.packageManager).toBe("pnpm@12.14.0");
+    expect(workspace).toContain("vite-plus: 1.3.0");
+    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.3.0");
     expect(pkg.devDependencies).not.toHaveProperty("vitest");
   });
 
-  it("keeps every normative token value in tokens.css", async () => {
-    const tokenCss = await source("tokens.css");
+  it("keeps the pinned Air tokens authoritative and compatibility values isolated", async () => {
+    const tokenCss = await source("src/styles/air.css");
     const cssFiles = await filesBelow("src", ".css");
     const canonicalNames = new Set(cssDeclarations(tokenCss).map(({ name }) => name));
     const duplicateDefinitions: string[] = [];
 
     for (const file of cssFiles) {
+      if (file === "src/styles/air.css") continue;
       const css = await source(file);
       for (const declaration of cssDeclarations(css)) {
         if (canonicalNames.has(declaration.name)) {
@@ -87,8 +88,12 @@ describe("CloakResume family contract", () => {
       }
     }
 
-    expect(tokenCss).toContain("single normative source for product chrome");
-    expect(duplicateDefinitions, "canonical tokens redefined outside tokens.css").toEqual([]);
+    expect(canonicalNames.has("--air-ink")).toBe(true);
+    expect(canonicalNames.has("--air-font")).toBe(true);
+    expect(
+      cssDeclarations(await source("tokens.css")).some(({ name }) => canonicalNames.has(name)),
+    ).toBe(false);
+    expect(duplicateDefinitions, "Air tokens redefined outside the pinned bundle").toEqual([]);
   });
 
   it("keeps CSS bridges token-driven instead of introducing another palette", async () => {
@@ -99,147 +104,95 @@ describe("CloakResume family contract", () => {
     ]);
 
     expect(indexCss).toMatch(/^\/\*[\s\S]*?\*\/\s*@import "\.\.\/tokens\.css";/);
-    expect(indexCss).toContain("Normative values live in tokens.css");
-    expect(familyCss).toContain("var(--color-accent)");
+    expect(indexCss).toContain("Air owns UI");
+    expect(familyCss).toContain("var(--color-focus)");
+    expect(familyCss).not.toContain(".tb.primary");
     expect(`${indexCss}\n${familyCss}\n${tokens}`).not.toMatch(/surface-glass|--glass-/);
   });
 
-  it("registers the same self-hosted UI fonts and wordmark metrics as CloakPDF", async () => {
-    const [indexCss, familyCss, brandLogo] = await Promise.all([
-      source("src/index.css"),
-      source("src/cloak-family.css"),
+  it("uses the Air editor identity without changing the original mark", async () => {
+    const [brandLogo, css] = await Promise.all([
       source("src/components/BrandLogo.tsx"),
+      source("src/styles/air-editor.css"),
     ]);
-
-    expect(indexCss).toMatch(
-      /@font-face\s*\{[\s\S]*?font-family:\s*"Archivo";[\s\S]*?font-weight:\s*100 900;[\s\S]*?url\("\/fonts\/archivo-latin\.woff2"\)/,
-    );
-    expect(indexCss).toMatch(
-      /@font-face\s*\{[\s\S]*?font-family:\s*"JetBrains Mono";[\s\S]*?font-weight:\s*100 800;[\s\S]*?url\("\/fonts\/jetbrains-mono-latin\.woff2"\)/,
-    );
-    expect(indexCss).not.toMatch(/@fontsource-variable\/(?:archivo|jetbrains-mono|geist-mono)/);
-    expect(brandLogo).toContain("text-[1.125rem] leading-none font-[800] tracking-[-0.02em]");
-    expect(brandLogo).toContain('width="40"');
-    expect(brandLogo).toContain('height="40"');
-    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
-    expect(brandLogo).toContain('className="cr-brand-logo__mark shrink-0"');
-    expect(familyCss).toMatch(
-      /\.cr-brand-logo__mark\s*\{[\s\S]*?width:\s*var\(--logo-size\);[\s\S]*?height:\s*var\(--logo-size\);/,
-    );
+    expect(brandLogo).toContain('width="32"');
+    expect(brandLogo).toContain('height="32"');
+    expect(brandLogo).toContain("cloakresume-mark.svg");
     expect(brandLogo).toContain('translate="no"');
+    expect(css).toContain("font: 500 1.125rem/1.25 var(--air-font)");
+    expect(brandLogo).not.toMatch(/Archivo|font-\[800\]|text-\(--brand\)/);
   });
 
-  it("matches CloakPDF footer provenance and privacy-document structure", async () => {
-    const [landing, privacy, familyCss, tokens, tokenJson] = await Promise.all([
+  it("uses Air for entry and policy while retaining provenance and the complete policy", async () => {
+    const [landing, privacy, main, entryCss, familyCss] = await Promise.all([
       source("src/components/CloakWorkbenchLanding.tsx"),
       source("src/components/PrivacyPolicyModal.tsx"),
+      source("src/main.tsx"),
+      source("src/styles/air-entry.css"),
       source("src/cloak-family.css"),
-      source("tokens.css"),
-      source("tokens.json"),
     ]);
     const footer = landing.match(
-      /<footer className="cr-statement-footer">([\s\S]*?)<\/footer>/,
+      /<footer className="resume-footer resume-frame">([\s\S]*?)<\/footer>/,
     )?.[1];
-    const portable = JSON.parse(tokenJson) as { size: Record<string, { $value: string }> };
-
     expect(footer).toBeDefined();
-    expect(footer).toContain("CloakResume / Cloakyard");
-    expect(footer).toContain("Build a résumé.");
-    expect(footer).toContain("Keep it local.");
-    expect(footer).toContain("CloakResume v{__APP_VERSION__}");
-    expect(footer).toContain("Built by");
-    expect(footer).toContain("Sumit Sahoo");
-    expect(footer).toContain("MIT licensed");
-    expect(footer).not.toContain("<BrandLogo");
-
-    expect(privacy).toContain("cr-dialog cr-dialog-wide cr-sheet cr-privacy-dialog");
-    expect(privacy).toContain("The privacy promise has an architecture.");
-    expect(privacy).toContain("Document path");
-    expect(privacy).toContain("Routes not present");
-    expect(privacy).toContain("Upload server — none");
+    for (const content of [
+      "CloakResume v{__APP_VERSION__}",
+      "Built by",
+      "Sumit Sahoo",
+      "MIT licensed",
+      "Cloakyard",
+      "Privacy policy",
+    ])
+      expect(footer).toContain(content);
+    expect(main).toContain('import "./styles/air.css"');
+    expect(landing).toContain('width="32"');
+    expect(landing).toContain('className="resume-menu"');
+    expect(landing).toContain("mountAirLight");
+    expect(privacy).toContain('className="air-modal resume-policy"');
     expect(privacy).toContain("Complete privacy policy");
-    expect(familyCss).toContain(".cr-privacy-dialog__architecture");
-    expect(familyCss).toContain(".cr-privacy-policy__section");
-    expect(tokens).not.toContain("--logo-size-footer");
-    expect(portable.size["logo-footer"]).toBeUndefined();
+    expect(privacy).toContain('LAST_UPDATED_ISO = "2026-07-22"');
+    for (const title of [
+      "Your résumé stays on your device",
+      "Your working draft remains local",
+      "No accounts, advertising, or analytics",
+      "Static assets can use the network",
+      "The implementation is inspectable",
+      "Policy revisions remain visible",
+    ])
+      expect(privacy).toContain(title);
+    expect(entryCss).not.toMatch(/--air-[a-z-]+\s*:/);
+    expect(familyCss).not.toMatch(
+      /cr-family-landing|cr-privacy-dialog|cr-resume-proof|cr-statement-footer/,
+    );
   });
 
-  it("keeps the shared frame, logo, editor, and overlay geometry explicit", async () => {
-    const [tokens, tokenJson, layout, paperToggle, indexCss] = await Promise.all([
-      source("tokens.css"),
-      source("tokens.json"),
+  it("uses Air editor geometry and keeps the date popover viewport aware", async () => {
+    const [css, layout, view, paper, monthYear, pickerPosition] = await Promise.all([
+      source("src/styles/air-editor.css"),
       source("src/components/Layout.tsx"),
-      source("src/components/PaperSizeToggle.tsx"),
-      source("src/index.css"),
-    ]);
-    const portable = JSON.parse(tokenJson) as {
-      size: Record<string, { $value: string }>;
-    };
-
-    expect(tokens).toContain("--color-accent: oklch(0.508 0.118 165.612)");
-    expect(tokens).toContain("--page-max: 88rem");
-    expect(tokens).toContain("--header-height: 4.5rem");
-    expect(tokens).toContain("--editor-header-height: 4rem");
-    expect(tokens).toContain("--editor-rail-width: 4.5rem");
-    expect(tokens).toContain("--editor-panel-width: 20.5rem");
-    expect(tokens).toContain("--editor-panel-width-wide: clamp(24rem, calc(100vw - 58rem), 46rem)");
-    expect(tokens).toMatch(
-      /@media \(min-width: 80rem\)[\s\S]*?--editor-panel-width:\s*var\(--editor-panel-width-wide\)/,
-    );
-    expect(portable.size["editor-panel"].$value).toBe("20.5rem");
-    expect(portable.size["editor-panel-wide"].$value).toBe(
-      "clamp(24rem, calc(100vw - 58rem), 46rem)",
-    );
-    expect(layout).toContain(
-      "grid-cols-[var(--editor-rail-width)_var(--editor-panel-width)_minmax(0,1fr)]",
-    );
-    expect(layout).not.toContain("grid-cols-[72px_328px_1fr]");
-    expect(layout).not.toContain("100% Private · Open Source");
-    expect(layout).not.toContain("GithubIcon");
-    expect(indexCss).toMatch(/\.tb\s*\{[\s\S]*?\bh-10\s+min-h-10\b/);
-    expect(paperToggle).toContain("data-paper-size-control={size}");
-    expect(paperToggle).toContain('size === "lg" ? "" : "h-10"');
-    expect(paperToggle).toContain('size === "lg" ? "min-h-11" : "h-[34px] min-h-0"');
-    expect(tokens).toContain("--logo-size: 2.5rem");
-    expect(tokens).toContain("--dialog-max: 36rem");
-    expect(tokens).toContain("--dialog-wide-max: 68.75rem");
-    expect(tokens).toContain("--sheet-max-block-size: 92dvh");
-    expect(tokens).toContain("--popover-safe-edge: 1rem");
-  });
-
-  it("keeps mobile toolbar, editor entry, and date popovers on the shared geometry", async () => {
-    const [viewSegment, layout, monthYear, indexCss, familyCss] = await Promise.all([
       source("src/components/ViewSegment.tsx"),
-      source("src/components/Layout.tsx"),
+      source("src/components/PaperSizeToggle.tsx"),
       source("src/components/MonthYearField.tsx"),
-      source("src/index.css"),
-      source("src/cloak-family.css"),
+      source("src/utils/usePickerPosition.ts"),
     ]);
-
-    expect(viewSegment).toContain('className="cr-view-segment');
-    expect(viewSegment).toContain("inline-flex h-11");
-    expect(viewSegment).toContain("grid h-11 min-h-11 min-w-11");
-    expect(familyCss).toContain(".cr-view-segment::after");
-    expect(familyCss).toMatch(
-      /\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\]\s*\{[\s\S]*?display:\s*none/,
-    );
-    expect(familyCss).toMatch(
-      /@media \(min-width: 21\.25rem\)[\s\S]*?\.cr-editor-header \.cr-view-segment \.cr-segment-button\[aria-pressed="true"\][\s\S]*?display:\s*grid/,
-    );
-
+    expect(css).toContain("var(--air-rail) 360px minmax(0, 1fr)");
+    expect(css).toContain("var(--air-rail) 420px minmax(0, 1fr)");
+    expect(css).toContain("min-height: var(--air-editor-header)");
+    expect(css).not.toMatch(/--air-[a-z-]+\s*:/);
+    expect(css).toContain("height: 100dvh");
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
     expect(layout).toContain('href="#editor-content"');
     expect(layout).toContain('id: "editor-content"');
-    expect(layout).toContain('isMobile ? "px-2.5 py-2.5 gap-1.5"');
-    expect(layout).toContain("h-[100dvh] flex flex-col overflow-clip");
-    expect(indexCss).toMatch(/html,\s*body,\s*#app\s*\{/);
-    expect(indexCss).not.toContain("#root");
-
-    expect(monthYear).toContain("window.visualViewport");
-    expect(monthYear).toContain('visualViewport?.addEventListener("resize", updateCoords)');
-    expect(monthYear).toContain('visualViewport?.addEventListener("scroll", updateCoords)');
-    expect(monthYear).toContain("const spaceAbove");
-    expect(monthYear).toContain("const spaceBelow");
+    expect(view).toContain('className="air-segments resume-view-segment"');
+    expect(paper).toContain('className="air-segments resume-paper-size"');
+    expect(monthYear).toContain(
+      "usePickerPosition(open && !disabled, buttonRef, popoverRef, showYearPicker)",
+    );
+    expect(pickerPosition).toContain("window.visualViewport");
+    expect(pickerPosition).toContain('visualViewport?.addEventListener("resize", updateCoords)');
+    expect(pickerPosition).toContain('visualViewport?.addEventListener("scroll", updateCoords)');
+    expect(pickerPosition).toContain("const spaceAbove");
+    expect(pickerPosition).toContain("const spaceBelow");
   });
 
   it("uses the canonical landing directly and preserves browser zoom", async () => {
@@ -268,7 +221,7 @@ describe("CloakResume family contract", () => {
     expect(app).toContain("const palette = useMemo(() => derivePalette(primary)");
   });
 
-  it("keeps mobile editing as a 50:50 proof plus one lower-pane task", async () => {
+  it("keeps persistent mobile preview and one lower-pane task with a landscape layout", async () => {
     const [layout, panel] = await Promise.all([
       source("src/components/Layout.tsx"),
       source("src/components/SectionPanel.tsx"),
@@ -278,15 +231,17 @@ describe("CloakResume family contract", () => {
     ]);
 
     expect(layout).toContain("data-mobile-view={mobileView}");
-    expect(layout).toMatch(/mobileView === "panel"[\s\S]*?grid-rows-2/);
-    expect(layout).toMatch(/grid-rows-2[\s\S]*?aria-label="Résumé preview"[\s\S]*?cr-editor-panel/);
+    expect(layout).toMatch(/mobileView === "panel"[\s\S]*?resume-compact-split/);
+    expect(layout).toMatch(
+      /resume-compact-split[\s\S]*?aria-label="Résumé preview"[\s\S]*?cr-editor-panel/,
+    );
     expect(layout).toContain("mobileSectionOpen ?");
     expect(layout).toContain('aria-label="Résumé section picker"');
     expect(layout).toContain('variant="picker"');
     expect(layout).not.toMatch(/FloatingSectionPill|sectionDrawerOpen|Jump to section/);
     expect(panel).toContain("Close ${meta.label} editor and choose another section");
-    expect(panel).toContain("lg:hidden");
-    expect(layout).toContain("min-h-0 flex-1");
+    expect(panel).toContain("resume-section-close");
+    expect(layout).toContain("resume-compact-body");
   });
 
   it("preserves natural word wrapping in every résumé document", async () => {
@@ -366,25 +321,31 @@ describe("CloakResume family contract", () => {
     const files = await Promise.all(
       [
         "src/components/TemplateModal.tsx",
-        "src/components/AtsReviewModal.tsx",
+        "src/components/AtsReviewDialog.tsx",
         "src/components/PrivacyPolicyModal.tsx",
         "src/components/ConfirmDialog.tsx",
-        "src/components/BottomSheet.tsx",
+        "src/components/OptionsDialog.tsx",
       ].map(source),
     );
 
-    expect(files.every((file) => file.includes("cr-overlay"))).toBe(true);
-    expect(files.some((file) => file.includes("cr-dialog-wide"))).toBe(true);
-    expect(files.some((file) => file.includes("cr-sheet"))).toBe(true);
-    expect(files[1]).toContain("ref={resultsScrollRef}");
-    expect(files[1]).toContain("ref={tabAnchorRef}");
-    expect(files[1]).toContain("ref={tabPanelScrollRef}");
-    expect(files[1]).toContain('onClick={() => selectTab("overview")}');
-    expect(files[1]).not.toMatch(
-      /onClick=\{\(\) => setTab\("(?:overview|keywords|insights|parse)"\)\}/,
-    );
-    expect(files[1]).toContain("sticky top-0");
-    expect(files[1]).toContain("min-[640px]:overflow-hidden");
+    expect(
+      files.every((file) => file.includes("air-modal-viewport") || file.includes("resume-overlay")),
+    ).toBe(true);
+    expect(files[0]).toContain('className="air-modal resume-library"');
+    expect(files[0]).toContain("useModalDialog<HTMLDivElement>");
+    expect(files[0]).toContain("inertBackground: true");
+    expect(files[1]).toContain('className="air-modal resume-review"');
+    expect(files[1]).toContain("inertBackground: true");
+    expect(files[4]).toContain('className="air-modal resume-options"');
+    expect(files[4]).toContain("inertBackground: true");
+    const review = await source("src/components/AtsReviewContent.tsx");
+    expect(review).toContain("ref={scrollRef}");
+    expect(review).toContain("ref={tabAnchorRef}");
+    expect(review).toContain("selectTab(key)");
+    expect(review).toContain("useLayoutEffect");
+    expect(review).not.toContain("setTimeout");
+    expect(review).not.toContain("animate-spin");
+    expect(files[1]).toContain("createPortal(");
     expect(files[4]).toContain("createPortal(");
     expect(files[4]).toContain("document.body");
   });
@@ -395,11 +356,11 @@ describe("CloakResume family contract", () => {
         source("src/App.tsx"),
         source("src/components/ConfirmDialog.tsx"),
         source("src/components/TemplateModal.tsx"),
-        source("src/components/AtsReviewModal.tsx"),
+        source("src/components/AtsReviewDialog.tsx"),
         source("src/components/ErrorBoundary.tsx"),
         source("src/components/ReloadPrompt.tsx"),
         source("src/utils/fieldIssues.tsx"),
-        source("public/404.html"),
+        source("404.html"),
       ],
     );
 
@@ -409,63 +370,60 @@ describe("CloakResume family contract", () => {
     expect(confirm).toContain('variant === "notice" ? confirmRef : cancelRef');
     expect(confirm).toContain('role={variant === "notice" ? "alertdialog" : "dialog"}');
 
-    for (const sheet of [app, templates, ats]) {
-      expect(sheet).toContain("pb-[env(safe-area-inset-bottom,0px)]");
-      expect(sheet).toContain("min-[640px]:pb-0");
-    }
+    expect(app).toContain("<AtsReviewDialog");
+    expect(ats).toContain('className="air-modal resume-review"');
+    expect(templates).toContain('className="air-modal resume-library"');
+    expect(templates).toContain('className="resume-library-body"');
+    expect(await source("src/styles/air.css")).toMatch(
+      /\.air-modal\s*\{[^}]*max-block-size: calc\(100dvh - 16px\);[^}]*padding-bottom: max\(24px, env\(safe-area-inset-bottom\)\);/,
+    );
+    expect(await source("src/styles/air-editor.css")).toMatch(
+      /\.resume-library-body\s*\{[^}]*min-block-size: 0;[^}]*overflow: auto;[^}]*overscroll-behavior: contain;/,
+    );
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
-    expect(reload).toContain("rounded-md p-4");
+    expect(reload).toContain('className="resume-update"');
     expect(reload).toContain(
       'type ReloadNoticeState = "offline" | "update" | "updating" | "error"',
     );
-    expect(reload).toContain("Update & Reload");
+    expect(reload).toContain("Update and reload");
     expect(reload).toContain("Updating…");
     expect(reload).toContain("Check your connection, then try again.");
     expect(reload).toContain("This version is cached and ready to use offline.");
-    expect(reload).toContain("disabled={isUpdating}");
-    expect(reload).toContain('aria-live={isError ? "assertive" : "polite"}');
+    expect(reload).toContain("aria-disabled={busy || undefined}");
+    expect(reload).toContain('role={state === "error" ? "alert" : "status"}');
     expect(reload).not.toContain("now installed for offline use");
-    expect(fieldIssues).toContain("divide-y divide-(--line)");
+    expect(fieldIssues).toContain('className="resume-hint-list"');
+    expect(await source("src/styles/air-editor.css")).toContain(".resume-hint-list > li + li");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
-    expect(notFound).toContain("font-size: clamp(2.75rem, 6.4vw, 6.75rem)");
-    expect(notFound).toContain("background: var(--color-accent)");
+    expect(notFound).toContain('class="air-page resume-recovery"');
+    expect(notFound).toContain('href="/src/styles/air.css"');
   });
 
   it("keeps muted and status text legible and preserves keyboard focus cues", async () => {
-    const [tokens, tokenJson, ats, contact, viewSegment, overflow, toolbarCenter] =
-      await Promise.all([
-        source("tokens.css"),
-        source("tokens.json"),
-        source("src/utils/ats.ts"),
-        source("src/components/editor/ContactSection.tsx"),
-        source("src/components/ViewSegment.tsx"),
-        source("src/components/ToolbarOverflow.tsx"),
-        source("src/components/ToolbarCenter.tsx"),
-      ]);
+    const [ats, contact, viewSegment, overflow, colourPopover] = await Promise.all([
+      source("src/utils/ats.ts"),
+      source("src/components/editor/ContactSection.tsx"),
+      source("src/components/ViewSegment.tsx"),
+      source("src/components/ToolbarOverflow.tsx"),
+      source("src/components/ColorPickerPopover.tsx"),
+    ]);
 
-    expect(tokens).toContain(
-      "--ink-5: color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper))",
-    );
-    expect(tokenJson).toContain(
-      '"$value": "color-mix(in oklab, var(--color-ink-3) 95%, var(--color-paper))"',
-    );
-    expect(ats).toContain('color: "var(--color-status-success)"');
-    expect(ats).toContain('color: "var(--color-status-warning)"');
-    expect(ats).toContain('color: "var(--color-status-danger)"');
+    expect(ats).toContain('color: "var(--air-success)"');
+    expect(ats).toContain('color: "var(--air-warning)"');
+    expect(ats).toContain('color: "var(--air-danger)"');
     expect(ats).not.toMatch(/#[0-9a-f]{3,8}\b/i);
     expect(contact).toContain("aria-label={`${c.kind} contact value`}");
     expect(contact).not.toContain("focus:outline-none");
     expect(viewSegment).not.toContain("focus-visible:outline-none");
     expect(overflow).not.toContain("focus-visible:outline-none");
-    expect(toolbarCenter).toContain('event.key !== "Escape"');
-    expect(toolbarCenter).toContain("maxHeight: Math.floor");
+    expect(colourPopover).toContain('event.key === "Escape"');
+    expect(colourPopover).toContain("maxHeight: coords.maxHeight");
   });
 
   it("locks preview fidelity, editor hierarchy, viewport safety, and family motion", async () => {
     const [
       tokenCss,
-      tokenJson,
       indexCss,
       familyCss,
       preview,
@@ -480,13 +438,11 @@ describe("CloakResume family contract", () => {
       dragList,
       fields,
       emptyState,
-      orientation,
       logoPicker,
       fieldIssues,
       projects,
     ] = await Promise.all([
       source("tokens.css"),
-      source("tokens.json"),
       source("src/index.css"),
       source("src/cloak-family.css"),
       source("src/components/Preview.tsx"),
@@ -501,37 +457,26 @@ describe("CloakResume family contract", () => {
       source("src/components/DragList.tsx"),
       source("src/components/fields.tsx"),
       source("src/components/editor/shared.tsx"),
-      source("src/components/OrientationLock.tsx"),
       source("src/components/LogoPicker.tsx"),
       source("src/utils/fieldIssues.tsx"),
       source("src/components/editor/ProjectsSection.tsx"),
     ]);
-    const portable = JSON.parse(tokenJson) as {
-      duration: Record<string, { $value: { value: number; unit: string } }>;
-      easing: Record<string, { $value: number[] }>;
-    };
-
+    // The date adapter still consumes these compatibility motion values.
     expect(tokenCss).toContain("--duration-press: 100ms");
-    expect(tokenCss).toContain("--duration-stagger: 60ms");
     expect(tokenCss).toContain("--motion-distance-small: 4px");
     expect(tokenCss).toContain("--motion-scale-surface: 0.98");
     expect(tokenCss).not.toContain("--ease-in:");
     expect(tokenCss).toContain("--ease-standard: cubic-bezier(0.16, 1, 0.3, 1)");
-    expect(portable.duration.press.$value).toEqual({ value: 100, unit: "ms" });
-    expect(portable.duration.stagger.$value).toEqual({ value: 60, unit: "ms" });
-    expect(portable.easing.in).toBeUndefined();
-    expect(portable.easing.standard.$value).toEqual([0.16, 1, 0.3, 1]);
 
     expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
-    const fieldGlowKeyframes =
-      indexCss.match(/@keyframes cr-field-glow\s*\{([\s\S]*?)\n\}\n\.cr-field-glow/)?.[1] ?? "";
-    expect(fieldGlowKeyframes).not.toContain("box-shadow");
-    expect(fieldGlowKeyframes).toContain("opacity");
-    expect(fieldGlowKeyframes).toContain("transform");
-    expect(indexCss).toContain(".cr-field-glow::after");
-    expect(familyCss).toContain("@media (prefers-reduced-motion: no-preference)");
-    expect(familyCss).toContain(".cr-family-landing .cr-landing-hero__declaration");
-    expect(familyCss).toContain(".cr-overlay {");
+    expect(indexCss).not.toContain("cr-field-glow");
+    expect(await source("src/utils/highlightField.ts")).toContain(
+      "field.focus({ preventScroll: true })",
+    );
+    expect(familyCss).not.toContain("cr-sheet-enter");
+    expect(familyCss).not.toContain(".cr-family-landing .cr-landing-hero__declaration");
+    expect(familyCss).not.toContain(".cr-overlay");
+    expect(familyCss).not.toContain(".cr-sheet");
     expect(familyCss).toContain('.cr-popover[data-state="closing"]');
     expect(familyCss).toContain("@starting-style");
     expect(familyCss).not.toContain('.cr-dialog [role="tabpanel"]:not([hidden])');
@@ -539,10 +484,13 @@ describe("CloakResume family contract", () => {
     expect(layout).not.toContain("cr-workspace-enter");
     expect(panel).not.toContain("cr-section-enter");
     expect(rail).toContain("cr-section-nav-button");
-    expect(viewSegment).toContain("cr-segment-button");
-    expect(paperToggle).toContain("cr-segment-button");
-    expect(templateModal).toContain("cr-template-card");
-    expect(reloadPrompt).toContain("cr-toast");
+    expect(viewSegment).toContain("air-segments");
+    expect(paperToggle).toContain("air-segments");
+    expect(templateModal).toContain("resume-template-card");
+    expect(templateModal).toContain("<TemplatePreview");
+    expect(templateModal).toContain("aria-pressed={active}");
+    expect(`${templateModal}\n${familyCss}`).not.toContain("cr-template-card");
+    expect(reloadPrompt).not.toContain("cr-toast");
     expect(dragList).toContain("data-dragging");
 
     const sourceFiles = [
@@ -565,40 +513,49 @@ describe("CloakResume family contract", () => {
     expect(preview).toContain('data-template-ready={readyTemplate === TemplateComponent ? "true"');
     expect(`${indexCss}\n${preview}`).not.toContain("surface-glass");
 
-    const subCardRule = indexCss.match(/\.sub-card\s*\{([\s\S]*?)\}/)?.[1] ?? "";
+    const entryCss = await source("src/styles/air-editor.css");
     expect(indexCss).not.toMatch(/\.acc(?:[-.]|\s*\{)/);
-    expect(subCardRule).toContain("border border-(--line)");
-    expect(subCardRule).toContain("bg-(--surface)");
-    expect(subCardRule).toContain("p-3");
-    expect(subCardRule).not.toContain("rounded-md");
-    expect(subCardRule).not.toContain("bg-(--surface-2)");
+    expect(indexCss).not.toContain(".sub-card");
+    expect(entryCss).toContain(".resume-entry-list");
+    expect(emptyState).toContain("EntryHeading");
+    expect(emptyState).not.toContain("deleteArmed");
 
     expect(panel).toContain("<h2");
     expect(fields).not.toContain("SectionCard");
-    expect(emptyState).toContain('<h3 className="m-0 mb-1.5');
+    expect(emptyState).toContain("<h3>{heading}</h3>");
     expect(projects).not.toContain("--c-muted");
 
-    expect(app).toContain("fallback={<AtsReviewLoading open={atsOpen} />}");
+    expect(app).toContain("<AtsReviewDialog");
+    expect(app).toContain("Loading the local review workspace…");
     expect(app).toContain('role="status"');
-    expect(orientation).toContain("useModalDialog<HTMLDivElement>");
-    expect(orientation).toContain("tabIndex={-1}");
-    expect(orientation).toContain('<span\n        aria-hidden="true"');
-    expect(logoPicker).toContain("window.visualViewport");
-    expect(fieldIssues).toContain("window.visualViewport");
+    expect(app).not.toContain("OrientationLock");
+    expect(indexCss).not.toContain("cr-rotate-hint");
+    expect(logoPicker).toContain("usePickerPosition(open, buttonRef, popoverRef, query)");
+    expect(fieldIssues).toContain("usePickerPosition(open, buttonRef, popoverRef, issues)");
+    expect(await source("src/utils/usePickerPosition.ts")).toContain("window.visualViewport");
     expect(logoPicker).not.toContain("focus:outline-none");
   });
 
   it("documents every live TSX surface and makes output boundaries explicit", async () => {
-    const [tsxFiles, audit, readme] = await Promise.all([
+    const [tsxFiles, audit, readme, airSource] = await Promise.all([
       filesBelow("src", ".tsx"),
       source("docs/design-audit.md"),
       source("README.md"),
+      source("docs/air/surfaces.json"),
     ]);
     const inventory = designInventory(audit);
 
     expect([...inventory.keys()].sort()).toEqual(tsxFiles);
     expect(audit).toContain(`All ${tsxFiles.length} TSX files in \`src/\` were examined`);
-    expect(readme).toContain(`complete ${tsxFiles.length}-file TSX audit`);
+    const air = JSON.parse(airSource) as { surfaces: { path: string }[] };
+    expect(
+      air.surfaces
+        .map((surface) => surface.path)
+        .filter((path) => path.endsWith(".tsx"))
+        .sort(),
+    ).toEqual(tsxFiles);
+    expect(readme).toContain("[docs/air/surfaces.json](docs/air/surfaces.json)");
+    expect(readme).toContain("[DESIGN.md](DESIGN.md)");
 
     for (const file of tsxFiles.filter((path) => path.startsWith("src/templates/"))) {
       expect(inventory.get(file), `${file} must retain the document-output exemption`).toBe(

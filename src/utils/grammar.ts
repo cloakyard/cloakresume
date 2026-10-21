@@ -6,7 +6,7 @@
  * stay buttery. The WASM payload is ~18 MB raw / ~7 MB gzipped, so the
  * download is surfaced as visible progress on the first analysis tap.
  *
- * Once loaded, the linter is held in module-level state for the lifetime
+ * Once loaded, the linter is held by the application hook for the lifetime
  * of the tab — subsequent scans don't re-download or re-instantiate.
  *
  * Nothing leaves the browser; everything (binary, dictionary, rules) is
@@ -180,7 +180,7 @@ const PERSONAL_DICTIONARY = [
  * byte-level progress, then hand it to a WorkerLinter as a blob URL.
  * Release the blob after setup; repeat scans reuse the initialized worker.
  */
-async function loadLinter(onProgress: (pct: number) => void): Promise<HarperLinter> {
+async function loadLinter(onProgress: (pct: number | null) => void): Promise<HarperLinter> {
   // Importing `harper.js/binary` makes Vite fingerprint + emit the .wasm
   // and sets `binary.url` to the resolved asset URL. We piggyback on that
   // URL to do our own progress-tracked fetch.
@@ -194,20 +194,22 @@ async function loadLinter(onProgress: (pct: number) => void): Promise<HarperLint
   if (!resp.ok || !resp.body) {
     throw new Error(`Failed to fetch Harper WASM: ${resp.status}`);
   }
-  const total = Number(resp.headers.get("content-length") ?? 0);
+  // Fetch exposes decoded bytes; an encoded Content-Length is not that total.
+  const encoding = resp.headers.get("content-encoding");
+  const length = Number(resp.headers.get("content-length"));
+  const total =
+    (!encoding || encoding === "identity") && Number.isFinite(length) && length > 0 ? length : null;
   const reader = resp.body.getReader();
   const chunks: Uint8Array[] = [];
   let received = 0;
-  // Report initial activity so the UI leaves zero-state immediately even
-  // when the server doesn't send Content-Length.
-  onProgress(total ? 0 : 0.05);
+  onProgress(total === null ? null : 0);
   for (;;) {
     const { done, value } = await reader.read();
     if (done) break;
     if (!value) continue;
     chunks.push(value);
     received += value.length;
-    if (total) onProgress(Math.min(0.99, received / total));
+    if (total) onProgress(Math.min(1, received / total));
   }
   onProgress(1);
 
@@ -245,8 +247,10 @@ export interface UseGrammarScan {
   scanning: boolean;
   /** True once the Harper WASM is loaded and the linter is ready. */
   engineReady: boolean;
-  /** 0…1 download fraction of the Harper WASM. 0 before a scan is requested. */
-  engineProgress: number;
+  /** Measured 0…1 download fraction, or null when the total is unknown. */
+  engineProgress: number | null;
+  /** Completion of the current document's report, never the time the dialog opened. */
+  completedAt: number | null;
   /** Trigger a fresh scan. First call also downloads + instantiates Harper. */
   scan: () => void;
 }
@@ -257,9 +261,11 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
     report: GrammarReport | null;
     scanning: boolean;
     error: string | null;
+    completedAt: number | null;
   } | null>(null);
   const [engineReady, setEngineReady] = useState(false);
-  const [engineProgress, setEngineProgress] = useState(0);
+  const [engineProgress, setEngineProgress] = useState<number | null>(null);
+  const inFlight = useRef<{ resume: ResumeData; requestId: number } | null>(null);
   const linterRef = useRef<HarperLinter | null>(null);
   const linterPromiseRef = useRef<Promise<HarperLinter> | null>(null);
   const latestRequestRef = useRef(0);
@@ -272,14 +278,26 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
   }, [resume]);
 
   const scan = useCallback(() => {
-    const requestId = ++latestRequestRef.current;
     const scannedResume = resumeRef.current;
-    setResult({ resume: scannedResume, report: null, scanning: true, error: null });
+    if (
+      inFlight.current?.resume === scannedResume &&
+      inFlight.current.requestId === latestRequestRef.current
+    )
+      return;
+    const requestId = ++latestRequestRef.current;
+    inFlight.current = { resume: scannedResume, requestId };
+    setResult({
+      resume: scannedResume,
+      report: null,
+      scanning: true,
+      error: null,
+      completedAt: null,
+    });
 
     const ensureLinter = async (): Promise<HarperLinter> => {
       if (linterRef.current) return linterRef.current;
       if (!linterPromiseRef.current) {
-        setEngineProgress(0);
+        setEngineProgress(null);
         linterPromiseRef.current = loadLinter((pct) => {
           setEngineProgress(pct);
         })
@@ -330,6 +348,7 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
         setResult({
           resume: scannedResume,
           report: { issues, wordsChecked },
+          completedAt: Date.now(),
           scanning: false,
           error: null,
         });
@@ -338,10 +357,13 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
         setResult({
           resume: scannedResume,
           report: null,
+          completedAt: null,
           scanning: false,
           error:
             "Writing review could not finish. Check your connection if the engine has not downloaded, then choose Re-scan. Your résumé stays on this device.",
         });
+      } finally {
+        if (inFlight.current?.requestId === requestId) inFlight.current = null;
       }
     })();
   }, []);
@@ -354,6 +376,7 @@ export function useGrammarScan(resume: ResumeData): UseGrammarScan {
     scanning: current?.scanning ?? false,
     engineReady,
     engineProgress,
+    completedAt: current?.completedAt ?? null,
     error: current?.error ?? null,
     scan,
   };

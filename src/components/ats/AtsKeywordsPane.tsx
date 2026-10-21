@@ -1,17 +1,15 @@
 /**
  * Keywords tab — side-by-side matched / missing keywords against the target
- * job description. Owns its own resume-flattening utility since keyword
- * counting is the only place that needs it.
+ * job description. Counts occurrences in the same flattened text used by the ATS report.
  */
 
-import { Check, X } from "lucide-react";
+import { ArrowRight, Check, X } from "lucide-react";
 import type { AtsReport, ResumeData } from "../../types.ts";
 import { Card, CardHead } from "./AtsCard.tsx";
 import { flattenResumeText } from "../../utils/ats.ts";
 import { toneColor } from "./atsShared.ts";
 
-function countKeywordHits(resume: ResumeData, keyword: string): number {
-  const haystack = flattenResumeText(resume);
+function countKeywordHits(haystack: string, keyword: string): number {
   const needle = keyword.toLowerCase();
   if (!needle) return 0;
   let count = 0;
@@ -38,31 +36,25 @@ export function AtsKeywordsPane({
 }: AtsKeywordsPaneProps) {
   if (!hasJobDescription) {
     return (
-      <section className="max-w-[540px] border-t border-(--brand-200) bg-(--brand-50) p-4 sm:p-5">
-        <h3 className="m-0 mb-1.5 text-[15px] font-semibold text-(--ink-1)">
-          Add a target job description
-        </h3>
-        <p className="m-0 mb-3 text-sm leading-[1.5] text-(--ink-3)">
+      <section className="resume-review-guidance">
+        <h3 className="resume-review-fix-title">Add a target job description</h3>
+        <p className="resume-review-description">
           Paste the JD for the role you're targeting and CloakResume will show which of its keywords
           appear in your résumé — and which are missing.
         </p>
-        <button
-          type="button"
-          className="tb primary"
-          onClick={onOpenJdEditor}
-          style={{ fontWeight: 600 }}
-        >
-          Open JD editor →
+        <button type="button" className="air-button air-button--primary" onClick={onOpenJdEditor}>
+          Open JD editor <ArrowRight size={18} strokeWidth={1.6} aria-hidden="true" />
         </button>
       </section>
     );
   }
 
+  const haystack = flattenResumeText(resume);
   const total = report.keywords.matched.length + report.keywords.missing.length;
   const matchPct = total === 0 ? 0 : (report.keywords.matched.length / total) * 100;
 
   return (
-    <Card boxed>
+    <Card>
       <CardHead
         title="Keyword coverage"
         sub={`${report.keywords.matched.length} of ${total} matched from target JD`}
@@ -73,46 +65,37 @@ export function AtsKeywordsPane({
         aria-valuemin={0}
         aria-valuemax={100}
         aria-valuenow={Math.round(matchPct)}
-        className="mb-3 h-1.5 overflow-hidden bg-(--line-soft) sm:mb-4"
+        className="air-file-progress"
       >
-        <div
-          className="h-full origin-left transition-transform duration-220"
-          style={{ transform: `scaleX(${matchPct / 100})`, background: toneColor(matchPct) }}
-        />
+        <span style={{ transform: `scaleX(${matchPct / 100})`, background: toneColor(matchPct) }} />
       </div>
-      <div className="grid grid-cols-2 border-t border-(--line) sm:grid-cols-3 min-[900px]:grid-cols-4">
-        {report.keywords.matched.map((k) => {
-          const count = countKeywordHits(resume, k);
-          return (
-            <div
-              key={`m-${k}`}
-              className="flex min-w-0 items-center gap-1.5 border-b border-r border-(--line) px-2 py-2.5"
-            >
-              <Check aria-hidden="true" className="h-4 w-4 shrink-0 text-(--ok)" />
-              <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-(--ink-1)">
-                {k}
-              </span>
-              <span className="font-mono text-[10px] text-(--ink-5) font-medium shrink-0">
-                ×{count}
-              </span>
-            </div>
-          );
-        })}
-        {report.keywords.missing.map((k) => (
-          <div
-            key={`x-${k}`}
-            className="flex min-w-0 items-center gap-1.5 border-b border-r border-(--line) px-2 py-2.5"
-          >
-            <X aria-hidden="true" className="h-4 w-4 shrink-0 text-(--danger)" />
-            <span className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-sm font-medium text-(--ink-4) line-through decoration-(--danger-border)">
-              {k}
-            </span>
-            <span className="font-mono text-[10px] text-(--ink-5) font-medium shrink-0">
-              absent
-            </span>
-          </div>
+      {total === 0 && (
+        <p className="resume-review-description">
+          No reviewable keywords were found in this job description.
+        </p>
+      )}
+      <ul className="resume-review-keywords">
+        {report.keywords.matched.map((k) => (
+          <li key={`m-${k}`}>
+            <Check
+              aria-hidden="true"
+              size={18}
+              strokeWidth={1.6}
+              className="resume-review-success"
+            />
+            <span className="sr-only">Matched: </span>
+            <span className="resume-review-keyword">{k}</span>
+            <span className="resume-review-meta">×{countKeywordHits(haystack, k)}</span>
+          </li>
         ))}
-      </div>
+        {report.keywords.missing.map((k) => (
+          <li key={`x-${k}`}>
+            <X aria-hidden="true" size={18} strokeWidth={1.6} className="resume-review-missing" />
+            <span className="resume-review-keyword">{k}</span>
+            <span className="resume-review-meta">Absent</span>
+          </li>
+        ))}
+      </ul>
     </Card>
   );
 }

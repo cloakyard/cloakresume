@@ -1,13 +1,13 @@
 /**
  * Pure helpers shared across the ATS review panes.
- *   • `toneColor` — maps a 0–100 percent to the brand traffic-light palette.
+ *   • `toneColor` — maps a 0–100 percent to the shared semantic palette.
  *   • `pct` — safe percent calculation that treats 0-max as 0.
  */
 
 export function toneColor(percent: number): string {
-  if (percent >= 85) return "var(--ok)";
-  if (percent >= 55) return "var(--warn)";
-  return "var(--danger)";
+  if (percent >= 85) return "var(--air-success)";
+  if (percent >= 55) return "var(--air-warning)";
+  return "var(--air-danger)";
 }
 
 export function pct(earned: number, max: number): number {

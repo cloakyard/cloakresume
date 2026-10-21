@@ -1,0 +1,12 @@
+{
+  "missingBrowser": {
+    "exit": 1,
+    "ownedPreviewClosed": true
+  },
+  "devServer": {
+    "exit": 1,
+    "rejectedBeforeCapture": true,
+    "message": "Use a production preview",
+    "noImagesWritten": true
+  }
+}

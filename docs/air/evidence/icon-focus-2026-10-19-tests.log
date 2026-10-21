@@ -1,0 +1,13 @@
+Air disabled icon focus bundle sync — 2026-10-19
+No product runtime changes. Initial dev run: 287/288; unchanged Academic CV/a4 timeout passes alone. Final production gate below exits 0.
+
+$ CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism
+
+ RUN  v5.0.3 /Users/sumitsahoo/Developer/cloakresume
+
+
+ Test Files  8 passed (8)
+      Tests  288 passed (288)
+   Start at  11:00:34
+   Duration  361.10s (tests 100%)
+

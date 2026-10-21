@@ -1,16 +1,16 @@
 /** Experience: roles with bullets. */
 
-import { Briefcase, Plus } from "lucide-react";
+import { Briefcase } from "lucide-react";
 import { useRef } from "react";
 import { TextField } from "../fields.tsx";
-import { RichTextArea } from "../RichTextArea.tsx";
-import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
+import { FormatScope } from "../FormatScope.tsx";
+import { BulletList } from "./BulletList.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
 import { MonthYearField } from "../MonthYearField.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -57,6 +57,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
           <FormatScope key={job.id}>
             <DragItem
               index={i}
+              label={`role ${i + 1}`}
               onDelete={() =>
                 patch(
                   "experience",
@@ -64,22 +65,17 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn, moveBtns) => (
-                <div className="sub-card mb-2.5">
-                  <SubCardHead
+              {(handle, deleteBtn, moveBtns) => (
+                <div className="resume-entry">
+                  <EntryHeading
                     index={i}
                     prefix="Role"
                     drag={handle}
                     moveBtns={moveBtns}
-                    onDelete={() =>
-                      patch(
-                        "experience",
-                        resume.experience.filter((_, j) => j !== i),
-                      )
-                    }
+                    deleteButton={deleteBtn}
                   />
                   <div className="cr-stack">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="resume-field-pair">
                       <TextField
                         label="Job title"
                         value={job.title}
@@ -108,7 +104,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         patch("experience", next);
                       }}
                     />
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <div className="resume-field-pair">
                       <MonthYearField
                         label="Start"
                         value={job.start}
@@ -129,7 +125,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                         }}
                       />
                     </div>
-                    <label className="flex items-center gap-2 min-h-11 md:min-h-10 w-fit text-sm text-(--ink-2) cursor-pointer">
+                    <label className="air-check-label">
                       <input
                         type="checkbox"
                         name={`experience-${job.id}-current`}
@@ -144,81 +140,21 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
                           };
                           patch("experience", next);
                         }}
-                        className="size-4 accent-(--brand)"
+                        className="air-check"
                       />
                       Current job
                     </label>
-                    <div className="cr-field">
-                      <div className="cr-field-row">
-                        <span className="cr-field-label">Bullets</span>
-                        <div className="flex items-center gap-1">
-                          <FormatToolbar compact />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const next = [...resume.experience];
-                              next[i] = { ...job, bullets: [...job.bullets, ""] };
-                              patch("experience", next);
-                            }}
-                            className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
-                          >
-                            <Plus className="w-3 h-3" /> Bullet
-                          </button>
-                        </div>
-                      </div>
-                      <DragList
-                        items={job.bullets}
-                        onReorder={(nextBullets) => {
-                          const nextRoles = [...resume.experience];
-                          nextRoles[i] = { ...job, bullets: nextBullets };
-                          patch("experience", nextRoles);
-                        }}
-                      >
-                        {job.bullets.map((b, bi) => (
-                          <DragItem
-                            // oxlint-disable-next-line jsx/no-array-index-key
-                            key={`${job.id}-bullet-${bi}`}
-                            index={bi}
-                            compact
-                            stackMoves
-                            onDelete={() => {
-                              const next = [...resume.experience];
-                              next[i] = {
-                                ...job,
-                                bullets: job.bullets.filter((_, bj) => bj !== bi),
-                              };
-                              patch("experience", next);
-                            }}
-                          >
-                            {(bHandle, bDelete, bMove) => (
-                              <div className={`flex gap-1.5 items-start ${bi > 0 ? "mt-2.5" : ""}`}>
-                                <div className="mt-2">{bHandle}</div>
-                                <div className="flex-1 min-w-0">
-                                  <RichTextArea
-                                    ariaLabel={`Experience bullet ${bi + 1}`}
-                                    fieldId={`experience.${i}.bullets.${bi}`}
-                                    value={b}
-                                    rows={3}
-                                    compact
-                                    onChange={(v) => {
-                                      const next = [...resume.experience];
-                                      const bullets = [...job.bullets];
-                                      bullets[bi] = v;
-                                      next[i] = { ...job, bullets };
-                                      patch("experience", next);
-                                    }}
-                                  />
-                                </div>
-                                <div className="mt-2 flex flex-col items-center gap-0">
-                                  {bMove}
-                                  {bDelete}
-                                </div>
-                              </div>
-                            )}
-                          </DragItem>
-                        ))}
-                      </DragList>
-                    </div>
+                    <BulletList
+                      values={job.bullets}
+                      itemLabel={`role ${i + 1}`}
+                      ariaLabel="Experience bullet"
+                      fieldPrefix={`experience.${i}.bullets`}
+                      onChange={(bullets) => {
+                        const next = [...resume.experience];
+                        next[i] = { ...job, bullets };
+                        patch("experience", next);
+                      }}
+                    />
                   </div>
                 </div>
               )}
@@ -226,9 +162,7 @@ export function ExperienceSection({ resume, onChange }: SectionProps) {
           </FormatScope>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addRole}>Add role</AddButton>
-      </div>
+      <AddButton onClick={addRole}>Add role</AddButton>
     </>
   );
 }

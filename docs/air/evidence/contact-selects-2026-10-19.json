@@ -1,0 +1,547 @@
+{
+  "date": "2026-10-19",
+  "scope": "Contact kind/value/validation and shared native selects, including Languages and imported custom proficiency. Remaining date/logo/wheel/hint/review/export/PWA/assets are separate gates.",
+  "contractVersion": "1.0.2",
+  "contractHash": "bb90f52e0b0a",
+  "noNewDependencies": true,
+  "implementation": [
+    "Readable labelled contact kind/value fields, single Air contour, contextual shared entry actions and content-aware paired columns.",
+    "Preserve all nine saved contact kinds, exact values, input types/autofill/spellcheck, permissive validation and associated help; changing kind keeps value.",
+    "Native select.air-field owns arrow, options, selected check, popup scrolling and browser/OS fallback. Remove duplicate arrow/wrapper and compact uppercase contact skins.",
+    "Preserve placeholder and imported custom proficiency option. Narrow/enlarged paired fields stack without changing data or document output."
+  ],
+  "gates": {
+    "fullProductionSuite": {
+      "tests": 298,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 118,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 374.85
+    },
+    "check": "zero warnings/lint/type errors, 129 files",
+    "build": "pass, 73 precache entries, 2440.73 KiB",
+    "design": "78 source records pass",
+    "portability": "18 pass",
+    "exactFamilySync": "six specifications pass"
+  },
+  "matrix": {
+    "cases": 128,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "sections": ["Contact (all nine kinds)", "Languages (custom and empty proficiency)"],
+    "checks": [
+      "labels, field containment and type",
+      "40px fine/44px coarse controls and native popup options",
+      "customizable picker horizontal containment and wrapped options",
+      "Escape keeps value and returns focus",
+      "single 2px/zero-offset field contour",
+      "saved fixture unchanged, no page errors"
+    ],
+    "rawLocalResults": [
+      "/tmp/cloakresume-air-selects/layouts.json",
+      "/tmp/cloakresume-air-selects/details.json"
+    ]
+  },
+  "keyboardJourneys": [
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "light",
+      "text": 16,
+      "end": {
+        "bottom": 653.1875,
+        "viewport": 900
+      },
+      "home": {
+        "top": 293.1875,
+        "viewport": 900
+      }
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "light",
+      "text": 32,
+      "end": {
+        "bottom": 882.78125,
+        "viewport": 900
+      },
+      "home": {
+        "top": 434.78125,
+        "viewport": 900
+      }
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "dark",
+      "text": 16,
+      "end": {
+        "bottom": 653.1875,
+        "viewport": 900
+      },
+      "home": {
+        "top": 293.1875,
+        "viewport": 900
+      }
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "dark",
+      "text": 32,
+      "end": {
+        "bottom": 882.78125,
+        "viewport": 900
+      },
+      "home": {
+        "top": 434.78125,
+        "viewport": 900
+      }
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "light",
+      "text": 16,
+      "end": {
+        "bottom": 701.6875,
+        "viewport": 1024
+      },
+      "home": {
+        "top": 305.6875,
+        "viewport": 1024
+      }
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "light",
+      "text": 32,
+      "end": {
+        "bottom": 765.890625,
+        "viewport": 1024
+      },
+      "home": {
+        "top": 189.890625,
+        "viewport": 1024
+      }
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "dark",
+      "text": 16,
+      "end": {
+        "bottom": 701.6875,
+        "viewport": 1024
+      },
+      "home": {
+        "top": 305.6875,
+        "viewport": 1024
+      }
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "dark",
+      "text": 32,
+      "end": {
+        "bottom": 765.890625,
+        "viewport": 1024
+      },
+      "home": {
+        "top": 189.890625,
+        "viewport": 1024
+      }
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "light",
+      "text": 16,
+      "end": {
+        "bottom": 603.6875,
+        "viewport": 844
+      },
+      "home": {
+        "top": 207.6875,
+        "viewport": 844
+      }
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "light",
+      "text": 32,
+      "end": {
+        "bottom": 709.890625,
+        "viewport": 844
+      },
+      "home": {
+        "top": 133.890625,
+        "viewport": 844
+      }
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "dark",
+      "text": 16,
+      "end": {
+        "bottom": 603.6875,
+        "viewport": 844
+      },
+      "home": {
+        "top": 207.6875,
+        "viewport": 844
+      }
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "dark",
+      "text": 32,
+      "end": {
+        "bottom": 709.890625,
+        "viewport": 844
+      },
+      "home": {
+        "top": 133.890625,
+        "viewport": 844
+      }
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "light",
+      "text": 16,
+      "end": {
+        "bottom": 465.6875,
+        "viewport": 568
+      },
+      "home": {
+        "top": 69.6875,
+        "viewport": 568
+      }
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "light",
+      "text": 32,
+      "end": {
+        "bottom": 485,
+        "viewport": 568
+      },
+      "home": {
+        "top": 17,
+        "viewport": 568
+      }
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "dark",
+      "text": 16,
+      "end": {
+        "bottom": 465.6875,
+        "viewport": 568
+      },
+      "home": {
+        "top": 69.6875,
+        "viewport": 568
+      }
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "dark",
+      "text": 32,
+      "end": {
+        "bottom": 485,
+        "viewport": 568
+      },
+      "home": {
+        "top": 17,
+        "viewport": 568
+      }
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "light",
+      "text": 16,
+      "end": {
+        "bottom": 224,
+        "viewport": 390
+      },
+      "home": {
+        "top": 17,
+        "viewport": 390
+      }
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "light",
+      "text": 32,
+      "end": {
+        "bottom": 307,
+        "viewport": 390
+      },
+      "home": {
+        "top": 17,
+        "viewport": 390
+      }
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "dark",
+      "text": 16,
+      "end": {
+        "bottom": 224,
+        "viewport": 390
+      },
+      "home": {
+        "top": 17,
+        "viewport": 390
+      }
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "dark",
+      "text": 32,
+      "end": {
+        "bottom": 307,
+        "viewport": 390
+      },
+      "home": {
+        "top": 17,
+        "viewport": 390
+      }
+    }
+  ],
+  "contrast": [
+    {
+      "theme": "light",
+      "pairs": [
+        {
+          "name": "Kind",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Contact kind",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Email",
+          "ratio": 14.047090298524115
+        },
+        {
+          "name": "Phone",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Location",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Website",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "LinkedIn",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "GitHub",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Medium",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Twitter",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Other",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Value",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "email contact value",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Enter a valid email address.",
+          "ratio": 6.49655856625107
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "pairs": [
+        {
+          "name": "Kind",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Contact kind",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Email",
+          "ratio": 13.334260640394385
+        },
+        {
+          "name": "Phone",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Location",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Website",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "LinkedIn",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "GitHub",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Medium",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Twitter",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Other",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Value",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "email contact value",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Enter a valid email address.",
+          "ratio": 8.608285121234701
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "theme": "light",
+      "invalid": {
+        "value": "malformed@",
+        "invalid": "true",
+        "help": "Enter a valid email address.",
+        "outline": "2px",
+        "offset": "0px",
+        "border": "rgba(0, 0, 0, 0)"
+      }
+    },
+    {
+      "theme": "dark",
+      "invalid": {
+        "value": "malformed@",
+        "invalid": "true",
+        "help": "Enter a valid email address.",
+        "outline": "2px",
+        "offset": "0px",
+        "border": "rgba(0, 0, 0, 0)"
+      }
+    }
+  ],
+  "nativeChecks": [
+    {
+      "browser": "Safari 27",
+      "origin": "http://127.0.0.1:8153/",
+      "result": "Native contact/proficiency pickers expose all values, including imported Basic \u00b7 Reading; Escape keeps selection and returns focus. Keyboard change to Phone retains original value and shows its validation; correction clears help without losing text."
+    },
+    {
+      "browser": "Firefox 158",
+      "origin": "http://127.0.0.1:8153/",
+      "result": "Actual 200% zoom; OS-native fallback menu retains custom proficiency on Escape, keyboard selection updates it, contact kind change keeps value and updates validation. Zoom restored and review tabs closed."
+    }
+  ],
+  "failureReview": [
+    "Initial focused run exposed four immediate focus-style samples before committed native focus and one new fixture opened Contact while the shared helper awaited a textarea. Test now opens Profile before Contact, awaits two painted focus frames and asserts actual focus; all contour/clipping/validation assertions remain.",
+    "Input scrollWidth exceeds its box for long editable single-line URLs by design; geometry checks contain the input box, while select/option wrapping remains checked.",
+    "Pixel review found the generic writing-field display:block helper moved the native select arrow onto a second line. Selects now use canonical air-field directly. The earlier running matrix was stopped and the complete final matrix rerun.",
+    "The former invalid-field test expected a danger border while focused. It now checks associated error text, then blurs to assert the danger border; the focused Air contour and actual correction/value checks remain. No timeout increases, removed features or skips."
+  ],
+  "preservation": "No template/PDF/font/schema/data/dependency source changes. All previous feature tests plus a nine-kind semantic/validation journey pass. Custom proficiency reload and output remain covered.",
+  "bundleComparison": {
+    "baseline": "bcbf8ff",
+    "entryJsRawKB": [486.67, 481.96],
+    "entryJsGzipKB": [154.25, 152.57],
+    "cssRawKB": [133.92, 132.45],
+    "cssGzipKB": [25.59, 25.34]
+  },
+  "screenshots": [
+    "docs/air/evidence/select-contact-1440-light-16.png",
+    "docs/air/evidence/select-languages-1280-dark-16.png",
+    "docs/air/evidence/select-languages-768-light-16.png",
+    "docs/air/evidence/select-languages-390-dark-16.png",
+    "docs/air/evidence/select-contact-320-light-32.png",
+    "docs/air/evidence/contact-invalid-390-dark.png"
+  ],
+  "localEvidence": "/tmp/cloakresume-air-selects",
+  "commands": [
+    "vp check --fix",
+    "vp run build",
+    "CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism",
+    "node scripts/test-air-contact-selects.mjs",
+    "node scripts/check-air-design.mjs",
+    "node scripts/check-air-portability.mjs",
+    "node scripts/sync-air-design.mjs --bundle --check (canonical repo)"
+  ],
+  "openGates": [
+    "Date/current-job, logo/wheel, remaining section-specific controls.",
+    "Hint/review/library/export/PWA/static404 and actual social/PWA/README images.",
+    "Physical touch/software keyboard/IME, spoken assistive technology and shader hardware acceptance.",
+    "CloakIMG last and parked."
+  ]
+}

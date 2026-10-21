@@ -22,6 +22,7 @@ out/
 .svelte-kit/
 .vercel/
 .netlify/
+.wrangler/
 .output/
 .turbo/
 .parcel-cache/

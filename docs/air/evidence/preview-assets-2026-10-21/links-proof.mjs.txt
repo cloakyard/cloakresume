@@ -1,0 +1,35 @@
+import {createRequire} from 'node:module';
+import {readFile,mkdir,writeFile} from 'node:fs/promises';
+import {createHash} from 'node:crypto';
+const require=createRequire('<CLOAKRESUME_ROOT>/package.json');
+const puppeteer=require('puppeteer-core');
+const {blankResume}=await import('<CLOAKRESUME_ROOT>/src/data/blankResume.ts');
+const src=await readFile('<CLOAKRESUME_ROOT>/src/templates/index.ts','utf8');
+const ids=['classic-sidebar'];
+const phase=process.argv[2];const out=`<SCRATCH_ROOT>/links-${phase}`;await mkdir(out,{recursive:true});
+const browser=await puppeteer.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+const records=[];
+try {
+for(const id of ids) for(const paperSize of ['a4','letter']) {
+ const ctx=await browser.createBrowserContext(),p=await ctx.newPage();
+ await p.setViewport({width:1440,height:1080});await p.setBypassServiceWorker(true);
+ await p.emulateMediaFeatures([{name:'prefers-reduced-motion',value:'reduce'},{name:'prefers-color-scheme',value:'light'}]);
+ await p.evaluateOnNewDocument((payload)=>{Object.defineProperty(navigator,'serviceWorker',{value:undefined});localStorage.setItem('cloakresume:v1',JSON.stringify(payload));},{resume:{...blankResume,profile:{...blankResume.profile,name:'Air Colour Review',title:'Design Engineer',summary:'A stable document with exact primary colour, typography and geometry.'},contact:[{id:'email',kind:'email',value:'air@example.com'},{id:'site',kind:'website',value:'https://example.com/air'},{id:'phone',kind:'phone',value:'+1 555 123 4567'}]},templateId:id,primary:'#123456',paperSize,activeSection:'profile'});
+ await p.goto(process.env.SITE_URL || 'http://127.0.0.1:8200/',{waitUntil:'networkidle0'});
+ await p.evaluate(()=>[...document.querySelectorAll('button')].find(e=>e.textContent.trim().startsWith('Resume editing')).click());
+ await p.waitForSelector('.resume-root[data-template-ready="true"]');await p.evaluate(()=>document.fonts.ready);
+ await p.evaluate(()=>new Promise(r=>requestAnimationFrame(()=>requestAnimationFrame(r))));
+ const el=await p.$('.resume-root');const pixels=await el.screenshot({path:`${out}/${id}-${paperSize}.png`});
+ const geometry=await p.$$eval('.resume-page',els=>els.map(e=>({width:e.offsetWidth,height:e.offsetHeight,text:e.textContent})));
+ records.push({id,paperSize,sha256:createHash('sha256').update(pixels).digest('hex'),geometry});
+ if(id==='classic-sidebar'){
+ const session=await p.createCDPSession();await session.send('Browser.setDownloadBehavior',{behavior:'allowAndName',browserContextId:ctx.id,downloadPath:out,eventsEnabled:true});
+ const done=new Promise(resolve=>session.on('Browser.downloadProgress',e=>{if(e.state==='completed')resolve(e.guid)}));
+ await p.click('button[aria-label="Export to PDF"]');const guid=await done;const bytes=await readFile(`${out}/${guid}`);await writeFile(`${out}/export-${paperSize}.pdf`,bytes);
+ }
+ await ctx.close();
+}
+ await writeFile(`${out}/output.json`,JSON.stringify(records,null,2));console.log(`${phase}: ${records.length} template/paper captures and two PDF exports`);
+}finally{await browser.close()}
+
+process.exit(0);

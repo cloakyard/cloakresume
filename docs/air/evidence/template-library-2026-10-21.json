@@ -1,0 +1,343 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume template library, live previews and responsive/focus handoffs. Full product and physical acceptance remain open.",
+  "status": "Passed; local checkpoint",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5af9d852a9ec15a38649c9bdaa052e3392db3ff9fd52cd91193af",
+  "changes": [
+    "Air wide dialog/sheet, stable-height labelled compound search and neutral choices",
+    "Readable metadata precedes actual paper previews; all 17 templates/categories/badges/search paths retained",
+    "Shared content predicate preserves identity/stats/extras/custom/interests/tools-only drafts",
+    "Background inertness, clear focus, composition-aware filtering, keyboard wrap, swipe/cancel and nested notices",
+    "Stable toolbar mount and fallback focus across responsive changes and lost compact handoffs",
+    "Retired legacy card lift/tint, uppercase/mono metadata, duplicate Escape listener and incorrect palette comment"
+  ],
+  "gates": {
+    "productionSuite": {
+      "tests": 338,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 158,
+      "templatePaperCases": 34,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 474.52
+    },
+    "check": "Zero formatting/lint/type errors; 138 code files",
+    "build": "73 precache entries; dependencies unchanged",
+    "design": "79 source records",
+    "portability": "18 isolation/drift checks",
+    "familySync": "Six exact specifications; shared contract unchanged"
+  },
+  "matrix": {
+    "cases": 386,
+    "regularLayouts": 384,
+    "forcedColourCases": 2,
+    "contrastPairs": 8,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "drafts": ["empty with sample previews", "populated own content"],
+    "states": ["complete gallery", "filtered selected/unselected choice", "long no-results query"],
+    "input": "Fine/coarse including 1024px touch; reduced motion; keyboard focus and dismissal",
+    "results": "template-library-2026-10-21/layout-results.json"
+  },
+  "nativeReview": [
+    "Safari: actual sample previews, search, clear, selection, close/Escape and pointer-opener focus return",
+    "Firefox: actual 200% browser zoom; level search, readable metadata, keyboard choice, query retained during zoom reflow and surviving opener focus",
+    "Review tabs closed and Firefox restored to 100%"
+  ],
+  "outputProof": {
+    "templatePaperRecords": 34,
+    "exactImagesAndGeometry": true,
+    "pdfRasters": {
+      "a4": "ea69b7c87ae509fa48c7a6928cfdc3fb3fdadf76a38b519651de78790037e70f",
+      "letter": "47e03cef173cfc585dd29912826bd16bd62880ebe11d33749889a5b6486820d6"
+    },
+    "records": [
+      {
+        "template": "classic-sidebar",
+        "paper": "a4",
+        "sha256": "398098d8a3a40f3339df5a5fa09e21db54e0b50c7da3c0af4bbf1ea64eccfa42",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "classic-sidebar",
+        "paper": "letter",
+        "sha256": "a9eda360124e7dc6206a31e175bb1052b36027500f36524727c3c66022b01e7d",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "classic-impact",
+        "paper": "a4",
+        "sha256": "8887e7148b78f7a54a8989f979ed368e950654dd3ddd7b91172c040b6a63bb9d",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "classic-impact",
+        "paper": "letter",
+        "sha256": "38177c63c1701f981e87fdd6645336fe16273ebf91bbaf44bdb706e05cc2a344",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ledger",
+        "paper": "a4",
+        "sha256": "46e46dcf83645ee82941a1e1590eb5caea893572f3dd8d5dc08a0cd2a77ee73c",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ledger",
+        "paper": "letter",
+        "sha256": "fdb21c7d42a46b22c55f2cc71a5b928452f84cc4ea1fd73bdf001b986b2f260c",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "executive-serif",
+        "paper": "a4",
+        "sha256": "8fae2440ad2f39079de4978b891ad5b3d0b7a0b3a18ac8e13170315ead244cb3",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "executive-serif",
+        "paper": "letter",
+        "sha256": "22e188b2853ee1f157629ade605b1d4c5acddb2fe55f5c325893658a11da1f3c",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "monograph",
+        "paper": "a4",
+        "sha256": "3f808d853ba5ef0c55534c41d26c46298162808a17b6cbe94ce2cfd643acc909",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "monograph",
+        "paper": "letter",
+        "sha256": "537afb9d4bd79344eab91b602d2038133c31e3b570962a8f706c7928681cd0a0",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ats-professional",
+        "paper": "a4",
+        "sha256": "6229a3a25613ad2047f3d822e3a00df9abd36f6d2c8e477fc5e4e181f052c798",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ats-professional",
+        "paper": "letter",
+        "sha256": "4832aec47de3c9fa8270834522492735e853c817b6241d837c4b6398d380d73d",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ats-plain",
+        "paper": "a4",
+        "sha256": "b443da3bc3c1eff280e5b060842411408f3a8e75ffa6f576124905472c63e828",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "ats-plain",
+        "paper": "letter",
+        "sha256": "204f397c9b0ea5dd5136f50e23b54e7a04570bc35bc7f20c5a70a58e47c88ac7",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "a4",
+        "sha256": "551c1a8b9a33dc4ef3f9979bbdc02ff6c9795b2db79aa1a7a83b033fb85ca6c0",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "letter",
+        "sha256": "853730ac5715d91e04b945b2a76aa9b0a8f6e842f4219a838cafb1258ba2f69c",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "aurora",
+        "paper": "a4",
+        "sha256": "78d3362b1874dd5abff3cf84a986770eeab7b879d647c93f3b32c513ae8137b0",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "aurora",
+        "paper": "letter",
+        "sha256": "030ff47c009c31a1f8c6e57da11fc8811bc6f48d9e12940af804b6c1c18d7249",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "prism",
+        "paper": "a4",
+        "sha256": "bae2c27c34140101011678e843d91c3918710fdd8417ef0862f0a82b41c7f7b4",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "prism",
+        "paper": "letter",
+        "sha256": "386e6317248f1d39eff4406cb9d4936ba4048c6a095d025308612d621fcf8de6",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "horizon",
+        "paper": "a4",
+        "sha256": "ae135112e3f9b2c773df731687dfc2c154d2e1bcab509ce462a8d0eab896bd76",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "horizon",
+        "paper": "letter",
+        "sha256": "904c774d7860fed49ba3c2900968be1a8f744db4cd7cb5a88da05c2328922371",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "minimalist",
+        "paper": "a4",
+        "sha256": "b81646a0d09ffb0cc95886a03dee7ede197b7fb55290445d28495af899d7018d",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "minimalist",
+        "paper": "letter",
+        "sha256": "61dfd67ffe1496bb622afbbe8acd0733f2bf1bcdc77af5602ba3c8426e37da16",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "a4",
+        "sha256": "c5b6a3e21faa0dd11c23ea1d94164fe4ab8718febb5269b06a95a8f32fe570bb",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "letter",
+        "sha256": "7d4799ec05f93ce95fec388bd3362c919735c16ebc4d601c5cf1d4461b65cf4a",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "typographic",
+        "paper": "a4",
+        "sha256": "b3075471dc1cb9513a3a884f280c6f199f577d4ac1234aec142bb698c5b7202a",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "typographic",
+        "paper": "letter",
+        "sha256": "b0a7dcd25ec2c0c543a2484ee947cb2768899f2e71ff13487a59f872b8d7800a",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "bauhaus",
+        "paper": "a4",
+        "sha256": "646106ee059f85d52f910e2a5bd20c4b0f740ad1cf29a9a5a74adbac93b07e02",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "bauhaus",
+        "paper": "letter",
+        "sha256": "854e7155dd628296bd316e8d48781215bf060e566c1cc719f06e02406eb1f6f8",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "gradient-header",
+        "paper": "a4",
+        "sha256": "ec6b00d72a5780f8985681323310c06ba2e2d8ce9a2325cdeee4d4bc9aee3f36",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "gradient-header",
+        "paper": "letter",
+        "sha256": "703bce004fcda752561724492cfb63a3db4c93615209779c13c85c1341f2fba8",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "academic",
+        "paper": "a4",
+        "sha256": "97c491f704eb7ff64b1d99e9cbf44790bd2c9fa40b22cf3e063ec9a73a03fd8b",
+        "exactGeometryAndText": true
+      },
+      {
+        "template": "academic",
+        "paper": "letter",
+        "sha256": "3f1294f3e72b04c241045a58f570e7600979f52322e9ee61c4d828feed36eb58",
+        "exactGeometryAndText": true
+      }
+    ]
+  },
+  "captures": [
+    "1280-720-dark-16-filtered.png",
+    "1280-720-dark-16-gallery.png",
+    "1280-720-dark-16-no-results.png",
+    "1280-720-light-16-filtered.png",
+    "1280-720-light-16-gallery.png",
+    "1280-720-light-16-no-results.png",
+    "1440-900-dark-16-filtered.png",
+    "1440-900-dark-16-gallery.png",
+    "1440-900-dark-16-no-results.png",
+    "1440-900-light-16-filtered.png",
+    "1440-900-light-16-gallery.png",
+    "1440-900-light-16-no-results.png",
+    "320-568-dark-32-filtered.png",
+    "320-568-dark-32-gallery.png",
+    "320-568-dark-32-no-results.png",
+    "320-568-light-32-filtered.png",
+    "320-568-light-32-gallery.png",
+    "320-568-light-32-no-results.png",
+    "390-844-dark-16-filtered.png",
+    "390-844-dark-16-gallery.png",
+    "390-844-dark-16-no-results.png",
+    "390-844-light-16-filtered.png",
+    "390-844-light-16-gallery.png",
+    "390-844-light-16-no-results.png",
+    "768-1024-dark-32-filtered.png",
+    "768-1024-dark-32-gallery.png",
+    "768-1024-dark-32-no-results.png",
+    "768-1024-light-32-filtered.png",
+    "768-1024-light-32-gallery.png",
+    "768-1024-light-32-no-results.png",
+    "844-390-dark-32-filtered.png",
+    "844-390-dark-32-gallery.png",
+    "844-390-dark-32-no-results.png",
+    "844-390-light-32-filtered.png",
+    "844-390-light-32-gallery.png",
+    "844-390-light-32-no-results.png",
+    "firefox-200-choice.png",
+    "forced-dark.png",
+    "forced-light.png",
+    "safari-filtered.png",
+    "safari-gallery.png"
+  ],
+  "runtimeFreeze": {
+    "sourceFiles": 106,
+    "builtFiles": 99,
+    "unchangedThroughoutFullSuite": true
+  },
+  "repairsDuringValidation": [
+    "Corrected test mount selector and fresh-draft default template expectation",
+    "Resize fixture retains pointer capability so Puppeteer does not reload the page",
+    "Fixed actual responsive toolbar remount and lost-opener focus fallback",
+    "Waited for lazy preview modules and intended initial focus before capture/forced-colour keyboard assertions; retained focus contour assertions",
+    "Updated three obsolete source assertions from the retired gallery skin to shared Air shells, inherited safe-area containment, scroll ownership and actual template choices; all runtime tests passed before this assertion-only correction"
+  ],
+  "remaining": [
+    "All four review tabs; overflow/export busy and recovery",
+    "PWA/reload safety including Ready Offline enlarged-text issue; true static 404",
+    "Actual OG/PWA/README assets",
+    "Physical touch/software keyboard, OS IME and spoken assistive acceptance",
+    "Full product migration; CloakIMG remains last and untouched"
+  ],
+  "publication": "Local only; no push/deploy"
+}

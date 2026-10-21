@@ -1,0 +1,499 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume complete content-section composition and software acceptance. Full product and physical acceptance remain open.",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5",
+  "status": "Passed; local checkpoint",
+  "changes": [
+    "Content-aware Award/Certification year and Quick stats/Extras field pairs; no stored-string normalization",
+    "Air stat/extra headings, neutral JD privacy note and standard primary action/icon",
+    "Associated Profile formatting help; retired unused cr-field-label styles",
+    "Explicit Analyze opener focus fixes Safari pointer return from review"
+  ],
+  "gates": {
+    "productionSuite": {
+      "tests": 323,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 143,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 443.4
+    },
+    "check": "Zero format/lint/type errors; 137 code files",
+    "build": "73 precache entries; no dependency change",
+    "design": "79 source records",
+    "portability": "18 isolation/drift checks",
+    "familySync": "Six specifications; shared contract unchanged"
+  },
+  "matrix": {
+    "distinctCases": 1666,
+    "executedCases": 1796,
+    "sections": [
+      "Awards",
+      "Certifications",
+      "Contact",
+      "Custom",
+      "Education",
+      "Experience",
+      "Interests & Tools",
+      "Languages",
+      "Profile",
+      "Projects",
+      "Quick stats",
+      "Skills",
+      "Target JD"
+    ],
+    "sizes": [
+      [1920, 1080],
+      [1440, 900],
+      [1366, 768],
+      [1280, 720],
+      [1279, 720],
+      [1024, 768],
+      [1023, 768],
+      [768, 1024],
+      [767, 1024],
+      [640, 800],
+      [639, 800],
+      [430, 932],
+      [390, 844],
+      [375, 812],
+      [320, 568],
+      [844, 390]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "states": [
+      "Blank draft (default Profile values, empty collections/JD)",
+      "Populated with imported year/proficiency/icon values, custom labels and rich text"
+    ],
+    "contrastPairs": [
+      {
+        "theme": "light",
+        "name": "JPG or PNG · max 2 MB",
+        "foreground": "rgb(82, 91, 104)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 6.873758629397385
+      },
+      {
+        "theme": "light",
+        "name": "Press Enter to choose line breaks. Your title must fit within 4 lines in the résumé.",
+        "foreground": "rgb(82, 91, 104)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 6.873758629397385
+      },
+      {
+        "theme": "light",
+        "name": "Select text to apply bold, italic, underline, or code.",
+        "foreground": "rgb(82, 91, 104)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 6.873758629397385
+      },
+      {
+        "theme": "light",
+        "name": "Quick stats · shown in supporting templates",
+        "foreground": "rgb(32, 35, 41)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 15.743934467621905
+      },
+      {
+        "theme": "light",
+        "name": "Extras (visa, availability, etc.)",
+        "foreground": "rgb(32, 35, 41)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 15.743934467621905
+      },
+      {
+        "theme": "light",
+        "name": "100% private. The JD is processed entirely in your browser — nothing leaves your device.",
+        "foreground": "rgb(82, 91, 104)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 6.873758629397385
+      },
+      {
+        "theme": "light",
+        "name": "100% private.",
+        "foreground": "rgb(32, 35, 41)",
+        "background": "rgb(255, 255, 255)",
+        "ratio": 15.743934467621905
+      },
+      {
+        "theme": "light",
+        "name": "Analyze keyword coverage",
+        "foreground": "rgb(255, 255, 255)",
+        "background": "rgb(34, 40, 49)",
+        "ratio": 14.83173212851982
+      },
+      {
+        "theme": "dark",
+        "name": "JPG or PNG · max 2 MB",
+        "foreground": "rgb(182, 190, 203)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 9.0171348392764
+      },
+      {
+        "theme": "dark",
+        "name": "Press Enter to choose line breaks. Your title must fit within 4 lines in the résumé.",
+        "foreground": "rgb(182, 190, 203)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 9.0171348392764
+      },
+      {
+        "theme": "dark",
+        "name": "Select text to apply bold, italic, underline, or code.",
+        "foreground": "rgb(182, 190, 203)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 9.0171348392764
+      },
+      {
+        "theme": "dark",
+        "name": "Quick stats · shown in supporting templates",
+        "foreground": "rgb(241, 243, 247)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 15.196471601782546
+      },
+      {
+        "theme": "dark",
+        "name": "Extras (visa, availability, etc.)",
+        "foreground": "rgb(241, 243, 247)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 15.196471601782546
+      },
+      {
+        "theme": "dark",
+        "name": "100% private. The JD is processed entirely in your browser — nothing leaves your device.",
+        "foreground": "rgb(182, 190, 203)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 9.0171348392764
+      },
+      {
+        "theme": "dark",
+        "name": "100% private.",
+        "foreground": "rgb(241, 243, 247)",
+        "background": "rgb(26, 29, 35)",
+        "ratio": 15.196471601782546
+      },
+      {
+        "theme": "dark",
+        "name": "Analyze keyword coverage",
+        "foreground": "rgb(24, 33, 46)",
+        "background": "rgb(233, 238, 247)",
+        "ratio": 13.91972285999866
+      }
+    ],
+    "errors": [],
+    "finalRecheck": "130 Target JD layouts including forced colours rerun after correcting the Analyze icon to 18px/1.6 stroke; other section sources unchanged. Final captures replace the corresponding earlier JD captures."
+  },
+  "behavior": [
+    "Five new browser cases cover two arbitrary year values/reload, independent stats/extras/edit/move/cancel/reload, and desktop/touch-desktop Analyze/review/save/reload/focus return",
+    "Existing production tests cover all 13 add/edit/reorder/removal and rich text/CSV/date/photo/logo/hints, malformed imports, JSON backup/restore and export",
+    "Target JD stays outside the existing Harper grammar scan; no schema, engine, template, pagination, palette or export-code changes"
+  ],
+  "output": {
+    "templatePaperCaptures": 34,
+    "allImageAndGeometryRecordsEqual": true,
+    "pdfPixels": [
+      {
+        "paper": "a4",
+        "before": "ea69b7c87ae509fa48c7a6928cfdc3fb3fdadf76a38b519651de78790037e70f",
+        "after": "ea69b7c87ae509fa48c7a6928cfdc3fb3fdadf76a38b519651de78790037e70f",
+        "identical": true
+      },
+      {
+        "paper": "letter",
+        "before": "47e03cef173cfc585dd29912826bd16bd62880ebe11d33749889a5b6486820d6",
+        "after": "47e03cef173cfc585dd29912826bd16bd62880ebe11d33749889a5b6486820d6",
+        "identical": true
+      }
+    ]
+  },
+  "native": [
+    "Safari: stat editing and Tab focus; JD Analyze pointer opening and Escape return to the explicit opener; final-build JD capture",
+    "Firefox actual 200%: Awards empty/add/long-year editing; compact navigation, JD keyboard activation, scrolling, Escape and opener return; final-build JD capture; zoom reset and own tabs closed"
+  ],
+  "maintenance": [
+    "Initial targeted JD fixture typed at the beginning; set the intended end caret explicitly, preserving the assertion",
+    "Forced-colour focus check now uses keyboard Tab rather than expecting focus-visible after programmatic focus in pointer modality",
+    "Safari missing Analyze return focus was fixed; no test timeouts increased or feature assertions weakened"
+  ],
+  "openGates": [
+    "Physical touch/software keyboards, OS IME and spoken assistive acceptance",
+    "Template library, all four review tabs, overflow/export busy/recovery, PWA/static 404 and actual OG/PWA/README assets",
+    "Ready Offline notice is oversized at enlarged text; remains in the scheduled PWA slice",
+    "Resume and IMG remain local; no push or deploy; IMG parked draft untouched"
+  ],
+  "commands": [
+    "pnpm exec vp check",
+    "pnpm run build",
+    "CLOAKRESUME_BROWSER_BUILD=production pnpm exec vp test run --no-file-parallelism",
+    "node scripts/test-air-sections.mjs",
+    "AIR_SECTION=\"Target JD\" node scripts/test-air-sections.mjs",
+    "node scripts/check-air-design.mjs",
+    "node scripts/air-inventory.mjs",
+    "node scripts/check-air-portability.mjs",
+    "node scripts/sync-air-design.mjs --bundle --check (canonical repository)"
+  ],
+  "runtimeSourceDigest": "37fcd5342c1ce2c5616d9b54468378d335261dced9246d2b199b52a912d6d73e",
+  "images": [
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1280-720-dark-16-populated-Target-JD.png",
+      "sha256": "b50f3410ce2e252274d1586581f9b1a13eb44885cb37577b54b033e7e00365df"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1280-720-light-16-populated-Target-JD.png",
+      "sha256": "37453a59e65b95d9f2b7e24e7274ca3e07fd39d67d059198c0b9f1d2a6cd7160"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Awards.png",
+      "sha256": "e9802512e0b9bc79bf35e5d51b8c415d875d7a6d88a0a312142066ce56707047"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Certifications.png",
+      "sha256": "f00775e52f37182d3bff6c2e871951fb02357ea40cf3b641118550e542ebee7f"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Contact.png",
+      "sha256": "9392e506c372ae5935f90638d52323e11fe651c7dae79c0e80392959f56d5c52"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Custom.png",
+      "sha256": "dbbb7770f71e2b4c11f4fc5bc1be80da944d178f09a095362f8c7b9fbd391dc6"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Education.png",
+      "sha256": "240c958292aad00773916d54d08bec6c1a8cefd79610cbd93a3f5adfdcd5929a"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Experience.png",
+      "sha256": "ba44c26663aae8f30fc3063dbb7a089249f03c70c126e01d61ac9892427de691"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Interests-Tools.png",
+      "sha256": "f42a8ade6e842288caa2e34ce386ff771e09c72e688f02fdc76df49c496205e6"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Languages.png",
+      "sha256": "e3c92d72b16285f54ffa2584917b4ceb96be59ddc24a9275e0958659e69c86f2"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Profile.png",
+      "sha256": "f0d71aa67d43ec73680d4339cbb14d86a88aae85dce3f6fda8476ee64960489e"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Projects.png",
+      "sha256": "69f201c52dc2139c0a5445c1dfcb143ed92d121b13ea31fd6249167c7ad24871"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Quick-stats.png",
+      "sha256": "3fca59a4d2af281bdcc355108b88c45cd3163031df9ac9e2b0dd461deba65290"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Skills.png",
+      "sha256": "24cb5d3abddaccc45283a788bcfc55abde0be67943e72c1b1254b934c4f63b7e"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-empty-Target-JD.png",
+      "sha256": "78868069117872fa65c2fd2d2b270ffaef354810276b7b693ded231c1ae6c7a9"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Awards.png",
+      "sha256": "80a13f15f94814a654b7171241607a5f9535687a641f9ce7db66ab99f3686f96"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Certifications.png",
+      "sha256": "e291b761ef790775213f81eea56300bba23dbed9bcc489c0a579e794110606b7"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Contact.png",
+      "sha256": "64d5c0501368af8c44ecb76edecea9de999c9cc3ffc53ad66974bd3936515d2e"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Custom.png",
+      "sha256": "44902a68597bb5def665fa006953105d820b04fe55688852f6e45d8b407a50cf"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Education.png",
+      "sha256": "cc2218c5ce7fbfa243aab3485fbe879a507703601a62c6b71d25b7a1df1f3fdd"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Experience.png",
+      "sha256": "fd35ed05889921a1aaa7fe4e27f99ab219eb6a79db1d25d9d0feb406af819961"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Interests-Tools.png",
+      "sha256": "e6f6ef144d136d263580045526642814d69741c089af4a3869778749b42811f5"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Languages.png",
+      "sha256": "b0cb2501e02efce0874907257303a9ffcaf90053963a18af91cd02dc32ad3603"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Profile.png",
+      "sha256": "6066c4ee669fa55b34725e69fe3225ee560cb0ddbfeee60c679bf38a93f1ef77"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Projects.png",
+      "sha256": "a12178a8ceb9a4c191f970dea633083cef72478499f8a495389d60448564e7c9"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Quick-stats.png",
+      "sha256": "d6da1924c302a397d0002ec0d9eca45ea58d875eea766665c0f73a335472219f"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Skills.png",
+      "sha256": "5626c6f806417a98c8dea31572612c4dfd19f541bd3bf1ae07ef72f32e8e74e4"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/1440-900-light-16-populated-Target-JD.png",
+      "sha256": "fcf2a29989c3217ccaa30e075c80e790e2befc05188fd1c331e4093c577c2afc"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Awards.png",
+      "sha256": "64b4c4710b177a250526a9575599c4ec862ea9c760857643963c455176e9d401"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Certifications.png",
+      "sha256": "80aab81400762b3464f141791162a75c5c76b413d675b213ad20fc582bdef1f2"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Contact.png",
+      "sha256": "6cf6690618020f8744471def1fc34f0298c83a585d84b533d1d323cf2e62f6bb"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Custom.png",
+      "sha256": "3e8d1ff6007029f284e31883421a2b5831ab7dc1ea6e064cdaa77f44d1cc3e83"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Education.png",
+      "sha256": "c27796c604e92162526ce24a65ec913a934a2af4af19902af09f33d09ac5081e"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Experience.png",
+      "sha256": "7c8b98e6b3c59fb41124adc3c3e3b769167c226783f3c721f2a53160a18bb5f8"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Interests-Tools.png",
+      "sha256": "c8c049def3df859d9a3e0450621b6b892238c9277388d7091090e73dcc55cb89"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Languages.png",
+      "sha256": "6b2d9ff776d0ef2202cee0f0e346927030209ff2192a87b22bea4e7a404ffa8f"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Profile.png",
+      "sha256": "a142d9f20ec0559e8c8cd0543d6295aaebadc0f06f1973f1963d466f25ad70bf"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Projects.png",
+      "sha256": "34073d46328ef2e7c6714ad6058c9926095746228ce0117b9f2023dd5f7cb766"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Quick-stats.png",
+      "sha256": "1ab9e1ec8acafaee5a2adee4ed678c8ee624b1cb906afffb791e185b3e87abb7"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Skills.png",
+      "sha256": "72224287f325b79f137091952b5c6830c75be2ec8245191e84d82c68aa6d28f7"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-empty-Target-JD.png",
+      "sha256": "c197c7b090cc8cf7d50ba949726ac8b8e3b53c1004929d3d9208fce5b1c39dd4"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Awards.png",
+      "sha256": "1e3ebfac815372263f7aa929dbac6ba96845155f8e40b118b796d51146df2602"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Certifications.png",
+      "sha256": "7f4597f7b6dc2030cfc8217cc23e6253cd93f7988b319616de5ce3841128168f"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Contact.png",
+      "sha256": "173f1cb1aabc40b4bc7799c176dffbfed5869cad714f11b3a4b42649ebb43d83"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Custom.png",
+      "sha256": "7ed58159d7d67a62a364e764db6f77fe7b148426dbc5d40bc4e4e82581b7832b"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Education.png",
+      "sha256": "6fae706085b22630e86761058c1cc04fc742d59162c1de1af1fca5c078abfae2"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Experience.png",
+      "sha256": "51c00327b671232863e0bc1124dc808926ac5dfb10bc6bb000122fffa75c1231"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Interests-Tools.png",
+      "sha256": "e654593a51a50b6c76eef1e0660e7ad22fea79237f2adef9a5d5da6dca46d7d2"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Languages.png",
+      "sha256": "18020d0f71c7bd79d1c16cc1330fd7640e69c9925527d72044dc975b255b6cab"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Profile.png",
+      "sha256": "9c30544879c28e7b3a9ad647a88fcbc47ca82eea41c33d5998f4c82fa78d4a0f"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Projects.png",
+      "sha256": "25a96a203eb1c35ac11d2f6be82980ff2339c083ae1eae36702f5c7c146efbb4"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Quick-stats.png",
+      "sha256": "08275003ae114a007c266225b8cedfd3423756d6f0b5e700e08b4a572e9565b7"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Skills.png",
+      "sha256": "b9bfd51418564cab6f9603ceb5b0bab6d53b325f6c7ecbde66be78ff80ff35d1"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/390-844-dark-16-populated-Target-JD.png",
+      "sha256": "e817b8296d6507fcdabb9c2ac0c0297a238b8402e2755d14a092d80f5cabe8f9"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/768-1024-dark-32-populated-Target-JD.png",
+      "sha256": "ddeebe1387b0bc4bc5a6bbd0fa379dc17304a5f8499c4bcce3ab255a3ac7d40d"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/768-1024-light-32-populated-Target-JD.png",
+      "sha256": "4179b91565559ebeb9610a3f84e665fae424d6803969957df80b7b0f0ba7b6b2"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/844-390-dark-32-populated-Target-JD.png",
+      "sha256": "c542917120f3f89288d2a913834c78cadf42c49521056340c971b73ecd55bf6c"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/844-390-light-32-populated-Target-JD.png",
+      "sha256": "7bbd7ea3703412a8f265add158ea77bcd913663f73f44f34058c1f13fc28f501"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/firefox-200-awards.png",
+      "sha256": "83b02d4bced34f1f5155380e30eced91b66fd89bfcc6b36124fc98cf0dcd6283"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/firefox-200-jd.png",
+      "sha256": "663380fd710f61540885d644361c4eba83a58478fa9aeddee7f8daf93a056e1c"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/forced-colours-dark.png",
+      "sha256": "dfea1d048f9acf80d48f1c102635545fff46b73c2892594bd7a0cd391a267db1"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/forced-colours-light.png",
+      "sha256": "d545a31cd7a36fdc49728d448f93951e9993019d3b662d1fb3ae0e302c4c9045"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/safari-jd.png",
+      "sha256": "130b88b34f783741cea1fde45b54fa47e11200664e7141457465e2335cfbfa04"
+    },
+    {
+      "path": "docs/air/evidence/content-sections-2026-10-21/safari-stats.png",
+      "sha256": "f3785b1947af2a711eac3a5b850e13e87bd8892bb8d38200bd1a4c8b968684a7"
+    }
+  ],
+  "scratch": "/tmp/cloakresume-air-sections"
+}

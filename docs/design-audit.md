@@ -1,21 +1,48 @@
-# CloakResume design audit
+# CloakResume historical Workbench audit
 
 **Initial audit:** 22 July 2026 · **Inventory and geometry updated:** 14 September 2026
 
-See [the September feature audit](feature-audit-2026-09-14.md) and [release verification](release-audit-2026-09-14.md) for the current results. The July verification below remains a historical record.
+This July/September record describes the retired Workbench specification. `Aligned` in the source table means aligned to that historical specification, not Air. Current migration progress and evidence live in [the Air inventory](air/surface-inventory.md) and [Air validation](air/validation.md). The September feature audit and release verification remain historical feature baselines.
 
-**Design contract:** [CloakResume Design System 2.0](../DESIGN.md)
+**Current design contract:** [Cloakyard Air](../DESIGN.md)
 
-**Runtime tokens:** [tokens.css](../tokens.css)
+**Current shared UI:** [Air](../DESIGN.md) and [pinned CSS](../src/styles/air.css). Legacy unmigrated widgets still use [tokens.css](../tokens.css).
 
-**Portable tokens:** [tokens.json](../tokens.json)
+**2026-10-21 content-section checkpoint:** all 13 section sources now use Air.
+Current behavior, scope and software evidence are tracked in
+[content-section validation](air/validation.md) and the Air surface inventory.
+The historical rows below are preserved as the original audit, not current styling authority.
+
+**2026-10-21 review follow-up:** the old combined modal is replaced by a persistent Air dialog and lazy review content. Its four panes and report controls follow Air; the updated source rows point to the current inventory.
+
+**2026-10-21 Options follow-up:** the legacy BottomSheet is retired. Options/export
+now use Air, immediate handoffs and guarded busy/recovery. Modal keyboard wrap
+scrolls the destination into view, and Air dialogs keep the shared blue focus rule.
+Current evidence and retained legacy consumers are in `air/validation.md` and
+`air/code-cleanup.md`.
+
+**2026-10-21 PWA/static recovery follow-up:** ReloadPrompt now uses Air; the historical
+`public/404.html` entry is replaced by root `404.html`, built with pinned Air CSS.
+Legacy toast/toolbar skins and the timed reload are removed. Current proof and
+retained live consumers are recorded in `air/validation.md` and `air/code-cleanup.md`.
+
+**2026-10-21 preview follow-up:** social artwork, light/dark PWA/README captures,
+manifest colours and maintained contributor/asset guidance now follow Air.
+The old device-named captures and unused field skin are retired; current asset
+sources and dimensions are in `brand-assets.md`. Historical rows below retain
+their original filenames and validation results.
+
+**2026-10-21 cleanup follow-up:** the unused legacy JSON token mirror and 61
+unconsumed CSS token names are retired. Historical token values remain in Git
+history. `tokens.css` retains live compatibility/output consumers; the pinned
+Air bundle owns application design. See `air/code-cleanup.md` for remaining work.
 
 ## Result
 
-All 73 TSX files in `src/` were examined. No application route, common component,
+All 75 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
-The active product chrome now follows the CloakPDF-family language with CloakResume
+The September product chrome followed the CloakPDF-family language with CloakResume
 Emerald `#047857`: Archivo and JetBrains Mono, cool paper, slate ink, one-pixel rules,
 6–8px geometry, solid overlays, restrained motion, and one 88rem content frame. A
 user-selected résumé colour is restricted to the rendered résumé and its document
@@ -72,8 +99,8 @@ Status key:
 |   # | File                                              | Status  | Audit scope                                                                                                                                                                       |
 | --: | ------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 |   1 | `src/App.tsx`                                     | Aligned | Root workflow, fixed brand boundary, persistence, route-level review, and overlay composition.                                                                                    |
-|   2 | `src/components/AtsReviewModal.tsx`               | Aligned | Wide modal shell, focus lifecycle, tabs, headings, progress, locale-aware metadata, and busy/error states.                                                                        |
-|   3 | `src/components/BottomSheet.tsx`                  | Aligned | Shared 92dvh sheet geometry, title order, focus containment, escape, scroll lock, and safe area.                                                                                  |
+|   2 | `src/components/AtsReviewContent.tsx`             | Aligned | Air report panes, complete findings, keyboard tabs and honest progress; current evidence is in the Air inventory.                                                                 |
+|   3 | `src/components/OptionsDialog.tsx`                | Aligned | Air Options dialog/sheet, inertness, fixed heading, scrollable commands and immediate handoff; software proof in options-export-2026-10-21.json.                                  |
 |   4 | `src/components/BrandLogo.tsx`                    | Aligned | Canonical 40px mark, 0.6rem lockup gap, exact CloakPDF Archivo 800 metrics, accessible home label, and no independent distortion.                                                 |
 |   5 | `src/components/CloakWorkbenchLanding.tsx`        | Aligned | N1b header, 88rem frame, real start/load instrument, ledgers, local receipt, and CloakPDF-parity Ft5 footer with version/author provenance.                                       |
 |   6 | `src/components/ColorPickerContent.tsx`           | Aligned | Emerald-aware document control, keyboard/pointer parity, slider semantics, focus, and input naming.                                                                               |
@@ -86,7 +113,6 @@ Status key:
 |  13 | `src/components/Layout.tsx`                       | Aligned | 64px task-only editor header, 72px rail, token-driven 328px panel with a fluid 384–736px wide-screen range, 50:50 mobile proof/workspace split, inline picker, and one editor h1. |
 |  14 | `src/components/LogoPicker.tsx`                   | Aligned | Popover safe edge, search naming, logo choice semantics, separated clear action, and focus return.                                                                                |
 |  15 | `src/components/MonthYearField.tsx`               | Aligned | Associated label, named date controls, keyboard navigation, visual-viewport-safe placement, focus return, and locale-neutral storage.                                             |
-|  16 | `src/components/OrientationLock.tsx`              | Aligned | System-overlay layer, clear rotation instruction, reduced motion, and no interference with document output.                                                                       |
 |  17 | `src/components/PaginatedCanvas.tsx`              | Output  | Measurement, deterministic A4/Letter pages, continuation behavior, no clipping, and print fidelity.                                                                               |
 |  18 | `src/components/PaperSizeToggle.tsx`              | Aligned | Named A4/Letter selection, pressed state, exact 40px toolbar box, and touch-size overflow variant.                                                                                |
 |  19 | `src/components/Preview.tsx`                      | Aligned | Persistent paper stage, zoom controls, names/targets, output isolation, and responsive overflow.                                                                                  |
@@ -142,8 +168,14 @@ Status key:
 |  69 | `src/templates/Typographic.tsx`                   | Output  | Numbered hierarchy, semantic equivalents, complete sections, and page flow.                                                                                                       |
 |  70 | `src/templates/paginationAtoms.tsx`               | Output  | Shared head/bullet atoms, keep-with-next, stable keys, and safe split boundaries.                                                                                                 |
 |  71 | `src/templates/shared.tsx`                        | Output  | Shared contact/date/location rendering, safe links, semantics, and consistent text output.                                                                                        |
-|  72 | `src/utils/fieldIssues.tsx`                       | Support | Issue context, focus/highlight target, accessible descriptions, and stable hint layout.                                                                                           |
+|  72 | `src/utils/fieldIssues.tsx`                       | Support | Air hint trigger/popover, exact replacements, shared viewport positioning and surviving field focus; software evidence in writing-hints-2026-10-21.json.                          |
 |  73 | `src/utils/richText.tsx`                          | Output  | Sanitized selectable rich text, safe links, semantic formatting, and PDF text extraction.                                                                                         |
+
+| 74 | `src/components/editor/BulletList.tsx` | Support | Air follow-up: shared bullet controls and UI-only identities; preserves the saved string schema. Current gates are in the Air inventory. |
+
+| 75 | `src/components/ColorPickerPopover.tsx` | Support | Air follow-up: shared viewport-aware primary-colour portal and compact modal focus lifecycle. Current gates are in the Air inventory. |
+
+| 76 | `src/components/AtsReviewDialog.tsx` | Support | Air follow-up: persistent accessible shell through lazy loading, inert background, responsive focus return and swipe dismissal. |
 
 ## Non-TSX surfaces
 

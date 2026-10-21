@@ -7,7 +7,7 @@ import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -38,6 +38,7 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
           <DragItem
             key={g.id}
             index={i}
+            label={`group ${i + 1}`}
             onDelete={() =>
               patch(
                 "skills",
@@ -45,19 +46,14 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn, moveBtns) => (
-              <div className="sub-card mb-2.5">
-                <SubCardHead
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="resume-entry">
+                <EntryHeading
                   index={i}
                   prefix="Group"
                   drag={handle}
                   moveBtns={moveBtns}
-                  onDelete={() =>
-                    patch(
-                      "skills",
-                      resume.skills.filter((_, j) => j !== i),
-                    )
-                  }
+                  deleteButton={deleteBtn}
                 />
                 <div className="cr-stack">
                   <TextField
@@ -71,7 +67,7 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
                     }}
                   />
                   <div className="cr-field">
-                    <span className="cr-field-label">Icon (optional)</span>
+                    <span className="air-label">Icon (optional)</span>
                     <LogoPicker
                       value={g.iconName}
                       onChange={(name) => {
@@ -99,9 +95,7 @@ export function SkillsSection({ resume, onChange }: SectionProps) {
           </DragItem>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addGroup}>Add group</AddButton>
-      </div>
+      <AddButton onClick={addGroup}>Add group</AddButton>
     </>
   );
 }

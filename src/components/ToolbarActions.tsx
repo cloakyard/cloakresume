@@ -13,6 +13,8 @@ import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 interface ToolbarActionsProps {
   onExportPdf: () => void;
   exporting?: boolean;
+  exportStatus: string;
+  loadingFile: boolean;
   onSaveFile: () => void;
   onLoadFile: (file: File) => void;
   onNewResume: () => void;
@@ -20,12 +22,14 @@ interface ToolbarActionsProps {
 }
 
 function ToolbarDivider() {
-  return <span aria-hidden="true" className="w-px h-5 bg-(--line) mx-0.5" />;
+  return <span aria-hidden="true" className="resume-header-divider" />;
 }
 
 export function ToolbarActions({
   onExportPdf,
   exporting = false,
+  exportStatus,
+  loadingFile,
   onSaveFile,
   onLoadFile,
   onNewResume,
@@ -40,13 +44,16 @@ export function ToolbarActions({
     <>
       <button
         type="button"
-        onClick={onScanAts}
-        className="tb ghost"
+        onClick={(event) => {
+          event.currentTarget.focus();
+          onScanAts();
+        }}
+        className="air-icon-button air-button--quiet resume-toolbar-action"
         title="Scan résumé for ATS and writing issues"
         aria-label="Scan résumé for ATS and writing issues"
       >
-        <ScanSearch aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
-        <span className="hidden 2xl:inline">Scan résumé</span>
+        <ScanSearch aria-hidden="true" size={18} strokeWidth={1.6} />
+        <span className="resume-toolbar-label">Scan résumé</span>
       </button>
 
       <ToolbarDivider />
@@ -54,33 +61,44 @@ export function ToolbarActions({
       <div className="flex items-center gap-0.5">
         <button
           type="button"
-          onClick={onNewResume}
-          className="tb ghost"
+          onClick={(event) => {
+            event.currentTarget.focus();
+            onNewResume();
+          }}
+          className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Start a new blank resume"
           aria-label="Start a new blank resume"
         >
-          <FilePlus2 aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
-          <span className="hidden 2xl:inline">New</span>
+          <FilePlus2 aria-hidden="true" size={18} strokeWidth={1.6} />
+          <span className="resume-toolbar-label">New</span>
         </button>
         <button
           type="button"
-          onClick={onSaveFile}
-          className="tb ghost"
+          onClick={(event) => {
+            event.currentTarget.focus();
+            onSaveFile();
+          }}
+          className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Save resume data as JSON file"
           aria-label="Save resume data as JSON file"
         >
-          <Save aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
-          <span className="hidden 2xl:inline">Save</span>
+          <Save aria-hidden="true" size={18} strokeWidth={1.6} />
+          <span className="resume-toolbar-label">Save</span>
         </button>
         <button
           type="button"
-          onClick={() => loadInputRef.current?.click()}
-          className="tb ghost"
+          aria-disabled={loadingFile || undefined}
+          aria-busy={loadingFile || undefined}
+          onClick={(event) => {
+            event.currentTarget.focus();
+            if (!loadingFile) loadInputRef.current?.click();
+          }}
+          className="air-icon-button air-button--quiet resume-toolbar-action"
           title="Load a previously saved resume file"
           aria-label="Load a previously saved resume file"
         >
-          <Upload aria-hidden="true" className="w-4 h-4 text-(--ink-4)" />
-          <span className="hidden 2xl:inline">Load</span>
+          <Upload aria-hidden="true" size={18} strokeWidth={1.6} />
+          <span className="resume-toolbar-label">Load</span>
         </button>
       </div>
 
@@ -90,6 +108,7 @@ export function ToolbarActions({
         ref={loadInputRef}
         type="file"
         name="resume-file"
+        aria-label="Load résumé JSON file"
         accept="application/json,.json"
         className="hidden"
         onChange={(e) => {
@@ -101,16 +120,32 @@ export function ToolbarActions({
 
       <button
         type="button"
-        onClick={onExportPdf}
-        disabled={exporting}
+        data-export-pdf=""
+        onClick={(event) => {
+          event.currentTarget.focus();
+          if (!exporting) onExportPdf();
+        }}
+        aria-disabled={exporting || undefined}
         aria-busy={exporting}
-        className="tb primary"
-        aria-label="Export to PDF"
+        className="air-icon-button air-button--primary resume-toolbar-action"
+        aria-label={exporting ? "Exporting PDF…" : "Export to PDF"}
         title={exporting ? "Exporting PDF…" : "Export to PDF"}
       >
-        <Download aria-hidden="true" className="w-4 h-4" />
-        <span className="hidden 2xl:inline">{exporting ? "Exporting…" : "Export PDF"}</span>
+        <Download aria-hidden="true" size={18} strokeWidth={1.6} />
+        <span className="resume-toolbar-label">
+          <span className="air-action-labels">
+            <span data-active={!exporting || undefined} aria-hidden={exporting || undefined}>
+              Export PDF
+            </span>
+            <span data-active={exporting || undefined} aria-hidden={!exporting || undefined}>
+              Exporting PDF…
+            </span>
+          </span>
+        </span>
       </button>
+      <span className="sr-only" role="status">
+        {exportStatus}
+      </span>
     </>
   );
 }

@@ -1,0 +1,1482 @@
+{
+  "records": [
+    {
+      "id": "known-320x568-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-320x568-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-320x568-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-320x568-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-375x812-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-375x812-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-375x812-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-375x812-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-390x844-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-390x844-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-390x844-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-390x844-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-430x932-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-430x932-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-430x932-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-430x932-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-639x800-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-639x800-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-639x800-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-639x800-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-640x800-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-640x800-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-640x800-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-640x800-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-767x1024-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-767x1024-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-767x1024-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-767x1024-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-768x1024-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-768x1024-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-768x1024-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-768x1024-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-844x390-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-844x390-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-844x390-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-844x390-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1023x768-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1023x768-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1023x768-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1023x768-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1024x768-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1024x768-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1024x768-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1024x768-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1279x720-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1279x720-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1279x720-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1279x720-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1280x720-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1280x720-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1280x720-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1280x720-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1366x768-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1366x768-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1366x768-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1366x768-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1440x900-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1440x900-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1440x900-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1440x900-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1920x1080-light-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1920x1080-light-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1920x1080-dark-16",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "known-1920x1080-dark-32",
+      "fits": true,
+      "value": "25",
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "forced-light",
+      "focus": {
+        "inside": true,
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "id": "forced-dark",
+      "focus": {
+        "inside": true,
+        "width": "2px",
+        "style": "solid"
+      }
+    },
+    {
+      "id": "unknown-320x568-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-320x568-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-320x568-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-320x568-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-375x812-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-375x812-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-375x812-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-375x812-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-390x844-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-390x844-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-390x844-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-390x844-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-430x932-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-430x932-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-430x932-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-430x932-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-639x800-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-639x800-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-639x800-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-639x800-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-640x800-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-640x800-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-640x800-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-640x800-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-767x1024-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-767x1024-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-767x1024-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-767x1024-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-768x1024-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-768x1024-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-768x1024-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-768x1024-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-844x390-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-844x390-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-844x390-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-844x390-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1023x768-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1023x768-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1023x768-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1023x768-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1024x768-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1024x768-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1024x768-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1024x768-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1279x720-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1279x720-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1279x720-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1279x720-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1280x720-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1280x720-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1280x720-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1280x720-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1366x768-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1366x768-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1366x768-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1366x768-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1440x900-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1440x900-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1440x900-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1440x900-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1920x1080-light-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1920x1080-light-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1920x1080-dark-16",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "unknown-1920x1080-dark-32",
+      "fits": true,
+      "value": null,
+      "time": false,
+      "status": "Loading writing engine…"
+    },
+    {
+      "id": "error-320x568-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-320x568-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-320x568-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-320x568-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-375x812-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-375x812-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-375x812-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-375x812-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-390x844-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-390x844-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-390x844-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-390x844-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-430x932-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-430x932-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-430x932-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-430x932-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-639x800-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-639x800-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-639x800-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-639x800-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-640x800-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-640x800-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-640x800-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-640x800-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-767x1024-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-767x1024-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-767x1024-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-767x1024-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-768x1024-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-768x1024-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-768x1024-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-768x1024-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-844x390-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-844x390-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-844x390-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-844x390-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1023x768-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1023x768-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1023x768-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1023x768-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1024x768-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1024x768-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1024x768-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1024x768-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1279x720-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1279x720-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1279x720-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1279x720-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1280x720-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1280x720-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1280x720-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1280x720-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1366x768-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1366x768-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1366x768-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1366x768-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1440x900-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1440x900-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1440x900-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1440x900-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1920x1080-light-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1920x1080-light-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1920x1080-dark-16",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    },
+    {
+      "id": "error-1920x1080-dark-32",
+      "fits": true,
+      "value": "23",
+      "time": false,
+      "status": "Writing review unavailable"
+    }
+  ],
+  "captures": [
+    "known-390x844-light-16.png",
+    "known-390x844-dark-16.png",
+    "known-844x390-light-32.png",
+    "known-844x390-dark-32.png",
+    "known-1440x900-light-16.png",
+    "known-1440x900-dark-16.png",
+    "forced-light.png",
+    "forced-dark.png",
+    "unknown-390x844-light-16.png",
+    "unknown-390x844-dark-16.png",
+    "unknown-844x390-light-32.png",
+    "unknown-844x390-dark-32.png",
+    "unknown-1440x900-light-16.png",
+    "unknown-1440x900-dark-16.png",
+    "error-390x844-light-16.png",
+    "error-390x844-dark-16.png",
+    "error-844x390-light-32.png",
+    "error-844x390-dark-32.png",
+    "error-1440x900-light-16.png",
+    "error-1440x900-dark-16.png"
+  ],
+  "contrasts": [
+    {
+      "theme": "light",
+      "values": [
+        {
+          "token": "--air-ink",
+          "color": "#202329",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 15.743934467621905
+        },
+        {
+          "token": "--air-ink-secondary",
+          "color": "#525b68",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 6.873758629397385
+        },
+        {
+          "token": "--air-ink-muted",
+          "color": "#646b76",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.375595127871229
+        },
+        {
+          "token": "--air-accent",
+          "color": "#285ad7",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 5.942361961071979
+        },
+        {
+          "token": "--air-success",
+          "color": "#236444",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 7.052175322014731
+        },
+        {
+          "token": "--air-warning",
+          "color": "#875700",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 6.188378967035128
+        },
+        {
+          "token": "--air-danger",
+          "color": "#b42335",
+          "background": "rgb(255, 255, 255)",
+          "ratio": 6.49655856625107
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "values": [
+        {
+          "token": "--air-ink",
+          "color": "#f1f3f7",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 15.196471601782546
+        },
+        {
+          "token": "--air-ink-secondary",
+          "color": "#b6becb",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 9.0171348392764
+        },
+        {
+          "token": "--air-ink-muted",
+          "color": "#a7afbc",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 7.638044202191677
+        },
+        {
+          "token": "--air-accent",
+          "color": "#9ebcff",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 8.916124724900653
+        },
+        {
+          "token": "--air-success",
+          "color": "#8dd5b0",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 9.869591527618987
+        },
+        {
+          "token": "--air-warning",
+          "color": "#f4ca7c",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 10.921666832239229
+        },
+        {
+          "token": "--air-danger",
+          "color": "#ff9ea8",
+          "background": "rgb(26, 29, 35)",
+          "ratio": 8.608285121234701
+        }
+      ]
+    }
+  ]
+}

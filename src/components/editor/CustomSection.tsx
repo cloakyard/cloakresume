@@ -1,14 +1,14 @@
 /** Custom sections: user-defined heading + free-form bullets. */
 
-import { Layers, Plus } from "lucide-react";
+import { Layers } from "lucide-react";
 import { TextField } from "../fields.tsx";
-import { RichTextArea } from "../RichTextArea.tsx";
-import { FormatScope, FormatToolbar } from "../FormatScope.tsx";
+import { FormatScope } from "../FormatScope.tsx";
+import { BulletList } from "./BulletList.tsx";
 import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -46,6 +46,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
           <FormatScope key={item.id}>
             <DragItem
               index={i}
+              label={`section ${i + 1}`}
               onDelete={() =>
                 patch(
                   "custom",
@@ -53,19 +54,14 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn, moveBtns) => (
-                <div className="sub-card mb-2.5">
-                  <SubCardHead
+              {(handle, deleteBtn, moveBtns) => (
+                <div className="resume-entry">
+                  <EntryHeading
                     index={i}
                     prefix="Section"
                     drag={handle}
                     moveBtns={moveBtns}
-                    onDelete={() =>
-                      patch(
-                        "custom",
-                        resume.custom.filter((_, j) => j !== i),
-                      )
-                    }
+                    deleteButton={deleteBtn}
                   />
                   <div className="cr-stack">
                     <TextField
@@ -78,80 +74,20 @@ export function CustomSection({ resume, onChange }: SectionProps) {
                         patch("custom", next);
                       }}
                     />
-                    <div className="cr-field">
-                      <div className="cr-field-row">
-                        <span className="cr-field-label">Bullets</span>
-                        <div className="flex items-center gap-1">
-                          <FormatToolbar compact />
-                          <button
-                            type="button"
-                            onClick={() => {
-                              const next = [...resume.custom];
-                              next[i] = { ...item, bullets: [...item.bullets, ""] };
-                              patch("custom", next);
-                            }}
-                            className="inline-flex items-center gap-1 min-h-11 md:min-h-10 px-3 rounded-md text-sm text-(--brand) hover:bg-(--brand-50) font-semibold transition-colors"
-                          >
-                            <Plus className="w-3 h-3" /> Bullet
-                          </button>
-                        </div>
-                      </div>
-                      <DragList
-                        items={item.bullets}
-                        onReorder={(nextBullets) => {
-                          const nextItems = [...resume.custom];
-                          nextItems[i] = { ...item, bullets: nextBullets };
-                          patch("custom", nextItems);
-                        }}
-                      >
-                        {item.bullets.map((b, bi) => (
-                          <DragItem
-                            // oxlint-disable-next-line jsx/no-array-index-key
-                            key={`${item.id}-bullet-${bi}`}
-                            index={bi}
-                            compact
-                            stackMoves
-                            onDelete={() => {
-                              const next = [...resume.custom];
-                              next[i] = {
-                                ...item,
-                                bullets: item.bullets.filter((_, bj) => bj !== bi),
-                              };
-                              patch("custom", next);
-                            }}
-                          >
-                            {(bHandle, bDelete, bMove) => (
-                              <div className={`flex gap-1.5 items-start ${bi > 0 ? "mt-2.5" : ""}`}>
-                                <div className="mt-2">{bHandle}</div>
-                                <div className="flex-1 min-w-0">
-                                  <RichTextArea
-                                    ariaLabel={`Custom section bullet ${bi + 1}`}
-                                    fieldId={`custom.${i}.bullets.${bi}`}
-                                    value={b}
-                                    rows={3}
-                                    compact
-                                    onChange={(v) => {
-                                      const next = [...resume.custom];
-                                      const bullets = [...item.bullets];
-                                      bullets[bi] = v;
-                                      next[i] = { ...item, bullets };
-                                      patch("custom", next);
-                                    }}
-                                  />
-                                </div>
-                                <div className="mt-2 flex flex-col items-center gap-0">
-                                  {bMove}
-                                  {bDelete}
-                                </div>
-                              </div>
-                            )}
-                          </DragItem>
-                        ))}
-                      </DragList>
-                      <p className="text-sm text-(--ink-4) mt-2">
-                        Tip: a single bullet renders as a paragraph in the resume.
-                      </p>
-                    </div>
+                    <BulletList
+                      values={item.bullets}
+                      itemLabel={`section ${i + 1}`}
+                      ariaLabel="Custom section bullet"
+                      fieldPrefix={`custom.${i}.bullets`}
+                      onChange={(bullets) => {
+                        const next = [...resume.custom];
+                        next[i] = { ...item, bullets };
+                        patch("custom", next);
+                      }}
+                    />
+                    <p className="air-help">
+                      Tip: a single bullet renders as a paragraph in the resume.
+                    </p>
                   </div>
                 </div>
               )}
@@ -159,9 +95,7 @@ export function CustomSection({ resume, onChange }: SectionProps) {
           </FormatScope>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addSection}>Add section</AddButton>
-      </div>
+      <AddButton onClick={addSection}>Add section</AddButton>
     </>
   );
 }

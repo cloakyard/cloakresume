@@ -1,0 +1,310 @@
+{
+  "method": "Every removed name has no non-declaration reference in src/scripts/dist, including compiled Tailwind utilities. JSON mirror is only referenced by README and legacy source tests. Document tokens/fonts and live popup placement remain unchanged.",
+  "tokens": [
+    {
+      "name": "--backdrop-bg",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--brand-700",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--brand-hover",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-accent-ink",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-footer",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-night-2",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-night-ink",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-night-muted",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-night-rule",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-proof-ink",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-proof-rule",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--color-surface-strong",
+      "declarations": 2,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--dialog-max",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--dialog-max-block-size",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--dialog-viewport-gutter",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--dialog-wide-max",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--duration-base",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--duration-long",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--duration-slow",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--duration-stagger",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--font-display",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--header-height",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--ink-2",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--ink-3",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--ink-4",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--ink-5",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--ink-6",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--line",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--line-soft",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--motion-distance-medium",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--motion-distance-subtle",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--page-gutter",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--page-gutter-wide",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--page-max",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--popover-max",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--popover-safe-edge",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--radius-pill",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--rule-thin",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--sheet-max-block-size",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-1",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-10",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-2",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-3",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-4",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-5",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-6",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-7",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-8",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--space-9",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--surface-3",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--surface-raised",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--text-display",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--text-md",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-dialog",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-editor",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-navigation",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-sticky",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-sticky-nav",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-system",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-system-overlay",
+      "declarations": 1,
+      "runtimeReferences": []
+    },
+    {
+      "name": "--z-toast",
+      "declarations": 1,
+      "runtimeReferences": []
+    }
+  ]
+}

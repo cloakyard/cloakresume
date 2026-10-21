@@ -1,0 +1,900 @@
+{
+  "scope": "Existing conditional controls inspected through UI; limited state coverage",
+  "cases": [
+    {
+      "state": "Experience start month, 390×844 dark/coarse",
+      "snapshot": "\n- dialog \"Start\":\n  - button \"Previous year\" [active]:\n  - button \"Select year\":\n    - text: \"2022\"\n  - button \"Next year\":\n  - button \"Jan\"\n  - button \"Feb\"\n  - button \"Mar\"\n  - button \"Apr\"\n  - button \"May\"\n  - button \"Jun\"\n  - button \"Jul\"\n  - button \"Aug\" [pressed]\n  - button \"Sep\"\n  - button \"Oct\"\n  - button \"Nov\"\n  - button \"Dec\"\n  - button \"Clear\"\n  - button \"Year only\"\n  - button \"Done\"",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 44,
+              "label": "Previous year",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "label": "Select year",
+              "width": 65.796875
+            },
+            {
+              "height": 44,
+              "label": "Next year",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "label": "Jan",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Feb",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Mar",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Apr",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "May",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Jun",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Jul",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Aug",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Sep",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Oct",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Nov",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Dec",
+              "width": 60
+            },
+            {
+              "height": 44,
+              "label": "Clear",
+              "width": 44.53125
+            },
+            {
+              "height": 44,
+              "label": "Year only",
+              "width": 64.421875
+            },
+            {
+              "height": 44,
+              "label": "Done",
+              "width": 53.65625
+            }
+          ],
+          "height": 287,
+          "label": "_r_67l_",
+          "modal": null,
+          "overflow": false,
+          "width": 288,
+          "x": 27,
+          "y": 368.3828125
+        }
+      ]
+    },
+    {
+      "state": "Experience year list, 390×844 dark/coarse",
+      "snapshot": "\n- dialog \"Start\":\n  - button \"Previous year\" [disabled]:\n  - button \"Select year\" [expanded] [active]:\n    - text: \"2022\"\n  - button \"Next year\" [disabled]:\n  - button \"2036\"\n  - button \"2035\"\n  - button \"2034\"\n  - button \"2033\"\n  - button \"2032\"\n  - button \"2031\"\n  - button \"2030\"\n  - button \"2029\"\n  - button \"2028\"\n  - button \"2027\"\n  - button \"2026\"\n  - button \"2025\"\n  - button \"2024\"\n  - button \"2023\"\n  - button \"2022\"\n  - button \"2021\"\n  - button \"2020\"\n  - button \"2019\"\n  - button \"2018\"\n  - button \"2017\"\n  - button \"2016\"\n  - button \"2015\"\n  - button \"2014\"\n  - button \"2013\"\n  - button \"2012\"\n  - button \"2011\"\n  - button \"2010\"\n  - button \"2009\"\n  - button \"2008\"\n  - button \"2007\"\n  - button \"2006\"\n  - button \"2005\"\n  - button \"2004\"\n  - button \"2003\"\n  - button \"2002\"\n  - button \"2001\"\n  - button \"2000\"\n  - button \"1999\"\n  - button \"1998\"\n  - button \"1997\"\n  - button \"1996\"\n  - button \"1995\"\n  - button \"1994\"\n  - button \"1993\"\n  - button \"1992\"\n  - button \"1991\"\n  - button \"1990\"\n  - button \"1989\"\n  - button \"1988\"\n  - button \"1987\"\n  - button \"1986\"\n  - button \"1985\"\n  - button \"1984\"\n  - button \"1983\"\n  - button \"1982\"\n  - button \"1981\"\n  - button \"1980\"\n  - button \"1979\"\n  - button \"1978\"\n  - button \"1977\"\n  - button \"1976\"\n  - button \"1975\"\n  - button \"1974\"\n  - button \"1973\"\n  - button \"1972\"\n  - button \"1971\"\n  - button \"1970\"\n  - button \"1969\"\n  - button \"1968\"\n  - button \"1967\"\n  - button \"1966\"\n  - button \"Clear\"\n  - button \"Year only\"\n  - button \"Done\"",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 44,
+              "label": "Previous year",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "label": "Select year",
+              "width": 65.796875
+            },
+            {
+              "height": 44,
+              "label": "Next year",
+              "width": 44
+            },
+            {
+              "height": 44,
+              "label": "2036",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2035",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2034",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2033",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2032",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2031",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2030",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2029",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2028",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2027",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2026",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2025",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2024",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2023",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2022",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2021",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2020",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2019",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2018",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2017",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2016",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2015",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2014",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2013",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2012",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2011",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2010",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2009",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2008",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2007",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2006",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2005",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2004",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2003",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2002",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2001",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "2000",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1999",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1998",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1997",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1996",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1995",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1994",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1993",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1992",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1991",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1990",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1989",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1988",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1987",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1986",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1985",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1984",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1983",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1982",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1981",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1980",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1979",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1978",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1977",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1976",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1975",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1974",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1973",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1972",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1971",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1970",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1969",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1968",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1967",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "1966",
+              "width": 59.5
+            },
+            {
+              "height": 44,
+              "label": "Clear",
+              "width": 44.53125
+            },
+            {
+              "height": 44,
+              "label": "Year only",
+              "width": 64.421875
+            },
+            {
+              "height": 44,
+              "label": "Done",
+              "width": 53.65625
+            }
+          ],
+          "height": 319,
+          "label": "_r_67l_",
+          "modal": null,
+          "overflow": false,
+          "width": 288,
+          "x": 27,
+          "y": 336.3828125
+        }
+      ]
+    },
+    {
+      "state": "Experience month, 768×1024 dark/coarse",
+      "snapshot": "\n- dialog \"Start\":\n  - button \"Previous year\" [active]:\n  - button \"Select year\":\n    - text: \"2022\"\n  - button \"Next year\":\n  - button \"Jan\"\n  - button \"Feb\"\n  - button \"Mar\"\n  - button \"Apr\"\n  - button \"May\"\n  - button \"Jun\"\n  - button \"Jul\"\n  - button \"Aug\" [pressed]\n  - button \"Sep\"\n  - button \"Oct\"\n  - button \"Nov\"\n  - button \"Dec\"\n  - button \"Clear\"\n  - button \"Year only\"\n  - button \"Done\"",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 40,
+              "label": "Previous year",
+              "width": 40
+            },
+            {
+              "height": 40,
+              "label": "Select year",
+              "width": 65.796875
+            },
+            {
+              "height": 40,
+              "label": "Next year",
+              "width": 40
+            },
+            {
+              "height": 40,
+              "label": "Jan",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Feb",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Mar",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Apr",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "May",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Jun",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Jul",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Aug",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Sep",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Oct",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Nov",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Dec",
+              "width": 60
+            },
+            {
+              "height": 40,
+              "label": "Clear",
+              "width": 44.53125
+            },
+            {
+              "height": 40,
+              "label": "Year only",
+              "width": 64.421875
+            },
+            {
+              "height": 40,
+              "label": "Done",
+              "width": 53.65625
+            }
+          ],
+          "height": 267,
+          "label": "_r_67l_",
+          "modal": null,
+          "overflow": false,
+          "width": 288,
+          "x": 27,
+          "y": 478.4375
+        }
+      ]
+    },
+    {
+      "state": "Options sheet, 390×844 dark/coarse",
+      "snapshot": "\n- dialog \"Options\":\n  - banner:\n    - paragraph: Workbench controls\n    - heading \"Options\" [level=2]\n    - button \"Close options\" [active]:\n  - button \"Export PDF\":\n    - generic: Export PDF\n  - button \"Scan résumé\":\n    - generic: Scan résumé\n  - separator\n  - button \"Template\":\n    - generic: Template\n  - button \"Primary colour\":\n    - generic: Primary colour\n  - generic: Paper size\n  - group \"Paper size\":\n    - generic: Paper size\n    - button \"A4\" [pressed]\n    - button \"Letter\"\n  - separator\n  - button \"New résumé\":\n    - generic: New résumé\n  - button \"Save to file\":\n    - generic: Save to file\n  - button \"Load from file\":\n    - generic: Load from file",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 44,
+              "label": "Close options",
+              "width": 44
+            },
+            {
+              "height": 52,
+              "label": "Export PDF",
+              "width": 366
+            },
+            {
+              "height": 52,
+              "label": "Scan résumé",
+              "width": 366
+            },
+            {
+              "height": 52,
+              "label": "Template",
+              "width": 366
+            },
+            {
+              "height": 52,
+              "label": "Primary colour",
+              "width": 366
+            },
+            {
+              "height": 44,
+              "label": "A4",
+              "width": 48.75
+            },
+            {
+              "height": 44,
+              "label": "Letter",
+              "width": 66.8671875
+            },
+            {
+              "height": 52,
+              "label": "New résumé",
+              "width": 366
+            },
+            {
+              "height": 52,
+              "label": "Save to file",
+              "width": 366
+            },
+            {
+              "height": 52,
+              "label": "Load from file",
+              "width": 366
+            }
+          ],
+          "height": 608,
+          "label": "_r_4rp_",
+          "modal": "true",
+          "overflow": false,
+          "width": 390,
+          "x": 0,
+          "y": 236
+        }
+      ]
+    },
+    {
+      "state": "Primary colour sheet, 390×844 dark/coarse",
+      "snapshot": "\n- dialog \"Primary colour\":\n  - banner:\n    - paragraph: Workbench controls\n    - heading \"Primary colour\" [level=2]\n    - button \"Close primary colour\" [active]:\n  - generic: Presets\n  - button \"Set primary colour to Emerald\" [pressed]:\n  - button \"Set primary colour to Ocean\"\n  - button \"Set primary colour to Violet\"\n  - button \"Set primary colour to Rose\"\n  - button \"Set primary colour to Amber\"\n  - button \"Set primary colour to Slate\"\n  - button \"Set primary colour to Teal\"\n  - button \"Set primary colour to Indigo\"\n  - button \"Set primary colour to Crimson\"\n  - button \"Set primary colour to Graphite\"\n  - generic: Custom\n  - slider \"Hue and saturation\"\n  - generic: Arrow left/right changes hue; up/down changes saturation. Hold Shift for larger steps.\n  - generic: Lightness\n  - generic: 24%\n  - slider \"Lightness\": \"24\"\n  - generic: Hex colour value\n  - textbox \"Hex colour value\":\n    - /placeholder: \"#047857\"\n    - text: \"#047857\"",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 44,
+              "label": "Close primary colour",
+              "width": 44
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Emerald",
+              "width": 66.796875
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Ocean",
+              "width": 66.796875
+            },
+            {
+              "height": 66.8046875,
+              "label": "Set primary colour to Violet",
+              "width": 66.8046875
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Rose",
+              "width": 66.796875
+            },
+            {
+              "height": 66.8046875,
+              "label": "Set primary colour to Amber",
+              "width": 66.8046875
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Slate",
+              "width": 66.796875
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Teal",
+              "width": 66.796875
+            },
+            {
+              "height": 66.8046875,
+              "label": "Set primary colour to Indigo",
+              "width": 66.8046875
+            },
+            {
+              "height": 66.796875,
+              "label": "Set primary colour to Crimson",
+              "width": 66.796875
+            },
+            {
+              "height": 66.8046875,
+              "label": "Set primary colour to Graphite",
+              "width": 66.8046875
+            }
+          ],
+          "height": 654.859375,
+          "label": "_r_4rq_",
+          "modal": "true",
+          "overflow": false,
+          "width": 390,
+          "x": 0,
+          "y": 189.140625
+        }
+      ]
+    },
+    {
+      "state": "Template library, 390×844 dark/coarse",
+      "heading": "Choose a template",
+      "search": [
+        {
+          "font": "16px",
+          "height": 44,
+          "label": "Search templates"
+        }
+      ],
+      "templateButtons": [
+        "ATS Professional template. Single column · Subtle accent. All levels · Best for online applications",
+        "ATS Plain template. Max parseability · Black & white. All levels · Strictest ATS filters",
+        "Classic Sidebar template. Tinted sidebar · Detail-rich. Mid–Senior · 5–15 years",
+        "Classic Impact template. Classic sidebar · Results below summary. Mid–Senior · Achievement-focused",
+        "Ledger template. Ruled professional brief · Results grid. Leadership · Consulting · Operations",
+        "Executive Serif template. Serif headings · Leadership. Senior/Executive · 15+ years",
+        "Monograph template. Editorial serif · Warm sidebar. Senior professionals · Consultants · Legal",
+        "Modern Minimal template. Single column · Clean tech. Early–Mid · 2–8 years",
+        "Aurora template. Mesh-gradient hero · Glass card. Tech · SaaS · Product · 3–10 years",
+        "Prism template. Solid accent sidebar · Crisp sans. Product · Engineering · Data · 3–12 years",
+        "Horizon template. Light sidebar · Pill headers · Timeline. Design · Product · Tech · 3–12 years",
+        "Minimalist template. Pure type · Hairline accents. All levels · Quiet confidence",
+        "Compact Timeline template. Dense timeline · One-pager. Mid-career · Content-heavy CVs",
+        "Typographic template. Numbered sections · Swiss-style. Creative · Stands out on the pile",
+        "Bauhaus template. Geometric color-block · Editorial. Designers · Creatives · Brand roles",
+        "Gradient Header template. Bold coloured banner. Creative · Designers, PMs, marketers",
+        "Academic CV template. Scholarly · Researchers & faculty. PhDs · Researchers · Faculty"
+      ]
+    },
+    {
+      "state": "Review Overview, 390×844 dark/coarse",
+      "text": "ATS scorecard\n4 dimensions\n86/100\nContent quality\n21 bullets · 16 start with strong action verbs\n100/100\nFormatting\nClean structure\n0/100\nKeyword coverage\nAdd a job description\n20/100\nImpact & metrics\n4 of 21 bullets include metrics (%, $, counts).\nWriting scorecard\n4 dimensions\n87/100\nSpelling\n22 possible misspellings\n100/100\nGrammar\n2 grammar findings\n100/100\nStyle\n7 style findings (passive voice, wordiness)\n100/100\nReadability\nEasy to scan.\nTop fixes\n3 changes · ~3 min\n01\nFew bullets include measurable outcomes.\nAdd numbers where possible — e.g. 'reduced EMI collection time by 40%', '5× award winner'.\n02\nResume body is long.\nConsider trimming older or less relevant detail to stay under ~900 words.\n03\n22 possible spelling issues detected.\nReview \"mid-size\", \"productionise\", \"SLO\" and others — open the Insights tab for fixes.",
+      "measurements": {
+        "height": 776.4765625,
+        "overflow": false,
+        "smallButtons": [
+          {
+            "height": 40,
+            "label": "Re-scan",
+            "width": 97.8984375
+          }
+        ],
+        "width": 390,
+        "x": 0,
+        "y": 67.5234375
+      }
+    },
+    {
+      "state": "Review Keywords, 390×844 dark/coarse",
+      "text": "Add a target job description\n\nPaste the JD for the role you're targeting and CloakResume will show which of its keywords appear in your résumé — and which are missing.\n\nOPEN JD EDITOR →",
+      "measurements": {
+        "height": 776.4765625,
+        "overflow": false,
+        "smallButtons": [
+          {
+            "height": 40,
+            "label": "Re-scan",
+            "width": 97.8984375
+          },
+          {
+            "height": 40,
+            "label": "Open JD editor →",
+            "width": 138.78125
+          }
+        ],
+        "width": 390,
+        "x": 0,
+        "y": 67.5234375
+      }
+    },
+    {
+      "state": "Review Insights, 390×844 dark/coarse",
+      "text": "Complete contact details\n\nContact block has email, phone, location, and LinkedIn.\n\nHealthy summary length\n\nSummary length is in the recruiter-friendly 50–120 word range.\n\nStrong action verbs\n\nMost bullets lead with strong action verbs.\n\nStrong skills coverage\n\nSkills section has good breadth.\n\nPossible spelling issues\n\nReview \"mid-size\", \"productionise\", \"SLO\" and others — open the Insights tab for fixes.\n\nAdd one more metric\n\nAdd numbers where possible — e.g. 'reduced EMI collection time by 40%', '5× award winner'.\n\nRésumé body is long\n\nConsider trimming older or less relevant detail to stay under ~900 words.\n\nGrammar findings\n\nHarper flagged agreement, tense, or punctuation — check the Insights tab for specifics.\n\nStylistic issues\n\nRecruiters favour active verbs. Rewrite \"was delivered\" as \"delivered\".\n\nWriting details\n31 findings\nSPELLING\nmid-size → \"midsize\"\nProfessional summary\nSPELLING\nproductionise → \"production's\", \"productions\"\nPrincipal Distributed Systems Engineer · bullet 1\nSPELLING\nSLO → \"Silo\", \"Slot\", \"Slow\"\nPrincipal Distributed Systems Engineer · bullet 2\nSPELLING\np99 → \"pa\", \"pad\", \"pah\"\nPrincipal Distributed Systems Engineer · bullet 3\nSPELLING\nstandardised → \"standardized\", \"standardize\", \"standardizes\"\nPrincipal Distributed Systems Engineer · bullet 4\nSPELLING\nNATS → \"NAT\", \"NATO\", \"Nabs\"\nPrincipal Distributed Systems Engineer · bullet 5\nSPELLING\norganisation → \"organization\", \"organizations\"\nPrincipal Distributed Systems Engineer · bullet 6\nSPELLING\nEKS → \"EKG\", \"Eds\", \"Eke\"\nPrincipal Distributed Systems Engineer · bullet 6\nSPELLING\nstandardised → \"standardized\", \"standardize\", \"standardizes\"\nPrincipal Distributed Systems Engineer · bullet 6\nSPELLING\ncron → \"con\", \"corn\", \"crop\"\nPrincipal Software Engineer · bullet 1\nSPELLING\npersonalisation → \"personalization\", \"personalizations\"\nPrincipal Software Engineer · bullet 1\nSPELLING\njs → \"as\", \"is\", \"us\"\nPrincipal Software Engineer · bullet 4\nGRAMMAR\nDatadog → \"DataDog\"\nSenior Frontend Engineer · bullet 4\nSTYLE\nsetup → \"set up\"\nSoftware Engineer · bullet 1\nSPELLING\ntsconfig → \"config\"\nSoftware Engineer · bullet 3\nGRAMMAR\nDatadog → \"DataDog\"\nPinecrest · Release Orchestrator · description\nSPELLING\nSLO → \"Silo\", \"Slot\", \"Slow\"\nPinecrest · Release Orchestrator · role 1\nSPELLING\nSLO → \"Silo\", \"Slot\", \"Slow\"\nPinecrest · Release Orchestrator · role 2\nSPELLING\nbehaviour → \"behavior\", \"behaviors\"\nAtlas · Multi-region Service Topology · description\nSTYLE\nfailover → \"fail over\"\nAtlas · Multi-region Service Topology · role 1\nSTYLE\nfailover → \"fail over\"\nAtlas · Multi-region Service Topology · role 2\nSPELLING\nHCL → \"Ha\", \"Hack\", \"Had\"\nOrbit · Internal Developer Platform · role 2\nSPELLING\nSSR → \"Sir\", \"SAR\", \"SSA\"\nBeacon · Edge Rendering Framework · role 2\nSPELLING\nmaterialisation → \"materialization\"\nNorthstar · ML Feature Store · description\nSTYLE\nrollout → \"roll out\"\nNorthstar · ML Feature Store · role 3\n+6 more — fix the ones above and re-scan.",
+      "measurements": {
+        "height": 776.4765625,
+        "overflow": false,
+        "smallButtons": [
+          {
+            "height": 40,
+            "label": "Re-scan",
+            "width": 97.8984375
+          }
+        ],
+        "width": 390,
+        "x": 0,
+        "y": 67.5234375
+      }
+    },
+    {
+      "state": "Review Parse, 390×844 dark/coarse",
+      "text": "Document text preview\nLocal approximation · actual ATS results may differ\nNAME:     Rohan Okafor\nTITLE:    Senior Software Architect · AI Infrastructure\nEMAIL:    rohan.okafor@rohanokafor.dev\nPHONE:    +1 (691) 895-1829\nLOCATION: Tokyo, Japan\nWEBSITE:  rohanokafor.dev\nLINKEDIN: linkedin.com/in/rohan-okafor\nGITHUB:   github.com/rohanokafor\nMEDIUM:   medium.com/@rohanokafor\n\n[PROFESSIONAL SUMMARY]\nPrincipal engineer focused on the intersection of infrastructure and developer experience. Happiest when turning tribal knowledge into self-serve tooling — build systems, internal platforms, dashboards that surface the thing you actually need when paged at 3am. Experience spans early-stage startups where you wire the whole stack yourself to mid-size companies where you negotiate API contracts across four teams. Believe pragmatism beats purity, and that the best architecture docs are the ones that honestly admit what didn't work.\n\n[QUICK STATS]\n  25+ open-source PRs\n  12+ years in software\n  34% cloud cost reduction\n  99.99% availability SLO\n  4 conference talks\n  6× hackathon wins\n\n[EXPERIENCE]\n  · Principal Distributed Systems Engineer — Beacon Compute · Berlin, Germany (Aug 2022–Present)\n    Partnered with the data science team to productionise an in-house embedding model, building the gRPC serving stack and writing the retry, circuit-breaking, and fallback logic that let downstream services lean on it during peak traffic.\n    Mentored fourteen engineers across three squads, running weekly architecture reviews and publishing internal playbooks on distributed tracing and SLO design that became required reading for every new hire.\n    Led a redesign of the service mesh across forty internal microservices, cutting p99 latency by 38% and eliminating a class of cascading failures that had been the top source of overnight pages for the previous year.\n    Rolled out a standardised OpenTelemetry baseline across twenty-plus services, feeding traces into Tempo and metrics into Prometheus — the resulting dashboards became the default starting point for every incident review at the company.\n    Led the rewrite of the billing ingestion pipeline from Python Celery workers to a Go-based streaming service on NATS JetStream, absorbing a 5× traffic increase without adding operational headcount.\n    Drove adoption of Kubernetes across the organisation, from the first EKS proof-of-concept through cluster federation, ArgoCD-based GitOps, and a standardised Helm chart library used by every platform team today.\n  · Principal Software Engineer — Aurora Systems · Dublin, Ireland (May 2020–Jul 2022)\n    Designed a new event streaming platform on Kafka and Flink that replaced a brittle cron-driven batch pipeline, unlocking real-time personalisation for three flagship product surfaces and cutting feature-to-production time by half.\n    Built the first iteration of the internal developer platform — CLI, service catalog, and golden-path templates — reducing new-service bootstrap time from two weeks to under an afternoon across every product team.\n    Built an internal chat-ops assistant on LangChain and Slack that surfaces on-call context, recent deploys, and open incidents — adopted by four teams and used on roughly 80% of paged incidents within a quarter.\n    Shipped the first production Next.js rollout at the company, establishing deployment patterns on Vercel and the CDN-level caching rules that the rest of the org adopted within six months.\n    Led a cross-functional working group on API versioning, landing a documented policy and deprecation tooling that replaced the ad-hoc process mobile, web, and partner teams had each been running differently for years.\n  · Senior Frontend Engineer — Pixelwave Technologies · Sydney, NSW (Jun 2018–Apr 2020)\n    Introduced contract testing with Pact across the growth org's services, enabling independent deploys between the web frontend and its three backends without blocking on shared integration suites.\n    Rewrote the mobile-gateway BFF layer in TypeScript on Fastify, consolidating six legacy Express services into one — median fan-out dropped from eleven downstream calls to three and cut app start time on low-end devices.\n    Reduced monthly cloud spend by 34% by right-sizing compute, moving batch jobs to spot capacity, introducing Karpenter for worker-node scaling, and retiring seven dormant services identified during an infra audit.\n    Designed a canary analysis pipeline on Flagger and Argo Rollouts that automatically rolls back regressions based on Datadog error-budget signals, removing manual release coordination from every deploy.\n  · Software Engineer — Orbital Data Co. · Stockholm, Sweden (Nov 2016–May 2018)\n    Owned the developer onboarding experience for new hires — wrote the local-setup guide, built the dev-container image, and ran weekly office hours that shortened time-to-first-PR from two weeks to under three days.\n    Built the first iteration of the internal analytics dashboard in React and D3, used by regional leadership for weekly business reviews and eventually adopted by the customer-success org as their primary reporting surface.\n    Drove the adoption of TypeScript across the frontend codebase, writing the initial tsconfig and incremental migration plan — shipped the final JS-free PR roughly a year in, with zero production regressions attributed to the rollout.\n  · Graduate Software Engineer — Vector Labs Inc. · London, United Kingdom (Mar 2014–Oct 2016)\n    Fixed long-standing bugs in the shared authentication library during a hack-week, shipping the patch to production and presenting the root-cause analysis at the engineering all-hands.\n    Contributed to the internal design system, authoring onboarding docs that new hires continued to use as their starting point for the following three years.\n    Built internal dashboards and reporting tools in React used by regional operations leadership for weekly business reviews — the core charts are still in production three years later.\n\n[SKILLS]\n  Cloud Platforms: Google Cloud, Fly.io, DigitalOcean, Vercel, Azure, Railway\n  Databases & Storage: MongoDB, Cassandra, MySQL, PostgreSQL, ClickHouse, DynamoDB, Neo4j, Elasticsearch, S3, Redis\n  Backend & APIs: Node.js, NestJS, Express, Bun, tRPC, OpenAPI, WebSockets, Fastify, Deno, GraphQL\n  Observability: Honeycomb, OpenTelemetry, Jaeger, Loki, Datadog, Sentry, New Relic, Grafana\n  Security & Compliance: SOC 2, OpenID Connect, HashiCorp Vault, OAuth 2.1, OWASP Top 10, PCI-DSS, SSO / SAML\n  Infrastructure & DevOps: Helm, Ansible, Terraform, ArgoCD, Jenkins, Kubernetes, CircleCI, Pulumi, GitHub Actions, Docker\n  AI / ML Tooling: Llama Index, Weaviate, Anthropic SDK, LangChain, PyTorch, OpenAI API\n  Programming Languages: TypeScript, JavaScript, Rust, Ruby, Go, Python, Java, C++, Kotlin, Swift\n  Frontend Engineering: TanStack Query, Remix, React, Storybook, Next.js, Vite, Astro, Framer Motion, Vue, Svelte\n  Performance & Systems: Profiling, io_uring, QUIC, gRPC, SIMD, WebAssembly, eBPF\n\n[EDUCATION]\n  · Master of Science in Computer Science — Technical University of Munich (2012–2014)\n    Munich, Bavaria\n    Thesis on low-latency consensus protocols in geo-distributed deployments · GPA 3.9/4.0\n  · Bachelor of Engineering in Software Engineering — University of British Columbia (2008–2012)\n    Vancouver, BC\n    First Class with Distinction · Dean's List for four consecutive semesters\n\n[PROJECTS]\n  · Pinecrest · Release Orchestrator [Go, Argo Rollouts, Flagger, LaunchDarkly, Datadog, Kubernetes]\n    Progressive-delivery controller coordinating canary, blue-green, and feature-flag rollouts across twenty production services. Wired into Datadog SLOs so unhealthy rollouts halt and revert automatically.\n    Lead engineer — designed the controller state machine, the SLO polling path, and the audit trail used during post-incident reviews.\n    Wrote the rollback playbook and SLO-budget integration that turned automatic reverts into a routine part of every release rather than a fire drill.\n  · Signalforge · Incident Response Copilot [TypeScript, LangChain, Postgres, pgvector, Slack API, Pulumi]\n    Internal assistant that ingests alerts, recent deploys, and service-ownership data to suggest the most likely owner and the most likely root cause during live incidents. Integrated with PagerDuty, Slack, and the internal service catalog.\n    Architect — designed the retrieval layer, LLM prompting strategy, and the feedback loop used to iteratively improve suggestion quality across four product orgs.\n    Built the evaluation harness that replays historical incidents against new prompts, letting the team ship prompt changes with measurable confidence instead of vibes.\n  · Atlas · Multi-region Service Topology [Envoy, Istio, Go, AWS, Terraform, CloudWatch]\n    Cross-region service-mesh orchestration layer that handles topology-aware routing, regional failover drills, and latency-based traffic shaping across three AWS regions. Replaced a DIY solution that had accumulated years of undocumented behaviour.\n    Architect — owned the control plane, failover testing harness, and documentation that turned mesh ops into a self-serve experience.\n    Designed the regional-failover game-day cadence that exposed three latent dependency cycles in the first quarter and led to two upstream Envoy patches.\n  · Orbit · Internal Developer Platform [Go, React, Next.js, Backstage, Kubernetes, Terraform, GitHub Actions]\n    Self-service platform that exposes a golden path for creating, deploying, and operating services. Ships with a CLI, a service catalog, a template registry, and opinionated defaults for CI, deploys, and observability.\n    Founding engineer — led platform API design, onboarding UX, and the adoption rollout that brought every product team onto the platform within nine months.\n    Drove the migration of legacy services off bespoke Terraform — replaced roughly forty thousand lines of copy-pasted HCL with a thin opinionated module library.\n    Ran weekly office hours and authored the platform's reference docs, lifting the typical bootstrap time for a new service from two weeks to under an afternoon.\n  · Beacon · Edge Rendering Framework [TypeScript, Cloudflare Workers, React, Vite, Durable Objects]\n    Production-ready edge-rendering framework on Cloudflare Workers that powers the marketing and documentation sites. Includes a typed routing DSL, per-request A/B testing primitives, and first-class streaming responses.\n    Tech lead — built the routing DSL, the streaming primitives, and the rollout tooling used by the growth engineering team.\n    Ran the migration off the legacy SSR cluster, deprecating six redundant services and cutting marketing-site time-to-first-byte by 41% globally.\n  · Northstar · ML Feature Store [Python, Go, Redis, ClickHouse, Spark, Flink, gRPC]\n    In-house feature store serving precomputed features across recommendation, search, and fraud-detection workloads with sub-millisecond online reads and consistent offline materialisation. Integrates with Spark, Flink, and the internal ML training stack.\n    Co-founder of the platform team — owned the online-serving path, consistency guarantees, and the SDK used by every ML engineer at the company.\n    Designed the offline/online consistency contract and the validation tooling that surfaced training/serving skew before models reached production.\n    Mentored four engineers through their first production-ML rollout, codifying the patterns into an internal handbook adopted across two organisations.\n  · Quartz · Observability Backbone [Go, OpenTelemetry, Tempo, Loki, Mimir, Kubernetes, Grafana]\n    Unified logs, metrics, and traces platform that replaced three vendor systems. Built around OpenTelemetry, Tempo, Loki, and Mimir, with a custom query planner that federates searches across backends.\n    Architect — owned the federation layer, ingestion tuning, and the cost model that let the team turn this into a credible vendor alternative internally.\n    Drove the migration off three commercial vendors, retiring roughly $1.4M/year in licensing while keeping query latency at parity for the top quartile of dashboards.\n  · Harbormaster · Service Catalog [TypeScript, Backstage, Postgres, GraphQL, Terraform]\n    Ownership, documentation, and on-call metadata aggregator built on Backstage, feeding incident tooling, access control, and the internal developer portal. Surfaces service health, cost, and compliance posture in one place.\n    Tech lead — owned schema design, plugin surface, and integration with fifteen upstream data sources.\n    Established the data-quality contract that auto-pages owners when ownership metadata drifts, eliminating an entire class of stale-on-call escalations.\n\n[CERTIFICATIONS]\n  · AWS Certified Solutions Architect — Professional — Amazon Web Services (2025)\n  · Confluent Certified Developer for Apache Kafka — Confluent (2024)\n  · Certified Kubernetes Administrator (CKA) — CNCF (2023)\n  · Google Professional Cloud Architect — Google Cloud (2022)\n  · MongoDB Certified Developer Associate — MongoDB University (2021)\n  · Azure Solutions Architect Expert — Microsoft (2020)\n  · Terraform Associate — HashiCorp (2019)\n  · AWS Certified DevOps Engineer — Professional — Amazon Web Services (2018)\n  · Professional Scrum Master II — Scrum.org (2017)\n  · Certified Kubernetes Application Developer (CKAD) — CNCF (2016)\n\n[AWARDS]\n  · Developer Experience Impact Award (2025)\n    Team award for the internal developer platform rollout.\n  · Mentor of the Year (2024)\n    Nominated by five engineers across two organisations for sustained mentorship.\n  · Engineering Excellence Award (2022)\n    Company-wide annual recognition for sustained impact across platform reliability initiatives.\n  · Open Source Contributor of the Year (2021)\n    Recognised for upstream contributions to Kubernetes and OpenTelemetry projects.\n  · Customer Obsession Recognition (2020)\n    Awarded for leading on-call through a major customer incident without breaching contractual SLAs.\n  · Principal's Circle of Innovation (2020)\n    Selected for leading the zero-downtime migration of the billing pipeline.\n  · Hack Week — Grand Prize (2019)\n    Cross-company hackathon winner for an AI-assisted incident-response prototype.\n  · Patent Award (2018)\n    Issued patent on distributed rate-limiting with eventual-consistency guarantees.\n\n[LANGUAGES]\n  Japanese: Intermediate · Conversational\n  Spanish: Fluent · Professional\n  Mandarin: Fluent · Conversational\n  Portuguese: Basic · Reading\n\n[INTERESTS]\nVintage Synths, Home Automation, Film Photography, Trail Running, Specialty Coffee, Cycling\n\n[TOOLS]\nTablePlus, VS Code, Insomnia, Linear, Raycast, Datadog, DBeaver, GitLab, Sentry, Arc, 1Password, Neovim\n\n[ADDITIONAL DETAILS]\n  Advisory: Technical advisor to two early-stage developer-tools startups on platform architecture and GTM\n  Speaking: KubeCon NA 2024 · QCon London 2023 · GopherCon 2022 · internal engineering summits 2020–2024\n  Publications: Peer-reviewed papers on streaming systems at SIGMOD 2022 and VLDB 2023 · monthly technical essays on distributed systems internals\n  Patents: US Patent 11,234,567 — \"Adaptive rate limiting with eventually-consistent quota propagation\"\n\n[Volunteering & Community]\nTechnical mentor for Code Nation, running weekly pairing sessions with high-school engineers from under-represented backgrounds for three consecutive years.\nBoard member of the local Girls Who Code chapter, helping scope the annual curriculum and running the year-end showcase event.\nOrganising committee for the regional KubeCon community meetup, curating talks and running speaker-coaching workshops for first-time presenters.\n\n[Advisory & Boards]\nProgram committee reviewer for the O'Reilly conferences on infrastructure and operations tracks.\nTechnical advisor to a Series A developer-tools startup on platform architecture and GTM for their open-source core.\n",
+      "measurements": {
+        "height": 776.4765625,
+        "overflow": false,
+        "smallButtons": [
+          {
+            "height": 40,
+            "label": "Re-scan",
+            "width": 97.8984375
+          }
+        ],
+        "width": 390,
+        "x": 0,
+        "y": 67.5234375
+      }
+    },
+    {
+      "state": "Logo icon picker, 390×844 dark/coarse",
+      "snapshot": "\n  - textbox \"Search logo icons\" [active]:\n    - /placeholder: Search icons…\n  - button \"User\":\n  - button \"UserCircle\":\n  - button \"Users\":\n  - button \"Briefcase\":\n  - button \"Building\":\n  - button \"Landmark\":\n  - button \"BadgeCheck\":\n  - button \"Award\":\n  - button \"Trophy\":\n  - button \"Crown\":\n  - button \"Star\":\n  - button \"Sparkles\":\n  - button \"Rocket\":\n  - button \"Target\":\n  - button \"TrendingUp\":\n  - button \"Gauge\":\n  - button \"Zap\":\n  - button \"Flame\":\n  - button \"Lightbulb\":\n  - button \"Brain\":\n  - button \"Atom\":\n  - button \"FlaskConical\":\n  - button \"Microscope\":\n  - button \"Dna\":\n  - button \"Stethoscope\":\n  - button \"Pill\":\n  - button \"Code\":\n  - button \"CodeXml\":\n  - button \"Terminal\":\n  - button \"Binary\":\n  - button \"Cpu\":\n  - button \"Server\":\n  - button \"Database\":\n  - button \"Cloud\":\n  - button \"Network\":\n  - button \"GitBranch\":\n  - button \"Laptop\":\n  - button \"Monitor\":\n  - button \"Bot\":\n  - button \"Wand2\":\n  - button \"Palette\":\n  - button \"PenTool\":\n  - button \"Brush\":\n  - button \"Feather\":\n  - button \"FileText\":\n  - button \"BookOpen\":\n  - button \"Library\":\n  - button \"GraduationCap\":\n  - button \"University\":\n  - button \"School\":\n  - button \"Camera\":\n  - button \"Film\":\n  - button \"Music\":\n  - button \"Guitar\":\n  - button \"Headphones\":\n  - button \"Radio\":\n  - button \"Megaphone\":\n  - button \"Newspaper\":\n  - button \"Scissors\":\n  - button \"ChefHat\":\n  - button \"Coffee\":\n  - button \"Hammer\":\n  - button \"Wrench\":\n  - button \"Plane\":\n  - button \"Ship\":\n  - button \"Anchor\":\n  - button \"Car\":\n  - button \"Bike\":\n  - button \"Dumbbell\":\n  - button \"PersonStanding\":\n  - button \"Heart\":\n  - button \"Smile\":\n  - button \"Handshake\":\n  - button \"Shield\":\n  - button \"Key\":\n  - button \"CreditCard\":\n  - button \"Scale\":\n  - button \"Globe\":\n  - button \"Earth\":\n  - button \"MapPin\":\n  - generic: 80 of 112 icons",
+      "measurements": {
+        "height": 370.1953125,
+        "smallButtons": [],
+        "width": 320,
+        "x": 16,
+        "y": 285.828125
+      }
+    },
+    {
+      "state": "Writing hints, 390×844 dark/coarse",
+      "snapshot": "\n- dialog \"Writing hints\" [active]:\n  - generic: 1 writing hint\n  - generic: Esc to close\n  - text: Spelling\n  - generic \"mid-size\": “mid-size”\n  - generic: This looks like a prefix that can be joined with the rest of the word.\n  - button \"midsize\"",
+      "measurements": [
+        {
+          "buttons": [
+            {
+              "height": 44,
+              "label": "midsize",
+              "width": 67.6796875
+            }
+          ],
+          "height": 176,
+          "label": "Writing hints",
+          "modal": null,
+          "overflow": false,
+          "width": 320,
+          "x": 54,
+          "y": 480.0234375
+        }
+      ]
+    }
+  ]
+}

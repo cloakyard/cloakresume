@@ -1,0 +1,2015 @@
+{
+  "schemaVersion": 1,
+  "contractVersion": "1.0.6",
+  "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
+  "surfaces": [
+    {
+      "path": "404.html",
+      "kind": "static-recovery",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "no-script",
+        "missing-route",
+        "long-path",
+        "installed-routing"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "artwork/og.html",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "fixed 1200\u00d7630 social composition",
+        "real synthetic editor image",
+        "local Air stylesheet/mark"
+      ],
+      "viewports": [
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
+        "light",
+        "dark"
+      ],
+      "evidence": ["evidence/preview-assets-2026-10-21.json"],
+      "notes": "Actual production assets, manifest image decode, README theme selection and independent generation hashes checked; not a full-product acceptance claim."
+    },
+    {
+      "path": "index.html",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": ["canonical OG/Twitter metadata", "accurate alt text", "system theme colours"],
+      "viewports": [
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
+        "light",
+        "dark"
+      ],
+      "evidence": ["evidence/preview-assets-2026-10-21.json"],
+      "notes": "Actual production assets, manifest image decode, README theme selection and independent generation hashes checked; not a full-product acceptance claim."
+    },
+    {
+      "path": "src/App.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": [
+        "docs/air/evidence/writing-hints-2026-10-21.json",
+        "docs/air/evidence/resume-review-2026-10-21.json",
+        "evidence/pwa-recovery-2026-10-21.json"
+      ],
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "src/cloak-family.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [
+        "docs/air/evidence/logo-photo-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json",
+        "docs/air/evidence/resume-review-2026-10-21.json",
+        "evidence/preview-assets-2026-10-21.json",
+        "evidence/unused-foundations-2026-10-21.json"
+      ],
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance."
+    },
+    {
+      "path": "src/components/AtsReviewContent.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/AtsReviewDialog.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/BrandLogo.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": ["docs/air/evidence/editor-shell-2026-10-19.json"],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/CloakWorkbenchLanding.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "keyboard focus",
+        "compact navigation",
+        "saved draft",
+        "pending file",
+        "replacement confirmation",
+        "privacy",
+        "error/recovery",
+        "no-JavaScript"
+      ],
+      "viewports": [
+        "desktop",
+        "laptop",
+        "tablet",
+        "phone",
+        "short landscape",
+        "light/dark",
+        "16/32px text"
+      ],
+      "evidence": [
+        "evidence/entry-recovery-2026-10-19.json",
+        "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
+        "docs/air/link-arrows-2026-10-19.md",
+        "docs/air/hyperlinks-2026-10-19.md"
+      ],
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
+    },
+    {
+      "path": "src/components/ColorPickerContent.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "exact saved hex on opening",
+        "ten presets and keyboard selection",
+        "wheel pointer ownership/cancel/lost capture",
+        "black/grey hue memory",
+        "brightness and native hue/saturation",
+        "invalid hex blur/error/recovery",
+        "desktop Tab exit and Escape",
+        "compact modal focus/return/inertness",
+        "phone swipe cancellation/dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine pointers",
+        "forced colours/reduced motion",
+        "offset visual viewport",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/colour-controls-2026-10-21.json"],
+      "notes": "Air software acceptance passes. Physical touch/software keyboard, OS IME and spoken assistive gates remain open. Other widget/overflow/review/PWA interiors remain separate."
+    },
+    {
+      "path": "src/components/ColorPickerPopover.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "exact saved hex on opening",
+        "ten presets and keyboard selection",
+        "wheel pointer ownership/cancel/lost capture",
+        "black/grey hue memory",
+        "brightness and native hue/saturation",
+        "invalid hex blur/error/recovery",
+        "desktop Tab exit and Escape",
+        "compact modal focus/return/inertness",
+        "phone swipe cancellation/dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine pointers",
+        "forced colours/reduced motion",
+        "offset visual viewport",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/colour-controls-2026-10-21.json"],
+      "notes": "Air software acceptance passes. Physical touch/software keyboard, OS IME and spoken assistive gates remain open. Other widget/overflow/review/PWA interiors remain separate."
+    },
+    {
+      "path": "src/components/ConfirmDialog.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "keyboard focus",
+        "compact navigation",
+        "saved draft",
+        "pending file",
+        "replacement confirmation",
+        "privacy",
+        "error/recovery",
+        "no-JavaScript"
+      ],
+      "viewports": [
+        "desktop",
+        "laptop",
+        "tablet",
+        "phone",
+        "short landscape",
+        "light/dark",
+        "16/32px text"
+      ],
+      "evidence": ["evidence/entry-recovery-2026-10-19.json"],
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate."
+    },
+    {
+      "path": "src/components/DragList.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
+      "viewports": [
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
+      ],
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
+    },
+    {
+      "path": "src/components/Editor.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/content-sections-2026-10-21.json"],
+      "notes": "Routes all 13 unchanged section workflows through their Air interiors. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/ErrorBoundary.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "keyboard focus",
+        "compact navigation",
+        "saved draft",
+        "pending file",
+        "replacement confirmation",
+        "privacy",
+        "error/recovery",
+        "no-JavaScript"
+      ],
+      "viewports": [
+        "desktop",
+        "laptop",
+        "tablet",
+        "phone",
+        "short landscape",
+        "light/dark",
+        "16/32px text"
+      ],
+      "evidence": ["evidence/entry-recovery-2026-10-19.json"],
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate."
+    },
+    {
+      "path": "src/components/FormatScope.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "empty/populated/long text",
+        "focus/selected formatting/disabled",
+        "caret/selection/auto-grow/scroll",
+        "invalid with associated help",
+        "removed active field"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "native Safari / Firefox 200%",
+        "forced colours"
+      ],
+      "evidence": ["docs/air/evidence/writing-fields-2026-10-19.json"],
+      "notes": "Shared rich writing/formatting uses Air; optional writing-hint popup and repeated entry geometry remain separate sources. Physical keyboard/touch/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/GithubIcon.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/Layout.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": [
+        "docs/air/evidence/editor-shell-2026-10-19.json",
+        "docs/air/evidence/template-library-2026-10-21.json"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/LogoPicker.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-conditional-audit.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
+      ],
+      "notes": "Air logo/photo controls and shared Profile/Skills field and entry composition are implemented. Stable icon names, 80-result cap, exact photo bytes, JPG/PNG 2MB decoding and cancellation remain intact. Search stays geometrically stable during quick touch selection; keyboard opens search, touch opens the surface. Unknown imported names remain visible and clearable. Shared hint-popup interiors and physical keyboard/IME/touch/assistive acceptance remain separate gates."
+    },
+    {
+      "path": "src/components/MonthYearField.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "empty / month+year / year-only / Present / imported legacy string / disabled Current job",
+        "open month and year views / selected / focus / nested Escape / Tab exit / clear / inert closing",
+        "coarse target / emulated touch cancel / forced colours / reduced motion"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "native Safari 27 and Firefox 158 actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-conditional-audit.json",
+        "docs/air/evidence/date-controls-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json"
+      ],
+      "notes": "Air writing/date controls and entry actions are implemented. Raw imported dates, partial dates, Present, current-job previous-end restoration and output are preserved. Date clear/year choice return focus to surviving controls; nested Escape and non-modal Tab exit work. Writing-hint popup software acceptance is recorded separately; physical/software-keyboard/assistive acceptance remains open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border."
+    },
+    {
+      "path": "src/components/OptionsDialog.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
+      ],
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
+    },
+    {
+      "path": "src/components/PaginatedCanvas.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/components/PaperSizeToggle.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": ["docs/air/evidence/editor-shell-2026-10-19.json"],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/Preview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration."
+    },
+    {
+      "path": "src/components/PrivacyPolicyModal.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "keyboard focus",
+        "compact navigation",
+        "saved draft",
+        "pending file",
+        "replacement confirmation",
+        "privacy",
+        "error/recovery",
+        "no-JavaScript"
+      ],
+      "viewports": [
+        "desktop",
+        "laptop",
+        "tablet",
+        "phone",
+        "short landscape",
+        "light/dark",
+        "16/32px text"
+      ],
+      "evidence": ["evidence/entry-recovery-2026-10-19.json"],
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate."
+    },
+    {
+      "path": "src/components/ReloadPrompt.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "src/components/RichTextArea.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "empty/populated/long text",
+        "focus/selected formatting/disabled",
+        "caret/selection/auto-grow/scroll",
+        "invalid with associated help",
+        "removed active field"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "native Safari / Firefox 200%",
+        "forced colours"
+      ],
+      "evidence": [
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
+      ],
+      "notes": "Shared rich writing/formatting uses Air; optional writing-hint popup and repeated entry geometry remain separate sources. Physical keyboard/touch/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/SectionPanel.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse",
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/editor-shell-2026-10-19.json"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/SectionRail.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "1440x900 light/dark fine",
+        "1280x800 light/dark fine",
+        "768x1024 light/dark coarse",
+        "390x844 light/dark coarse",
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/editor-shell-2026-10-19.json"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/TemplateModal.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "Gallery with all 17 actual templates; fresh/sample and populated content",
+        "Name/description/level/category search; IME composition; no results and clear",
+        "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
+      ],
+      "viewports": [
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
+        "Light/dark; 16/32px root text; fine/coarse; forced colours",
+        "Native Safari; Firefox actual 200% zoom"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-conditional-audit.json",
+        "docs/air/evidence/template-library-2026-10-21.json"
+      ],
+      "notes": "Air library composition and real inert preview source reviewed. Document fonts/geometry/colour remain output exceptions. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open."
+    },
+    {
+      "path": "src/components/TemplatePreview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "Gallery with all 17 actual templates; fresh/sample and populated content",
+        "Name/description/level/category search; IME composition; no results and clear",
+        "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
+      ],
+      "viewports": [
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
+        "Light/dark; 16/32px root text; fine/coarse; forced colours",
+        "Native Safari; Firefox actual 200% zoom"
+      ],
+      "evidence": ["docs/air/evidence/template-library-2026-10-21.json"],
+      "notes": "Air library composition and real inert preview source reviewed. Document fonts/geometry/colour remain output exceptions. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open."
+    },
+    {
+      "path": "src/components/ToolbarActions.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
+      ],
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
+    },
+    {
+      "path": "src/components/ToolbarCenter.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [
+        "docs/air/evidence/colour-controls-2026-10-21.json",
+        "docs/air/evidence/template-library-2026-10-21.json"
+      ],
+      "notes": "Template, primary colour and paper controls use Air. Library state survives responsive chrome changes; review contents are tracked separately. Physical touch/software keyboard, OS IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/ToolbarOverflow.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "ready/busy/failure/retry",
+        "not-ready preview",
+        "native file cancel/invalid/replacement/same-file",
+        "paper selection",
+        "immediate dialog handoffs",
+        "resize and focus return",
+        "keyboard wrap/scroll",
+        "swipe/cancel"
+      ],
+      "viewports": [
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px text",
+        "coarse/fine",
+        "reduced motion/forced colours",
+        "Safari enlarged / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/options-export-2026-10-21.json"],
+      "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false."
+    },
+    {
+      "path": "src/components/ViewSegment.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari"
+      ],
+      "evidence": ["docs/air/evidence/editor-shell-2026-10-19.json"],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+    },
+    {
+      "path": "src/components/ats/AtsCard.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/ats/AtsInsightsPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/ats/AtsKeywordsPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/ats/AtsOverviewPane.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/ats/AtsParsePreview.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/ats/AtsScoreRing.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "all four tabs",
+        "selected/keyboard focus",
+        "known/unknown progress",
+        "error/retry",
+        "empty/short/populated",
+        "full findings and 25-entry cap",
+        "field/JD handoff",
+        "nested save notice",
+        "swipe/cancel",
+        "lazy-load dismissal"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "16 required sizes and breakpoint neighbors",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "coarse/fine input",
+        "forced colours",
+        "native Safari / Firefox actual 200%"
+      ],
+      "evidence": ["docs/air/evidence/resume-review-2026-10-21.json"],
+      "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false."
+    },
+    {
+      "path": "src/components/editor/AwardsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Content-aware title/year pairs preserve arbitrary imported year strings. Detail hints, reorder/removal and output remain intact. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/BulletList.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
+      "viewports": [
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
+      ],
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
+    },
+    {
+      "path": "src/components/editor/CertificationsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Content-aware issuer/year pairs preserve imported year strings and optional URL validation/export links. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/ContactSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "labelled fields, all nine contact kinds",
+        "invalid/empty/corrected values, associated help",
+        "custom and empty proficiency",
+        "native picker selection and Escape return",
+        "keyboard Home/End reachability",
+        "coarse targets, enlarged text and forced colours",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/contact-selects-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "All nine kinds, exact values, autofill/input semantics, validation and native selection retain their separate contact/select evidence. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/CustomSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Custom headings and scoped rich bullets retain independent editing, add/reorder/removal, single-bullet paragraph behavior and writing hints. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/EducationSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "empty / month+year / year-only / Present / imported legacy string / disabled Current job",
+        "open month and year views / selected / focus / nested Escape / Tab exit / clear / inert closing",
+        "coarse target / emulated touch cancel / forced colours / reduced motion",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/date-controls-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Degree/school/detail fields, partial dates and Present retain exact saved values and date-picker evidence. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/ExperienceSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "empty / month+year / year-only / Present / imported legacy string / disabled Current job",
+        "open month and year views / selected / focus / nested Escape / Tab exit / clear / inert closing",
+        "coarse target / emulated touch cancel / forced colours / reduced motion",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/date-controls-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Role/company/location, nested rich bullets, Current job and previous-end restoration retain their shared entry/date/hint evidence. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/InterestsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Optional custom headings and comma-separated interests/tools retain parsing, draft entry, reload and output behavior. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/JdSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Neutral privacy note and shared primary Analyze action; wide coarse targets, saved JD, review handoff and focus return including Safari pointer activation. JD intentionally excluded from Harper. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/LanguagesSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "labelled fields, all nine contact kinds",
+        "invalid/empty/corrected values, associated help",
+        "custom and empty proficiency",
+        "native picker selection and Escape return",
+        "keyboard Home/End reachability",
+        "coarse targets, enlarged text and forced colours",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/contact-selects-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Custom imported proficiency, empty option and native selection remain intact; separate native-select evidence retained. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/ProfileSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "photo / initials / valid import / invalid replacement / native cancel / removal focus",
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Formatting help now uses the shared associated hint. Headline limit, formatting, photo validation/bytes and logo selection retain their existing evidence. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/ProjectsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Description/role bullets, formatting scope, optional empty roles and CSV stack retain their data, focus, hint and repeated-entry behavior. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/SkillsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "logo selected / unknown imported value / search / long no-results / clear / Escape / Tab exit",
+        "keyboard / emulated touch cancellation / forced colours / reduced motion",
+        "group fields / add / move / remove / empty",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Group names, exact comma-separated strings, optional/unknown icons and ordering retain shared field/logo/entry evidence. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/StatsSection.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "baseline populated default; remaining states in editor-audit.md",
+        "complete section empty/populated composition",
+        "imported/custom/long values and enlarged text",
+        "persistent labels, reachable fields/actions and open grouping"
+      ],
+      "viewports": [
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
+        "coarse/fine, short landscape, forced colours",
+        "native Safari and Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/content-sections-2026-10-21.json"
+      ],
+      "notes": "Ordinary Air group headings, content-aware paired fields and open separated groups. Stats and Extras stay independent through add/edit/move/remove/cancel/reload; imported strings and output unchanged. Source review complete. Software acceptance is recorded in the content-section evidence and the existing shared-widget evidence; physical touch/software keyboards, OS IME and spoken assistive acceptance remain open. Library/review/overflow/PWA surfaces have separate gates."
+    },
+    {
+      "path": "src/components/editor/shared.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "populated and empty",
+        "move boundaries and position announcements",
+        "nested duplicate bullets, selection and formatting",
+        "remove, confirm, Escape and recovery focus",
+        "external text drop",
+        "forced colours and reduced motion"
+      ],
+      "viewports": [
+        "16 Air sizes, light/dark, 16/32px text",
+        "native Safari",
+        "native Firefox actual 200% zoom"
+      ],
+      "evidence": ["docs/air/evidence/repeated-entries-2026-10-19.json"],
+      "notes": "Air repeated-entry primitive implemented; native touch/software keyboard and assistive speech remain open. Saved arrays/strings and output geometry are unchanged."
+    },
+    {
+      "path": "src/components/fields.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "labelled fields, all nine contact kinds",
+        "invalid/empty/corrected values, associated help",
+        "custom and empty proficiency",
+        "native picker selection and Escape return",
+        "keyboard Home/End reachability",
+        "coarse targets, enlarged text and forced colours"
+      ],
+      "viewports": [
+        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
+        "native Safari",
+        "native Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-panel-audit.json",
+        "docs/air/editor-mobile-audit.json",
+        "docs/air/editor-layout-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/contact-selects-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
+      ],
+      "notes": "Air field/contact/language composition implemented. Native customizable select plus browser/OS fallback preserve all data and semantics. Date/logo/wheel/hint/review widgets are separately tracked; physical touch/IME/assistive speech remain open."
+    },
+    {
+      "path": "src/index.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [
+        "docs/air/neutral-links-2026-10-19.md",
+        "docs/air/evidence/colour-controls-2026-10-21.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json",
+        "evidence/preview-assets-2026-10-21.json",
+        "evidence/unused-foundations-2026-10-21.json"
+      ],
+      "notes": " Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance."
+    },
+    {
+      "path": "src/main.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration."
+    },
+    {
+      "path": "src/static-recovery.ts",
+      "kind": "static-recovery",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover",
+        "focus",
+        "no-script",
+        "missing-route",
+        "long-path",
+        "installed-routing"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "src/styles/air-editor.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "shell/default",
+        "selected/focus",
+        "section navigation",
+        "preview zoom/scroll",
+        "paper/view choice",
+        "compact picker/expanded preview",
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "desktop/laptop/tablet/phone",
+        "light/dark",
+        "16/32px root text",
+        "short landscape",
+        "forced colours",
+        "native Firefox 200% / Safari",
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text"
+      ],
+      "evidence": [
+        "docs/air/evidence/editor-shell-2026-10-19.json",
+        "docs/air/evidence/logo-photo-2026-10-19.json",
+        "docs/air/evidence/colour-controls-2026-10-21.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json",
+        "docs/air/evidence/resume-review-2026-10-21.json",
+        "evidence/pwa-recovery-2026-10-21.json"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "src/styles/air-entry.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "keyboard focus",
+        "compact navigation",
+        "saved draft",
+        "pending file",
+        "replacement confirmation",
+        "privacy",
+        "error/recovery",
+        "no-JavaScript"
+      ],
+      "viewports": [
+        "desktop",
+        "laptop",
+        "tablet",
+        "phone",
+        "short landscape",
+        "light/dark",
+        "16/32px text"
+      ],
+      "evidence": [
+        "evidence/entry-recovery-2026-10-19.json",
+        "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
+        "docs/air/neutral-links-2026-10-19.md"
+      ],
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
+    },
+    {
+      "path": "src/styles/air-recovery.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "offline",
+        "update",
+        "busy",
+        "storage-error",
+        "delivery-error",
+        "retry",
+        "dismissal-focus",
+        "static-404"
+      ],
+      "viewports": [
+        "phone",
+        "landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "enlarged text",
+        "forced colours"
+      ],
+      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
+      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
+    },
+    {
+      "path": "src/styles/air.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "default",
+        "hover/press (CSS review)",
+        "focus",
+        "selected",
+        "disabled",
+        "busy",
+        "error",
+        "success",
+        "warning",
+        "dialog open/close/focus return",
+        "narrow sheet",
+        "light/dark",
+        "reduced motion",
+        "coarse/fine pointer"
+      ],
+      "viewports": [
+        "320x568",
+        "375x812",
+        "390x844",
+        "430x932",
+        "844x390",
+        "768x1024",
+        "1024x768",
+        "1280x720",
+        "1366x768",
+        "1440x900",
+        "1920x1080",
+        "639x800",
+        "641x800",
+        "1023x768",
+        "1025x768"
+      ],
+      "evidence": [
+        "docs/air/validation.md \u2014 refinement 02 candidate",
+        "docs/air/components.html",
+        "docs/air/neutral-links-2026-10-19.md"
+      ],
+      "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
+    },
+    {
+      "path": "src/templates/Academic.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/AtsPlain.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/AtsProfessional.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Aurora.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Bauhaus.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ClassicImpact.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ClassicSidebar.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/CompactTimeline.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ExecutiveSerif.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/GradientHeader.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Horizon.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Ledger.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Minimalist.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/ModernMinimal.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Monograph.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Prism.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/Typographic.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/paginationAtoms.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/templates/shared.tsx",
+      "kind": "output-preservation",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "src/utils/fieldIssues.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "Optional hint vs field error",
+        "Real six-consumer report/open/apply/dismiss",
+        "Exact first-match and rich-text preservation",
+        "No replacement/long phrase/list overflow",
+        "Keyboard/outside touch/focus and disappearing trigger",
+        "No stale hints during loading/error/empty report",
+        "Long replacement stress; normal/reduced motion"
+      ],
+      "viewports": [
+        "16 required/boundary sizes \u00d7 light/dark \u00d7 16/32px text",
+        "Wide coarse pointer, short landscape, forced colours, offset visual viewport",
+        "Native Safari; native Firefox actual 200%"
+      ],
+      "evidence": [
+        "docs/air/editor-audit.md",
+        "docs/air/editor-conditional-audit.json",
+        "docs/air/evidence/writing-fields-2026-10-19.json",
+        "docs/air/evidence/writing-hints-2026-10-21.json"
+      ],
+      "notes": "Air hint trigger and readable non-modal popup share viewport placement with the date/logo/colour portals. Native and automated software acceptance passed; physical touch/software keyboard/IME and spoken assistive gates remain open. Report source/ranking/replacement semantics and all output are preserved. Full review and section interiors remain separate gates."
+    },
+    {
+      "path": "src/utils/richText.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": false,
+      "airImplemented": false,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": [],
+      "notes": ""
+    },
+    {
+      "path": "vite.config.ts",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": true,
+      "states": [
+        "four screenshot declarations",
+        "Air install colours",
+        "orientation any",
+        "presentation assets excluded from precache"
+      ],
+      "viewports": [
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
+        "light",
+        "dark"
+      ],
+      "evidence": ["evidence/preview-assets-2026-10-21.json"],
+      "notes": "Actual production assets, manifest image decode, README theme selection and independent generation hashes checked; not a full-product acceptance claim."
+    }
+  ]
+}

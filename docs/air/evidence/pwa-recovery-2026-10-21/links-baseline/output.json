@@ -1,0 +1,26 @@
+[
+  {
+    "id": "classic-sidebar",
+    "paperSize": "a4",
+    "sha256": "3c134bbc1352b52c1db1595a502e132166beeb70e54027f35157523d68b3aecd",
+    "geometry": [
+      {
+        "width": 794,
+        "height": 1123,
+        "text": "Air Colour ReviewDesign EngineerContactair@example.comhttps://example.com/air+1 555 123 4567Professional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  },
+  {
+    "id": "classic-sidebar",
+    "paperSize": "letter",
+    "sha256": "281c36a91b9bacdccea3cb003059103115575aaad332414454dbdd0525e796e7",
+    "geometry": [
+      {
+        "width": 816,
+        "height": 1056,
+        "text": "Air Colour ReviewDesign EngineerContactair@example.comhttps://example.com/air+1 555 123 4567Professional SummaryA stable document with exact primary colour, typography and geometry."
+      }
+    ]
+  }
+]

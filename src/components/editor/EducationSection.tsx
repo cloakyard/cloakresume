@@ -7,7 +7,7 @@ import { MonthYearField } from "../MonthYearField.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -49,6 +49,7 @@ export function EducationSection({ resume, onChange }: SectionProps) {
           <DragItem
             key={ed.id}
             index={i}
+            label={`education entry ${i + 1}`}
             onDelete={() =>
               patch(
                 "education",
@@ -56,19 +57,14 @@ export function EducationSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn, moveBtns) => (
-              <div className="sub-card mb-2.5">
-                <SubCardHead
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="resume-entry">
+                <EntryHeading
                   index={i}
                   prefix="Entry"
                   drag={handle}
                   moveBtns={moveBtns}
-                  onDelete={() =>
-                    patch(
-                      "education",
-                      resume.education.filter((_, j) => j !== i),
-                    )
-                  }
+                  deleteButton={deleteBtn}
                 />
                 <div className="cr-stack">
                   <TextField
@@ -107,7 +103,7 @@ export function EducationSection({ resume, onChange }: SectionProps) {
                       patch("education", next);
                     }}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="resume-field-pair">
                     <MonthYearField
                       label="Start"
                       value={ed.start}
@@ -134,9 +130,7 @@ export function EducationSection({ resume, onChange }: SectionProps) {
           </DragItem>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addEntry}>Add entry</AddButton>
-      </div>
+      <AddButton onClick={addEntry}>Add entry</AddButton>
     </>
   );
 }

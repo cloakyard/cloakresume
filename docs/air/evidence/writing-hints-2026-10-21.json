@@ -1,0 +1,758 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume writing-hint trigger/popover and review field focus. Full product migration remains open.",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5",
+  "status": "Passed; local checkpoint",
+  "gates": {
+    "productionSuite": {
+      "tests": 318,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 138,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 421.01
+    },
+    "check": "Zero format/lint/type errors; 136 code files",
+    "build": "73 precache entries; no new dependency",
+    "design": "79-source inventory",
+    "portability": "18 isolation/drift checks",
+    "familySync": "Six specifications; unchanged shared contract",
+    "maintenance": "Targeted runs exposed an input-only Awards helper, a hidden photo-input selector and the existing review jump missing focus. These were corrected without raising timeouts. Source assertions now follow the shared position helper and single Air focus contour."
+  },
+  "matrix": {
+    "cases": 452,
+    "sizes": [
+      [1920, 1080],
+      [1440, 900],
+      [1366, 768],
+      [1280, 720],
+      [1279, 720],
+      [1024, 768],
+      [1023, 768],
+      [768, 1024],
+      [767, 1024],
+      [640, 800],
+      [639, 800],
+      [430, 932],
+      [390, 844],
+      [375, 812],
+      [320, 568],
+      [844, 390]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "consumers": [
+      "profile.summary",
+      "experience.0.bullets.0",
+      "projects.0.description",
+      "projects.0.roles.0",
+      "awards.0.detail",
+      "custom.0.bullets.0"
+    ],
+    "states": [
+      "Real grammar/spelling reports, explicit/no replacement, long phrase and list overflow",
+      "Injected DOM long-replacement/description stress (CSS reflow, not an engine-generated suggestion)"
+    ],
+    "independentEdges": [
+      "wide coarse pointer",
+      "forced colours",
+      "offset visual viewport",
+      "normal motion remains immediate"
+    ],
+    "consoleErrors": [],
+    "contrastPairs": [
+      {
+        "theme": "light",
+        "pairs": [
+          {
+            "text": "Writing hints",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Suggestions are optional. Choose a replacement to update this field.",
+            "ratio": 6.873758629397385
+          },
+          {
+            "text": "Grammar",
+            "ratio": 6.188378967035128
+          },
+          {
+            "text": "\u201cteh\u201d",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Did you mean the definite article?",
+            "ratio": 6.873758629397385
+          },
+          {
+            "text": "the",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Grammar",
+            "ratio": 6.188378967035128
+          },
+          {
+            "text": "\u201cthe the\u201d",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Did you mean to repeat this word?",
+            "ratio": 6.873758629397385
+          },
+          {
+            "text": "the",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Spelling",
+            "ratio": 6.49655856625107
+          },
+          {
+            "text": "\u201cunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedword\u201d",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Did you mean to spell `unrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedword` this way?",
+            "ratio": 6.873758629397385
+          }
+        ]
+      },
+      {
+        "theme": "dark",
+        "pairs": [
+          {
+            "text": "Writing hints",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Suggestions are optional. Choose a replacement to update this field.",
+            "ratio": 9.0171348392764
+          },
+          {
+            "text": "Grammar",
+            "ratio": 10.921666832239229
+          },
+          {
+            "text": "\u201cteh\u201d",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Did you mean the definite article?",
+            "ratio": 9.0171348392764
+          },
+          {
+            "text": "the",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Grammar",
+            "ratio": 10.921666832239229
+          },
+          {
+            "text": "\u201cthe the\u201d",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Did you mean to repeat this word?",
+            "ratio": 9.0171348392764
+          },
+          {
+            "text": "the",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Spelling",
+            "ratio": 8.608285121234701
+          },
+          {
+            "text": "\u201cunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedword\u201d",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Did you mean to spell `unrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedwordunrecognizedword` this way?",
+            "ratio": 9.0171348392764
+          }
+        ]
+      }
+    ]
+  },
+  "features": [
+    "Real local Harper reports and existing order/source/category mapping",
+    "Opening/dismissal preserve the document; exact first occurrence only; rich text and later occurrences preserved",
+    "Autosave/reload of all six consumers",
+    "Non-modal Tab/Shift+Tab, Escape/close and outside pointer/focus dismissal",
+    "Applying a final hint returns to its field; subsequent reports do not reopen the popup",
+    "Review-to-field focus and Target JD exclusion from grammar scans",
+    "Existing engine download/edit race and failed-download retry; no stale badges in loading/error states"
+  ],
+  "output": {
+    "templatePaperImages": 34,
+    "templateGeometryIdentical": true,
+    "templateHashesIdentical": true,
+    "pdfs": [
+      {
+        "paper": "a4",
+        "renderSha256": "ea69b7c87ae509fa48c7a6928cfdc3fb3fdadf76a38b519651de78790037e70f",
+        "identical": true
+      },
+      {
+        "paper": "letter",
+        "renderSha256": "47e03cef173cfc585dd29912826bd16bd62880ebe11d33749889a5b6486820d6",
+        "identical": true
+      }
+    ],
+    "templatePaperProof": [
+      {
+        "template": "classic-sidebar",
+        "paper": "a4",
+        "beforeSha256": "398098d8a3a40f3339df5a5fa09e21db54e0b50c7da3c0af4bbf1ea64eccfa42",
+        "afterSha256": "398098d8a3a40f3339df5a5fa09e21db54e0b50c7da3c0af4bbf1ea64eccfa42",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "classic-sidebar",
+        "paper": "letter",
+        "beforeSha256": "a9eda360124e7dc6206a31e175bb1052b36027500f36524727c3c66022b01e7d",
+        "afterSha256": "a9eda360124e7dc6206a31e175bb1052b36027500f36524727c3c66022b01e7d",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "classic-impact",
+        "paper": "a4",
+        "beforeSha256": "8887e7148b78f7a54a8989f979ed368e950654dd3ddd7b91172c040b6a63bb9d",
+        "afterSha256": "8887e7148b78f7a54a8989f979ed368e950654dd3ddd7b91172c040b6a63bb9d",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "classic-impact",
+        "paper": "letter",
+        "beforeSha256": "38177c63c1701f981e87fdd6645336fe16273ebf91bbaf44bdb706e05cc2a344",
+        "afterSha256": "38177c63c1701f981e87fdd6645336fe16273ebf91bbaf44bdb706e05cc2a344",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ledger",
+        "paper": "a4",
+        "beforeSha256": "46e46dcf83645ee82941a1e1590eb5caea893572f3dd8d5dc08a0cd2a77ee73c",
+        "afterSha256": "46e46dcf83645ee82941a1e1590eb5caea893572f3dd8d5dc08a0cd2a77ee73c",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ledger",
+        "paper": "letter",
+        "beforeSha256": "fdb21c7d42a46b22c55f2cc71a5b928452f84cc4ea1fd73bdf001b986b2f260c",
+        "afterSha256": "fdb21c7d42a46b22c55f2cc71a5b928452f84cc4ea1fd73bdf001b986b2f260c",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "executive-serif",
+        "paper": "a4",
+        "beforeSha256": "8fae2440ad2f39079de4978b891ad5b3d0b7a0b3a18ac8e13170315ead244cb3",
+        "afterSha256": "8fae2440ad2f39079de4978b891ad5b3d0b7a0b3a18ac8e13170315ead244cb3",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "executive-serif",
+        "paper": "letter",
+        "beforeSha256": "22e188b2853ee1f157629ade605b1d4c5acddb2fe55f5c325893658a11da1f3c",
+        "afterSha256": "22e188b2853ee1f157629ade605b1d4c5acddb2fe55f5c325893658a11da1f3c",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "monograph",
+        "paper": "a4",
+        "beforeSha256": "3f808d853ba5ef0c55534c41d26c46298162808a17b6cbe94ce2cfd643acc909",
+        "afterSha256": "3f808d853ba5ef0c55534c41d26c46298162808a17b6cbe94ce2cfd643acc909",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "monograph",
+        "paper": "letter",
+        "beforeSha256": "537afb9d4bd79344eab91b602d2038133c31e3b570962a8f706c7928681cd0a0",
+        "afterSha256": "537afb9d4bd79344eab91b602d2038133c31e3b570962a8f706c7928681cd0a0",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ats-professional",
+        "paper": "a4",
+        "beforeSha256": "6229a3a25613ad2047f3d822e3a00df9abd36f6d2c8e477fc5e4e181f052c798",
+        "afterSha256": "6229a3a25613ad2047f3d822e3a00df9abd36f6d2c8e477fc5e4e181f052c798",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ats-professional",
+        "paper": "letter",
+        "beforeSha256": "4832aec47de3c9fa8270834522492735e853c817b6241d837c4b6398d380d73d",
+        "afterSha256": "4832aec47de3c9fa8270834522492735e853c817b6241d837c4b6398d380d73d",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerProfessional SummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ats-plain",
+        "paper": "a4",
+        "beforeSha256": "b443da3bc3c1eff280e5b060842411408f3a8e75ffa6f576124905472c63e828",
+        "afterSha256": "b443da3bc3c1eff280e5b060842411408f3a8e75ffa6f576124905472c63e828",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "ats-plain",
+        "paper": "letter",
+        "beforeSha256": "204f397c9b0ea5dd5136f50e23b54e7a04570bc35bc7f20c5a70a58e47c88ac7",
+        "afterSha256": "204f397c9b0ea5dd5136f50e23b54e7a04570bc35bc7f20c5a70a58e47c88ac7",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "a4",
+        "beforeSha256": "551c1a8b9a33dc4ef3f9979bbdc02ff6c9795b2db79aa1a7a83b033fb85ca6c0",
+        "afterSha256": "551c1a8b9a33dc4ef3f9979bbdc02ff6c9795b2db79aa1a7a83b033fb85ca6c0",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "letter",
+        "beforeSha256": "853730ac5715d91e04b945b2a76aa9b0a8f6e842f4219a838cafb1258ba2f69c",
+        "afterSha256": "853730ac5715d91e04b945b2a76aa9b0a8f6e842f4219a838cafb1258ba2f69c",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "aurora",
+        "paper": "a4",
+        "beforeSha256": "78d3362b1874dd5abff3cf84a986770eeab7b879d647c93f3b32c513ae8137b0",
+        "afterSha256": "78d3362b1874dd5abff3cf84a986770eeab7b879d647c93f3b32c513ae8137b0",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "ACAir Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "aurora",
+        "paper": "letter",
+        "beforeSha256": "030ff47c009c31a1f8c6e57da11fc8811bc6f48d9e12940af804b6c1c18d7249",
+        "afterSha256": "030ff47c009c31a1f8c6e57da11fc8811bc6f48d9e12940af804b6c1c18d7249",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "ACAir Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "prism",
+        "paper": "a4",
+        "beforeSha256": "bae2c27c34140101011678e843d91c3918710fdd8417ef0862f0a82b41c7f7b4",
+        "afterSha256": "bae2c27c34140101011678e843d91c3918710fdd8417ef0862f0a82b41c7f7b4",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "prism",
+        "paper": "letter",
+        "beforeSha256": "386e6317248f1d39eff4406cb9d4936ba4048c6a095d025308612d621fcf8de6",
+        "afterSha256": "386e6317248f1d39eff4406cb9d4936ba4048c6a095d025308612d621fcf8de6",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "horizon",
+        "paper": "a4",
+        "beforeSha256": "ae135112e3f9b2c773df731687dfc2c154d2e1bcab509ce462a8d0eab896bd76",
+        "afterSha256": "ae135112e3f9b2c773df731687dfc2c154d2e1bcab509ce462a8d0eab896bd76",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "horizon",
+        "paper": "letter",
+        "beforeSha256": "904c774d7860fed49ba3c2900968be1a8f744db4cd7cb5a88da05c2328922371",
+        "afterSha256": "904c774d7860fed49ba3c2900968be1a8f744db4cd7cb5a88da05c2328922371",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "minimalist",
+        "paper": "a4",
+        "beforeSha256": "b81646a0d09ffb0cc95886a03dee7ede197b7fb55290445d28495af899d7018d",
+        "afterSha256": "b81646a0d09ffb0cc95886a03dee7ede197b7fb55290445d28495af899d7018d",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "minimalist",
+        "paper": "letter",
+        "beforeSha256": "61dfd67ffe1496bb622afbbe8acd0733f2bf1bcdc77af5602ba3c8426e37da16",
+        "afterSha256": "61dfd67ffe1496bb622afbbe8acd0733f2bf1bcdc77af5602ba3c8426e37da16",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerAboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "a4",
+        "beforeSha256": "c5b6a3e21faa0dd11c23ea1d94164fe4ab8718febb5269b06a95a8f32fe570bb",
+        "afterSha256": "c5b6a3e21faa0dd11c23ea1d94164fe4ab8718febb5269b06a95a8f32fe570bb",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "letter",
+        "beforeSha256": "7d4799ec05f93ce95fec388bd3362c919735c16ebc4d601c5cf1d4461b65cf4a",
+        "afterSha256": "7d4799ec05f93ce95fec388bd3362c919735c16ebc4d601c5cf1d4461b65cf4a",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "typographic",
+        "paper": "a4",
+        "beforeSha256": "b3075471dc1cb9513a3a884f280c6f199f577d4ac1234aec142bb698c5b7202a",
+        "afterSha256": "b3075471dc1cb9513a3a884f280c6f199f577d4ac1234aec142bb698c5b7202a",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign Engineer01AboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "typographic",
+        "paper": "letter",
+        "beforeSha256": "b0a7dcd25ec2c0c543a2484ee947cb2768899f2e71ff13487a59f872b8d7800a",
+        "afterSha256": "b0a7dcd25ec2c0c543a2484ee947cb2768899f2e71ff13487a59f872b8d7800a",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign Engineer01AboutA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "bauhaus",
+        "paper": "a4",
+        "beforeSha256": "646106ee059f85d52f910e2a5bd20c4b0f740ad1cf29a9a5a74adbac93b07e02",
+        "afterSha256": "646106ee059f85d52f910e2a5bd20c4b0f740ad1cf29a9a5a74adbac93b07e02",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "bauhaus",
+        "paper": "letter",
+        "beforeSha256": "854e7155dd628296bd316e8d48781215bf060e566c1cc719f06e02406eb1f6f8",
+        "afterSha256": "854e7155dd628296bd316e8d48781215bf060e566c1cc719f06e02406eb1f6f8",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "ACAir Colour ReviewDesign EngineerProfileA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "gradient-header",
+        "paper": "a4",
+        "beforeSha256": "ec6b00d72a5780f8985681323310c06ba2e2d8ce9a2325cdeee4d4bc9aee3f36",
+        "afterSha256": "ec6b00d72a5780f8985681323310c06ba2e2d8ce9a2325cdeee4d4bc9aee3f36",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "ACAir Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "gradient-header",
+        "paper": "letter",
+        "beforeSha256": "703bce004fcda752561724492cfb63a3db4c93615209779c13c85c1341f2fba8",
+        "afterSha256": "703bce004fcda752561724492cfb63a3db4c93615209779c13c85c1341f2fba8",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "ACAir Colour ReviewDesign EngineerSummaryA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "academic",
+        "paper": "a4",
+        "beforeSha256": "97c491f704eb7ff64b1d99e9cbf44790bd2c9fa40b22cf3e063ec9a73a03fd8b",
+        "afterSha256": "97c491f704eb7ff64b1d99e9cbf44790bd2c9fa40b22cf3e063ec9a73a03fd8b",
+        "geometry": [
+          {
+            "width": 794,
+            "height": 1123,
+            "text": "Air Colour ReviewDesign EngineerResearch StatementA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      },
+      {
+        "template": "academic",
+        "paper": "letter",
+        "beforeSha256": "3f1294f3e72b04c241045a58f570e7600979f52322e9ee61c4d828feed36eb58",
+        "afterSha256": "3f1294f3e72b04c241045a58f570e7600979f52322e9ee61c4d828feed36eb58",
+        "geometry": [
+          {
+            "width": 816,
+            "height": 1056,
+            "text": "Air Colour ReviewDesign EngineerResearch StatementA stable document with exact primary colour, typography and geometry."
+          }
+        ]
+      }
+    ]
+  },
+  "native": {
+    "Safari": "Named popup, readable content, Escape trigger return, last replacement keeps markdown and focuses field. Screenshot visually inspected.",
+    "Firefox": "Actual 200% browser zoom, compact flow, Tab reaches replacement, keyboard application retains markdown and field focus. Zoom reset; review tabs closed."
+  },
+  "cleanup": [
+    "Retired duplicate popup placement and animated presence",
+    "Removed uppercase/mono chips, phrase truncation and tinted replacement skin",
+    "Removed unconsumed .popover skin/selectors and decorative field-glow CSS/timeout"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-1440-light-16.png",
+      "sha256": "2c352f0c5ba9099483481b279b2e1de38a8d3c1004dd4f4e3fa1669687e3750d"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-1440-dark-16.png",
+      "sha256": "fca7109e0a76110d5b917c9bad7a0757780c7092009bf5951b86875b14f47fac"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-1280-light-16.png",
+      "sha256": "6d5ec91e78657534676aa48ba64e09f45cd56645e738b6516cbde3b1b9626ec0"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-1280-dark-16.png",
+      "sha256": "b33805c23e3381c6a6e6a333870465d25f66781e41ae95ecb2fbf94e4e959229"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-768-light-16.png",
+      "sha256": "35adadb1850f0a2e2a2411089fb5aeb4387018a9e9e027b53c7a3afb9d12a9ae"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-768-dark-16.png",
+      "sha256": "9966f00487973ee9ea4645ce19ec1282fa0e619a8870b19b2aaae4a1d9cff3f7"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-390-light-16.png",
+      "sha256": "e49a33735d3284e297557aabd46cd6b39899827e6e78a82fb3b5a095a894efa3"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-390-dark-16.png",
+      "sha256": "b8dde721adff7c99b5b31162bda18a897b0212254e69203bef2637dc841a549c"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-320-light-32.png",
+      "sha256": "4dd412016e33aaaceac66f66e57c61f7cf6c538e1f0771541af9f4f5d1eb174e"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-320-dark-32.png",
+      "sha256": "e30b4ca63ff4252e4fd4fdfada00191a080cb1bd78ff4d3c6e41a475e99daf1c"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-844-light-32.png",
+      "sha256": "91497fb8d01180a4b5900a65bf0ea4f621323afe35d90d497c7c15d70470c341"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-844-dark-32.png",
+      "sha256": "f6cde2b5a4263eba23c779646d560a1191991a39187313d00f2626e99cdc6f1f"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-coarse.png",
+      "sha256": "b26fa621588a920d52a264be7167a351bef07283669faa7e3498d6b56ba2faea"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-forced.png",
+      "sha256": "550031b523d5f063f9de3c5c6b4c4edd1fa97844ad7d5ce4a53302377a1c66ef"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-viewport.png",
+      "sha256": "4e723da36f0231d1b37f31a9603219af3c7b0b5b0fa1f456eea6f1a766ac92bf"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/hints-motion.png",
+      "sha256": "c44a9451c547d8547d4833b50bf43fd900d38d04338472f5c1236bc780299e7f"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/safari-hints.png",
+      "sha256": "df9352dcf059d16d2788887667cea34b8005acfc4f702635d842587236b43390"
+    },
+    {
+      "path": "docs/air/evidence/writing-hints-2026-10-21/firefox-200-hints.png",
+      "sha256": "ca9c0c808d9eeeacda04ce4300dac9aa1d9aa59320579786e128248c96eb5690"
+    }
+  ],
+  "sourceSha256": {
+    "src/utils/fieldIssues.tsx": "f29d30cc8284e4856aa94f22ff321c5ac0ffcf115a53a8d96dd0a3ff37546817",
+    "src/utils/usePickerPosition.ts": "501c1dc3911b1d37fb69b01b166989565a4c66351737aacbdb3c818b1bdf16d9",
+    "src/utils/highlightField.ts": "0a3ac7b3edbef5b52f98a7bf9bc9a30b09e69cec5e919622a1124a6b73d55ec0",
+    "src/components/fields.tsx": "80b7a40495c5aa0496e6f79b94b9b7d1ba69eca5187e8315dd8943e65e7c991e",
+    "src/components/RichTextArea.tsx": "7bc76f5d320ac4efeee48cadfc22b2d9af152e41389fa56f74d582ae57d16c6a",
+    "src/styles/air-editor.css": "6443d69fe26fd8c8bc6fb78e8e721d9deabbc72b4162679a8643a7347376b5be",
+    "src/index.css": "025fcddfab76e9b67a206f5f06000ed297a2ccdae9b8ba435c4b9496aadc9241",
+    "src/cloak-family.css": "ed13709f7d7ec0b37c96e21a3247a645895049830e7ac8be2da1b9d51674d930",
+    "src/App.tsx": "da36bdc230f19fe16d3bbd44992dbc88f7501a49746ec2c68240cc4fa1d12cfe"
+  },
+  "scratch": {
+    "root": "/tmp/cloakresume-air-hints",
+    "matrix": "/var/folders/k0/mzs4nsyn7k78t1j1xlsxq1q40000gn/T/cloakresume-hints-tHtuA6"
+  },
+  "remaining": [
+    "Physical touch/software keyboard, OS IME and spoken assistive acceptance",
+    "Remaining content-section composition, template/library, all review tabs, overflow/export/PWA/static recovery and actual assets",
+    "CloakIMG remains last; parked draft untouched"
+  ],
+  "publication": "Local only; no push or deployment."
+}

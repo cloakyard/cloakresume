@@ -33,46 +33,29 @@ export function SectionPanel({
   onClose,
 }: Props) {
   const meta = SECTIONS.find((s) => s.id === active) ?? SECTIONS[0];
-  const Icon = meta.icon;
 
   return (
-    <section
-      aria-label={`${meta.label} editor`}
-      className="flex h-full min-h-0 w-full min-w-0 flex-col overflow-hidden bg-(--surface) print:hidden"
-    >
-      <header className="flex shrink-0 items-start gap-3 border-b border-(--line) bg-(--surface) px-4 py-3 lg:px-5 lg:py-4">
-        <span
-          aria-hidden="true"
-          className="grid h-10 w-6 shrink-0 place-items-center text-(--brand)"
-        >
-          <Icon className="w-5 h-5" strokeWidth={1.8} />
-        </span>
+    <section aria-label={`${meta.label} editor`} className="cr-scroll resume-section print:hidden">
+      <header className="resume-section-heading">
         <div className="flex-1 min-w-0">
-          <h2 className="m-0 flex items-center gap-2 text-[15px] font-semibold tracking-[-0.01em] text-(--ink-1)">
+          <h2 className="resume-section-title">
             <span>{meta.label}</span>
-            {meta.id === "jd" && (
-              <span className="inline-block rounded-sm border border-(--brand-200) bg-(--brand-50) px-1.5 py-px font-mono text-[10.5px] font-semibold uppercase tracking-[0.04em] text-(--brand-700)">
-                Optional
-              </span>
-            )}
+            {meta.id === "jd" && <span className="resume-section-optional">Optional</span>}
           </h2>
-          <div className="mt-0.5 text-sm leading-[1.45] text-(--ink-4)">{meta.description}</div>
+          <div className="resume-section-help">{meta.description}</div>
         </div>
         {onClose && (
           <button
             type="button"
             onClick={onClose}
             aria-label={`Close ${meta.label} editor and choose another section`}
-            className="grid h-11 w-11 shrink-0 place-items-center rounded-md border border-(--line) bg-(--surface) text-(--ink-4) transition-colors duration-160 hover:border-(--brand) hover:text-(--ink-1) lg:hidden"
+            className="air-icon-button air-button--quiet resume-section-close"
           >
-            <X aria-hidden="true" className="h-4 w-4" />
+            <X aria-hidden="true" size={18} strokeWidth={1.6} />
           </button>
         )}
       </header>
-      <div
-        key={active}
-        className="cr-scroll min-h-0 flex-1 overflow-y-auto px-3.5 pb-[calc(1rem+env(safe-area-inset-bottom,0px))] pt-4 lg:px-5 lg:pb-20 lg:pt-4.5"
-      >
+      <div key={active} className="resume-section-body">
         <Editor
           active={active}
           resume={resume}

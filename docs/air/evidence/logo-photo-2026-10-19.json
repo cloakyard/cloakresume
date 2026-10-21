@@ -1,0 +1,249 @@
+{
+  "date": "2026-10-19",
+  "scope": "Shared Profile/Skills logo picker and profile photo; shared date/logo viewport placement. Colour, hints, review, export, PWA and actual preview assets remain separate pieces.",
+  "contractVersion": "1.0.2",
+  "contractHash": "bb90f52e0b0a",
+  "implementation": [
+    "Air fields, search, neutral icon selection and photo actions; preserve 112 icon names and 80-result cap.",
+    "Unknown imported icon names remain visible and clearable, unchanged until explicit action.",
+    "Stable result-grid height prevents search from moving the quick-touch selection target.",
+    "Keyboard/mouse opens search; touch opens the non-editable surface. Escape/selection/clear return focus; Tab exits the non-modal popup. No closing overlay lingers.",
+    "Shared date/logo positioning preserves visual viewport, 16px safe edges, 8px gap and expanded short-screen surface.",
+    "Exact image bytes and original JPG/PNG/2MB decode/error/race/cancellation handling retained; native chooser cancellation and removal keep usable focus.",
+    "Removed unused cr-control skin and duplicate popup placement. No dependency, data/schema, template, export, font or icon-artwork source change."
+  ],
+  "gates": {
+    "fullProductionSuite": {
+      "tests": 303,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 123,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 372.83
+    },
+    "check": "132 files, zero lint/type errors or warnings",
+    "build": "73 precache entries, 2439.87 KiB",
+    "design": "78 sources pass",
+    "portability": "18 pass",
+    "familySync": "six portable specifications pass"
+  },
+  "matrix": {
+    "cases": 320,
+    "sizes": [
+      [1920, 1080],
+      [1440, 900],
+      [1366, 768],
+      [1280, 800],
+      [1279, 720],
+      [1024, 768],
+      [1023, 768],
+      [768, 1024],
+      [767, 1024],
+      [640, 800],
+      [639, 800],
+      [430, 932],
+      [390, 844],
+      [375, 812],
+      [320, 568],
+      [844, 390]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "states": ["photo-present", "photo-empty", "logo-selected", "logo-search", "logo-empty"],
+    "contrast": [
+      {
+        "theme": "light",
+        "state": "logo-selected",
+        "pairs": [
+          {
+            "name": "Add photo",
+            "ratio": 15.743934467621905,
+            "min": 4.5
+          },
+          {
+            "name": "JPG or PNG · max 2 MB",
+            "ratio": 6.873758629397385,
+            "min": 4.5
+          },
+          {
+            "name": "Logo icon: Code",
+            "ratio": 15.743934467621905,
+            "min": 4.5
+          },
+          {
+            "name": "Code",
+            "ratio": 5.30190818726784,
+            "min": 3
+          },
+          {
+            "name": "80 of 112 icons",
+            "ratio": 6.873758629397385,
+            "min": 4.5
+          }
+        ]
+      },
+      {
+        "theme": "light",
+        "state": "logo-search",
+        "pairs": [
+          {
+            "name": "Add photo",
+            "ratio": 15.743934467621905,
+            "min": 4.5
+          },
+          {
+            "name": "JPG or PNG · max 2 MB",
+            "ratio": 6.873758629397385,
+            "min": 4.5
+          },
+          {
+            "name": "Logo icon: Code",
+            "ratio": 15.743934467621905,
+            "min": 4.5
+          },
+          {
+            "name": "Code",
+            "ratio": 5.30190818726784,
+            "min": 3
+          },
+          {
+            "name": "3 of 112 icons",
+            "ratio": 6.873758629397385,
+            "min": 4.5
+          }
+        ]
+      },
+      {
+        "theme": "dark",
+        "state": "logo-selected",
+        "pairs": [
+          {
+            "name": "Add photo",
+            "ratio": 15.196471601782546,
+            "min": 4.5
+          },
+          {
+            "name": "JPG or PNG · max 2 MB",
+            "ratio": 9.0171348392764,
+            "min": 4.5
+          },
+          {
+            "name": "Logo icon: Code",
+            "ratio": 15.196471601782546,
+            "min": 4.5
+          },
+          {
+            "name": "Code",
+            "ratio": 7.823522071409274,
+            "min": 3
+          },
+          {
+            "name": "80 of 112 icons",
+            "ratio": 9.0171348392764,
+            "min": 4.5
+          }
+        ]
+      },
+      {
+        "theme": "dark",
+        "state": "logo-search",
+        "pairs": [
+          {
+            "name": "Add photo",
+            "ratio": 15.196471601782546,
+            "min": 4.5
+          },
+          {
+            "name": "JPG or PNG · max 2 MB",
+            "ratio": 9.0171348392764,
+            "min": 4.5
+          },
+          {
+            "name": "Logo icon: Code",
+            "ratio": 15.196471601782546,
+            "min": 4.5
+          },
+          {
+            "name": "Code",
+            "ratio": 7.823522071409274,
+            "min": 3
+          },
+          {
+            "name": "3 of 112 icons",
+            "ratio": 9.0171348392764,
+            "min": 4.5
+          }
+        ]
+      }
+    ],
+    "consoleErrors": [],
+    "localRaw": "/var/folders/k0/mzs4nsyn7k78t1j1xlsxq1q40000gn/T/cloakresume-logo-photo-tc0UgP/layouts.json"
+  },
+  "sharedDateRegression": {
+    "cases": 256,
+    "localRaw": "/tmp/cloakresume-logo-date-regression/layouts.json"
+  },
+  "extraStates": [
+    {
+      "theme": "light",
+      "touchCancel": "selection preserved",
+      "forcedFocus": {
+        "name": "Code",
+        "width": "2px",
+        "offset": "3px"
+      },
+      "selectionMarker": {
+        "border": "2px",
+        "color": "rgb(0, 0, 0)",
+        "background": "rgb(255, 255, 255)"
+      },
+      "photoError": ["JPG or PNG · max 2 MB", "Choose a JPG or PNG image."]
+    },
+    {
+      "theme": "dark",
+      "touchCancel": "selection preserved",
+      "forcedFocus": {
+        "name": "Code",
+        "width": "2px",
+        "offset": "3px"
+      },
+      "selectionMarker": {
+        "border": "2px",
+        "color": "rgb(255, 255, 255)",
+        "background": "rgb(0, 0, 0)"
+      },
+      "photoError": ["JPG or PNG · max 2 MB", "Choose a JPG or PNG image."]
+    }
+  ],
+  "native": [
+    "Safari search/select/clear and real file chooser cancellation preserve focus.",
+    "Firefox actual 200% search, keyboard selection, clear and Escape pass. Zoom restored and temporary native review tabs closed."
+  ],
+  "failuresResolved": [
+    "Focused touch test exposed an anchored grid moving between touch-down and selection after filtering; stable result height fixes the runtime cause. Original fast interaction and save assertions retained.",
+    "Forced-colour inspection hid the background-only selection underline; a currentColor border remains visible in both themes. An in-progress full run was intentionally interrupted to make this fix and was not counted as a pass.",
+    "First completed full suite: 301/303; two static source-location assertions still expected visualViewport inside each picker after extraction. They now assert both helper wiring and the same viewport/listener/placement requirements. All 303 tests then passed together, with no skips or increased timeouts."
+  ],
+  "screenshots": [
+    "logo-photo-2026-10-19-logo-search-1440-light-16.png",
+    "logo-photo-2026-10-19-logo-search-1440-dark-16.png",
+    "logo-photo-2026-10-19-photo-present-1280-light-16.png",
+    "logo-photo-2026-10-19-photo-present-1280-dark-16.png",
+    "logo-photo-2026-10-19-logo-search-390-light-16.png",
+    "logo-photo-2026-10-19-logo-search-390-dark-16.png",
+    "logo-photo-2026-10-19-logo-empty-320-dark-32.png",
+    "logo-photo-2026-10-19-forced-light.png",
+    "logo-photo-2026-10-19-forced-dark.png",
+    "logo-photo-2026-10-19-safari.png",
+    "logo-photo-2026-10-19-firefox-200.png"
+  ],
+  "limits": [
+    "Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open.",
+    "Emulated touch/forced colours and desktop Safari/Firefox do not certify physical devices.",
+    "Full product/family migration remains unfinished."
+  ],
+  "next": "Canonical hue/saturation wheel, brightness and exact hex in both desktop popover and mobile sheet; preserve stored colour, presets and template/export output. CloakIMG stays last."
+}

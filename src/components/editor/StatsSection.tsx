@@ -6,7 +6,7 @@ import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -31,10 +31,8 @@ export function StatsSection({ resume, onChange }: SectionProps) {
           buttonLabel="Add a stat"
           onAdd={addStat}
         />
-        <div className="border-t border-(--line-soft) pt-5">
-          <p className="mb-3 text-sm text-(--ink-3)">
-            Add availability, visa status, or other details.
-          </p>
+        <div className="resume-content-group resume-content-group--divided">
+          <p className="air-help">Add availability, visa status, or other details.</p>
           <AddButton onClick={addExtra}>Add extra</AddButton>
         </div>
       </>
@@ -43,15 +41,14 @@ export function StatsSection({ resume, onChange }: SectionProps) {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-3">
-        <span className="cr-field-label block mb-2">
-          Quick stats · shown in supporting templates
-        </span>
+      <div className="resume-content-group">
+        <h3 className="resume-group-title">Quick stats · shown in supporting templates</h3>
         <DragList items={resume.quickStats} onReorder={(next) => patch("quickStats", next)}>
           {resume.quickStats.map((s, i) => (
             <DragItem
               key={s.id}
               index={i}
+              label={`stat ${i + 1}`}
               onDelete={() =>
                 patch(
                   "quickStats",
@@ -59,21 +56,16 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn, moveBtns) => (
-                <div className="sub-card mb-2.5">
-                  <SubCardHead
+              {(handle, deleteBtn, moveBtns) => (
+                <div className="resume-entry">
+                  <EntryHeading
                     index={i}
                     prefix="Stat"
                     drag={handle}
                     moveBtns={moveBtns}
-                    onDelete={() =>
-                      patch(
-                        "quickStats",
-                        resume.quickStats.filter((_, j) => j !== i),
-                      )
-                    }
+                    deleteButton={deleteBtn}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-[120px_1fr] gap-3">
+                  <div className="resume-field-pair">
                     <TextField
                       label="Value"
                       placeholder="15+"
@@ -100,18 +92,17 @@ export function StatsSection({ resume, onChange }: SectionProps) {
             </DragItem>
           ))}
         </DragList>
-        <div className="mt-3">
-          <AddButton onClick={addStat}>Add stat</AddButton>
-        </div>
+        <AddButton onClick={addStat}>Add stat</AddButton>
       </div>
 
-      <div className="space-y-3 pt-5 border-t border-(--line-soft)">
-        <span className="cr-field-label block mb-2">Extras (visa, availability, etc.)</span>
+      <div className="resume-content-group resume-content-group--divided">
+        <h3 className="resume-group-title">Extras (visa, availability, etc.)</h3>
         <DragList items={resume.extras} onReorder={(next) => patch("extras", next)}>
           {resume.extras.map((x, i) => (
             <DragItem
               key={x.id}
               index={i}
+              label={`extra ${i + 1}`}
               onDelete={() =>
                 patch(
                   "extras",
@@ -119,21 +110,16 @@ export function StatsSection({ resume, onChange }: SectionProps) {
                 )
               }
             >
-              {(handle, _deleteBtn, moveBtns) => (
-                <div className="sub-card mb-2.5">
-                  <SubCardHead
+              {(handle, deleteBtn, moveBtns) => (
+                <div className="resume-entry">
+                  <EntryHeading
                     index={i}
                     prefix="Extra"
                     drag={handle}
                     moveBtns={moveBtns}
-                    onDelete={() =>
-                      patch(
-                        "extras",
-                        resume.extras.filter((_, j) => j !== i),
-                      )
-                    }
+                    deleteButton={deleteBtn}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-[140px_1fr] gap-3">
+                  <div className="resume-field-pair">
                     <TextField
                       label="Label"
                       placeholder="Visa"
@@ -160,9 +146,7 @@ export function StatsSection({ resume, onChange }: SectionProps) {
             </DragItem>
           ))}
         </DragList>
-        <div className="mt-3">
-          <AddButton onClick={addExtra}>Add extra</AddButton>
-        </div>
+        <AddButton onClick={addExtra}>Add extra</AddButton>
       </div>
     </div>
   );

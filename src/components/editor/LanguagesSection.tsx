@@ -6,7 +6,7 @@ import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -46,6 +46,7 @@ export function LanguagesSection({ resume, onChange }: SectionProps) {
           <DragItem
             key={l.id}
             index={i}
+            label={`language ${i + 1}`}
             onDelete={() =>
               patch(
                 "languages",
@@ -53,21 +54,16 @@ export function LanguagesSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn, moveBtns) => (
-              <div className="sub-card mb-2.5">
-                <SubCardHead
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="resume-entry">
+                <EntryHeading
                   index={i}
                   prefix="Language"
                   drag={handle}
                   moveBtns={moveBtns}
-                  onDelete={() =>
-                    patch(
-                      "languages",
-                      resume.languages.filter((_, j) => j !== i),
-                    )
-                  }
+                  deleteButton={deleteBtn}
                 />
-                <div className="grid grid-cols-2 gap-3">
+                <div className="resume-field-pair">
                   <TextField
                     label="Language"
                     value={l.name}
@@ -93,9 +89,7 @@ export function LanguagesSection({ resume, onChange }: SectionProps) {
           </DragItem>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addLanguage}>Add language</AddButton>
-      </div>
+      <AddButton onClick={addLanguage}>Add language</AddButton>
     </>
   );
 }

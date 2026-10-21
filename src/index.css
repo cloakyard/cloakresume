@@ -31,7 +31,7 @@
  * token overrides further down (also keyed off the same media query). */
 @custom-variant dark (@media (prefers-color-scheme: dark));
 
-/* Tailwind names are aliases only. Normative values live in tokens.css. */
+/* Tailwind aliases retain existing output values until migrated. Air owns UI. */
 @theme {
   --color-primary-50: var(--brand-50);
   --color-primary-100: var(--brand-100);
@@ -72,69 +72,8 @@
   --radius-2xl: var(--radius-card);
 }
 
-/* "Rotate your phone" hint — a quarter-rotation hold-and-release
- * loop that visually demonstrates the action the user needs to
- * take. Matches the CloakIMG pattern: starts upright, rotates to
- * -90° (the landscape they're currently in), holds there, then
- * snaps back to upright (the orientation we want).
- *
- * Lives outside `@theme` because Tailwind v4 only emits keyframes
- * from that block when they're paired with a matching `--animate-*`
- * token. As a regular top-level rule it's always emitted into the
- * stylesheet, so the inline `animation: cr-rotate-hint …` in
- * OrientationLock actually finds the keyframes at runtime. */
-@keyframes cr-rotate-hint {
-  0%,
-  100% {
-    transform: rotate(0deg);
-  }
-  35% {
-    transform: rotate(-90deg);
-  }
-  70% {
-    transform: rotate(-90deg);
-  }
-}
-
-/* Brief field locator used after an ATS issue jump. The ring itself is a
- * pseudo-element so the animation remains on the compositor. */
-@keyframes cr-field-glow {
-  0% {
-    opacity: 0;
-    transform: scale(0.985);
-  }
-  35% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(1.015);
-  }
-}
-.cr-field-glow {
-  border-radius: var(--radius-control);
-  scroll-margin: 5rem;
-  position: relative;
-  z-index: 1;
-}
-.cr-field-glow::after {
-  position: absolute;
-  inset: -4px;
-  z-index: -1;
-  border: 2px solid color-mix(in oklab, var(--brand) 52%, transparent);
-  border-radius: calc(var(--radius-control) + 4px);
-  content: "";
-  pointer-events: none;
-}
-@media (prefers-reduced-motion: no-preference) {
-  .cr-field-glow::after {
-    animation: cr-field-glow var(--duration-long) var(--ease-out) both;
-  }
-}
-
 /* Component-level dark overrides read theme-swapped surface, overlay,
- * popover, and lightness-thumb tokens so each component owns one rule. */
+ * and popover tokens so each component owns one rule. */
 
 /* ────────────────────────────────────────────────────────────────
  * Base — html/body reset, page background, typography.
@@ -211,118 +150,10 @@
     background: transparent;
   }
 
-  /* Canonical toolbar button: 40px at every density. */
-  .tb {
-    @apply inline-flex items-center gap-2 h-10 min-h-10 px-3
-      rounded-md border border-(--line) bg-(--surface)
-      text-[13px] font-medium text-(--ink-2) whitespace-nowrap
-      transition-[background-color,border-color,transform] duration-160
-      cursor-pointer select-none
-      hover:bg-(--surface-2) hover:border-(--color-rule-strong)
-      focus-visible:outline-none focus-visible:shadow-(--sh-focus);
-  }
-  .tb .caret {
-    @apply text-(--ink-5) ml-0.5;
-  }
-  .tb.ghost {
-    @apply border-transparent bg-transparent hover:bg-(--surface-3) hover:border-transparent;
-  }
-  /* Outline Emerald CTA for the editor toolbar. */
-  .tb.primary {
-    @apply text-(--brand-700) border-(--brand) border-[1.5px]
-      [background:transparent]
-      hover:[background:var(--brand-50)] hover:border-(--brand-hover);
-  }
-  /* Flat overlay primitives shared by dialogs, sheets, and popovers. */
-  .popover {
-    @apply p-3.5;
-    background: var(--surface);
-    border: 1px solid var(--color-rule-strong);
-    border-radius: var(--radius-control);
-    box-shadow: var(--shadow-popover);
-  }
-
-  /* Lightness slider in the custom colour picker — thin rounded track with
-     the live gradient painted inline; a round thumb centred on the track. */
-  .color-lightness-slider {
-    -webkit-appearance: none;
-    appearance: none;
-    height: 10px;
-    border-radius: 999px;
-    box-shadow: inset 0 0 0 1px var(--color-rule-strong);
-    cursor: pointer;
-    outline: none;
-  }
-  .color-lightness-slider::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    appearance: none;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--lightness-thumb-bg);
-    border: 2px solid var(--lightness-thumb-border);
-    box-shadow: none;
-    cursor: grab;
-  }
-  .color-lightness-slider::-moz-range-thumb {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--lightness-thumb-bg);
-    border: 2px solid var(--lightness-thumb-border);
-    box-shadow: none;
-    cursor: grab;
-  }
-  .color-lightness-slider:focus-visible {
-    box-shadow:
-      inset 0 0 0 1px var(--color-rule-strong),
-      var(--sh-focus);
-  }
-
-  /* ─── Form primitives ───
-   * Mobile-first: inputs are 16 px on mobile (prevents iOS zoom-on-focus)
-   * and have generous 12 px padding for comfortable touch. Shrinks on
-   * `lg:` where pointer input is the norm. */
+  /* Structural field wrappers; visible controls use pinned Air primitives. */
   .cr-field {
     @apply block;
   }
-  .cr-field-label {
-    @apply block font-mono text-[10.5px] font-medium text-(--ink-5) uppercase tracking-[0.1em] mb-1;
-  }
-  .cr-input {
-    @apply block w-full px-3 py-3 text-base leading-[1.45]
-      text-(--ink-1) bg-(--surface)
-      border border-(--line) rounded-md
-      placeholder:text-(--ink-5)
-      transition-[border-color,background-color] duration-160
-      hover:border-(--color-rule-strong)
-      lg:px-3 lg:py-2.5 lg:text-sm lg:leading-[1.5];
-  }
-  .cr-input--compact {
-    @apply px-2.5 py-2 text-[14.5px]
-      lg:px-2.5 lg:py-2 lg:text-sm;
-  }
-  /* Validation and writing hints keep their status colour; the shared
-   * chrome stylesheet supplies the same focus ring for every state. */
-  .cr-input--invalid {
-    @apply border-(--danger-border) bg-(--danger-bg)/50
-      hover:border-(--danger-border);
-  }
-  /* Live writing-hint state — amber border, reserves space on the right so
-     text doesn't run under the floating issue badge. */
-  .cr-input--has-issues {
-    @apply border-(--warn-border)
-      hover:border-(--warn-border)
-      pr-10;
-  }
-  /* Helper text shown below a field. Red variant signals validation errors. */
-  .cr-field-hint {
-    @apply block mt-1 text-sm leading-[1.5] text-(--ink-4);
-  }
-  .cr-field-hint--error {
-    @apply text-(--danger);
-  }
-
   /* Vertical rhythm inside a section body */
   .cr-stack > * + * {
     @apply mt-4;
@@ -330,14 +161,6 @@
   /* Row used to pair a section-scope label with an inline action. */
   .cr-field-row {
     @apply flex flex-wrap items-center justify-between gap-x-2 gap-y-1 min-h-[22px] mb-1.5;
-  }
-  .cr-field-row .cr-field-label {
-    @apply mb-0;
-  }
-
-  /* Sub-card — a single entry within a list section (e.g. one role). */
-  .sub-card {
-    @apply border border-(--line) bg-(--surface) p-3;
   }
 }
 

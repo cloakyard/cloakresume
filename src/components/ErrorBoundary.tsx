@@ -3,14 +3,13 @@
  * errors, exceptions inside ATS panes, etc.) that would otherwise
  * unmount the whole React tree and leave a white page.
  *
- * Design matches `ConfirmDialog`: solid token surface, brand-emerald chrome, the
- * danger palette tokens already used across the ATS insights. Offers
+ * Uses the shared Air recovery surface. Offers
  * the raw error + stack in a copy-able block and a one-click "Report
  * on GitHub" button with title/body prefilled from the exception so a
  * filed issue arrives with the stack already attached.
  */
 
-import { AlertTriangle, Check, Copy, Home } from "lucide-react";
+import { Check, Copy, Home } from "lucide-react";
 import { Component, useId, useRef, type ErrorInfo, type ReactNode } from "react";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 import { GithubIcon } from "./GithubIcon.tsx";
@@ -46,7 +45,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   // a plain reload would just re-throw it.
   handleGoHome = () => {
     this.setState({ error: null, componentStack: "", copied: false });
-    window.location.assign(`${window.location.origin}/`);
+    window.location.assign(import.meta.env.BASE_URL);
   };
 
   handleCopy = async () => {
@@ -110,89 +109,55 @@ function ErrorDialog({
   const dialogRef = useModalDialog<HTMLDivElement>({
     open: true,
     onClose: onGoHome,
+    inertBackground: true,
     initialFocusRef: homeRef,
   });
 
   return (
-    <div
-      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6"
-      role="presentation"
-    >
+    <div className="air-modal-viewport resume-overlay" role="presentation">
       <div
         ref={dialogRef}
-        className="cr-dialog cr-sheet relative flex max-h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:!w-[min(var(--dialog-max),calc(100vw-3rem))] min-[640px]:max-h-[var(--dialog-max-block-size)] min-[640px]:pb-0"
+        className="air-modal"
         role="alertdialog"
         aria-modal="true"
         aria-labelledby={titleId}
         aria-describedby={descriptionId}
         tabIndex={-1}
       >
-        <div className="shrink-0 flex items-start gap-3 sm:gap-4 px-5 sm:px-7 pt-4 sm:pt-6 pb-4 border-b border-(--line-soft)">
-          <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center text-(--danger)">
-            <AlertTriangle aria-hidden="true" className="h-5 w-5" />
-          </span>
-          <div className="flex-1 min-w-0">
-            <p className="cr-dialog__eyebrow">Recovery / local session</p>
-            <h2 id={titleId} className="cr-dialog__title">
-              {title}
-            </h2>
-            <p id={descriptionId} className="cr-dialog__description">
-              Your résumé data is still safe in this browser — we never uploaded it anywhere. Return
-              to the app to keep editing, or send us the details below so we can fix the bug.
-            </p>
-          </div>
+        <div className="resume-dialog-heading">
+          <h2 id={titleId}>{title}</h2>
         </div>
-
-        <div className="cr-scroll flex min-h-0 flex-1 flex-col gap-2 overflow-y-auto overscroll-contain px-5 py-4 sm:px-7 sm:py-5">
-          <div className="flex items-center justify-between gap-2 shrink-0">
-            <span className="cr-dialog__eyebrow">Error details</span>
-            <button
-              type="button"
-              onClick={onCopy}
-              className="inline-flex min-h-11 items-center gap-1.5 rounded-md border border-(--line) bg-(--surface-raised) px-2 py-1 text-sm font-medium text-(--ink-3) transition-colors hover:border-(--ink-5) hover:bg-(--surface-3) hover:text-(--ink-1)"
-              aria-label="Copy error details"
-            >
-              {copied ? (
-                <>
-                  <Check aria-hidden="true" className="w-3.5 h-3.5 text-(--ok)" />
-                  <span aria-live="polite">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy aria-hidden="true" className="w-3.5 h-3.5" />
-                  Copy
-                </>
-              )}
-            </button>
-          </div>
-          <pre
-            id="cr-error-details"
-            className="m-0 font-mono text-[11.5px] leading-[1.55] text-(--ink-2) bg-(--surface-2) border border-(--line) rounded-md p-3 whitespace-pre-wrap break-words"
-          >
-            {details}
-          </pre>
-        </div>
-
-        <div className="cr-dialog__footer flex-col-reverse items-stretch px-5 py-3 sm:flex-row sm:items-center sm:px-7 sm:py-4">
-          <a
-            href={issueUrl}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md border border-(--line) bg-(--surface-raised) px-4 py-2 text-sm font-medium text-(--ink-2) transition-colors hover:border-(--ink-5) hover:bg-(--surface-3) sm:w-auto"
-          >
-            <GithubIcon aria-hidden="true" className="w-4 h-4" />
+        <p id={descriptionId}>
+          Return to the app to reopen your last browser-saved draft. Recent unsaved changes may be
+          missing. You can review and copy the error details before reporting a problem.
+        </p>
+        <div className="resume-dialog-actions">
+          <a href={issueUrl} target="_blank" rel="noreferrer noopener" className="air-button">
+            <GithubIcon aria-hidden="true" />
             Report on GitHub
           </a>
           <button
             ref={homeRef}
             type="button"
             onClick={onGoHome}
-            className="inline-flex min-h-11 w-full items-center justify-center gap-1.5 rounded-md bg-(--color-accent) px-4 py-2 text-sm font-semibold text-(--color-accent-ink) transition-colors hover:bg-(--brand-hover) sm:w-auto"
+            className="air-button air-button--primary"
           >
-            <Home aria-hidden="true" className="w-4 h-4" />
+            <Home aria-hidden="true" />
             Go Home
           </button>
         </div>
+        <button
+          type="button"
+          onClick={onCopy}
+          className="air-button"
+          aria-label="Copy error details"
+        >
+          {copied ? <Check aria-hidden="true" /> : <Copy aria-hidden="true" />}
+          <span aria-live="polite">{copied ? "Copied" : "Copy error details"}</span>
+        </button>
+        <pre id="cr-error-details" className="resume-error-details">
+          {details}
+        </pre>
       </div>
     </div>
   );

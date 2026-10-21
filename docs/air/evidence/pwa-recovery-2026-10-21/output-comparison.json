@@ -1,0 +1,43 @@
+{
+  "templatePaperCaptures": 34,
+  "linkFixtureCaptures": 2,
+  "allEqual": true,
+  "pdfComparisons": [
+    {
+      "fixture": "plain",
+      "size": "a4",
+      "equal": true,
+      "pages": 1,
+      "geometry": [[0, 0, 595.28, 841.89]],
+      "links": [[]],
+      "rasterSha256": "9b3db52a256f80e573a80aa99fd4b41d757651a17722f91a78e0495a72a6085c"
+    },
+    {
+      "fixture": "plain",
+      "size": "letter",
+      "equal": true,
+      "pages": 1,
+      "geometry": [[0, 0, 612.0, 792.0]],
+      "links": [[]],
+      "rasterSha256": "fd5f1b62a42c8bee990932075c992bf9dc5ced3e468a9d9fe3843f2b8d8b812a"
+    },
+    {
+      "fixture": "links-",
+      "size": "a4",
+      "equal": true,
+      "pages": 1,
+      "geometry": [[0, 0, 595.28, 841.89]],
+      "links": [["mailto:air@example.com", "https://example.com/air", "tel:+15551234567"]],
+      "rasterSha256": "aac24c011e07f29f499cc0b1dd1c78c9a0e9a8f46f329bf96d1405419f6d3306"
+    },
+    {
+      "fixture": "links-",
+      "size": "letter",
+      "equal": true,
+      "pages": 1,
+      "geometry": [[0, 0, 612.0, 792.0]],
+      "links": [["mailto:air@example.com", "https://example.com/air", "tel:+15551234567"]],
+      "rasterSha256": "cba607bfa5bc68dd87fe16caa832f76def54c91aa538578146b169f9ccb6bea9"
+    }
+  ]
+}

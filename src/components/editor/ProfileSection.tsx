@@ -1,6 +1,6 @@
 /** Profile section: avatar/photo + name + headline + logo + summary. */
 
-import { useContext, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useContext, useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import { Camera } from "lucide-react";
 import type { ResumeData } from "../../types.ts";
 import { TextArea, TextField } from "../fields.tsx";
@@ -13,6 +13,9 @@ import { usePatch, type SectionProps } from "./shared.tsx";
 export function ProfileSection({ resume, onChange }: SectionProps) {
   const patch = usePatch(resume, onChange);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const photoButtonRef = useRef<HTMLButtonElement>(null);
+  const photoHelpId = useId();
+  const photoErrorId = useId();
   const readerRef = useRef<FileReader | null>(null);
   const photoRequest = useRef(0);
   const [photoError, setPhotoError] = useState<string | null>(null);
@@ -78,15 +81,8 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
   return (
     <FormatScope>
       <div className="cr-stack">
-        <div className="flex items-center gap-4 pb-2">
-          <div
-            className="w-20 h-20 rounded-full grid place-items-center text-(--color-accent-ink) font-semibold text-xl shrink-0"
-            style={{
-              background: resume.profile.photoUrl ? "transparent" : "var(--color-accent)",
-              border: "2px solid var(--color-rule)",
-              overflow: "hidden",
-            }}
-          >
+        <div className="resume-photo">
+          <div className="resume-photo-preview">
             {resume.profile.photoUrl ? (
               <img
                 src={resume.profile.photoUrl}
@@ -96,19 +92,26 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
                 className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-(--color-accent-ink)">{initials}</span>
+              <span>{initials}</span>
             )}
           </div>
-          <div className="flex flex-col gap-1.5">
+          <div className="resume-photo-controls">
             <button
+              ref={photoButtonRef}
               type="button"
-              onClick={() => fileInputRef.current?.click()}
-              className="inline-flex items-center gap-1.5 min-h-11 md:min-h-10 px-3 rounded-md text-sm font-medium text-(--ink-1) bg-(--surface-2) border border-(--line) transition-colors"
+              aria-describedby={`${photoHelpId}${photoError ? ` ${photoErrorId}` : ""}`}
+              onClick={(event) => {
+                event.currentTarget.focus();
+                fileInputRef.current?.click();
+              }}
+              className="air-button"
             >
-              <Camera className="w-3.5 h-3.5 text-(--ink-4)" />
+              <Camera aria-hidden="true" />
               {resume.profile.photoUrl ? "Change photo" : "Add photo"}
             </button>
-            <span className="text-[11px] text-(--ink-5)">JPG or PNG · max 2 MB</span>
+            <span id={photoHelpId} className="air-help">
+              JPG or PNG · max 2 MB
+            </span>
             {resume.profile.photoUrl && (
               <button
                 type="button"
@@ -117,8 +120,9 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
                   readerRef.current?.abort();
                   setPhotoError(null);
                   updateProfile({ photoUrl: undefined });
+                  photoButtonRef.current?.focus();
                 }}
-                className="min-h-11 md:min-h-10 px-2 rounded-md text-sm text-(--ink-4) hover:text-(--color-status-danger) hover:bg-(--color-status-danger-soft) text-left transition-colors"
+                className="air-button air-button--quiet"
               >
                 Remove photo
               </button>
@@ -137,7 +141,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
               }}
             />
             {photoError && (
-              <p role="alert" className="cr-field-hint cr-field-hint--error">
+              <p id={photoErrorId} role="alert" className="air-help air-help--error">
                 {photoError}
               </p>
             )}
@@ -170,7 +174,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
         />
 
         <div className="cr-field">
-          <span className="cr-field-label">Header logo (optional)</span>
+          <span className="air-label">Header logo (optional)</span>
           <LogoPicker
             value={resume.profile.logoIconName}
             onChange={(name) => updateProfile({ logoIconName: name })}
@@ -179,7 +183,7 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
 
         <div className="cr-field">
           <div className="cr-field-row">
-            <span className="cr-field-label">Professional summary</span>
+            <span className="air-label">Professional summary</span>
             <FormatToolbar />
           </div>
           <RichTextArea
@@ -188,10 +192,8 @@ export function ProfileSection({ resume, onChange }: SectionProps) {
             value={resume.profile.summary}
             onChange={(v) => updateProfile({ summary: v })}
             rows={8}
+            hint="Select text to apply bold, italic, underline, or code."
           />
-          <div className="text-sm text-(--ink-4) mt-2">
-            Select text to apply bold, italic, underline, or code.
-          </div>
         </div>
       </div>
     </FormatScope>

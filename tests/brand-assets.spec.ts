@@ -80,7 +80,9 @@ describe("brand, social, and install asset contracts", () => {
     expect(metaContent(html, "property", "og:image:type")).toBe("image/png");
     expect(metaContent(html, "property", "og:image:width")).toBe("1200");
     expect(metaContent(html, "property", "og:image:height")).toBe("630");
-    expect(metaContent(html, "property", "og:image:alt")).toMatch(/landing page/i);
+    expect(metaContent(html, "property", "og:image:alt")).toMatch(
+      /Air editor.*synthetic sample résumé/i,
+    );
     expect(metaContent(html, "name", "twitter:card")).toBe("summary_large_image");
     expect(metaContent(html, "name", "twitter:image")).toBe(canonicalImage);
     expect(metaContent(html, "name", "twitter:image:alt")).toBe(
@@ -88,44 +90,26 @@ describe("brand, social, and install asset contracts", () => {
     );
   });
 
-  it("keeps package commands and capture scripts on the documented live-page workflow", async () => {
-    const [packageSource, iconScript, ogScript, screenshotScript, brandDocs, readme] =
-      await Promise.all([
-        source("package.json"),
-        source("scripts/finalize-pwa-icons.mjs"),
-        source("scripts/build-og-image.mjs"),
-        source("scripts/build-pwa-screenshots.mjs"),
-        source("docs/brand-assets.md"),
-        source("README.md"),
-      ]);
+  it("keeps preview generation documented and README sources theme-aware", async () => {
+    const [packageSource, artwork, brandDocs, readme] = await Promise.all([
+      source("package.json"),
+      source("artwork/og.html"),
+      source("docs/brand-assets.md"),
+      source("README.md"),
+    ]);
     const pkg = JSON.parse(packageSource) as { scripts: Record<string, string> };
-
-    expect(pkg.scripts["generate-icons"]).toContain("node scripts/finalize-pwa-icons.mjs");
-    expect(pkg.scripts["generate-og"]).toBe("node scripts/build-og-image.mjs");
-    expect(pkg.scripts["generate-screenshots"]).toBe("node scripts/build-pwa-screenshots.mjs");
-    expect(iconScript).toContain("alpha.min !== 255");
-    expect(iconScript).toContain(".removeAlpha()");
-    expect(ogScript).toContain(
-      'const OUT_PATH = resolve(PROJECT_DIR, "public", "icons", "og-image.png")',
-    );
-    expect(ogScript).toContain("width: 1200, height: 630, deviceScaleFactor: 1");
-    expect(ogScript).toContain("A complete résumé workbench");
-    expect(screenshotScript).toContain("A complete résumé workbench");
-    expect(screenshotScript).toContain("evaluateOnNewDocument");
-    expect(screenshotScript).toContain("Math.random = () =>");
-    expect(screenshotScript).toContain('.resume-root[data-template-ready="true"] .resume-page');
-    expect(brandDocs).toContain("capture-only random seed");
-    for (const command of [
-      "vp run generate-icons",
-      "vp run generate-og",
-      "vp run generate-screenshots",
-    ]) {
-      expect(brandDocs).toContain(command);
-      expect(readme).toContain(command);
+    for (const command of ["generate-icons", "generate-og", "generate-screenshots"]) {
+      expect(pkg.scripts[command]).toBeTruthy();
+      expect(brandDocs).toContain(`vp run ${command}`);
+      expect(readme).toContain(`vp run ${command}`);
     }
-    expect(readme).toContain('src="public/screenshots/iPad.png"');
-    expect(readme).toContain("[docs/brand-assets.md](docs/brand-assets.md)");
-    expect(readme).not.toContain("github.com/sumitsahoo/cloakresume");
+    expect(artwork).toContain('href="../src/styles/air.css"');
+    expect(artwork).toContain('src="../public/screenshots/editor-wide-light.png"');
+    expect(readme).toContain(
+      'media="(prefers-color-scheme: dark)" srcset="public/screenshots/editor-wide-dark.png"',
+    );
+    expect(readme).toContain('src="public/screenshots/editor-wide-light.png"');
+    expect(readme).not.toMatch(/iPad\.png|iPhone\.png|github\.com\/sumitsahoo\/cloakresume/);
   });
 
   it("uses one named Cloakyard-family mark as the canonical brand source", async () => {
@@ -149,7 +133,7 @@ describe("brand, social, and install asset contracts", () => {
       source("public/icons/safari-pinned-tab.svg"),
       source("src/components/BrandLogo.tsx"),
       source("index.html"),
-      source("public/404.html"),
+      source("404.html"),
       source("pwa-assets.config.ts"),
       source("vite.config.ts"),
       source("docs/brand-assets.md"),
@@ -174,7 +158,7 @@ describe("brand, social, and install asset contracts", () => {
       expect(svg).not.toContain("M23.9 44");
     }
     expect(mark).toContain('aria-labelledby="cloakresume-mark-title"');
-    expect(brandLogo).toContain('src="/cloakresume-mark.svg"');
+    expect(brandLogo).toContain("src={`${import.meta.env.BASE_URL}cloakresume-mark.svg`}");
     expect(html).toContain('href="/cloakresume-mark.svg"');
     expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(2);
     expect(pwaAssets).toContain('images: ["public/icons/cloakresume-app-icon.svg"]');
@@ -213,12 +197,22 @@ describe("brand, social, and install asset contracts", () => {
       source("docs/brand-assets.md"),
     ]);
     const expected = {
-      iPhone: { sizes: "1290x2796", formFactor: "narrow", label: /start workbench/i },
-      iPad: { sizes: "2732x2048", formFactor: "wide", label: /editor.*document proof/i },
+      "landing-narrow": { sizes: "860x1864", formFactor: "narrow", label: /landing.*Start blank/i },
+      "editor-wide": {
+        sizes: "1440x900",
+        formFactor: "wide",
+        label: /editor.*sample résumé preview/i,
+      },
     } as const;
 
     expect(config).toContain('orientation: "any"');
-    expect(config).toContain('globIgnores: ["icons/og-image.png", "screenshots/**"]');
+    expect(config).toContain('theme_color: "#fafbfc"');
+    expect(config).toContain('background_color: "#fafbfc"');
+    expect(config).not.toMatch(/iPad\.png|iPhone\.png|start workbench/);
+    const ignoredAssets = config.match(/globIgnores:\s*\[([^\]]+)\]/)?.[1];
+    for (const path of ["icons/og-image.png", "screenshots/**", "**/air-light-shader-*.js"]) {
+      expect(ignoredAssets).toContain(JSON.stringify(path));
+    }
     for (const size of [64, 192, 512]) {
       expect(config).toMatch(
         new RegExp(
@@ -233,14 +227,20 @@ describe("brand, social, and install asset contracts", () => {
       /<link rel="apple-touch-icon" sizes="180x180" href="\/icons\/apple-touch-icon\.png" \/>/,
     );
     for (const [name, expectation] of Object.entries(expected)) {
-      const manifest = manifestScreenshot(config, `${name}.png`);
       const capture = captureTarget(screenshotScript, name);
-      expect(manifest.sizes).toBe(expectation.sizes);
-      expect(manifest.formFactor).toBe(expectation.formFactor);
-      expect(manifest.label).toMatch(expectation.label);
       expect(capture.output).toBe(expectation.sizes);
-      expect(brandDocs).toContain(`public/screenshots/${name}.png`);
-      expect(brandDocs).toContain(expectation.sizes.replace("x", "×"));
+      for (const theme of ["light", "dark"]) {
+        const filename = `${name}-${theme}.png`;
+        const manifest = manifestScreenshot(config, filename);
+        const dimensions = await pngSize(`public/screenshots/${filename}`);
+        expect(manifest.sizes).toBe(`${dimensions.width}x${dimensions.height}`);
+        expect(manifest.sizes).toBe(expectation.sizes);
+        expect(manifest.formFactor).toBe(expectation.formFactor);
+        expect(manifest.label).toMatch(expectation.label);
+        expect(manifest.label).toContain(`${theme} appearance`);
+        expect(brandDocs).toContain(`public/screenshots/${filename}`);
+        expect(brandDocs).toContain(expectation.sizes.replace("x", "×"));
+      }
     }
   });
 
@@ -261,15 +261,13 @@ describe("brand, social, and install asset contracts", () => {
   });
 
   it("ships the exact declared OG, install icon, and PWA screenshot dimensions", async () => {
-    const [og, pwa64, pwa192, pwa512, maskable, apple, phone, tablet] = await Promise.all([
+    const [og, pwa64, pwa192, pwa512, maskable, apple] = await Promise.all([
       pngSize("public/icons/og-image.png"),
       pngSize("public/icons/pwa-64x64.png"),
       pngSize("public/icons/pwa-192x192.png"),
       pngSize("public/icons/pwa-512x512.png"),
       pngSize("public/icons/maskable-icon-512x512.png"),
       pngSize("public/icons/apple-touch-icon.png"),
-      pngSize("public/screenshots/iPhone.png"),
-      pngSize("public/screenshots/iPad.png"),
     ]);
 
     expect(og).toEqual({ width: 1200, height: 630 });
@@ -278,8 +276,6 @@ describe("brand, social, and install asset contracts", () => {
     expect(pwa512).toEqual({ width: 512, height: 512 });
     expect(maskable).toEqual({ width: 512, height: 512 });
     expect(apple).toEqual({ width: 180, height: 180 });
-    expect(phone).toEqual({ width: 1290, height: 2796 });
-    expect(tablet).toEqual({ width: 2732, height: 2048 });
   });
 
   it("keeps launcher PNGs in full-colour RGB instead of a dithered indexed palette", async () => {

@@ -12,13 +12,13 @@ interface Props {
 export function JdSection({ jobDescription, onJobDescriptionChange, onAnalyze }: Props) {
   return (
     <div className="cr-stack">
-      <div className="flex gap-2.5 rounded-md border border-(--brand-200) bg-(--brand-50) p-3.5 text-sm leading-[1.5] text-(--ink-2)">
-        <EyeOff className="w-4 h-4 shrink-0 mt-0.5 text-(--brand-700)" />
-        <div>
-          <strong className="text-(--ink-1)">100% private.</strong> The JD is processed entirely in
-          your browser — nothing leaves your device.
-        </div>
-      </div>
+      <p className="resume-section-note">
+        <EyeOff aria-hidden="true" />
+        <span>
+          <strong>100% private.</strong> The JD is processed entirely in your browser — nothing
+          leaves your device.
+        </span>
+      </p>
       <TextArea
         label="Paste target job description"
         name="target-job-description"
@@ -30,10 +30,13 @@ export function JdSection({ jobDescription, onJobDescriptionChange, onAnalyze }:
       {onAnalyze && (
         <button
           type="button"
-          onClick={onAnalyze}
-          className="tb primary w-full min-h-11 md:min-h-10 justify-center"
+          onClick={(event) => {
+            event.currentTarget.focus();
+            onAnalyze();
+          }}
+          className="air-button air-button--primary w-full"
         >
-          <Sparkles className="w-4 h-4" />
+          <Sparkles size={18} strokeWidth={1.6} aria-hidden="true" />
           Analyze keyword coverage
         </button>
       )}

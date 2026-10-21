@@ -5,7 +5,6 @@
  * editor passes values down and receives changes through `onChange`.
  */
 
-import { ChevronDown } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { FieldIssuesBadge, useFieldIssues } from "../utils/fieldIssues.tsx";
 
@@ -19,7 +18,7 @@ interface TextFieldProps {
   invalid?: boolean;
   /** Helper or error text shown under the input. Turns red when `invalid`. */
   hint?: string;
-  /** Opt-in target for the ATS jump-to-fix glow highlight. */
+  /** Opt-in target for the ATS jump-to-fix focus. */
   fieldId?: string;
   /** Stable browser/form identifier. Falls back to `fieldId` or a label slug. */
   name?: string;
@@ -74,7 +73,7 @@ export function TextField({
   );
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <div className="relative">
@@ -90,22 +89,24 @@ export function TextField({
           aria-invalid={invalid || undefined}
           aria-describedby={hint ? hintId : undefined}
           spellCheck={type === "text"}
-          className={`cr-input${invalid ? " cr-input--invalid" : ""}${hasIssues ? " cr-input--has-issues" : ""}`}
+          className={`air-field resume-writing-field${hasIssues ? " resume-writing-field--hints" : ""}`}
         />
         <FieldIssuesBadge
+          fieldControlId={inputId}
           issues={hasIssues ? issues : []}
           onApplySuggestion={applySuggestion}
           className="top-1/2 -translate-y-1/2 right-2"
         />
       </div>
-      <span
-        id={hintId}
-        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
-        aria-live={invalid ? "polite" : undefined}
-        aria-hidden={hint ? undefined : true}
-      >
-        {hint || "\u00a0"}
-      </span>
+      {hint && (
+        <p
+          id={hintId}
+          className={`air-help${invalid ? " air-help--error" : ""}`}
+          aria-live={invalid ? "polite" : undefined}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }
@@ -146,7 +147,7 @@ export function CsvField({
 
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <input
@@ -157,7 +158,7 @@ export function CsvField({
         value={raw}
         placeholder={placeholder}
         spellCheck={true}
-        className="cr-input"
+        className="air-field resume-writing-field"
         onChange={(e) => {
           const next = e.target.value;
           setRaw(next);
@@ -196,35 +197,27 @@ export function SelectField({
   const isCustom = value.length > 0 && !options.includes(value);
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
-      <div className="relative">
-        <select
-          id={inputId}
-          name={fieldName(label, name)}
-          autoComplete={autoComplete}
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className={`cr-input appearance-none pr-9 cursor-pointer ${
-            value ? "" : "text-(--ink-5)"
-          }`}
-        >
-          <option value="" disabled>
-            {placeholder}
+      <select
+        id={inputId}
+        name={fieldName(label, name)}
+        autoComplete={autoComplete}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        className="air-field"
+      >
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((opt) => (
+          <option key={opt} value={opt}>
+            {opt}
           </option>
-          {options.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-          {isCustom && <option value={value}>{value}</option>}
-        </select>
-        <ChevronDown
-          aria-hidden="true"
-          className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2 w-4 h-4 text-(--ink-5)"
-        />
-      </div>
+        ))}
+        {isCustom && <option value={value}>{value}</option>}
+      </select>
     </div>
   );
 }
@@ -259,7 +252,7 @@ export function TextArea({
   const hintId = `${reactId}-hint`;
   return (
     <div className="cr-field">
-      <label className="cr-field-label" htmlFor={inputId}>
+      <label className="air-label" htmlFor={inputId}>
         {label}
       </label>
       <textarea
@@ -273,16 +266,18 @@ export function TextArea({
         spellCheck={true}
         aria-invalid={invalid || undefined}
         aria-describedby={hint ? hintId : undefined}
-        className={`cr-input font-[inherit] ${resizable ? "resize-y" : "resize-none"}${invalid ? " cr-input--invalid" : ""}`}
+        className="air-field resume-writing-field"
+        data-resizable={resizable}
       />
-      <span
-        id={hintId}
-        className={`cr-field-hint${invalid ? " cr-field-hint--error" : ""}${hint ? "" : " invisible"}`}
-        aria-live={invalid ? "polite" : undefined}
-        aria-hidden={hint ? undefined : true}
-      >
-        {hint || "\u00a0"}
-      </span>
+      {hint && (
+        <p
+          id={hintId}
+          className={`air-help${invalid ? " air-help--error" : ""}`}
+          aria-live={invalid ? "polite" : undefined}
+        >
+          {hint}
+        </p>
+      )}
     </div>
   );
 }

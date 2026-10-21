@@ -1,13 +1,13 @@
 /// <reference types="node" />
 
-import { existsSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import puppeteer, { type Browser, type BrowserContext, type Page } from "puppeteer-core";
 import { createServer, preview, type PreviewServer, type ViteDevServer } from "vite-plus";
 import { afterAll, afterEach, beforeAll, beforeEach, describe, expect, it } from "vite-plus/test";
 import { blankResume } from "../src/data/blankResume.ts";
-import { TEMPLATE_LIST } from "../src/templates/index.ts";
+import { TEMPLATE_CATEGORIES, TEMPLATE_LIST } from "../src/templates/index.ts";
 
 // Use the same local Chrome override as the project's screenshot scripts.
 const chromePath =
@@ -131,8 +131,20 @@ describe.skipIf(!existsSync(chromePath))(
         );
         button?.click();
       });
-      await page.waitForSelector(".cr-editor-panel textarea", { visible: true });
-      await page.evaluate(() => document.fonts.ready.then(() => undefined));
+      await page.waitForSelector(
+        '.cr-editor-panel input:not([type="file"]), .cr-editor-panel textarea',
+        { visible: true },
+      );
+      await page.evaluate(async () => {
+        await document.fonts.ready;
+        // Auto-growing fields measure a mirror after fonts finish loading. Wait
+        // for that scheduled resize before choosing a caret/scroll baseline.
+        await new Promise<void>((resolve) =>
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+        );
+      });
     }
 
     for (const width of [1440, 390]) {
@@ -237,8 +249,9 @@ describe.skipIf(!existsSync(chromePath))(
       },
       options = {},
       width = 1440,
+      hasTouch = false,
     ) {
-      await page.setViewport({ width, height: 1000 });
+      await page.setViewport({ width, height: 1000, hasTouch });
       await page.goto(url, { waitUntil: "networkidle0" });
       await page.evaluate(
         ({ draft, options }) => {
@@ -561,6 +574,101 @@ describe.skipIf(!existsSync(chromePath))(
         }, 20_000);
       }
 
+    it("retires the removed active writing field without resurrecting its bullet", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [{ id: "scope", header: "Writing", bullets: ["Keep this", "Remove this"] }],
+        },
+        { activeSection: "custom" },
+      );
+      await page.$eval('[data-field-id="custom.0.bullets.1"]', (el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).select();
+      });
+      const toolbar = '.cr-editor-panel [role="toolbar"]';
+      expect(
+        await page.$$eval(`${toolbar} button`, (els) =>
+          els.every((el) => !(el as HTMLButtonElement).disabled),
+        ),
+      ).toBe(true);
+      const remove = await page.$$('.resume-bullet-list button[aria-label^="Remove "]');
+      await remove[1].click();
+      await page.click('.cr-editor-panel button[aria-label^="Confirm removal of "]');
+      await page.waitForFunction(
+        () =>
+          document.activeElement === document.querySelector('[data-field-id="custom.0.bullets.0"]'),
+      );
+      expect(
+        await page.$$eval(`${toolbar} button`, (els) =>
+          els.every((el) => !(el as HTMLButtonElement).disabled),
+        ),
+      ).toBe(true);
+      expect((await savedResume()).custom[0].bullets).toEqual(["Keep this"]);
+      await page.$eval('[data-field-id="custom.0.bullets.0"]', (el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).select();
+      });
+      await page.locator(`${toolbar} button[aria-label="Bold (⌘B)"]`).click();
+      await page.waitForFunction(
+        () =>
+          (document.querySelector('[data-field-id="custom.0.bullets.0"]') as HTMLTextAreaElement)
+            .value === "**Keep this**",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["**Keep this**"]);
+    });
+
+    it.each(["light", "dark"])(
+      "keeps Air fields readable with one focus contour on a touch tablet in %s",
+      async (theme) => {
+        await page.emulateMediaFeatures([{ name: "prefers-color-scheme", value: theme }]);
+        await openDraft(
+          {
+            ...blankResume,
+            profile: { name: "Amara Schmidt", title: "Engineer", summary: "Local work" },
+          },
+          {},
+          768,
+          true,
+        );
+        expect(await page.evaluate(() => matchMedia("(pointer: coarse)").matches)).toBe(true);
+        const fields = await page.$$(".cr-editor-panel .resume-writing-field");
+        expect(fields.length).toBe(3);
+        for (const field of fields) {
+          const measured = await field.evaluate((el) => {
+            (el as HTMLElement).focus();
+            const css = getComputedStyle(el),
+              box = el.getBoundingClientRect();
+            return {
+              height: box.height,
+              fontSize: parseFloat(css.fontSize),
+              fontFamily: css.fontFamily,
+              outline: css.outlineWidth,
+              offset: css.outlineOffset,
+              border: css.borderColor,
+              shadow: css.boxShadow,
+            };
+          });
+          expect(measured.height).toBeGreaterThanOrEqual(44);
+          expect(measured.fontSize).toBeGreaterThanOrEqual(16);
+          expect(measured.fontFamily).not.toMatch(/mono|Geist/);
+          expect(measured.outline).toBe("2px");
+          expect(measured.offset).toBe("0px");
+          expect(measured.border).toBe("rgba(0, 0, 0, 0)");
+          expect(measured.shadow).toBe("none");
+        }
+        expect(await page.$$eval(".cr-editor-panel .invisible", (els) => els.length)).toBe(0);
+        expect(
+          await page.$$eval(".resume-format-toolbar button", (els) =>
+            els.every(
+              (el) =>
+                el.getBoundingClientRect().height >= 44 && el.getBoundingClientRect().width >= 44,
+            ),
+          ),
+        ).toBe(true);
+      },
+    );
+
     it.each([1440, 320])(
       "toggles underline using the toolbar and keyboard at %ipx",
       async (width) => {
@@ -847,7 +955,7 @@ describe.skipIf(!existsSync(chromePath))(
       ],
     ])(
       "adds, edits, reorders, and confirms deletion in %s",
-      async (label, key, initialAdd, nextAdd, field, first, second, prefix) => {
+      async (label, key, initialAdd, nextAdd, field, first, second) => {
         await openDraft();
         await page.click(`nav[aria-label="Resume sections"] button[aria-label="${label}"]`);
         await clickText(initialAdd, ".cr-editor-panel");
@@ -867,12 +975,14 @@ describe.skipIf(!existsSync(chromePath))(
           first,
           second,
         ]);
-        await page.click('.cr-editor-panel button[aria-label="Move down"]');
+        await page.click('.cr-editor-panel button[aria-label^="Move down "]');
         expect((await savedResume())[key].map((row: Record<string, string>) => row[field])).toEqual(
           [second, first],
         );
-        const remove = prefix ? `Delete ${prefix} 1` : "Remove";
-        const confirm = prefix ? `Confirm deletion of ${prefix} 1` : "Confirm removal";
+        const remove = await page.$eval('.cr-editor-panel button[aria-label^="Remove "]', (el) =>
+          el.getAttribute("aria-label")!,
+        );
+        const confirm = remove.replace(/^Remove /, "Confirm removal of ");
         await page.click(`.cr-editor-panel button[aria-label="${remove}"]`);
         expect((await savedResume())[key]).toHaveLength(2);
         await page.click(`.cr-editor-panel button[aria-label="${confirm}"]`);
@@ -881,6 +991,234 @@ describe.skipIf(!existsSync(chromePath))(
         );
       },
     );
+
+    it("keeps outer entry focus at a move boundary and announces the new position", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [
+            { id: "a", header: "First", bullets: ["One"] },
+            { id: "b", header: "Second", bullets: ["Two"] },
+          ],
+        },
+        { activeSection: "custom" },
+      );
+      await page.focus('button[aria-label="Move down section 1"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Move down section 2",
+      );
+      expect(
+        await page.$eval('button[aria-label="Move down section 2"]', (el) =>
+          el.getAttribute("aria-disabled"),
+        ),
+      ).toBe("true");
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "b",
+        "a",
+      ]);
+      expect(
+        await page.$eval(
+          '.resume-section-body > .resume-entry-list > [role="status"]',
+          (el) => el.textContent,
+        ),
+      ).toBe("section 1 moved to position 2 of 2.");
+      await page.keyboard.press("Enter");
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "b",
+        "a",
+      ]);
+      await page.focus('button[aria-label="Move up section 2"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Move up section 1",
+      );
+      expect((await savedResume()).custom.map((item: { id: string }) => item.id)).toEqual([
+        "a",
+        "b",
+      ]);
+    });
+
+    it("focuses entry actions when pointer activation has no browser focus default", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["First", "Second"] }] },
+        { activeSection: "custom" },
+      );
+      // Safari can dispatch a button click after blurring the field to BODY.
+      await page.$eval('button[aria-label="Move down section 1, bullet 1"]', (el) => {
+        (document.activeElement as HTMLElement)?.blur();
+        (el as HTMLButtonElement).click();
+      });
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") === "Move down section 1, bullet 2",
+      );
+      await page.$eval('button[aria-label="Remove section 1, bullet 2"]', (el) => {
+        (document.activeElement as HTMLElement)?.blur();
+        (el as HTMLButtonElement).click();
+      });
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") ===
+          "Confirm removal of section 1, bullet 2",
+      );
+      await page.keyboard.press("Escape");
+      expect((await savedResume()).custom[0].bullets).toEqual(["Second", "First"]);
+      expect(await page.$(".resume-remove-confirm")).toBeNull();
+    });
+
+    it("keeps duplicate bullets and their selected field identity through a move", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["Repeat", "Repeat"] }] },
+        { activeSection: "custom" },
+      );
+      const field = await page.$('[data-field-id="custom.0.bullets.0"]');
+      await field!.evaluate((el) => {
+        (el as HTMLTextAreaElement).focus();
+        (el as HTMLTextAreaElement).setSelectionRange(1, 4);
+      });
+      await page.focus('button[aria-label="Move down section 1, bullet 1"]');
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () =>
+          document.activeElement?.getAttribute("aria-label") === "Move down section 1, bullet 2",
+      );
+      expect(
+        await field!.evaluate((el) => ({
+          connected: el.isConnected,
+          id: el.getAttribute("data-field-id"),
+          start: (el as HTMLTextAreaElement).selectionStart,
+          end: (el as HTMLTextAreaElement).selectionEnd,
+        })),
+      ).toEqual({ connected: true, id: "custom.0.bullets.1", start: 1, end: 4 });
+      await page.locator('button[aria-label="Bold (⌘B)"]').click();
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.1",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["Repeat", "R**epe**at"]);
+      await resumeEditing();
+      expect((await savedResume()).custom[0].bullets).toEqual(["Repeat", "R**epe**at"]);
+    });
+
+    it("keeps pending removal on the moved bullet and focuses the surviving field", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "a", header: "Writing", bullets: ["First", "Second"] }] },
+        { activeSection: "custom" },
+      );
+      await page.click('button[aria-label="Remove section 1, bullet 1"]');
+      await page.click('button[aria-label="Move down section 1, bullet 1"]');
+      await page.click('button[aria-label="Confirm removal of section 1, bullet 2"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.0",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual(["Second"]);
+    });
+
+    it("cancels removal and recovers focus after the last bullet and entry", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [{ id: "a", header: "Writing", bullets: ["Keep until confirmed"] }],
+        },
+        { activeSection: "custom" },
+      );
+      const remove = 'button[aria-label="Remove section 1, bullet 1"]';
+      await page.click(remove);
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(remove);
+      expect((await savedResume()).custom[0].bullets).toEqual(["Keep until confirmed"]);
+      await page.click(remove);
+      await page.click('button[aria-label="Confirm removal of section 1, bullet 1"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Add bullet to section 1",
+      );
+      expect((await savedResume()).custom[0].bullets).toEqual([]);
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.0",
+      );
+      await page.keyboard.type("New bullet");
+      expect((await savedResume()).custom[0].bullets).toEqual(["New bullet"]);
+      await page.click('button[aria-label="Remove section 1"]');
+      await page.click('button[aria-label="Confirm removal of section 1"]');
+      await page.waitForFunction(
+        () => document.activeElement?.textContent?.trim() === "Add a section",
+      );
+      expect((await savedResume()).custom).toEqual([]);
+    });
+
+    it("contains live announcements inside the scrolling writing pane", async () => {
+      await page.evaluateOnNewDocument(() => {
+        document.addEventListener("DOMContentLoaded", () => {
+          document.documentElement.style.fontSize = "32px";
+        });
+      });
+      await openDraft(
+        {
+          ...blankResume,
+          custom: [
+            {
+              id: "a",
+              header: "Writing",
+              bullets: Array(8).fill("Long writing entry. ".repeat(10)),
+            },
+          ],
+        },
+        { activeSection: "custom" },
+        320,
+        true,
+      );
+      await page.setViewport({ width: 320, height: 568, hasTouch: true });
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+            ),
+          ),
+      );
+      await page.$eval(".resume-add-bullet", (el) => (el as HTMLButtonElement).click());
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("data-field-id") === "custom.0.bullets.8",
+      );
+      await page.evaluate(
+        () =>
+          new Promise<void>((resolve) =>
+            requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+          ),
+      );
+      expect(
+        await page.evaluate(() => {
+          const panel = document.querySelector<HTMLElement>(".cr-editor-panel")!;
+          const field = document.activeElement!.getBoundingClientRect(),
+            box = panel.getBoundingClientRect();
+          return {
+            parentScroll: panel.scrollTop,
+            windowScroll: scrollY,
+            fieldVisible: field.top >= box.top - 1 && field.bottom <= box.bottom + 1,
+            parentContains: panel.scrollHeight === panel.clientHeight,
+          };
+        }),
+      ).toEqual({ parentScroll: 0, windowScroll: 0, fieldVisible: true, parentContains: true });
+    });
+
+    it("leaves external text drops to the editable field", async () => {
+      await openDraft(resume, { activeSection: "custom" });
+      expect(
+        await page.$eval('[data-field-id="custom.0.bullets.0"]', (el) => {
+          const transfer = new DataTransfer();
+          transfer.setData("text/plain", "Dropped text");
+          const event = new DragEvent("drop", {
+            bubbles: true,
+            cancelable: true,
+            dataTransfer: transfer,
+          });
+          el.dispatchEvent(event);
+          return event.defaultPrevented;
+        }),
+      ).toBe(false);
+      expect((await savedResume()).custom[0].bullets).toEqual(resume.custom[0].bullets);
+    });
 
     it("drags a nested experience bullet without moving its parent role", async () => {
       await openDraft({
@@ -946,6 +1284,126 @@ describe.skipIf(!existsSync(chromePath))(
       ]);
     });
 
+    it.each(["awards", "certifications"])(
+      "preserves imported year strings when editing and reloading %s",
+      async (section) => {
+        const award = {
+          id: "award",
+          title: "Recognition",
+          year: "2020–2026 (ongoing)",
+          detail: "Original detail",
+        };
+        const certification = {
+          id: "cert",
+          name: "Qualification",
+          issuer: "Independent institute",
+          year: "Renewed October 2026",
+          url: "https://example.com/verify",
+        };
+        await openDraft(
+          { ...blankResume, awards: [award], certifications: [certification] },
+          { activeSection: section },
+          768,
+          true,
+        );
+        await page.evaluate(() => {
+          document.documentElement.style.fontSize = "32px";
+        });
+        const selector = '.cr-editor-panel input[name="year"]';
+        const original = section === "awards" ? award.year : certification.year;
+        expect(await page.$eval(selector, (el) => (el as HTMLInputElement).value)).toBe(original);
+        await page.$eval(selector, (el) => {
+          (el as HTMLInputElement).focus();
+          (el as HTMLInputElement).select();
+        });
+        await page.keyboard.type("2026 / annual renewal");
+        expect((await savedResume())[section][0].year).toBe("2026 / annual renewal");
+        await resumeEditing();
+        expect(await page.$eval(selector, (el) => (el as HTMLInputElement).value)).toBe(
+          "2026 / annual renewal",
+        );
+        expect((await savedResume())[section][0]).toEqual({
+          ...(section === "awards" ? award : certification),
+          year: "2026 / annual renewal",
+        });
+      },
+    );
+
+    it("keeps stats and extras independent through edits, moves, cancellation and reload", async () => {
+      const quickStats = [
+        { id: "q1", value: "15+", label: "years of experience" },
+        { id: "q2", value: "Over one hundred", label: "systems shipped" },
+      ];
+      const extras = [
+        { id: "x1", label: "Work authorization", value: "No sponsorship required" },
+        { id: "x2", label: "Availability", value: "After six weeks" },
+      ];
+      await openDraft({ ...blankResume, quickStats, extras }, { activeSection: "stats" });
+      const groups = await page.$$(".resume-content-group");
+      const value = await groups[1].$('input[name="value"]');
+      await value!.focus();
+      await page.keyboard.press("End");
+      await page.keyboard.type(" · permanent");
+      await groups[1].$('button[aria-label^="Move down "]').then((el) => el!.click());
+      await groups[1].$('button[aria-label^="Remove "]').then((el) => el!.click());
+      await page.keyboard.press("Escape");
+      expect((await savedResume()).quickStats).toEqual(quickStats);
+      expect((await savedResume()).extras).toEqual([
+        extras[1],
+        { ...extras[0], value: extras[0].value + " · permanent" },
+      ]);
+      await resumeEditing();
+      expect((await savedResume()).quickStats).toEqual(quickStats);
+      expect((await savedResume()).extras.map((item: { id: string }) => item.id)).toEqual([
+        "x2",
+        "x1",
+      ]);
+    });
+
+    it.each([1440, 1024])(
+      "analyzes the saved Target JD and returns to editing at %spx",
+      async (width) => {
+        const jd = "TypeScript Kubernetes leadership. Local requirements with **literal markers**.";
+        await openDraft(
+          undefined,
+          { activeSection: "jd", jobDescription: jd },
+          width,
+          width === 1024,
+        );
+        const selector = 'textarea[name="target-job-description"]';
+        await page.$eval(selector, (el) => {
+          const field = el as HTMLTextAreaElement;
+          field.focus();
+          field.setSelectionRange(field.value.length, field.value.length);
+        });
+        await page.keyboard.type(" Additional requirement.");
+        const analyze = ".cr-editor-panel .air-button--primary";
+        await page.focus(analyze);
+        await page.keyboard.press("Enter");
+        await page.waitForSelector('[role="dialog"][aria-labelledby]');
+        await page.waitForSelector('[role="tab"][id$="tab-keywords"]');
+        await page.locator('[role="tab"][id$="tab-keywords"]').click();
+        await page.waitForSelector('[role="tabpanel"][id$="panel-keywords"]');
+        await page.click('button[aria-label="Close ATS review"]');
+        await page.waitForSelector('[role="dialog"]', { hidden: true });
+        expect(await page.$eval(analyze, (el) => el === document.activeElement)).toBe(true);
+        expect(await page.$eval(selector, (el) => (el as HTMLTextAreaElement).value)).toBe(
+          jd + " Additional requirement.",
+        );
+        await savedResume();
+        expect(
+          await page.evaluate(
+            () => JSON.parse(localStorage.getItem("cloakresume:v1")!).jobDescription,
+          ),
+        ).toBe(jd + " Additional requirement.");
+        await resumeEditing();
+        expect(await page.$eval(selector, (el) => (el as HTMLTextAreaElement).value)).toBe(
+          jd + " Additional requirement.",
+        );
+        expect(await page.$(".cr-editor-panel .resume-hint-trigger")).toBeNull();
+      },
+    );
+
     it("preserves comma entry, custom labels, and both interests and tools on reload", async () => {
       await openDraft();
       await page.click('nav button[aria-label="Interests & Tools"]');
@@ -971,7 +1429,7 @@ describe.skipIf(!existsSync(chromePath))(
       });
     });
 
-    it("keeps a newly focused editor field focused when a dialog finishes closing", async () => {
+    it("keeps a newly focused editor field focused after dismissing a confirmation", async () => {
       await openDraft();
       await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
       const selector = 'input[name="profile-name"]';
@@ -979,10 +1437,10 @@ describe.skipIf(!existsSync(chromePath))(
       await page.locator('button[aria-label="Start a new blank resume"]').click();
       await page.waitForSelector('[role="dialog"]', { visible: true });
       await clickText("Cancel", '[role="dialog"]');
-      await page.waitForSelector('.cr-overlay[data-state="closing"]');
+      await page.waitForSelector(".resume-overlay", { hidden: true });
       await page.click(selector);
       await page.keyboard.press("End");
-      const addition = " — typing during the closing animation keeps every character";
+      const addition = " — typing after dismissal keeps every character";
       await page.keyboard.type(addition, { delay: 8 });
       await page.waitForSelector('[role="dialog"]', { hidden: true });
       expect(await page.$eval(selector, (element) => document.activeElement === element)).toBe(
@@ -992,6 +1450,290 @@ describe.skipIf(!existsSync(chromePath))(
         original + addition,
       );
       expect((await savedResume()).profile.name).toBe(original + addition);
+    });
+
+    async function openTemplateLibrary(width = 1440) {
+      if (width < 1024) {
+        await page.click('button[aria-label="More options"]');
+        await clickText("Template", '[role="dialog"]');
+      } else {
+        await page.click('button[aria-label^="Template:"]');
+      }
+      await page.waitForSelector(".resume-library", { visible: true });
+    }
+
+    it.each([1440, 390])(
+      "searches the real template library and saves a filtered selection at %ipx",
+      async (width) => {
+        const draft = {
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Library content stays intact" },
+        };
+        await openDraft(draft, { primary: "#123456", paperSize: "letter" }, width, width === 390);
+        await openTemplateLibrary(width);
+        await page.waitForFunction(() =>
+          [...document.querySelectorAll(".resume-template-preview")].every((el) =>
+            el.textContent?.includes("Library content stays intact"),
+          ),
+        );
+        expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+        expect(
+          await page.$$eval(".resume-library-category h3", (els) =>
+            els.map((el) => el.textContent),
+          ),
+        ).toEqual(TEMPLATE_CATEGORIES.map((c) => c.label));
+        expect(
+          await page.$$eval(".resume-template-preview", (els) =>
+            els.every(
+              (el) => el.hasAttribute("inert") && el.getAttribute("aria-hidden") === "true",
+            ),
+          ),
+        ).toBe(true);
+        const search = '[name="template-search"]';
+        for (const query of ["classic", "Scholarly", "PhDs", "  MODERN  ", "Prism"]) {
+          await page.$eval(search, (el) => (el as HTMLInputElement).select());
+          await page.keyboard.type(query);
+          const q = query.trim().toLowerCase();
+          const expected = TEMPLATE_CATEGORIES.flatMap((c) =>
+            TEMPLATE_LIST.filter(
+              (t) =>
+                t.category === c.id &&
+                [t.name, t.description, t.level, c.label].some((v) => v.toLowerCase().includes(q)),
+            ).map((t) => t.name),
+          );
+          await page.waitForFunction(
+            (count) => document.querySelectorAll(".resume-template-choice").length === count,
+            {},
+            expected.length,
+          );
+          expect(
+            await page.$$eval(".resume-template-name h4", (els) => els.map((el) => el.textContent)),
+          ).toEqual(expected);
+        }
+        await page.locator('.resume-template-choice[aria-label^="Prism template."]').click();
+        await page.waitForSelector(".resume-library", { hidden: true });
+        expect(await savedResume()).toEqual(draft);
+        expect(
+          await page.evaluate(() => {
+            const saved = JSON.parse(localStorage.getItem("cloakresume:v1")!);
+            return {
+              templateId: saved.templateId,
+              primary: saved.primary,
+              paperSize: saved.paperSize,
+            };
+          }),
+        ).toEqual({ templateId: "prism", primary: "#123456", paperSize: "letter" });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          width < 1024 ? "More options" : "Template: Prism",
+        );
+        await resumeEditing();
+        await openTemplateLibrary(width);
+        expect(
+          await page.$eval('.resume-template-choice[aria-pressed="true"]', (el) =>
+            el.getAttribute("aria-label"),
+          ),
+        ).toMatch(/^Prism template/);
+      },
+    );
+
+    it("keeps template search composition stable and clears results with focus and modal containment", async () => {
+      await openDraft();
+      await openTemplateLibrary();
+      expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(true);
+      await page.focus('[name="template-search"]');
+      await page.$eval('[name="template-search"]', (el) =>
+        el.dispatchEvent(new CompositionEvent("compositionstart", { bubbles: true })),
+      );
+      await page.keyboard.type("no-matching-template");
+      expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+      await page.$eval('[name="template-search"]', (el) =>
+        el.dispatchEvent(new CompositionEvent("compositionend", { bubbles: true })),
+      );
+      await page.waitForFunction(
+        () => document.querySelectorAll(".resume-template-choice").length === 0,
+      );
+      expect(await page.$eval('.resume-library [role="status"]', (el) => el.textContent)).toContain(
+        "No templates match",
+      );
+      await page.click('[aria-label="Clear search"]');
+      expect(
+        await page.$eval(
+          '[name="template-search"]',
+          (el) => document.activeElement === el && (el as HTMLInputElement).value === "",
+        ),
+      ).toBe(true);
+      expect(await page.$$(".resume-template-choice")).toHaveLength(17);
+      await page.focus('[aria-label="Close template library"]');
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(
+        await page.$eval(".resume-template-choice:last-child", () =>
+          document.activeElement?.getAttribute("aria-label"),
+        ),
+      ).toMatch(/^Academic CV/);
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Close template library",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(false);
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toMatch(
+        /^Template:/,
+      );
+    });
+
+    it.each([
+      [
+        "name",
+        { profile: { ...blankResume.profile, name: "Library identity" } },
+        "Library identity",
+      ],
+      [
+        "headline",
+        { profile: { ...blankResume.profile, title: "Library headline" } },
+        "Library headline",
+      ],
+      [
+        "stats",
+        { quickStats: [{ id: "s", value: "42", label: "Library metrics" }] },
+        "Library metrics",
+      ],
+      [
+        "extras",
+        { extras: [{ id: "e", label: "Library extra", value: "Retained value" }] },
+        "Library extra",
+      ],
+      [
+        "custom",
+        { custom: [{ id: "c", header: "Library section", bullets: ["Retained custom content"] }] },
+        "Retained custom content",
+      ],
+      ["interests", { interests: ["Library interest"] }, "Library interest"],
+      ["tools", { tools: ["Library tool"] }, "Library tool"],
+    ] as const)(
+      "previews a %s-only draft instead of substituting sample content",
+      async (_name, content, expected) => {
+        await openDraft({ ...blankResume, ...content });
+        await openTemplateLibrary();
+        await page.waitForFunction(
+          (text) =>
+            [...document.querySelectorAll(".resume-template-preview")].some((el) =>
+              el.textContent?.includes(text),
+            ),
+          {},
+          expected,
+        );
+        expect(
+          await page.$eval(".resume-library-description", (el) => el.textContent),
+        ).not.toContain("Sample content");
+        expect(await savedResume()).toEqual({ ...blankResume, ...content });
+      },
+    );
+
+    it("shows sample layouts for a fresh draft without writing the sample into it", async () => {
+      await page.setViewport({ width: 1440, height: 900 });
+      await page.goto(url, { waitUntil: "networkidle0" });
+      await clickText("Start blank");
+      await page.waitForSelector('button[aria-label^="Template:"]');
+      await openTemplateLibrary();
+      expect(await page.$eval(".resume-library-description", (el) => el.textContent)).toContain(
+        "Sample content",
+      );
+      await page.waitForFunction(() =>
+        [...document.querySelectorAll(".resume-template-preview")].every(
+          (el) => (el.textContent?.length ?? 0) > 200,
+        ),
+      );
+      await page.locator('.resume-template-choice[aria-label^="Prism template."]').click();
+      expect(await savedResume()).toEqual(blankResume);
+    });
+
+    it.each([
+      [1440, 390],
+      [390, 1440],
+    ])(
+      "keeps template search through %i to %ipx reflow and returns to visible chrome",
+      async (from, to) => {
+        await openDraft(undefined, {}, from, from === 390);
+        await openTemplateLibrary(from);
+        await page.type('[name="template-search"]', "Prism");
+        await page.setViewport({ width: to, height: 900, hasTouch: from === 390 });
+        await page.waitForSelector(
+          to < 1024 ? '[aria-label="More options"]' : '[aria-label^="Template:"]',
+        );
+        expect(
+          await page.$eval('[name="template-search"]', (el) => (el as HTMLInputElement).value),
+        ).toBe("Prism");
+        expect(await page.$$(".resume-template-choice")).toHaveLength(1);
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(".resume-library", { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          to < 1024 ? "More options" : "Template: ATS Plain",
+        );
+      },
+    );
+
+    it("cancels a library handle drag and dismisses with the compact swipe alternative", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await openTemplateLibrary(390);
+      const handle = ".resume-library .resume-sheet-handle";
+      await page.$eval(handle, (el) => {
+        const target = el as HTMLElement;
+        const capture = target.setPointerCapture.bind(target);
+        target.setPointerCapture = () => {};
+        const event = (type: string, y: number) =>
+          target.dispatchEvent(
+            new PointerEvent(type, {
+              bubbles: true,
+              pointerId: 1,
+              isPrimary: true,
+              button: 0,
+              clientY: y,
+            }),
+          );
+        event("pointerdown", 50);
+        event("pointermove", 100);
+        event("pointercancel", 100);
+        target.setPointerCapture = capture;
+      });
+      await page.waitForFunction(
+        () => (document.querySelector(".resume-library") as HTMLElement).style.transform === "",
+      );
+      expect(await page.$(".resume-library")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!;
+      const cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("returns library focus to visible chrome when a compact handoff loses its opener", async () => {
+      await openDraft();
+      await page.evaluate(() => {
+        (document.activeElement as HTMLElement).blur();
+        window.dispatchEvent(new Event("cr:open-template-picker"));
+      });
+      await page.waitForSelector(".resume-library");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Close template library",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-library", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Template: ATS Plain",
+      );
     });
 
     it("keeps the template picker open when dismissing a nested save-failure notice", async () => {
@@ -1033,7 +1775,61 @@ describe.skipIf(!existsSync(chromePath))(
       }
     });
 
-    it("keeps contact reorder and remove controls inside the card at 320px", async () => {
+    it("preserves every contact kind, value, validation and browser field semantics", async () => {
+      await openDraft({
+        ...blankResume,
+        contact: [{ id: "contact", kind: "website", value: "example.com" }],
+      });
+      await page.click('nav button[aria-label="Contact"]');
+      const cases = [
+        ["email", "person@example.com", "email", "email"],
+        ["phone", "+1 (555) 123-4567", "tel", "tel"],
+        ["location", "Bengaluru, India", "text", "address-level2"],
+        ...["website", "linkedin", "github", "medium", "twitter", "other"].map((kind) => [
+          kind,
+          `https://${kind}.example.com/profile?q=one`,
+          "text",
+          "url",
+        ]),
+      ];
+      for (const [kind, value, type, autoComplete] of cases) {
+        await page.select('select[aria-label="Contact kind"]', kind);
+        const selector = `input[aria-label="${kind} contact value"]`;
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.type(value);
+        expect(
+          await page.$eval(selector, (el) => ({
+            value: (el as HTMLInputElement).value,
+            type: (el as HTMLInputElement).type,
+            autoComplete: (el as HTMLInputElement).autocomplete,
+            spellcheck: (el as HTMLInputElement).spellcheck,
+            invalid: el.getAttribute("aria-invalid"),
+            label: (el as HTMLInputElement).labels?.[0].textContent,
+          })),
+        ).toEqual({
+          value,
+          type,
+          autoComplete,
+          spellcheck: kind === "location",
+          invalid: null,
+          label: "Value",
+        });
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.type("malformed");
+        expect(await page.$eval(selector, (el) => el.getAttribute("aria-invalid"))).toBe(
+          kind === "location" ? null : "true",
+        );
+        await page.$eval(selector, (el) => (el as HTMLInputElement).select());
+        await page.keyboard.press("Backspace");
+        expect(await page.$eval(selector, (el) => el.getAttribute("aria-invalid"))).toBeNull();
+        await page.keyboard.type(value);
+      }
+      expect((await savedResume()).contact).toEqual([
+        { id: "contact", kind: "other", value: "https://other.example.com/profile?q=one" },
+      ]);
+    });
+
+    it("keeps contact reorder and remove controls inside the entry at 320px", async () => {
       await openDraft({
         ...blankResume,
         profile: { ...blankResume.profile, summary: "Contact layout" },
@@ -1041,7 +1837,9 @@ describe.skipIf(!existsSync(chromePath))(
       });
       await page.click('nav button[aria-label="Contact"]');
       await page.setViewport({ width: 320, height: 900 });
-      await page.waitForSelector('.cr-editor-panel button[aria-label="Remove"]', { visible: true });
+      await page.waitForSelector('.cr-editor-panel button[aria-label^="Remove "]', {
+        visible: true,
+      });
       const clipped = await page.evaluate(() => {
         const row = document
           .querySelector(".cr-editor-panel .cr-drag-item")!
@@ -1059,8 +1857,8 @@ describe.skipIf(!existsSync(chromePath))(
           .map((element) => element.getAttribute("aria-label"));
       });
       expect(clipped).toEqual([]);
-      await page.click('.cr-editor-panel button[aria-label="Remove"]');
-      await page.click('.cr-editor-panel button[aria-label="Confirm removal"]');
+      await page.click('.cr-editor-panel button[aria-label^="Remove "]');
+      await page.click('.cr-editor-panel button[aria-label^="Confirm removal of "]');
       expect((await savedResume()).contact).toEqual([]);
     });
 
@@ -1070,7 +1868,7 @@ describe.skipIf(!existsSync(chromePath))(
       [1920, "dark"],
       [320, "dark"],
     ] as const)(
-      "keeps a complete, consistent contact focus ring at %ipx in %s mode",
+      "keeps Air writing and contact focus contours unclipped at %ipx in %s mode",
       async (width, theme) => {
         await page.emulateMediaFeatures([
           { name: "prefers-color-scheme", value: theme },
@@ -1082,22 +1880,63 @@ describe.skipIf(!existsSync(chromePath))(
           contact: [{ id: "focus", kind: "email", value: "name@example.com" }],
         });
         await page.focus('input[name="profile-name"]');
-        const expectedRing = await page.$eval('input[name="profile-name"]', (element) => {
+        await page.evaluate(
+          () =>
+            new Promise<void>((resolve) =>
+              requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+            ),
+        );
+        const writingRing = await page.$eval('input[name="profile-name"]', (element) => {
           const style = getComputedStyle(element);
-          return { outline: style.outline, offset: style.outlineOffset, shadow: style.boxShadow };
+          return {
+            focused: document.activeElement === element,
+            width: style.outlineWidth,
+            offset: style.outlineOffset,
+            shadow: style.boxShadow,
+            border: style.borderColor,
+          };
+        });
+        expect(writingRing).toEqual({
+          focused: true,
+          width: "2px",
+          offset: "0px",
+          shadow: "none",
+          border: "rgba(0, 0, 0, 0)",
+        });
+        const expectedRing = await page.evaluate(() => {
+          const probe = document.createElement("span");
+          probe.style.outline = "2px solid var(--air-accent)";
+          document.body.append(probe);
+          const outline = getComputedStyle(probe).outline;
+          probe.remove();
+          return { outline, offset: "0px", shadow: "none" };
         });
         await page.click('nav button[aria-label="Contact"]');
         await page.setViewport({ width, height: 1000 });
+        // A responsive shell change remounts the panel. Wait for that committed
+        // layout before taking element handles; detached nodes have empty styles.
+        await page.waitForFunction(
+          (compact) =>
+            document.querySelector(".cr-editor-panel")?.classList.contains("relative") === compact,
+          {},
+          width < 1024,
+        );
         for (const selector of [
           'select[aria-label="Contact kind"]',
           'input[aria-label="email contact value"]',
-          '.cr-editor-panel button[aria-label="Remove"]',
+          '.cr-editor-panel button[aria-label^="Remove "]',
         ]) {
           await page.keyboard.press("Tab");
           await page.$eval(selector, (element) => {
             element.scrollIntoView({ block: "center" });
             (element as HTMLElement).focus({ preventScroll: true });
           });
+          await page.evaluate(
+            () =>
+              new Promise<void>((resolve) =>
+                requestAnimationFrame(() => requestAnimationFrame(() => resolve())),
+              ),
+          );
           const result = await page.$eval(selector, (element) => {
             const style = getComputedStyle(element);
             const rect = element.getBoundingClientRect();
@@ -1118,6 +1957,7 @@ describe.skipIf(!existsSync(chromePath))(
                 clipped.push("vertical");
             }
             return {
+              focused: document.activeElement === element,
               ring: {
                 outline: style.outline,
                 offset: style.outlineOffset,
@@ -1126,7 +1966,18 @@ describe.skipIf(!existsSync(chromePath))(
               clipped,
             };
           });
-          expect(result.ring).toEqual(expectedRing);
+          const expected = selector.includes("button")
+            ? await page.evaluate(() => {
+                const probe = document.createElement("span");
+                probe.style.outline = "2px solid var(--air-accent)";
+                document.body.append(probe);
+                const outline = getComputedStyle(probe).outline;
+                probe.remove();
+                return { outline, offset: "2px", shadow: "none" };
+              })
+            : expectedRing;
+          expect(result.focused).toBe(true);
+          expect(result.ring).toEqual(expected);
           expect(result.clipped).toEqual([]);
         }
         const input = 'input[aria-label="email contact value"]';
@@ -1135,11 +1986,18 @@ describe.skipIf(!existsSync(chromePath))(
         expect(await page.$eval(input, (element) => element.getAttribute("aria-invalid"))).toBe(
           "true",
         );
+        expect(
+          await page.$eval(input, (element) => {
+            const description = element.getAttribute("aria-describedby");
+            return description && document.getElementById(description)?.textContent;
+          }),
+        ).toBe("Enter a valid email address.");
+        await page.focus('.cr-editor-panel button[aria-label^="Remove "]');
         await page.waitForFunction(
           (selector) => {
             const element = document.querySelector(selector)!;
             const token = document.createElement("span");
-            token.style.color = "var(--danger)";
+            token.style.color = "var(--air-danger)";
             document.body.append(token);
             const matches = getComputedStyle(element).borderColor === getComputedStyle(token).color;
             token.remove();
@@ -1178,7 +2036,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.setViewport({ width, height: 1000 });
         await page.locator('button[aria-label="Logo icon: none"]').click();
         await page.waitForSelector('[aria-label="Choose a logo icon"] .cr-scroll button');
-        async function checkEdges(selector: string) {
+        async function checkEdges(selector: string, expectedExtent = 4) {
           await page.evaluate(
             () =>
               new Promise<void>((resolve) =>
@@ -1207,14 +2065,14 @@ describe.skipIf(!existsSync(chromePath))(
                 ],
               };
             });
-            expect(space.extent).toBe(4);
+            expect(space.extent).toBe(expectedExtent);
             for (const gap of space.gaps)
               expect(gap, JSON.stringify({ selector, index, space })).toBeGreaterThanOrEqual(
                 space.extent - 0.5,
               );
           }
         }
-        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button');
+        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button', 5);
         await page.keyboard.press("Escape");
         await page.setViewport({ width: 1920, height: 1000 });
         // Resizing updates the responsive React layout on the next render.
@@ -1222,7 +2080,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.setViewport({ width, height: 1000 });
         await page.locator('.cr-editor-panel button[aria-haspopup="dialog"]').click();
         await page.locator('button[aria-label="Select year"]').click();
-        await checkEdges('[role="dialog"] .cr-scroll button');
+        await checkEdges('[role="dialog"] .cr-scroll button', 5);
       },
     );
 
@@ -1245,6 +2103,815 @@ describe.skipIf(!existsSync(chromePath))(
       expect((await savedResume()).education[0].start).toBe("Mar 2020");
       await page.click('button[aria-label="Clear start"]');
       expect((await savedResume()).education[0].start).toBe("");
+    });
+
+    it("preserves unknown logo values and restores focus across empty search, Escape and clear", async () => {
+      const imported = "Imported custom icon";
+      await openDraft({
+        ...blankResume,
+        profile: { ...blankResume.profile, summary: "Logo audit", logoIconName: imported },
+      });
+      await page.focus(".resume-logo-trigger");
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("name") === "logo-icon-search",
+      );
+      await page.type('[name="logo-icon-search"]', "NoSuchIcon".repeat(20));
+      expect(await page.$eval(".resume-logo-empty", (e) => e.textContent)).toContain(
+        "No icons match",
+      );
+      expect((await savedResume()).profile.logoIconName).toBe(imported);
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect(await page.$(".resume-logo-picker")).toBeNull();
+      await page.click('[aria-label="Clear logo"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect((await savedResume()).profile.logoIconName).toBeUndefined();
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("name") === "logo-icon-search",
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.$(".resume-logo-picker")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
+    });
+
+    it("opens the logo surface on touch without focusing search, and saves skill icons", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: { ...blankResume.profile, summary: "Touch logo" },
+          skills: [{ id: "skill", label: "Tools", items: "TypeScript" }],
+        },
+        { activeSection: "skills" },
+        390,
+        true,
+      );
+      const trigger = await page.$(".resume-logo-trigger");
+      await trigger!.tap();
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-picker"),
+      );
+      expect(
+        await page.$eval('[name="logo-icon-search"]', (e) => document.activeElement === e),
+      ).toBe(false);
+      await page.type('[name="logo-icon-search"]', "Code");
+      const icon = await page.$(".resume-logo-grid button");
+      const name = await icon!.evaluate((e) => e.getAttribute("aria-label"));
+      await icon!.tap();
+      await page.waitForFunction(
+        (value) =>
+          document.querySelector(".resume-logo-trigger")?.getAttribute("aria-label") ===
+          `Logo icon: ${value}`,
+        {},
+        name,
+      );
+      expect((await savedResume()).skills[0].iconName).toBe(name);
+      await page.click('[aria-label="Clear logo"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-logo-trigger"),
+      );
+      expect((await savedResume()).skills[0].iconName).toBeUndefined();
+    });
+
+    it("preserves photo bytes on cancel and invalid replacement, and returns focus after removal", async () => {
+      await openDraft();
+      const photo = await page.evaluate(() => {
+        const canvas = document.createElement("canvas");
+        canvas.width = canvas.height = 8;
+        const ctx = canvas.getContext("2d")!;
+        ctx.fillStyle = "#285ad7";
+        ctx.fillRect(0, 0, 8, 8);
+        const url = canvas.toDataURL("image/png");
+        const transfer = new DataTransfer();
+        transfer.items.add(
+          new File(
+            [Uint8Array.from(atob(url.split(",")[1]), (c) => c.charCodeAt(0))],
+            "portrait.png",
+            { type: "image/png" },
+          ),
+        );
+        const input = document.querySelector<HTMLInputElement>('[name="profile-photo"]')!;
+        input.files = transfer.files;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+        return url;
+      });
+      await page.waitForSelector(".resume-photo img");
+      expect((await savedResume()).profile.photoUrl).toBe(photo);
+      await page.evaluate(() => {
+        const input = document.querySelector<HTMLInputElement>('[name="profile-photo"]')!;
+        input.dispatchEvent(new Event("cancel", { bubbles: true }));
+        const transfer = new DataTransfer();
+        transfer.items.add(new File(["wrong type"], "portrait.gif", { type: "image/gif" }));
+        input.files = transfer.files;
+        input.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+      await page.waitForSelector('.resume-photo [role="alert"]');
+      expect((await savedResume()).profile.photoUrl).toBe(photo);
+      await clickText("Remove photo", ".resume-photo");
+      expect((await savedResume()).profile.photoUrl).toBeUndefined();
+      expect(await page.evaluate(() => document.activeElement?.textContent?.trim())).toBe(
+        "Add photo",
+      );
+      expect(await page.$('.resume-photo [role="alert"]')).toBeNull();
+    });
+
+    it("preserves imported partial dates until selection and returns focus through year, clear and Present", async () => {
+      await openDraft({
+        ...blankResume,
+        profile: { ...blankResume.profile, summary: "Partial dates" },
+        education: [
+          {
+            id: "dates",
+            degree: "Degree",
+            school: "School",
+            location: "",
+            detail: "",
+            start: "Spring 1930",
+            end: "March, 2024",
+          },
+        ],
+      });
+      await page.click('nav button[aria-label="Education"]');
+      const trigger = ".resume-date-trigger";
+      await page.focus(trigger);
+      await page.keyboard.press("Enter");
+      await page.waitForSelector(".resume-date-picker");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Previous year",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("Spring 1930");
+      await page.keyboard.press("Enter");
+      await page.locator('button[aria-label="Select year"]').click();
+      await clickText("2020", ".resume-year-grid");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Select year",
+      );
+      expect((await savedResume()).education[0].start).toBe("Spring 1930");
+      await clickText("Year only", ".resume-date-picker");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("2020");
+      await page.click('button[aria-label="Clear start"]');
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      expect((await savedResume()).education[0].start).toBe("");
+      await page.$$eval(trigger, (els) => (els[1] as HTMLButtonElement).click());
+      await page.waitForSelector(".resume-date-picker");
+      expect(
+        await page.$eval('.resume-date-grid button[aria-pressed="true"]', (e) => e.textContent),
+      ).toBe("Mar");
+      await clickText("Done", ".resume-date-picker");
+      expect((await savedResume()).education[0].end).toBe("March, 2024");
+      await page.$$eval(trigger, (els) => (els[1] as HTMLButtonElement).click());
+      await clickText("Present", ".resume-date-picker");
+      expect((await savedResume()).education[0].end).toBe("Present");
+      await page.waitForFunction(
+        () => document.activeElement === document.querySelectorAll(".resume-date-trigger")[1],
+      );
+    });
+
+    it("dismisses the year grid before its date popup, leaves by Tab and keeps closing controls inert", async () => {
+      await page.setViewport({ width: 1440, height: 1000 });
+      await openSection("experience");
+      const trigger = ".resume-date-trigger";
+      await page.click(trigger);
+      await page.locator('button[aria-label="Select year"]').click();
+      await page.waitForFunction(() => document.activeElement?.closest(".resume-year-grid"));
+      await page.keyboard.press("Escape");
+      expect(await page.$(".resume-year-grid")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Select year",
+      );
+      await page.keyboard.press("Escape");
+      expect(await page.$eval(".resume-date-picker", (e) => (e as HTMLElement).inert)).toBe(true);
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-trigger"),
+      );
+      await page.keyboard.press("Enter");
+      await page.waitForFunction(() =>
+        document.activeElement?.classList.contains("resume-date-picker"),
+      );
+      await page.$eval(".resume-date-actions button:last-child", (e) =>
+        (e as HTMLButtonElement).focus(),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Clear start",
+      );
+      expect((await savedResume()).experience[0].start).toBe("2020");
+    });
+
+    async function openColour(width = 1440) {
+      if (width < 1024) {
+        await page.click('button[aria-label="More options"]');
+        await clickText("Primary colour", '[role="dialog"]');
+      } else await page.click('button[aria-label="Primary colour"]');
+      await page.waitForSelector(".resume-colour-picker", { visible: true });
+      await page.waitForFunction(() =>
+        document.querySelector(".resume-colour-picker")?.contains(document.activeElement),
+      );
+    }
+
+    const colourHex = () =>
+      page.$eval('[name="resume-primary-hex"]', (el) => (el as HTMLInputElement).value);
+    async function enterColour(value: string) {
+      await page.$eval('[name="resume-primary-hex"]', (el) => (el as HTMLInputElement).select());
+      await page.keyboard.sendCharacter(value);
+    }
+
+    it.each([1440, 390])(
+      "preserves the exact primary colour when opening, dismissing and restoring at %ipx",
+      async (width) => {
+        await openDraft(undefined, { primary: "#123456" }, width, width < 1024);
+        const before = await page.$eval(".resume-root", (el) => el.innerHTML);
+        await openColour(width);
+        expect(await colourHex()).toBe("#123456");
+        expect(await page.$eval(".resume-root", (el) => el.innerHTML)).toBe(before);
+        if (width < 1024) {
+          expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(true);
+          expect(
+            await page.evaluate(() =>
+              document.activeElement?.classList.contains("resume-colour-picker"),
+            ),
+          ).toBe(true);
+          await page.focus(".resume-colour-fine summary");
+          await page.keyboard.press("Tab");
+          expect(
+            await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
+          ).toBe("Close primary colour");
+          await page.keyboard.down("Shift");
+          await page.keyboard.press("Tab");
+          await page.keyboard.up("Shift");
+          expect(await page.evaluate(() => document.activeElement?.tagName)).toBe("SUMMARY");
+        } else
+          expect(await page.evaluate(() => document.activeElement?.getAttribute("name"))).toBe(
+            "resume-primary-brightness",
+          );
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(".resume-colour-picker", { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          width < 1024 ? "More options" : "Primary colour",
+        );
+        expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
+        await resumeEditing();
+        await openColour(width);
+        expect(await colourHex()).toBe("#123456");
+        if (width < 1024) {
+          await page.mouse.click(2, 2);
+          await page.waitForSelector(".resume-colour-picker", { hidden: true });
+          expect(
+            await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
+          ).toBe("More options");
+        }
+      },
+    );
+
+    it("keeps hue and saturation through black, and hue through grey, with native precision keys", async () => {
+      await openDraft(undefined, { primary: "#2563EB" });
+      await openColour();
+      await page.click(".resume-colour-fine summary");
+      const range = (name: string) =>
+        page.$eval(`[name="resume-primary-${name}"]`, (el) => (el as HTMLInputElement).value);
+      const hue = await range("hue"),
+        saturation = await range("saturation");
+      await page.focus('[name="resume-primary-brightness"]');
+      await page.keyboard.press("Home");
+      expect(await colourHex()).toBe("#000000");
+      expect(await range("hue")).toBe(hue);
+      expect(await range("saturation")).toBe(saturation);
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+      await page.focus('[name="resume-primary-saturation"]');
+      await page.keyboard.press("Home");
+      expect(await colourHex()).toBe("#ffffff");
+      expect(await range("hue")).toBe(hue);
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+      await enterColour("#000000");
+      expect(await range("hue")).toBe(hue);
+      expect(await range("saturation")).toBe("100");
+      await page.focus('[name="resume-primary-brightness"]');
+      await page.keyboard.press("End");
+      expect(await colourHex()).not.toBe("#ffffff");
+    });
+
+    it("retains invalid hex drafts and the last output, and preserves all ten preset shortcuts", async () => {
+      await openDraft(undefined, { primary: "#123456" });
+      await openColour();
+      await enterColour("#not-a-colour");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBeNull();
+      await page.keyboard.press("Tab");
+      expect(await colourHex()).toBe("#not-a-colour");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBe("true");
+      const saved = await page.evaluate(() => {
+        window.dispatchEvent(new Event("pagehide"));
+        return JSON.parse(localStorage.getItem("cloakresume:v1")!).primary;
+      });
+      expect(saved).toBe("#123456");
+      await enterColour("#aBc");
+      expect(await colourHex()).toBe("#aBc");
+      await enterColour("#Ab12Cd");
+      expect(await colourHex()).toBe("#Ab12Cd");
+      expect(
+        await page.$eval('[name="resume-primary-hex"]', (el) => el.getAttribute("aria-invalid")),
+      ).toBeNull();
+      for (const [name, value] of [
+        ["Emerald", "#047857"],
+        ["Ocean", "#2563EB"],
+        ["Violet", "#7C3AED"],
+        ["Rose", "#E11D48"],
+        ["Amber", "#D97706"],
+        ["Slate", "#334155"],
+        ["Teal", "#0D9488"],
+        ["Indigo", "#4F46E5"],
+        ["Crimson", "#B91C1C"],
+        ["Graphite", "#111827"],
+      ]) {
+        await page.click(`button[aria-label="Set primary colour to ${name}"]`);
+        expect(await colourHex()).toBe(value);
+      }
+    });
+
+    it("owns one wheel pointer, restores cancelled drags exactly, and keeps brightness on selection", async () => {
+      await openDraft(undefined, { primary: "#123456" });
+      await openColour();
+      const box = await (await page.$(".air-colour-wheel"))!.boundingBox();
+      const x = box!.x + box!.width / 2,
+        y = box!.y + 1;
+      await page.mouse.move(x, y);
+      await page.mouse.down();
+      const selected = await colourHex();
+      expect(selected).not.toBe("#123456");
+      expect(
+        await page.$eval(
+          '[name="resume-primary-brightness"]',
+          (el) => (el as HTMLInputElement).value,
+        ),
+      ).toBe("34");
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(
+          new PointerEvent("pointermove", { bubbles: true, pointerId: 9, clientX: 0, clientY: 0 }),
+        ),
+      );
+      expect(await colourHex()).toBe(selected);
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(new PointerEvent("pointercancel", { bubbles: true, pointerId: 1 })),
+      );
+      expect(await colourHex()).toBe("#123456");
+      await page.mouse.up();
+      await page.mouse.down();
+      await page.mouse.move(x + 1, y + 1);
+      await page.$eval(".air-colour-wheel", (el) => el.releasePointerCapture(1));
+      await page.mouse.move(x + 3, y + 3);
+      expect(await colourHex()).toBe("#123456");
+      await page.mouse.up();
+      await page.$eval(".air-colour-wheel", (el) =>
+        el.dispatchEvent(
+          new PointerEvent("pointerdown", {
+            bubbles: true,
+            pointerId: 9,
+            isPrimary: false,
+            button: 0,
+          }),
+        ),
+      );
+      expect(await colourHex()).toBe("#123456");
+      await enterColour("#000000");
+      await page.mouse.click(x, y);
+      expect(
+        await page.$eval(
+          '[name="resume-primary-brightness"]',
+          (el) => (el as HTMLInputElement).value,
+        ),
+      ).toBe("100");
+      await page.click(".resume-colour-fine summary");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("0");
+      await page.focus(".air-colour-wheel");
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("ArrowRight");
+      await page.keyboard.up("Shift");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("10");
+      await page.keyboard.press("End");
+      expect(
+        await page.$eval('[name="resume-primary-hue"]', (el) => (el as HTMLInputElement).value),
+      ).toBe("359");
+      expect(await page.$eval(".air-colour-wheel", (el) => el.getAttribute("role"))).toBe("group");
+    });
+
+    it("preserves mobile colour swipe dismissal and cancellation without changing the colour", async () => {
+      await openDraft(undefined, { primary: "#123456" }, 390, true);
+      await openColour(390);
+      const session = await page.createCDPSession();
+      const rect = await (await page.$(".resume-colour-drag"))!.boundingBox();
+      const x = rect!.x + rect!.width / 2,
+        y = rect!.y + rect!.height / 2;
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: y + 80 }],
+      });
+      await session.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+      await page.waitForFunction(
+        () =>
+          getComputedStyle(document.querySelector(".resume-colour-picker")!).transform === "none",
+      );
+      expect(await colourHex()).toBe("#123456");
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x, y }],
+      });
+      await session.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x, y: y + 140 }],
+      });
+      await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+      await openColour(390);
+      expect(await colourHex()).toBe("#123456");
+    });
+
+    it("leaves the desktop colour popup by Tab and dismisses it on a compact breakpoint", async () => {
+      await openDraft();
+      await openColour();
+      await page.focus(".resume-colour-fine summary");
+      await page.keyboard.press("Tab");
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.textContent)).toBe("A4");
+      await openColour();
+      await page.setViewport({ width: 390, height: 844 });
+      await page.waitForSelector(".resume-colour-picker", { hidden: true });
+      await openColour(390);
+      await page.keyboard.press("Escape");
+      expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
+    });
+
+    it.each(["Template", "Primary colour", "Scan résumé", "New résumé"])(
+      "Options hands off %s immediately and restores the compact opener",
+      async (action) => {
+        await openDraft(undefined, {}, 390, true);
+        await page.click('[aria-label="More options"]');
+        await clickText(action, ".resume-options");
+        await page.waitForSelector(".resume-options", { hidden: true });
+        await page.waitForSelector('[role="dialog"]');
+        await page.waitForFunction(() => document.activeElement?.closest('[role="dialog"]'));
+        expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(true);
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="dialog"]', { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          "More options",
+        );
+        expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+      },
+    );
+
+    it("Options preserves paper state through resizing and restores a visible desktop action", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await clickText("Letter", ".resume-options");
+      await page.setViewport({ width: 1440, height: 900, hasTouch: true });
+      await page.waitForSelector('button[aria-label="Export to PDF"]');
+      expect(await page.$(".resume-options")).not.toBeNull();
+      expect(
+        await page.$eval(".resume-options [data-paper-size-control]", (e) => e.textContent),
+      ).toContain("Letter");
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(
+        await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+      ).toBe(true);
+      const saved = await page.evaluate(() => {
+        window.dispatchEvent(new Event("pagehide"));
+        return JSON.parse(localStorage.getItem("cloakresume:v1")!);
+      });
+      expect(saved.paperSize).toBe("letter");
+    });
+
+    it("Options keeps a not-ready export notice nested and returns to its export action", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await page.$eval(".resume-root", (e) => {
+        (e as HTMLElement).dataset.templateReady = "false";
+      });
+      await page.click(".resume-options [data-export-pdf]");
+      await page.waitForSelector('[role="alertdialog"]');
+      expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+        "Document is still preparing",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+      expect(
+        await page.evaluate(() =>
+          document.activeElement?.matches(".resume-options [data-export-pdf]"),
+        ),
+      ).toBe(true);
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(true);
+      await page.keyboard.press("Escape");
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+    });
+
+    it.each([390, 1920])(
+      "Options/export at %ipx reserves busy geometry, guards duplicates and retries a real render failure",
+      async (width) => {
+        await openDraft(undefined, {}, width, width === 390);
+        await page.waitForSelector('.resume-root[data-template-ready="true"]');
+        if (width === 390) await page.click('[aria-label="More options"]');
+        const action = "button[data-export-pdf]";
+        const size = () =>
+          page.$eval(action, (e) => {
+            const r = e.getBoundingClientRect();
+            return [r.width, r.height];
+          });
+        const before = await size();
+        await page.evaluate(() => {
+          let release!: () => void;
+          Object.defineProperty(document.fonts, "ready", {
+            configurable: true,
+            value: new Promise<void>((r) => {
+              release = r;
+            }),
+          });
+          Object.assign(window, {
+            releasePdfFonts: () => {
+              Reflect.deleteProperty(document.fonts, "ready");
+              release();
+            },
+          });
+          // A real canvas serialization failure must clean up its clone and allow retry.
+          // Restored on its prototype; never invoked without a canvas receiver.
+          // oxlint-disable-next-line typescript/unbound-method
+          const original = HTMLCanvasElement.prototype.toDataURL;
+          HTMLCanvasElement.prototype.toDataURL = function () {
+            HTMLCanvasElement.prototype.toDataURL = original;
+            throw new Error("Canvas could not be encoded");
+          };
+          let clones = 0;
+          const observer = new MutationObserver((records) => {
+            for (const r of records)
+              for (const n of r.addedNodes)
+                if (n instanceof HTMLElement && n.style.left === "-99999px") clones++;
+          });
+          observer.observe(document.body, { childList: true });
+          Object.assign(window, { pdfCloneCount: () => clones });
+        });
+        await page.click(action);
+        await page.waitForSelector(`${action}[aria-busy="true"]`);
+        expect(await size()).toEqual(before);
+        expect(
+          await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+        ).toBe(true);
+        await page.$eval(action, (e) => {
+          (e as HTMLButtonElement).click();
+          (e as HTMLButtonElement).click();
+        });
+        await page.keyboard.press("Enter");
+        await page.evaluate(() =>
+          (window as unknown as { releasePdfFonts: () => void }).releasePdfFonts(),
+        );
+        await page.waitForSelector('[role="alertdialog"]');
+        expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+          "Canvas could not be encoded",
+        );
+        expect(
+          await page.evaluate(() =>
+            (window as unknown as { pdfCloneCount: () => number }).pdfCloneCount(),
+          ),
+        ).toBe(1);
+        expect(await page.$('body > [aria-hidden="true"][style*="-99999px"]')).toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(
+          await page.evaluate(() => document.activeElement?.hasAttribute("data-export-pdf")),
+        ).toBe(true);
+        const directory = mkdtempSync(join(tmpdir(), "cloakresume-export-retry-"));
+        try {
+          const cdp = await page.createCDPSession();
+          await cdp.send("Browser.setDownloadBehavior", {
+            behavior: "allowAndName",
+            browserContextId: context.id,
+            downloadPath: directory,
+            eventsEnabled: true,
+          });
+          const done = new Promise<string>((resolve) =>
+            cdp.on("Browser.downloadProgress", (e) => {
+              if (e.state === "completed") resolve(e.guid);
+            }),
+          );
+          await page.click(action);
+          const guid = await done;
+          expect(readFileSync(join(directory, guid)).subarray(0, 5).toString()).toBe("%PDF-");
+          await page.waitForFunction(() =>
+            [...document.querySelectorAll('[role="status"]')].some(
+              (e) => e.textContent === "PDF download started.",
+            ),
+          );
+          expect(await size()).toEqual(before);
+          expect(
+            await page.evaluate(() =>
+              (window as unknown as { pdfCloneCount: () => number }).pdfCloneCount(),
+            ),
+          ).toBe(2);
+        } finally {
+          rmSync(directory, { recursive: true, force: true });
+        }
+      },
+    );
+
+    it("Options native file cancellation, invalid data, replacement cancellation and same-file retry preserve the draft", async () => {
+      await openDraft(undefined, {}, 390, true);
+      const directory = mkdtempSync(join(tmpdir(), "cloakresume-options-file-"));
+      const good = join(directory, "saved.json"),
+        bad = join(directory, "broken.json");
+      writeFileSync(
+        good,
+        JSON.stringify({
+          kind: "cloakresume.v1",
+          templateId: "classic-sidebar",
+          primary: "#123456",
+          paperSize: "letter",
+          jobDescription: "Imported requirements",
+          resume: { profile: { name: "Imported Person", summary: "Imported summary" } },
+        }),
+      );
+      writeFileSync(bad, "invalid");
+      const choose = async (path?: string) => {
+        const waiting = page.waitForFileChooser();
+        await page.click('.resume-options [aria-label="Load from file"]');
+        const picker = await waiting;
+        if (path) await picker.accept([path]);
+        else await picker.cancel();
+      };
+      try {
+        await page.click('[aria-label="More options"]');
+        await choose();
+        expect(await page.$(".resume-options")).not.toBeNull();
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+        await choose(bad);
+        await page.waitForSelector('[role="alertdialog"]');
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+          "More options",
+        );
+        await page.click('[aria-label="More options"]');
+        await choose(good);
+        await page.waitForSelector('[role="dialog"]');
+        await clickText("Cancel", '[role="dialog"]');
+        expect((await savedResume()).profile.summary).toBe("Draft for audit");
+        await page.click('[aria-label="More options"]');
+        await choose(good);
+        await clickText("Replace draft", '[role="dialog"]');
+        await page.waitForFunction(
+          () =>
+            document.querySelector<HTMLInputElement>('input[name="profile-name"]')?.value ===
+            "Imported Person",
+        );
+        expect((await savedResume()).profile.summary).toBe("Imported summary");
+        expect(
+          await page.$eval('input[name="resume-file"]', (e) => (e as HTMLInputElement).value),
+        ).toBe("");
+      } finally {
+        rmSync(directory, { recursive: true, force: true });
+      }
+    });
+
+    it("Options traps keyboard focus, scrolls every command into view and supports swipe cancellation/dismissal", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.setViewport({ width: 390, height: 568, hasTouch: true });
+      await page.click('[aria-label="More options"]');
+      await page.waitForFunction(
+        () => document.activeElement?.getAttribute("aria-label") === "Close options",
+      );
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Load from file",
+      );
+      const visible = await page.evaluate(() => {
+        const e = document.activeElement!,
+          a = e.getBoundingClientRect(),
+          b = document.querySelector(".resume-options-body")!.getBoundingClientRect();
+        return a.top >= b.top - 1 && a.bottom <= b.bottom + 1;
+      });
+      expect(visible).toBe(true);
+      const ringFits = await page.evaluate(() => {
+        const e = document.activeElement!,
+          r = e.getBoundingClientRect(),
+          s = getComputedStyle(e);
+        const b = document.querySelector(".resume-options-body")!,
+          br = b.getBoundingClientRect();
+        const outset = parseFloat(s.outlineOffset) + parseFloat(s.outlineWidth);
+        return r.left - outset >= br.left && r.right + outset <= br.left + b.clientWidth;
+      });
+      expect(ringFits).toBe(true);
+      for (const theme of ["light", "dark"]) {
+        await page.emulateMediaFeatures([
+          { name: "prefers-color-scheme", value: theme },
+          { name: "prefers-reduced-motion", value: "reduce" },
+        ]);
+        const focus = await page.evaluate(() => {
+          const probe = document.createElement("span");
+          probe.style.color = "var(--air-accent)";
+          document.body.append(probe);
+          const expected = getComputedStyle(probe).color,
+            actual = getComputedStyle(document.activeElement!).outlineColor;
+          probe.remove();
+          return { expected, actual };
+        });
+        expect(focus.actual).toBe(focus.expected);
+      }
+      await page.keyboard.press("Tab");
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "Close options",
+      );
+      const handle = ".resume-options .resume-sheet-handle";
+      const cancelBox = (await (await page.$(handle))!.boundingBox())!;
+      const cancelCdp = await page.createCDPSession();
+      await cancelCdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [
+          { x: cancelBox.x + cancelBox.width / 2, y: cancelBox.y + cancelBox.height / 2 },
+        ],
+      });
+      await cancelCdp.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
+      expect(await page.$(".resume-options")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!,
+        cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-options", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("Options recovers from a JSON save failure without discarding the draft", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await page.evaluate(() => {
+        URL.createObjectURL = () => {
+          throw new Error("Downloads unavailable");
+        };
+      });
+      await clickText("Save to file", ".resume-options");
+      await page.waitForSelector('[role="alertdialog"]');
+      expect(await page.$eval('[role="alertdialog"]', (e) => e.textContent)).toContain(
+        "Downloads unavailable",
+      );
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+      expect((await savedResume()).profile.summary).toBe("Draft for audit");
     });
 
     it("cancels New without clearing work and imports a saved document with all settings", async () => {
@@ -1277,6 +2944,9 @@ describe.skipIf(!existsSync(chromePath))(
         input.files = transfer.files;
         input.dispatchEvent(new Event("change", { bubbles: true }));
       });
+      await page.waitForSelector('[role="dialog"]', { visible: true });
+      expect((await savedResume()).profile.summary).toBe("Draft for audit");
+      await clickText("Replace draft", '[role="dialog"]');
       await page.waitForFunction(
         () =>
           document.querySelector<HTMLInputElement>('input[name="profile-name"]')?.value ===
@@ -1389,7 +3059,7 @@ describe.skipIf(!existsSync(chromePath))(
       });
       expect(captionClipped).toEqual([]);
       await page.locator('[role="tab"][id$="tab-keywords"]').click();
-      await clickText("Open JD editor →", '[role="dialog"]');
+      await clickText("Open JD editor", '[role="dialog"]');
       await page.waitForSelector('textarea[name="target-job-description"]', { visible: true });
       expect(
         await page.$eval('button[aria-label="Show editor"]', (element) =>
@@ -1577,6 +3247,451 @@ describe.skipIf(!existsSync(chromePath))(
       expect(await page.$(".cr-editor-panel")).not.toBeNull();
     });
 
+    async function scanWritingHints() {
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector(".cr-editor-panel .resume-hint-trigger");
+      await page.click('button[aria-label="Close ATS review"]');
+      await page.waitForSelector('button[aria-label="Close ATS review"]', { hidden: true });
+    }
+
+    const hintText =
+      "I designed **teh** reliable system and helped teh team build useful tools. We work on quality software and support our customers every day.";
+    for (const [section, fieldId] of [
+      ["profile", "profile.summary"],
+      ["experience", "experience.0.bullets.0"],
+      ["projects", "projects.0.description"],
+      ["projects", "projects.0.roles.0"],
+      ["awards", "awards.0.detail"],
+      ["custom", "custom.0.bullets.0"],
+    ]) {
+      it(`applies writing hints in ${fieldId} without changing rich text or later occurrences`, async () => {
+        await openDraft(
+          {
+            ...blankResume,
+            profile: { ...blankResume.profile, summary: hintText },
+            experience: [
+              {
+                id: "role",
+                title: "Engineer",
+                company: "Team",
+                location: "",
+                start: "2020",
+                end: "Present",
+                bullets: [hintText],
+              },
+            ],
+            projects: [
+              {
+                id: "project",
+                name: "Project",
+                description: hintText,
+                roles: [hintText],
+                stack: [],
+              },
+            ],
+            awards: [{ id: "award", title: "Award", year: "2020", detail: hintText }],
+            custom: [{ id: "custom", header: "Volunteering", bullets: [hintText] }],
+          },
+          { activeSection: section },
+        );
+        await scanWritingHints();
+        const field = `[data-field-id="${fieldId}"]`;
+        const trigger = `${field} + .resume-hint-trigger`;
+        const before = await savedResume();
+        await page.locator(trigger).click();
+        await page.waitForSelector(".resume-hint-popover:focus");
+        expect(await savedResume()).toEqual(before);
+        await page.click('.resume-hint-actions button[aria-label="Replace “teh” with “the”"]');
+        await page.waitForSelector(".resume-hint-popover", { hidden: true });
+        expect(
+          await page.$eval(field, (element) => ({
+            value: (element as HTMLInputElement).value,
+            focused: element === document.activeElement,
+          })),
+        ).toEqual({ value: hintText.replace("teh", "the"), focused: true });
+        await page.waitForSelector(trigger);
+        expect(await page.$(".resume-hint-popover")).toBeNull();
+        await resumeEditing();
+        expect(await page.$eval(field, (element) => (element as HTMLInputElement).value)).toBe(
+          hintText.replace("teh", "the"),
+        );
+      });
+    }
+
+    it("keeps hint keyboard traversal, touch dismissal and disappearing-trigger focus predictable", async () => {
+      await openDraft(
+        {
+          ...blankResume,
+          profile: {
+            ...blankResume.profile,
+            summary: hintText.replace("helped teh", "helped the"),
+          },
+        },
+        {},
+        1440,
+        true,
+      );
+      await scanWritingHints();
+      const trigger = '[data-field-id="profile.summary"] + .resume-hint-trigger';
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.keyboard.press("Tab");
+      expect(
+        await page.$eval(
+          'button[aria-label="Close writing hints"]',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      await page.keyboard.down("Shift");
+      await page.keyboard.press("Tab");
+      await page.keyboard.up("Shift");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.$eval(trigger, (element) => element === document.activeElement)).toBe(true);
+      await page.keyboard.press("Enter");
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.keyboard.press("Escape");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.$eval(trigger, (element) => element === document.activeElement)).toBe(true);
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.$eval(".resume-hint-popover", (element) =>
+        element
+          .querySelectorAll<HTMLButtonElement>("button")
+          .item(element.querySelectorAll("button").length - 1)
+          .focus(),
+      );
+      await page.keyboard.press("Tab");
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      expect(await page.evaluate(() => document.activeElement?.tagName)).not.toBe("BODY");
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.$eval('[data-field-id="profile.summary"]', (element) => {
+        element.dispatchEvent(
+          new PointerEvent("pointerdown", { bubbles: true, pointerType: "touch" }),
+        );
+        (element as HTMLTextAreaElement).focus();
+      });
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+      await page.locator(trigger).click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      expect(
+        await page.$$eval(".resume-hint-popover button", (elements) =>
+          elements.every((element) => element.getBoundingClientRect().height >= 44),
+        ),
+      ).toBe(true);
+      await page.click('.resume-hint-actions button[aria-label="Replace “teh” with “the”"]');
+      await page.waitForSelector(trigger, { hidden: true });
+      expect(
+        await page.$eval(
+          '[data-field-id="profile.summary"]',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      expect(await page.$(".resume-hint-popover")).toBeNull();
+    });
+
+    it("jumps from a writing review to the named field and leaves Target JD outside the hint scan", async () => {
+      await openDraft(
+        { ...blankResume, custom: [{ id: "custom", header: "Volunteering", bullets: [hintText] }] },
+        { jobDescription: hintText },
+      );
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[role="tab"][id$="tab-insights"]');
+      await page.click('[role="tab"][id$="tab-insights"]');
+      await page.waitForSelector('button[aria-label="Jump to Volunteering · bullet 1"]');
+      await page.click('button[aria-label="Jump to Volunteering · bullet 1"]');
+      await page.waitForSelector('[data-field-id="custom.0.bullets.0"]:focus');
+      await page.locator('[data-field-id="custom.0.bullets.0"] + .resume-hint-trigger').click();
+      await page.waitForSelector(".resume-hint-popover:focus");
+      await page.click('button[aria-label="Close writing hints"]');
+      expect(
+        await page.$eval(
+          '[data-field-id="custom.0.bullets.0"] + .resume-hint-trigger',
+          (element) => element === document.activeElement,
+        ),
+      ).toBe(true);
+      await page.click('.resume-section-link[aria-label="Target JD"]');
+      await page.waitForSelector('textarea[name="target-job-description"]');
+      expect(await page.$(".cr-editor-panel .resume-hint-trigger")).toBeNull();
+      expect(
+        await page.$eval(
+          'textarea[name="target-job-description"]',
+          (element) => (element as HTMLTextAreaElement).value,
+        ),
+      ).toBe(hintText);
+    });
+
+    it.each(["known", "unknown", "encoded"])(
+      "reports honest %s engine progress and completion while surviving close/reopen",
+      async (mode) => {
+        await page.evaluateOnNewDocument((mode) => {
+          const original = window.fetch;
+          let requests = 0;
+          window.fetch = async (...args) => {
+            const response = await original(...args);
+            const requestUrl = args[0] instanceof Request ? args[0].url : args[0].toString();
+            if (!requestUrl.includes(".wasm")) return response;
+            requests++;
+            const bytes = new Uint8Array(await response.arrayBuffer());
+            const split = Math.floor(bytes.length / 4);
+            const headers = new Headers({ "content-type": "application/wasm" });
+            if (mode !== "unknown") headers.set("content-length", String(bytes.length));
+            if (mode === "encoded") headers.set("content-encoding", "gzip");
+            const stream = new ReadableStream({
+              start(controller) {
+                controller.enqueue(bytes.slice(0, split));
+                Object.assign(window, {
+                  reviewEngineRequests: requests,
+                  releaseReviewEngine: () => {
+                    controller.enqueue(bytes.slice(split));
+                    controller.close();
+                  },
+                });
+              },
+            });
+            return new Response(stream, { headers });
+          };
+        }, mode);
+        await openDraft({
+          ...blankResume,
+          profile: {
+            ...blankResume.profile,
+            summary:
+              "I designed teh reliable system and helped teh team build useful tools. We work on quality software and support our customers every day.",
+          },
+        });
+        const opener = 'button[aria-label="Scan résumé for ATS and writing issues"]';
+        await page.click(opener);
+        await page.waitForFunction(() => "releaseReviewEngine" in window);
+        await page.waitForSelector('[role="progressbar"]');
+        if (mode === "known")
+          await page.waitForSelector('[role="progressbar"][aria-valuenow="25"]');
+        else {
+          expect(await page.$('[role="progressbar"][aria-valuenow]')).toBeNull();
+          expect(await page.$('[role="progressbar"] > span')).toBeNull();
+        }
+        expect(await page.$(".resume-review time")).toBeNull();
+        await page.click('button[aria-label="Scanning résumé"]');
+        expect(
+          await page.$('button[aria-label="Scanning résumé"][aria-disabled="true"]'),
+        ).not.toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(`${opener}:focus`);
+        await page.click(opener);
+        await page.waitForSelector('button[aria-label="Close ATS review"]:focus');
+        const releasedAt = await page.evaluate(() => {
+          const target = window as unknown as {
+            releaseReviewEngine: () => void;
+            reviewEngineRequests: number;
+          };
+          if (target.reviewEngineRequests !== 1) throw new Error("Duplicate engine request");
+          const now = Date.now();
+          target.releaseReviewEngine();
+          return now;
+        });
+        await page.waitForSelector(".resume-review time", { timeout: 30_000 });
+        expect(
+          await page.$eval(".resume-review time", (el) => Date.parse(el.getAttribute("datetime")!)),
+        ).toBeGreaterThanOrEqual(releasedAt);
+        expect(await page.$('button[aria-label="Close ATS review"]:focus')).not.toBeNull();
+        expect(await page.$eval('.resume-review [role="status"]', (el) => el.textContent)).toBe(
+          "Review complete",
+        );
+        const size = await page.$eval('button[aria-label="Re-scan"]', (el) => ({
+          w: el.getBoundingClientRect().width,
+          h: el.getBoundingClientRect().height,
+        }));
+        await page.click('button[aria-label="Re-scan"]');
+        await page.waitForSelector('button[aria-label="Re-scan"]:focus');
+        expect(
+          await page.$eval('button[aria-label="Re-scan"]', (el) => ({
+            w: el.getBoundingClientRect().width,
+            h: el.getBoundingClientRect().height,
+          })),
+        ).toEqual(size);
+      },
+      40_000,
+    );
+
+    it("restores review focus to current chrome before a media-query notification arrives", async () => {
+      await page.evaluateOnNewDocument(() => {
+        // Hold media-query notifications while the native matches value still
+        // changes. A modal close render must read that current value directly.
+        MediaQueryList.prototype.addEventListener = () => {};
+      });
+      await openDraft();
+      await page.click('[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[aria-label="Close ATS review"]:focus');
+      await page.setViewport({ width: 390, height: 844 });
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+      expect(await page.$('[aria-label="Scan résumé for ATS and writing issues"]')).toBeNull();
+      expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
+    });
+
+    it("keeps review tab keyboard navigation and focus through compact reflow", async () => {
+      await openDraft(
+        { ...blankResume, profile: { ...blankResume.profile, summary: "Built TypeScript tools." } },
+        { jobDescription: "TypeScript React Kubernetes" },
+      );
+      await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+      await page.waitForSelector('[role="tab"]', { timeout: 30_000 });
+      await page.click('[role="tab"][id$="tab-overview"]');
+      for (const [key, tab] of [
+        ["ArrowRight", "keywords"],
+        ["End", "parse"],
+        ["ArrowRight", "overview"],
+        ["ArrowLeft", "parse"],
+        ["Home", "overview"],
+        ["ArrowDown", "keywords"],
+      ]) {
+        await page.keyboard.press(key as import("puppeteer-core").KeyInput);
+        await page.waitForSelector(`[role="tab"][id$="tab-${tab}"][aria-selected="true"]:focus`);
+        expect(await page.$$('[role="tab"][tabindex="0"]')).toHaveLength(1);
+      }
+      await page.setViewport({ width: 390, height: 844 });
+      expect(
+        await page.$('[role="tab"][id$="tab-keywords"][aria-selected="true"]:focus'),
+      ).not.toBeNull();
+      expect(await page.$eval('[role="tabpanel"]:not([hidden])', (el) => el.textContent)).toContain(
+        "typescript",
+      );
+      await page.keyboard.press("End");
+      await page.keyboard.press("Tab");
+      expect(await page.$('[role="tabpanel"]:not([hidden]):focus')).not.toBeNull();
+      expect(
+        await page.$eval('[role="tabpanel"]:not([hidden]) pre', (el) => el.textContent),
+      ).toContain("Built TypeScript tools.");
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+      await page.click('[aria-label="More options"]');
+      await clickText("Scan résumé", '[role="dialog"]');
+      await page.waitForSelector('[role="tab"][id$="tab-overview"][aria-selected="true"]');
+      await page.keyboard.press("Escape");
+      await page.waitForSelector('[aria-label="More options"]:focus');
+    }, 40_000);
+
+    it("cancels a review handle drag and dismisses with the compact swipe alternative", async () => {
+      await openDraft(undefined, {}, 390, true);
+      await page.click('[aria-label="More options"]');
+      await clickText("Scan résumé", '[role="dialog"]');
+      await page.waitForSelector(".resume-review");
+      const handle = ".resume-review .resume-sheet-handle";
+      await page.$eval(handle, (el) => {
+        const target = el as HTMLElement;
+        const capture = target.setPointerCapture.bind(target);
+        target.setPointerCapture = () => {};
+        const event = (type: string, y: number) =>
+          target.dispatchEvent(
+            new PointerEvent(type, {
+              bubbles: true,
+              pointerId: 1,
+              isPrimary: true,
+              button: 0,
+              clientY: y,
+            }),
+          );
+        event("pointerdown", 50);
+        event("pointermove", 100);
+        event("pointercancel", 100);
+        target.setPointerCapture = capture;
+      });
+      await page.waitForFunction(
+        () => (document.querySelector(".resume-review") as HTMLElement).style.transform === "",
+      );
+      expect(await page.$(".resume-review")).not.toBeNull();
+      const box = (await (await page.$(handle))!.boundingBox())!;
+      const cdp = await page.createCDPSession();
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchStart",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", {
+        type: "touchMove",
+        touchPoints: [{ x: box.x + box.width / 2, y: box.y + box.height / 2 + 140 }],
+      });
+      await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
+      await page.waitForSelector(".resume-review", { hidden: true });
+      expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
+        "More options",
+      );
+    });
+
+    it("resumes the review after a nested save-failure notice closes", async () => {
+      await openDraft();
+      await page.evaluate(() => {
+        const original = Object.getOwnPropertyDescriptor(Storage.prototype, "setItem")!;
+        window.addEventListener(
+          "restore-storage",
+          () => Object.defineProperty(Storage.prototype, "setItem", original),
+          { once: true },
+        );
+        Storage.prototype.setItem = () => {
+          throw new DOMException("Quota full", "QuotaExceededError");
+        };
+      });
+      try {
+        await page.type('input[name="profile-name"]', " edit");
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('[role="alertdialog"]', { visible: true });
+        await page.keyboard.press("Escape");
+        await page.waitForSelector('[role="alertdialog"]', { hidden: true });
+        expect(await page.$(".resume-review")).not.toBeNull();
+        await page.keyboard.press("Tab");
+        expect(await page.evaluate(() => !!document.activeElement?.closest(".resume-review"))).toBe(
+          true,
+        );
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(
+          'button[aria-label="Scan résumé for ATS and writing issues"]:focus',
+        );
+      } finally {
+        await page.evaluate(() => {
+          window.dispatchEvent(new Event("restore-storage"));
+          window.dispatchEvent(new Event("pagehide"));
+        });
+      }
+    });
+
+    it("keeps review dismissal and background isolation available during lazy loading", async () => {
+      await openDraft();
+      await page.setRequestInterception(true);
+      let held: import("puppeteer-core").HTTPRequest | undefined;
+      const intercept = (request: import("puppeteer-core").HTTPRequest) => {
+        if (/AtsReviewContent[-.]/.test(request.url())) held = request;
+        else void request.continue();
+      };
+      page.on("request", intercept);
+      try {
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('button[aria-label="Close ATS review"]:focus');
+        expect(await page.$eval('[role="dialog"]', (el) => el.textContent)).toContain(
+          "Loading the local review workspace",
+        );
+        expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(true);
+        await page.keyboard.press("Tab");
+        expect(await page.$('button[aria-label="Close ATS review"]:focus')).not.toBeNull();
+        await page.keyboard.press("Escape");
+        await page.waitForSelector(
+          'button[aria-label="Scan résumé for ATS and writing issues"]:focus',
+        );
+        for (let attempts = 0; !held && attempts < 100; attempts++)
+          await new Promise((resolve) => setTimeout(resolve, 20));
+        expect(held).toBeDefined();
+        await held!.continue();
+        held = undefined;
+        await page.waitForNetworkIdle();
+        expect(await page.$('[role="dialog"]')).toBeNull();
+        expect(await page.$eval("#app", (el) => el.hasAttribute("inert"))).toBe(false);
+        await page.click('button[aria-label="Scan résumé for ATS and writing issues"]');
+        await page.waitForSelector('[role="tab"]', { timeout: 30_000 });
+      } finally {
+        if (held) await held.continue();
+        page.off("request", intercept);
+        await page.setRequestInterception(false);
+      }
+    }, 40_000);
+
     it("scans edits made while the writing engine is still downloading", async () => {
       await openDraft();
       await page.setRequestInterception(true);
@@ -1603,6 +3718,7 @@ describe.skipIf(!existsSync(chromePath))(
         for (let attempts = 0; !held && attempts < 500; attempts++)
           await new Promise((resolve) => setTimeout(resolve, 20));
         expect(held).toBeDefined();
+        expect(await page.$(".resume-hint-trigger")).toBeNull();
         await held!.continue();
         held = undefined;
         await page.waitForSelector('.cr-editor-panel button[aria-label*="writing hint"]', {
@@ -1643,6 +3759,7 @@ describe.skipIf(!existsSync(chromePath))(
         expect(
           await page.$eval('[role="dialog"] h3', (element) => element.textContent),
         ).not.toContain("on writing");
+        expect(await page.$(".resume-hint-trigger")).toBeNull();
         failDownload = false;
         await page.click('button[aria-label="Re-scan"]');
         await page.waitForFunction(

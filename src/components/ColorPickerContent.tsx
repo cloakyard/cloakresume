@@ -1,302 +1,232 @@
-/**
- * Body of the colour picker — presets grid + custom HSL wheel.
- *
- * Rendered inside the desktop popover (anchored to the toolbar trigger)
- * and inside the mobile bottom-sheet overflow menu. Extracting the body
- * keeps both surfaces in lock-step as the palette evolves.
- */
-
+/** Shared primary-colour body. Only deliberate edits change the stored colour. */
 import { Check } from "lucide-react";
-import { useCallback, useEffect, useId, useRef, useState } from "react";
-import { PRESET_COLORS } from "../utils/colors.ts";
+import { useEffect, useId, useRef, useState, type RefObject } from "react";
+import { hexToHsv, hsvToHex, wheelPosition, wheelValue } from "../../docs/air/colour.mjs";
+import { normalizePrimaryColor, PRESET_COLORS } from "../utils/colors.ts";
 
-interface Props {
+type HSV = ReturnType<typeof hexToHsv>;
+const validHex = (value: string) => /^#(?:[\da-f]{3}|[\da-f]{6})$/i.test(value);
+
+export function ColorPickerContent({
+  primary,
+  onChange,
+  brightnessRef,
+}: {
   primary: string;
   onChange: (hex: string) => void;
-}
-
-function hexToHsl(hex: string): { h: number; s: number; l: number } {
-  const v = hex.replace("#", "");
-  const full =
-    v.length === 3
-      ? v
-          .split("")
-          .map((c) => c + c)
-          .join("")
-      : v;
-  const r = parseInt(full.slice(0, 2), 16) / 255;
-  const g = parseInt(full.slice(2, 4), 16) / 255;
-  const b = parseInt(full.slice(4, 6), 16) / 255;
-  const max = Math.max(r, g, b);
-  const min = Math.min(r, g, b);
-  const l = (max + min) / 2;
-  let h = 0;
-  let s = 0;
-  if (max !== min) {
-    const d = max - min;
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-    if (max === r) h = ((g - b) / d + (g < b ? 6 : 0)) * 60;
-    else if (max === g) h = ((b - r) / d + 2) * 60;
-    else h = ((r - g) / d + 4) * 60;
-  }
-  return { h, s, l };
-}
-
-function hslToHex(h: number, s: number, l: number): string {
-  const hue = (((h % 360) + 360) % 360) / 60;
-  const c = (1 - Math.abs(2 * l - 1)) * s;
-  const x = c * (1 - Math.abs((hue % 2) - 1));
-  let r = 0;
-  let g = 0;
-  let b = 0;
-  if (hue < 1) [r, g, b] = [c, x, 0];
-  else if (hue < 2) [r, g, b] = [x, c, 0];
-  else if (hue < 3) [r, g, b] = [0, c, x];
-  else if (hue < 4) [r, g, b] = [0, x, c];
-  else if (hue < 5) [r, g, b] = [x, 0, c];
-  else [r, g, b] = [c, 0, x];
-  const m = l - c / 2;
-  const toHex = (n: number) =>
-    Math.round((n + m) * 255)
-      .toString(16)
-      .padStart(2, "0");
-  return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
-}
-
-export function ColorPickerContent({ primary, onChange }: Props) {
-  const lightnessId = useId();
-  const wheelHelpId = useId();
+  brightnessRef: RefObject<HTMLInputElement | null>;
+}) {
+  const id = useId();
+  const [hsv, setHsv] = useState(() => hexToHsv(normalizePrimaryColor(primary)));
   const [hexDraft, setHexDraft] = useState(primary);
-  const { h, s, l } = hexToHsl(primary);
-  const wheelRef = useRef<HTMLDivElement>(null);
-  const draggingRef = useRef(false);
-  const lRef = useRef(l);
-  lRef.current = l;
-
-  useEffect(() => setHexDraft(primary), [primary]);
-
-  const applyFromPointer = useCallback(
-    (clientX: number, clientY: number) => {
-      const el = wheelRef.current;
-      if (!el) return;
-      const rect = el.getBoundingClientRect();
-      const cx = rect.width / 2;
-      const cy = rect.height / 2;
-      const dx = clientX - rect.left - cx;
-      const dy = clientY - rect.top - cy;
-      const r = Math.min(1, Math.hypot(dx, dy) / cx);
-      const angle = ((Math.atan2(dy, dx) * 180) / Math.PI + 90 + 360) % 360;
-      // Clamp lightness into a band where hue changes remain visible.
-      const safeL = Math.max(0.2, Math.min(0.8, lRef.current));
-      onChange(hslToHex(angle, r, safeL));
-    },
-    [onChange],
-  );
+  const [touched, setTouched] = useState(false);
+  const lastValue = useRef(primary);
+  const gesture = useRef<{ id: number; hsv: HSV; hex: string } | null>(null);
 
   useEffect(() => {
-    const onMove = (e: PointerEvent) => {
-      if (draggingRef.current) applyFromPointer(e.clientX, e.clientY);
-    };
-    const onUp = () => {
-      draggingRef.current = false;
-    };
-    window.addEventListener("pointermove", onMove);
-    window.addEventListener("pointerup", onUp);
-    window.addEventListener("pointercancel", onUp);
-    return () => {
-      window.removeEventListener("pointermove", onMove);
-      window.removeEventListener("pointerup", onUp);
-      window.removeEventListener("pointercancel", onUp);
-    };
-  }, [applyFromPointer]);
+    if (primary === lastValue.current) return;
+    lastValue.current = primary;
+    setHsv(hexToHsv(normalizePrimaryColor(primary)));
+    setHexDraft(primary);
+    setTouched(false);
+    gesture.current = null;
+  }, [primary]);
 
-  const thumbAngleRad = (h * Math.PI) / 180 - Math.PI / 2;
-  const thumbX = 50 + Math.cos(thumbAngleRad) * s * 48;
-  const thumbY = 50 + Math.sin(thumbAngleRad) * s * 48;
-
-  const lightnessTrack = `linear-gradient(to right, #000, ${hslToHex(h, Math.max(s, 0.0001), 0.5)}, #fff)`;
-
-  const handleWheelKey = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    const hueStep = event.shiftKey ? 10 : 1;
-    const saturationStep = event.shiftKey ? 0.1 : 0.01;
-    let nextHue = h;
-    let nextSaturation = s;
-    switch (event.key) {
-      case "ArrowLeft":
-        nextHue = (h - hueStep + 360) % 360;
-        break;
-      case "ArrowRight":
-        nextHue = (h + hueStep) % 360;
-        break;
-      case "ArrowUp":
-        nextSaturation = Math.min(1, s + saturationStep);
-        break;
-      case "ArrowDown":
-        nextSaturation = Math.max(0, s - saturationStep);
-        break;
-      case "Home":
-        nextHue = 0;
-        break;
-      case "End":
-        nextHue = 359;
-        break;
-      default:
-        return;
-    }
-    event.preventDefault();
-    onChange(hslToHex(nextHue, nextSaturation, l));
+  const commit = (next: HSV, hex = hsvToHex(next.h, next.s, next.v)) => {
+    lastValue.current = hex;
+    setHsv(next);
+    setHexDraft(hex);
+    setTouched(false);
+    onChange(hex);
   };
+  const chooseHex = (hex: string) => {
+    const next = hexToHsv(normalizePrimaryColor(hex));
+    // An achromatic value has no hue; retain that choice for subsequent edits.
+    if (next.s === 0) next.h = hsv.h;
+    if (next.v === 0) next.s = hsv.s;
+    commit(next, hex);
+  };
+  const applyPointer = (event: React.PointerEvent<HTMLDivElement>) => {
+    const rect = event.currentTarget.getBoundingClientRect();
+    const next = wheelValue(
+      ((event.clientX - rect.left) / rect.width) * 2 - 1,
+      ((event.clientY - rect.top) / rect.height) * 2 - 1,
+      hsv.h,
+    );
+    commit({ ...next, v: hsv.v || 1 });
+  };
+  const cancelPointer = (event: React.PointerEvent<HTMLDivElement>) => {
+    const start = gesture.current;
+    if (start?.id !== event.pointerId) return;
+    gesture.current = null;
+    commit(start.hsv, start.hex);
+  };
+  const point = wheelPosition(hsv.h, hsv.s);
+  const invalid = touched && !validHex(hexDraft);
 
   return (
-    <>
-      <div className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider mb-2">
-        Presets
-      </div>
-      <div className="grid grid-cols-5 gap-2 mb-4">
-        {PRESET_COLORS.map((c) => {
-          const active = c.value.toLowerCase() === primary.toLowerCase();
-          return (
+    <div className="resume-colour-content">
+      <div role="group" aria-labelledby={`${id}-presets`}>
+        <span id={`${id}-presets`} className="air-label">
+          Presets
+        </span>
+        <div className="resume-colour-presets">
+          {PRESET_COLORS.map((preset) => (
             <button
               type="button"
-              key={c.value}
-              onClick={() => onChange(c.value)}
-              aria-pressed={active}
-              className="relative aspect-square min-w-11 min-h-11 rounded-md transition-colors"
-              style={{
-                background: c.value,
-                border: active
-                  ? "2px solid var(--color-ink)"
-                  : "1px solid var(--color-rule-strong)",
-              }}
-              title={c.name}
-              aria-label={`Set primary colour to ${c.name}`}
+              key={preset.value}
+              className="air-icon-button air-button--quiet"
+              aria-label={`Set primary colour to ${preset.name}`}
+              title={preset.name}
+              aria-pressed={preset.value.toLowerCase() === primary.toLowerCase()}
+              onClick={() => chooseHex(preset.value)}
             >
-              {active && (
-                <Check
-                  className="w-4 h-4 absolute inset-0 m-auto"
-                  style={{ color: l > 0.65 ? "var(--color-proof-ink)" : "var(--color-accent-ink)" }}
-                />
-              )}
+              <span className="resume-colour-swatch" style={{ background: preset.value }}>
+                {preset.value.toLowerCase() === primary.toLowerCase() && (
+                  <Check aria-hidden="true" style={{ color: "#fff" }} />
+                )}
+              </span>
             </button>
-          );
-        })}
+          ))}
+        </div>
       </div>
-
-      <div className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider mb-2">
-        Custom
+      <div
+        className="air-colour-wheel"
+        role="group"
+        tabIndex={0}
+        aria-label="Hue and saturation wheel"
+        aria-describedby={`${id}-wheel-help`}
+        onKeyDown={(event) => {
+          const step = event.shiftKey ? 10 : 1;
+          let { h, s } = hsv;
+          switch (event.key) {
+            case "ArrowLeft":
+              h = (h - step + 360) % 360;
+              break;
+            case "ArrowRight":
+              h = (h + step) % 360;
+              break;
+            case "ArrowUp":
+              s = Math.min(1, s + step / 100);
+              break;
+            case "ArrowDown":
+              s = Math.max(0, s - step / 100);
+              break;
+            case "Home":
+              h = 0;
+              break;
+            case "End":
+              h = 359;
+              break;
+            default:
+              return;
+          }
+          event.preventDefault();
+          commit({ h, s, v: hsv.v || 1 });
+        }}
+        onPointerDown={(event) => {
+          if (!event.isPrimary || event.button !== 0 || gesture.current) return;
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+          event.currentTarget.setPointerCapture(event.pointerId);
+          gesture.current = { id: event.pointerId, hsv, hex: primary };
+          applyPointer(event);
+        }}
+        onPointerMove={(event) => {
+          if (gesture.current?.id === event.pointerId) applyPointer(event);
+        }}
+        onPointerUp={(event) => {
+          if (gesture.current?.id === event.pointerId) gesture.current = null;
+        }}
+        onPointerCancel={cancelPointer}
+        onLostPointerCapture={cancelPointer}
+      >
+        <span
+          className="air-colour-wheel__point"
+          style={{ left: `${point.x}%`, top: `${point.y}%`, background: primary }}
+        />
       </div>
-
-      <div className="flex flex-col items-center gap-3">
-        <div
-          ref={wheelRef}
-          role="slider"
-          tabIndex={0}
-          aria-label="Hue and saturation"
-          aria-valuemin={0}
-          aria-valuemax={359}
-          aria-valuenow={Math.round(h)}
-          aria-valuetext={`Hue ${Math.round(h)} degrees, saturation ${Math.round(s * 100)} percent`}
-          aria-describedby={wheelHelpId}
-          onKeyDown={handleWheelKey}
-          onPointerDown={(e) => {
-            e.currentTarget.setPointerCapture(e.pointerId);
-            draggingRef.current = true;
-            applyFromPointer(e.clientX, e.clientY);
-          }}
-          title="Choose hue and saturation"
-          className="relative w-36 h-36 rounded-full cursor-crosshair touch-none select-none"
+      <p id={`${id}-wheel-help`} className="sr-only">
+        Left and right change hue; up and down change saturation. Hold Shift for larger steps. Home
+        and End select the first and last hue. Separate sliders are available in Fine tune hue &amp;
+        saturation.
+      </p>
+      <div>
+        <label className="air-label resume-colour-range-label" htmlFor={`${id}-brightness`}>
+          Brightness <output>{Math.round(hsv.v * 100)}%</output>
+        </label>
+        <input
+          ref={brightnessRef}
+          id={`${id}-brightness`}
+          name="resume-primary-brightness"
+          type="range"
+          min="0"
+          max="100"
+          value={Math.round(hsv.v * 100)}
+          aria-valuetext={`${Math.round(hsv.v * 100)} percent`}
+          className="air-colour-brightness"
           style={{
-            background:
-              "radial-gradient(circle at center, #fff 0%, rgba(255,255,255,0) 70%), " +
-              "conic-gradient(from -90deg, #ff0000, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff, #ff0000)",
-            boxShadow: "inset 0 0 0 1px var(--color-rule-strong)",
+            backgroundImage: `linear-gradient(to right, #000, ${hsvToHex(hsv.h, hsv.s, 1)})`,
           }}
-        >
-          <div
-            aria-hidden="true"
-            className="absolute w-4 h-4 rounded-full pointer-events-none"
-            style={{
-              left: `calc(${thumbX}% - 8px)`,
-              top: `calc(${thumbY}% - 8px)`,
-              background: primary,
-              border: "2px solid var(--color-surface)",
-              boxShadow: "0 0 0 1px var(--color-ink)",
-            }}
-          />
-        </div>
-        <span id={wheelHelpId} className="text-sm leading-[1.5] text-(--ink-4) text-center">
-          Arrow left/right changes hue; up/down changes saturation. Hold Shift for larger steps.
-        </span>
-
-        <div className="w-full">
-          <div className="flex items-center justify-between mb-1">
-            <label
-              htmlFor={lightnessId}
-              className="font-mono text-[10.5px] font-semibold text-(--ink-4) uppercase tracking-wider"
-            >
-              Lightness
-            </label>
-            <span className="text-[10.5px] font-mono text-(--ink-5) tabular-nums">
-              {Math.round(l * 100)}%
-            </span>
-          </div>
-          <input
-            id={lightnessId}
-            name="resume-primary-lightness"
-            autoComplete="off"
-            type="range"
-            min={0}
-            max={100}
-            value={Math.round(l * 100)}
-            onChange={(e) => onChange(hslToHex(h, s, Number(e.target.value) / 100))}
-            aria-label="Lightness"
-            className="color-lightness-slider w-full"
-            style={{
-              background: lightnessTrack,
-              height: 44,
-              paddingBlock: 17,
-              backgroundClip: "content-box",
-              boxSizing: "border-box",
-            }}
-          />
-        </div>
-
-        <div className="flex items-center gap-2 w-full min-w-0">
-          <div
-            aria-hidden="true"
-            className="w-10 h-10 rounded-full shrink-0"
-            style={{
-              background: primary,
-              border: "1px solid var(--color-rule-strong)",
-            }}
-          />
-          <label htmlFor={`${lightnessId}-hex`} className="sr-only">
-            Hex colour value
-          </label>
-          <input
-            id={`${lightnessId}-hex`}
-            name="resume-primary-hex"
-            autoComplete="off"
-            inputMode="text"
-            spellCheck={false}
-            type="text"
-            value={hexDraft}
-            onChange={(e) => {
-              const v = e.target.value;
-              setHexDraft(v);
-              if (/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(v)) onChange(v);
-            }}
-            onBlur={() => {
-              if (!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(hexDraft)) {
-                setHexDraft(primary);
-              }
-            }}
-            placeholder="#047857"
-            aria-label="Hex colour value"
-            className="min-w-0 flex-1 px-3 min-h-11 md:min-h-10 text-sm font-mono rounded-md border border-(--line) bg-(--surface) text-(--ink-1) placeholder:text-(--ink-5) transition-colors duration-160 focus:border-(--brand)"
-          />
-        </div>
+          onChange={(event) => commit({ ...hsv, v: Number(event.target.value) / 100 })}
+        />
       </div>
-    </>
+      <div>
+        <label className="air-label" htmlFor={`${id}-hex`}>
+          Hex colour value
+        </label>
+        <input
+          id={`${id}-hex`}
+          name="resume-primary-hex"
+          autoComplete="off"
+          spellCheck={false}
+          type="text"
+          className="air-field"
+          value={hexDraft}
+          aria-invalid={invalid || undefined}
+          aria-describedby={invalid ? `${id}-error` : undefined}
+          onChange={(event) => {
+            const value = event.target.value;
+            setHexDraft(value);
+            if (validHex(value)) chooseHex(value);
+          }}
+          onBlur={() => setTouched(true)}
+        />
+        {invalid && (
+          <p id={`${id}-error`} className="air-help air-help--error" role="status">
+            Enter a hex colour such as #047857 or #abc.
+          </p>
+        )}
+      </div>
+      <details className="resume-colour-fine">
+        <summary>Fine tune hue &amp; saturation</summary>
+        <label className="air-label resume-colour-range-label" htmlFor={`${id}-hue`}>
+          Hue <output>{Math.round(hsv.h)}°</output>
+        </label>
+        <input
+          id={`${id}-hue`}
+          name="resume-primary-hue"
+          type="range"
+          min="0"
+          max="360"
+          value={Math.round(hsv.h)}
+          aria-valuetext={`${Math.round(hsv.h)} degrees`}
+          onChange={(event) => commit({ ...hsv, h: Number(event.target.value) })}
+        />
+        <label className="air-label resume-colour-range-label" htmlFor={`${id}-saturation`}>
+          Saturation <output>{Math.round(hsv.s * 100)}%</output>
+        </label>
+        <input
+          id={`${id}-saturation`}
+          name="resume-primary-saturation"
+          type="range"
+          min="0"
+          max="100"
+          value={Math.round(hsv.s * 100)}
+          aria-valuetext={`${Math.round(hsv.s * 100)} percent`}
+          onChange={(event) => commit({ ...hsv, s: Number(event.target.value) / 100 })}
+        />
+      </details>
+    </div>
   );
 }

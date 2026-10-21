@@ -1,0 +1,396 @@
+{
+  "date": "2026-10-21",
+  "scope": "CloakResume primary-colour body and desktop/compact adapters. Full Resume migration remains open.",
+  "contractVersion": "1.0.6",
+  "contractHash": "e7c8a4bcfbc5",
+  "status": "Passed; local checkpoint",
+  "gates": {
+    "productionSuite": {
+      "tests": 310,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 130,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 397.32
+    },
+    "check": "135 files, zero lint/type errors or warnings",
+    "build": "73 precache entries; no new dependency",
+    "design": "79 sources pass",
+    "portability": "18 isolation/drift checks pass",
+    "familySync": "six specifications, unchanged shared contract",
+    "maintenance": "First full run passed all functional tests; two historical source-location/count assertions were updated. Final suite passes without skips or timeout changes."
+  },
+  "matrix": {
+    "cases": 195,
+    "sizes": [
+      [1920, 1080],
+      [1440, 900],
+      [1366, 768],
+      [1280, 800],
+      [1279, 720],
+      [1024, 768],
+      [1023, 768],
+      [768, 1024],
+      [767, 1024],
+      [640, 800],
+      [639, 800],
+      [430, 932],
+      [390, 844],
+      [375, 812],
+      [320, 568],
+      [844, 390]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "states": ["default", "fine", "invalid"],
+    "independentEdges": ["wide coarse pointer", "forced colours", "offset visual viewport"],
+    "consoleErrors": [],
+    "contrastPairs": [
+      {
+        "theme": "light",
+        "pairs": [
+          {
+            "text": "Presets",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Brightness 34%",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Hex colour value",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Enter a hex colour such as #047857 or #abc.",
+            "ratio": 6.49655856625107
+          },
+          {
+            "text": "Fine tune hue & saturation",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Hue 210\u00b0",
+            "ratio": 15.743934467621905
+          },
+          {
+            "text": "Saturation 79%",
+            "ratio": 15.743934467621905
+          }
+        ]
+      },
+      {
+        "theme": "dark",
+        "pairs": [
+          {
+            "text": "Presets",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Brightness 34%",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Hex colour value",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Enter a hex colour such as #047857 or #abc.",
+            "ratio": 8.608285121234701
+          },
+          {
+            "text": "Fine tune hue & saturation",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Hue 210\u00b0",
+            "ratio": 15.196471601782546
+          },
+          {
+            "text": "Saturation 79%",
+            "ratio": 15.196471601782546
+          }
+        ]
+      }
+    ],
+    "failures": []
+  },
+  "interactionCoverage": [
+    "unchanged exact saved colour on open/close/reload",
+    "ten preserved preset values",
+    "three/six-digit hex including case",
+    "invalid hex remains with associated error and unchanged output",
+    "native brightness, hue and saturation; black/grey continuity",
+    "primary-pointer ownership and unrelated pointer rejection",
+    "cancel and lost capture restore exact pre-drag colour",
+    "wheel Shift/Home/End and native range keys",
+    "modal background inertness and focus containment",
+    "Escape/backdrop/Tab focus return and breakpoint cleanup",
+    "phone touch swipe cancel and dismiss; wheel gestures remain separate"
+  ],
+  "outputPreservation": {
+    "unchangedSources": ["src/utils/colors.ts", "src/templates/", "src/utils/pdfExport.ts"],
+    "templatePaperMatches": 34,
+    "records": [
+      {
+        "template": "classic-sidebar",
+        "paper": "a4",
+        "pixelSha256": "398098d8a3a40f3339df5a5fa09e21db54e0b50c7da3c0af4bbf1ea64eccfa42"
+      },
+      {
+        "template": "classic-sidebar",
+        "paper": "letter",
+        "pixelSha256": "a9eda360124e7dc6206a31e175bb1052b36027500f36524727c3c66022b01e7d"
+      },
+      {
+        "template": "classic-impact",
+        "paper": "a4",
+        "pixelSha256": "8887e7148b78f7a54a8989f979ed368e950654dd3ddd7b91172c040b6a63bb9d"
+      },
+      {
+        "template": "classic-impact",
+        "paper": "letter",
+        "pixelSha256": "38177c63c1701f981e87fdd6645336fe16273ebf91bbaf44bdb706e05cc2a344"
+      },
+      {
+        "template": "ledger",
+        "paper": "a4",
+        "pixelSha256": "46e46dcf83645ee82941a1e1590eb5caea893572f3dd8d5dc08a0cd2a77ee73c"
+      },
+      {
+        "template": "ledger",
+        "paper": "letter",
+        "pixelSha256": "fdb21c7d42a46b22c55f2cc71a5b928452f84cc4ea1fd73bdf001b986b2f260c"
+      },
+      {
+        "template": "executive-serif",
+        "paper": "a4",
+        "pixelSha256": "8fae2440ad2f39079de4978b891ad5b3d0b7a0b3a18ac8e13170315ead244cb3"
+      },
+      {
+        "template": "executive-serif",
+        "paper": "letter",
+        "pixelSha256": "22e188b2853ee1f157629ade605b1d4c5acddb2fe55f5c325893658a11da1f3c"
+      },
+      {
+        "template": "monograph",
+        "paper": "a4",
+        "pixelSha256": "3f808d853ba5ef0c55534c41d26c46298162808a17b6cbe94ce2cfd643acc909"
+      },
+      {
+        "template": "monograph",
+        "paper": "letter",
+        "pixelSha256": "537afb9d4bd79344eab91b602d2038133c31e3b570962a8f706c7928681cd0a0"
+      },
+      {
+        "template": "ats-professional",
+        "paper": "a4",
+        "pixelSha256": "6229a3a25613ad2047f3d822e3a00df9abd36f6d2c8e477fc5e4e181f052c798"
+      },
+      {
+        "template": "ats-professional",
+        "paper": "letter",
+        "pixelSha256": "4832aec47de3c9fa8270834522492735e853c817b6241d837c4b6398d380d73d"
+      },
+      {
+        "template": "ats-plain",
+        "paper": "a4",
+        "pixelSha256": "b443da3bc3c1eff280e5b060842411408f3a8e75ffa6f576124905472c63e828"
+      },
+      {
+        "template": "ats-plain",
+        "paper": "letter",
+        "pixelSha256": "204f397c9b0ea5dd5136f50e23b54e7a04570bc35bc7f20c5a70a58e47c88ac7"
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "a4",
+        "pixelSha256": "551c1a8b9a33dc4ef3f9979bbdc02ff6c9795b2db79aa1a7a83b033fb85ca6c0"
+      },
+      {
+        "template": "modern-minimal",
+        "paper": "letter",
+        "pixelSha256": "853730ac5715d91e04b945b2a76aa9b0a8f6e842f4219a838cafb1258ba2f69c"
+      },
+      {
+        "template": "aurora",
+        "paper": "a4",
+        "pixelSha256": "78d3362b1874dd5abff3cf84a986770eeab7b879d647c93f3b32c513ae8137b0"
+      },
+      {
+        "template": "aurora",
+        "paper": "letter",
+        "pixelSha256": "030ff47c009c31a1f8c6e57da11fc8811bc6f48d9e12940af804b6c1c18d7249"
+      },
+      {
+        "template": "prism",
+        "paper": "a4",
+        "pixelSha256": "bae2c27c34140101011678e843d91c3918710fdd8417ef0862f0a82b41c7f7b4"
+      },
+      {
+        "template": "prism",
+        "paper": "letter",
+        "pixelSha256": "386e6317248f1d39eff4406cb9d4936ba4048c6a095d025308612d621fcf8de6"
+      },
+      {
+        "template": "horizon",
+        "paper": "a4",
+        "pixelSha256": "ae135112e3f9b2c773df731687dfc2c154d2e1bcab509ce462a8d0eab896bd76"
+      },
+      {
+        "template": "horizon",
+        "paper": "letter",
+        "pixelSha256": "904c774d7860fed49ba3c2900968be1a8f744db4cd7cb5a88da05c2328922371"
+      },
+      {
+        "template": "minimalist",
+        "paper": "a4",
+        "pixelSha256": "b81646a0d09ffb0cc95886a03dee7ede197b7fb55290445d28495af899d7018d"
+      },
+      {
+        "template": "minimalist",
+        "paper": "letter",
+        "pixelSha256": "61dfd67ffe1496bb622afbbe8acd0733f2bf1bcdc77af5602ba3c8426e37da16"
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "a4",
+        "pixelSha256": "c5b6a3e21faa0dd11c23ea1d94164fe4ab8718febb5269b06a95a8f32fe570bb"
+      },
+      {
+        "template": "compact-timeline",
+        "paper": "letter",
+        "pixelSha256": "7d4799ec05f93ce95fec388bd3362c919735c16ebc4d601c5cf1d4461b65cf4a"
+      },
+      {
+        "template": "typographic",
+        "paper": "a4",
+        "pixelSha256": "b3075471dc1cb9513a3a884f280c6f199f577d4ac1234aec142bb698c5b7202a"
+      },
+      {
+        "template": "typographic",
+        "paper": "letter",
+        "pixelSha256": "b0a7dcd25ec2c0c543a2484ee947cb2768899f2e71ff13487a59f872b8d7800a"
+      },
+      {
+        "template": "bauhaus",
+        "paper": "a4",
+        "pixelSha256": "646106ee059f85d52f910e2a5bd20c4b0f740ad1cf29a9a5a74adbac93b07e02"
+      },
+      {
+        "template": "bauhaus",
+        "paper": "letter",
+        "pixelSha256": "854e7155dd628296bd316e8d48781215bf060e566c1cc719f06e02406eb1f6f8"
+      },
+      {
+        "template": "gradient-header",
+        "paper": "a4",
+        "pixelSha256": "ec6b00d72a5780f8985681323310c06ba2e2d8ce9a2325cdeee4d4bc9aee3f36"
+      },
+      {
+        "template": "gradient-header",
+        "paper": "letter",
+        "pixelSha256": "703bce004fcda752561724492cfb63a3db4c93615209779c13c85c1341f2fba8"
+      },
+      {
+        "template": "academic",
+        "paper": "a4",
+        "pixelSha256": "97c491f704eb7ff64b1d99e9cbf44790bd2c9fa40b22cf3e063ec9a73a03fd8b"
+      },
+      {
+        "template": "academic",
+        "paper": "letter",
+        "pixelSha256": "3f1294f3e72b04c241045a58f570e7600979f52322e9ee61c4d828feed36eb58"
+      }
+    ],
+    "pdfRenders": [
+      {
+        "paper": "a4",
+        "pixelSha256": "1c3c4c6ad623474d1117f28b8bdda72e326291f1cea13cd566176359f289b6ab",
+        "matchesBaseline": true
+      },
+      {
+        "paper": "letter",
+        "pixelSha256": "774c298cdb525260da5af4a31d187a23a888c7c9d4b7b73743168918711a6a0a",
+        "matchesBaseline": true
+      }
+    ]
+  },
+  "nativeReview": [
+    "Safari: exact hex, precision ranges and Escape return; fresh-origin final build also verifies Tab exit with closed details (no offline-cache ambiguity).",
+    "Firefox actual 200%: compact modal, exact hex, native range keys, internal scrolling and More options focus return",
+    "Native review tabs closed; Firefox zoom restored"
+  ],
+  "screenshots": [
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-1280-dark-16-fine.png",
+      "sha256": "f20a23c689c981b4171a13269fdba57106c065a17c605089526c94841bb7855b"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-1280-light-16-fine.png",
+      "sha256": "732155d778383864a8bb55c0cec64418a44269017cf4e3bb346ed02afd61d438"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-1440-dark-16-default.png",
+      "sha256": "6d4386d6bb4b5e5578adda9acaec2b47533b050f8031b496cae2e633dee3fdc7"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-1440-light-16-default.png",
+      "sha256": "2155348bf84b3065ec4b1aea1d9d7f53461eb407ddad7f1df36c901c5939bfec"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-320-dark-32-invalid.png",
+      "sha256": "fac474c67ec1bed6f17a85dcb0b7569d519fa07b0e7cfeb5e3c397cab054c149"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-390-dark-16-default.png",
+      "sha256": "6f8ec5549298af8ce4ef9651aadc7af77ecace3752e56342d4aba977e52fa14b"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-390-light-16-default.png",
+      "sha256": "a4824caab87ae74931acb87bfa3115086ca7fd670b5eba458e96280953e002f5"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-844-light-32-fine.png",
+      "sha256": "ea950cb62b7195288bb742c966a4ff51df6535f006eba1f79468f06dd820b069"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/colour-forced.png",
+      "sha256": "e5d7ed40f2aaf952f8de1b4f29e528a80eebfde55ce1bc448247e25ee7ea525b"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/firefox-200-precision.png",
+      "sha256": "3d39e9d6e021b84ba76be1ec5fe64812eb788f7ec517adec3c132b0541500499"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/pdf-review.png",
+      "sha256": "3d4e1d48c519826387659b0ab7c0d8b224b5b6645033ca1c5f9ae9ba37739dee"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/safari-colour.png",
+      "sha256": "e9ec1a601877d27e3182455b21707d0d624d2fcde275315728dae0007cb7609a"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/selected-dark.png",
+      "sha256": "d992eb91a97ba47ff9cf528daaa57bdc28a5f47e3d80896732fb921227bfbb2a"
+    },
+    {
+      "path": "docs/air/evidence/colour-controls-2026-10-21/selected-light.png",
+      "sha256": "a04567352e0fa6ad30ff2dddfdc5e3ce48ece2b8f533ff0030dd368662ed0da6"
+    }
+  ],
+  "scratch": {
+    "root": "/tmp/cloakresume-air-colour",
+    "matrix": "/var/folders/k0/mzs4nsyn7k78t1j1xlsxq1q40000gn/T/cloakresume-colour-5NEfHW"
+  },
+  "remaining": [
+    "Physical touch/software keyboard and OS IME",
+    "Spoken assistive acceptance",
+    "Writing-hint popup interiors, remaining sections/review/library/overflow/export/PWA/static recovery and actual preview assets",
+    "CloakIMG remains last; parked work untouched"
+  ],
+  "publication": "Local only; no push or deployment."
+}

@@ -2,6 +2,9 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import "./cloak-family.css";
+import "./styles/air.css";
+import "./styles/air-entry.css";
+import "./styles/air-editor.css";
 import { App } from "./App.tsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 

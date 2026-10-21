@@ -1,0 +1,330 @@
+{
+  "date": "2026-10-19",
+  "scope": "Shared repeated-entry headings/actions/empty states, nested bullet writing width, identity and focus. Individual section date/select/contact/logo/wheel and hint widgets remain separate gates.",
+  "contractVersion": "1.0.2",
+  "contractHash": "bb90f52e0b0a",
+  "noNewDependencies": true,
+  "implementation": [
+    "Open Air entry headings, neutral Add, 44px contextual move/remove controls, readable Confirm state and Escape cancellation.",
+    "Consolidate three bullet editors into BulletList with UI-only stable keys; duplicate saved strings keep their identity, selection and formatting. Saved schema is unchanged.",
+    "One removal owner; confirmation follows moved item, removal focuses a survivor or Add, and Add bullet focuses its new field. Guarded aria-disabled boundaries retain focus and announce position.",
+    "Safari click handlers explicitly focus actions; nested internal drags remain independent while external text drops stay native.",
+    "Contain live announcements within each positioned list; their absolute boxes cannot create scroll overflow in fixed parent panes. Remove obsolete sub-card skins, compact/stacked APIs, duplicate confirmation state and helpers."
+  ],
+  "gates": {
+    "fullProductionSuite": {
+      "tests": 297,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 117,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 361.26
+    },
+    "check": "zero warnings/lint/type errors, 128 files",
+    "build": "pass; 72 precache entries, 2442.59 KiB",
+    "design": "78 records pass",
+    "portability": "18 pass",
+    "exactFamilySync": "six specifications pass"
+  },
+  "matrix": {
+    "populatedAndCancellationCases": 640,
+    "emptyCases": 240,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 720],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "sections": [
+      "Awards",
+      "Certifications",
+      "Contact",
+      "Custom",
+      "Education",
+      "Experience",
+      "Languages",
+      "Projects",
+      "Quick stats",
+      "Skills"
+    ],
+    "checks": [
+      "effective control targets and containment",
+      "full-width auto-growing bullets",
+      "wrapped heading/action and confirmation layouts",
+      "no announcement overflow in non-scrolling parent",
+      "Escape retains all fixture data",
+      "no page errors"
+    ],
+    "emptySizes": [
+      [320, 568],
+      [390, 844],
+      [768, 1024],
+      [844, 390],
+      [1280, 720],
+      [1440, 900]
+    ],
+    "localRawResults": [
+      "/tmp/cloakresume-air-entries/layouts.json",
+      "/tmp/cloakresume-air-entries/details.json"
+    ]
+  },
+  "contrast": [
+    {
+      "theme": "light",
+      "state": "empty",
+      "pairs": [
+        {
+          "name": "No custom sections yet",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Add your own section \u2014 Volunteering, Publications, Speaking, or anything personal. Use one bullet for a paragraph, or multiple for a list.",
+          "ratio": 6.873758629397385
+        },
+        {
+          "name": "Add a section",
+          "ratio": 14.83173212851982
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "state": "populated",
+      "pairs": [
+        {
+          "name": "Section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Drag to reorder section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Remove section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Add bullet to section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Bullet 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Drag to reorder section 1, bullet 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Remove section 1, bullet 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Add section",
+          "ratio": 15.743934467621905
+        }
+      ]
+    },
+    {
+      "theme": "light",
+      "state": "confirmation",
+      "pairs": [
+        {
+          "name": "Section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Drag to reorder section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Remove section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Add bullet to section 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Bullet 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Drag to reorder section 1, bullet 1",
+          "ratio": 15.743934467621905
+        },
+        {
+          "name": "Confirm removal of section 1, bullet 1",
+          "ratio": 5.873572633709984
+        },
+        {
+          "name": "Remove section 1, bullet 1? Activate again to confirm, or press Escape to keep it.",
+          "ratio": 6.49655856625107
+        },
+        {
+          "name": "Add section",
+          "ratio": 15.743934467621905
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "state": "populated",
+      "pairs": [
+        {
+          "name": "Section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Drag to reorder section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Remove section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Add bullet to section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Bullet 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Drag to reorder section 1, bullet 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Remove section 1, bullet 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Add section",
+          "ratio": 15.196471601782546
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "state": "confirmation",
+      "pairs": [
+        {
+          "name": "Section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Drag to reorder section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Remove section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Add bullet to section 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Bullet 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Drag to reorder section 1, bullet 1",
+          "ratio": 15.196471601782546
+        },
+        {
+          "name": "Confirm removal of section 1, bullet 1",
+          "ratio": 7.493575577320858
+        },
+        {
+          "name": "Remove section 1, bullet 1? Activate again to confirm, or press Escape to keep it.",
+          "ratio": 8.608285121234701
+        },
+        {
+          "name": "Add section",
+          "ratio": 15.196471601782546
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "theme": "light",
+      "escapeCancelled": true
+    },
+    {
+      "theme": "dark",
+      "escapeCancelled": true
+    },
+    {
+      "forced": {
+        "outline": "2px",
+        "style": "solid",
+        "focus": true
+      }
+    }
+  ],
+  "nativeChecks": [
+    {
+      "browser": "Safari 27",
+      "origins": ["http://127.0.0.1:8150/", "http://127.0.0.1:8151/"],
+      "result": "Pointer nested move retains boundary action focus; Bold applies to original selected bullet; Escape and confirmed removal recover focus. Final build outer move and visible Confirm/Escape rechecked."
+    },
+    {
+      "browser": "Firefox 158",
+      "origins": ["http://127.0.0.1:8150/", "http://127.0.0.1:8151/"],
+      "result": "Actual 200% browser zoom; Shift+Tab/Enter moves selected bullet, focus stays on moved boundary, Bold formats original selection. Final visible Confirm and Escape rechecked. Zoom restored and review tabs closed."
+    }
+  ],
+  "failureReview": [
+    "Baseline reproduced wrong nested-field identity and lost outer action focus despite correct reordered data. Stable UI keys and guarded move boundaries fix both.",
+    "Native Safari pointer click revealed lost focus despite Chromium tests. New no-default-focus regression failed before explicit click focus and passes after.",
+    "Enlarged-phone screenshot revealed off-screen live announcements escaping their scroll container. Positioning the list fixes the parent scroll range; new containment/Add-focus regression and expanded matrix check it.",
+    "Screenshot centering previously scrolled the root by 32px. Captures now scroll the actual writing pane; real nearest move/Add retains header position.",
+    "Harness setup fixes: contentless blank fixture has no resume action; use synthetic profile text. Fine pointer minimum is 40px, coarse is 44px. Await committed theme before contrast sampling. Enlarged-text focus test initializes root type before mount and allows one fractional CSS pixel at the viewport edge.",
+    "Legacy focus-baseline tests keep all clipping/validation/data assertions; new Air action contour is asserted separately from still-legacy contact fields. Static bordered-card checks now assert open entry anatomy. No timeouts widened or feature assertions removed."
+  ],
+  "preservation": "No template/PDF/font/schema/sample-data/dependency sources changed. Existing feature tests plus seven new identity/focus/drop/containment regressions pass. Internal nested drag, saved JSON and all template/paper outputs remain covered.",
+  "screenshots": [
+    "docs/air/evidence/entries-1440-light.png",
+    "docs/air/evidence/entries-1280-dark.png",
+    "docs/air/evidence/entries-390-dark.png",
+    "docs/air/evidence/entries-320-light-32.png",
+    "docs/air/evidence/entries-confirm-390-dark.png",
+    "docs/air/evidence/entries-empty-390-dark.png"
+  ],
+  "localEvidence": "/tmp/cloakresume-air-entries",
+  "commands": [
+    "vp check --fix",
+    "vp run build",
+    "CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism",
+    "node scripts/test-air-repeated-entries.mjs",
+    "node scripts/check-air-design.mjs",
+    "node scripts/check-air-portability.mjs",
+    "node scripts/sync-air-design.mjs --bundle --check (canonical repo)"
+  ],
+  "openGates": [
+    "Contact/native selects, date/logo/colour wheel and individual remaining section interiors.",
+    "Hint popups, review/library/export/PWA/static recovery, actual OG/PWA/README images.",
+    "Physical touch/software keyboard, real OS IME, spoken assistive technology and physical shader GPU/battery/thermal acceptance.",
+    "CloakIMG remains parked and last."
+  ]
+}

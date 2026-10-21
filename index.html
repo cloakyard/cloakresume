@@ -24,7 +24,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 
     <!-- Theme -->
-    <meta name="theme-color" content="#047857" />
+    <meta name="theme-color" content="#fafbfc" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#101216" media="(prefers-color-scheme: dark)" />
     <meta name="color-scheme" content="light dark" />
 
     <!-- iOS PWA -->
@@ -48,7 +49,7 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://resume.cloakyard.com/" />
-    <meta property="og:title" content="CloakResume — A complete résumé workbench" />
+    <meta property="og:title" content="CloakResume — Your next chapter. In your words." />
     <meta
       property="og:description"
       content="Build, tailor, review, and export a serious résumé in one browser tab. Nothing uploaded."
@@ -59,13 +60,13 @@
     <meta property="og:image:height" content="630" />
     <meta
       property="og:image:alt"
-      content="CloakResume landing page declaration and private résumé start workbench"
+      content="CloakResume: Your next chapter. In your words. Air editor with a synthetic sample résumé."
     />
     <meta property="og:site_name" content="CloakResume" />
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="CloakResume — A complete résumé workbench" />
+    <meta name="twitter:title" content="CloakResume — Your next chapter. In your words." />
     <meta
       name="twitter:description"
       content="Build, tailor, review, and export a serious résumé in one browser tab. Nothing uploaded."
@@ -73,7 +74,7 @@
     <meta name="twitter:image" content="https://resume.cloakyard.com/icons/og-image.png" />
     <meta
       name="twitter:image:alt"
-      content="CloakResume landing page declaration and private résumé start workbench"
+      content="CloakResume: Your next chapter. In your words. Air editor with a synthetic sample résumé."
     />
 
     <!-- Structured Data -->
@@ -83,7 +84,7 @@
         "@type": "WebApplication",
         "name": "CloakResume",
         "url": "https://resume.cloakyard.com",
-        "description": "A private, browser-native résumé workbench for building, tailoring, reviewing, and exporting a résumé without uploading its content.",
+        "description": "Build, tailor, review and export your résumé in your browser. Your draft and job description stay on your device.",
         "applicationCategory": "BusinessApplication",
         "operatingSystem": "Any",
         "offers": {
@@ -106,9 +107,22 @@
       }
     </script>
 
-    <title>CloakResume — A complete résumé workbench</title>
+    <title>CloakResume — Your next chapter. In your words.</title>
   </head>
   <body>
+    <noscript>
+      <link rel="stylesheet" href="/src/styles/air.css" />
+      <main class="air-page">
+        <div class="air-page-frame air-page-intro">
+          <h1>CloakResume needs JavaScript</h1>
+          <p class="air-page-lede">
+            Enable JavaScript to build and export a résumé in your browser. Your résumé content
+            stays on your device.
+          </p>
+          <a class="air-button" href="https://cloakyard.com">Explore Cloakyard</a>
+        </div>
+      </main>
+    </noscript>
     <div id="app"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

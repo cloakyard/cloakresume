@@ -100,10 +100,29 @@ export function useFormatRegistration(
   onChange: Handler,
 ) {
   const scope = useFormatScope();
-  const setHandler = useCallback(() => {
-    if (!scope || !ref.current) return;
-    scope.handlers.current.set(ref.current, onChange);
-  }, [scope, ref, onChange]);
+  const handlers = scope?.handlers;
+  const activeRef = scope?.activeRef;
+  const setHasActive = scope?.setHasActive;
+
+  // Refresh the closure without leaving removed fields in the scope's registry.
+  useEffect(() => {
+    const el = ref.current;
+    if (!handlers || !el) return;
+    handlers.current.set(el, onChange);
+    return () => {
+      handlers.current.delete(el);
+    };
+  }, [handlers, ref, onChange]);
+
+  useEffect(() => {
+    const el = ref.current;
+    return () => {
+      if (activeRef?.current === el) {
+        activeRef.current = null;
+        setHasActive?.(false);
+      }
+    };
+  }, [activeRef, ref, setHasActive]);
 
   const onFocus = useCallback(() => {
     if (!scope || !ref.current) return;
@@ -113,13 +132,7 @@ export function useFormatRegistration(
     scope.refreshFormat();
   }, [scope, ref, onChange]);
 
-  const onBlur = useCallback(() => {
-    // Keep activeRef set so toolbar clicks still apply. Only clear
-    // if focus moved to another textarea — handled by the next
-    // onFocus.
-  }, []);
-
-  return { onFocus, onBlur, setHandler };
+  return { onFocus };
 }
 
 /**
@@ -129,13 +142,13 @@ export function useFormatRegistration(
  * so the toolbar sits beside the field label without visually competing
  * with it.
  */
-export function FormatToolbar({ compact = false }: { compact?: boolean }) {
+export function FormatToolbar() {
   const scope = useFormatScope();
 
   const apply = (marker: string) => {
     if (!scope) return;
     const el = scope.activeRef.current;
-    if (!el) return;
+    if (!el?.isConnected) return;
     const handler = scope.handlers.current.get(el);
     if (!handler) return;
     const { value, start, end } = toggleSelection(el, marker);
@@ -148,14 +161,13 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
   };
 
   const disabled = !scope?.hasActive;
-  const icon = compact ? "w-3.5 h-3.5" : "w-4 h-4";
   const format = scope?.format ?? EMPTY_FORMAT;
 
   return (
     <div
       role="toolbar"
       aria-label="Text formatting"
-      className="inline-flex items-center gap-0.5"
+      className="resume-format-toolbar"
       // preventDefault keeps the textarea's selection intact on button click
       onMouseDown={(e) => e.preventDefault()}
     >
@@ -165,7 +177,7 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         disabled={disabled}
         active={format.bold}
       >
-        <Bold className={icon} strokeWidth={2.5} />
+        <Bold size={18} strokeWidth={1.6} aria-hidden="true" />
       </FmtBtn>
       <FmtBtn
         label="Italic (⌘I)"
@@ -173,7 +185,7 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         disabled={disabled}
         active={format.italic}
       >
-        <Italic className={icon} strokeWidth={2.5} />
+        <Italic size={18} strokeWidth={1.6} aria-hidden="true" />
       </FmtBtn>
       <FmtBtn
         label="Underline (⌘U)"
@@ -181,10 +193,10 @@ export function FormatToolbar({ compact = false }: { compact?: boolean }) {
         disabled={disabled}
         active={format.underline}
       >
-        <Underline className={icon} strokeWidth={2.5} />
+        <Underline size={18} strokeWidth={1.6} aria-hidden="true" />
       </FmtBtn>
       <FmtBtn label="Code" onClick={() => apply("`")} disabled={disabled} active={format.code}>
-        <Code2 className={icon} strokeWidth={2.5} />
+        <Code2 size={18} strokeWidth={1.6} aria-hidden="true" />
       </FmtBtn>
     </div>
   );
@@ -203,20 +215,15 @@ function FmtBtn({
   disabled?: boolean;
   active?: boolean;
 }) {
-  const stateClasses = disabled
-    ? "text-(--ink-6) cursor-not-allowed"
-    : active
-      ? "text-(--brand) bg-(--brand-50) cursor-pointer"
-      : "text-(--ink-4) hover:text-(--brand) hover:bg-(--brand-50) cursor-pointer";
   return (
     <button
       type="button"
       onClick={onClick}
       title={label}
       aria-label={label}
-      aria-pressed={active ? true : undefined}
+      aria-pressed={active ?? false}
       disabled={disabled}
-      className={`min-w-11 min-h-11 md:min-w-10 md:min-h-10 rounded-md flex items-center justify-center transition-colors ${stateClasses}`}
+      className="air-icon-button air-button--quiet"
     >
       {children}
     </button>

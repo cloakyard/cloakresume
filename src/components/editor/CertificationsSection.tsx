@@ -7,7 +7,7 @@ import { DragList, DragItem } from "../DragList.tsx";
 import {
   AddButton,
   EmptyState,
-  SubCardHead,
+  EntryHeading,
   newId,
   usePatch,
   type SectionProps,
@@ -41,6 +41,7 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
           <DragItem
             key={c.id}
             index={i}
+            label={`certification ${i + 1}`}
             onDelete={() =>
               patch(
                 "certifications",
@@ -48,19 +49,14 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
               )
             }
           >
-            {(handle, _deleteBtn, moveBtns) => (
-              <div className="sub-card mb-2.5">
-                <SubCardHead
+            {(handle, deleteBtn, moveBtns) => (
+              <div className="resume-entry">
+                <EntryHeading
                   index={i}
                   prefix="Certification"
                   drag={handle}
                   moveBtns={moveBtns}
-                  onDelete={() =>
-                    patch(
-                      "certifications",
-                      resume.certifications.filter((_, j) => j !== i),
-                    )
-                  }
+                  deleteButton={deleteBtn}
                 />
                 <div className="cr-stack">
                   <TextField
@@ -72,7 +68,7 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
                       patch("certifications", next);
                     }}
                   />
-                  <div className="grid grid-cols-1 sm:grid-cols-[1fr_120px] gap-3">
+                  <div className="resume-field-pair">
                     <TextField
                       label="Issuer"
                       value={c.issuer}
@@ -115,9 +111,7 @@ export function CertificationsSection({ resume, onChange }: SectionProps) {
           </DragItem>
         ))}
       </DragList>
-      <div className="mt-3">
-        <AddButton onClick={addCert}>Add certification</AddButton>
-      </div>
+      <AddButton onClick={addCert}>Add certification</AddButton>
     </>
   );
 }

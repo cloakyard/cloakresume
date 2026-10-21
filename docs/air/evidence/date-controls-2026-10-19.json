@@ -1,0 +1,608 @@
+{
+  "date": "2026-10-19",
+  "scope": "Month/year picker, Experience Current job and Education Present. Logo/photo/wheel and remaining hints/review/export/PWA/assets are separate pieces.",
+  "contractVersion": "1.0.2",
+  "contractHash": "bb90f52e0b0a",
+  "implementation": [
+    "Canonical Air field/clear actions, popover and neutral selection grid; content-sized date and role/company pairs.",
+    "Preserve raw imported text, month/year, year-only, empty and Present; include imported years outside the usual range without silently normalizing values.",
+    "Preserve Current job previous-end restoration and native checkbox semantics with a 44px effective row.",
+    "Focus the non-editable popup; retain focus after year selection and clear. Nested Escape closes years before popup, non-modal Tab exits to surrounding controls, outside pointer/focus dismisses, closing controls are inert.",
+    "Keep visual-viewport positioning, canonical 8px anchor gap/16px safe edge and expanded short-screen space; reflow month/year grids for enlarged text.",
+    "Remove old date skins/uppercase mono/compact breakpoint classes; exclude Air popovers from legacy skin/focus rules while retaining other live consumers."
+  ],
+  "gates": {
+    "fullProductionSuite": {
+      "tests": 300,
+      "files": 8,
+      "skipped": 0,
+      "editorCases": 120,
+      "templatePaperCases": 34,
+      "templates": 17,
+      "paperSizes": 2,
+      "fixturesPerTemplatePaper": 5,
+      "durationSeconds": 381.21
+    },
+    "check": "zero warnings/lint/type errors,130 files",
+    "build": "73 precache entries,2440.53 KiB",
+    "design": "78 sources pass",
+    "portability": "18 pass",
+    "familySync": "six specifications pass"
+  },
+  "matrix": {
+    "cases": 256,
+    "sizes": [
+      [320, 568],
+      [375, 812],
+      [390, 844],
+      [430, 932],
+      [639, 800],
+      [640, 800],
+      [767, 1024],
+      [768, 1024],
+      [844, 390],
+      [1023, 768],
+      [1024, 768],
+      [1279, 720],
+      [1280, 800],
+      [1366, 768],
+      [1440, 900],
+      [1920, 1080]
+    ],
+    "themes": ["light", "dark"],
+    "rootTextPx": [16, 32],
+    "states": ["months", "years (outside-range imported1930)", "Present", "empty"],
+    "additional": [
+      "long imported value wraps",
+      "disabled Current job end and44px checkbox row",
+      "40px fine/44px coarse popup targets",
+      "first/last year reachable,selected year focus",
+      "16px viewport containment,internal scrolling,12px corners/20px padding",
+      "Escape focus return and saved fixture unchanged"
+    ],
+    "localRaw": "/tmp/cloakresume-air-dates/layouts.json"
+  },
+  "journeys": [
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "light",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": false
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "light",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": false
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "dark",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": false
+    },
+    {
+      "w": 1440,
+      "h": 900,
+      "theme": "dark",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": false
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "light",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "light",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "dark",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 768,
+      "h": 1024,
+      "theme": "dark",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "light",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "light",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "dark",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 390,
+      "h": 844,
+      "theme": "dark",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "light",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "light",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "dark",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 320,
+      "h": 568,
+      "theme": "dark",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "light",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "light",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "dark",
+      "text": 16,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    },
+    {
+      "w": 844,
+      "h": 390,
+      "theme": "dark",
+      "text": 32,
+      "month": "Jan 2020",
+      "yearOnly": "2020",
+      "clear": "",
+      "touchCancel": true
+    }
+  ],
+  "contrast": [
+    {
+      "theme": "light",
+      "pairs": [
+        {
+          "name": "Start",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Mar 2020",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "field boundary",
+          "ratio": 3.3123963324994654,
+          "min": 3
+        },
+        {
+          "name": "End",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Present",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "field boundary",
+          "ratio": 3.3123963324994654,
+          "min": 3
+        },
+        {
+          "name": "Choose a month and year, or a year only.",
+          "ratio": 6.873758629397385,
+          "min": 4.5
+        },
+        {
+          "name": "Previous year",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Select year",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Next year",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Jan",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Feb",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Mar",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "selection marker",
+          "ratio": 5.942361961071979,
+          "min": 3
+        },
+        {
+          "name": "Apr",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "May",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Jun",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Jul",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Aug",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Sep",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Oct",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Nov",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Dec",
+          "ratio": 6.132921116762568,
+          "min": 4.5
+        },
+        {
+          "name": "Clear",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Year only",
+          "ratio": 15.743934467621905,
+          "min": 4.5
+        },
+        {
+          "name": "Done",
+          "ratio": 14.83173212851982,
+          "min": 4.5
+        }
+      ]
+    },
+    {
+      "theme": "dark",
+      "pairs": [
+        {
+          "name": "Start",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Mar 2020",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "field boundary",
+          "ratio": 4.393218911569669,
+          "min": 3
+        },
+        {
+          "name": "End",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Present",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "field boundary",
+          "ratio": 4.393218911569669,
+          "min": 3
+        },
+        {
+          "name": "Choose a month and year, or a year only.",
+          "ratio": 9.0171348392764,
+          "min": 4.5
+        },
+        {
+          "name": "Previous year",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Select year",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Next year",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Jan",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Feb",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Mar",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "selection marker",
+          "ratio": 8.916124724900653,
+          "min": 3
+        },
+        {
+          "name": "Apr",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "May",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Jun",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Jul",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Aug",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Sep",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Oct",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Nov",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Dec",
+          "ratio": 7.912154171524162,
+          "min": 4.5
+        },
+        {
+          "name": "Clear",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Year only",
+          "ratio": 15.196471601782546,
+          "min": 4.5
+        },
+        {
+          "name": "Done",
+          "ratio": 13.91972285999866,
+          "min": 4.5
+        }
+      ]
+    }
+  ],
+  "states": [
+    {
+      "theme": "light",
+      "forced": {
+        "width": "2px",
+        "focused": "Previous year"
+      },
+      "reducedExit": "unmounted"
+    },
+    {
+      "theme": "dark",
+      "forced": {
+        "width": "2px",
+        "focused": "Previous year"
+      },
+      "reducedExit": "unmounted"
+    }
+  ],
+  "nativeChecks": [
+    {
+      "browser": "Safari27",
+      "origin": "http://127.0.0.1:8154/",
+      "result": "Pointer opener focuses popup; year choice returns Select year; month selection and clear return surviving trigger. Education Present chosen with Option-Tab/Space returns End Present. Ordinary Tab respects existing Safari preference to skip buttons; sample degree was restored immediately after the navigation check. No preferences changed."
+    },
+    {
+      "browser": "Firefox158",
+      "origin": "http://127.0.0.1:8154/",
+      "result": "Verified actual200% zoom, keyboard enters year grid and focuses selected year; first Escape restores Select year,second restores Start2010. Enlarged popup visually reviewed. Zoom reset and task tabs/windows closed."
+    }
+  ],
+  "failureReview": [
+    "Initial focus-grid assertions observed legacy4px focus extent instead of canonical5px; layout probe found legacy6px popup radius. Legacy skin/focus selectors now exclude Air popovers. Focused6-case rerun passes; full final suite300/300.",
+    "Fine pointer icon targets legitimately use40px; initial probe incorrectly demanded44px width for fine input. Final probe asserts40px fine/44px coarse.",
+    "Enlarged-phone pixel review found a one-column month grid and limited anchored space; final grid uses content-sized columns and short-screen viewport fallback. Full256-case matrix was rerun.",
+    "Forced-colour detail probe sent Tab before the popup focus effect settled. It now awaits the actual popup focus before navigating; all20 journeys and52 contrast pairs pass. No production assertions weakened or timeout budgets raised."
+  ],
+  "preservation": "No template/PDF/font/schema/dependency changes. All previous feature and output tests retained. Raw strings and previous-end restoration are covered.",
+  "bundle": {
+    "baseline": "9d4e7f9",
+    "entryJsRawKB": [481.96, 480.88],
+    "entryJsGzipKB": [152.57, 152.63],
+    "cssRawKB": [132.45, 133.33],
+    "cssGzipKB": [25.34, 25.5]
+  },
+  "screenshots": [
+    "docs/air/evidence/date-months-1440-light-16.png",
+    "docs/air/evidence/date-present-1280-dark-16.png",
+    "docs/air/evidence/date-years-768-light-16.png",
+    "docs/air/evidence/date-present-390-dark-16.png",
+    "docs/air/evidence/date-months-320-light-32.png",
+    "docs/air/evidence/date-months-844-dark-32.png"
+  ],
+  "localEvidence": "/tmp/cloakresume-air-dates",
+  "commands": [
+    "vp check --fix",
+    "vp run build",
+    "CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism",
+    "node scripts/test-air-dates.mjs",
+    "node /tmp/cloakresume-air-dates/details.mjs",
+    "node scripts/check-air-design.mjs",
+    "node scripts/check-air-portability.mjs",
+    "node scripts/sync-air-design.mjs --bundle --check (canonical repo)"
+  ],
+  "openGates": [
+    "Logo search/profile photo,wheel,remaining section widgets.",
+    "Hints,template library,four review tabs,overflow/export recovery,PWA/static404 and actual OG/PWA/README images.",
+    "Physical touch/software keyboard,real OS IME,spoken assistive and shader hardware acceptance.",
+    "CloakIMG remains parked and last."
+  ]
+}

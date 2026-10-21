@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en" data-air-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <title>CloakResume social artwork</title>
+    <link rel="stylesheet" href="../src/styles/air.css" />
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        width: 1200px;
+        height: 630px;
+        margin: 0;
+        overflow: hidden;
+        background: var(--air-page);
+        color: var(--air-ink);
+        font-family: var(--air-font);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin: 48px 56px;
+        font-size: 24px;
+        font-weight: 500;
+        letter-spacing: -0.03em;
+      }
+      header span {
+        margin-left: auto;
+        color: var(--air-ink-muted);
+        font-size: 18px;
+        font-weight: 400;
+        letter-spacing: 0;
+      }
+      main {
+        display: grid;
+        grid-template-columns: 400px 656px;
+        gap: 32px;
+        align-items: center;
+        margin: 56px 56px 0;
+      }
+      h1 {
+        margin: 0 0 24px;
+        font-size: 64px;
+        font-weight: 400;
+        line-height: 1.06;
+        letter-spacing: -0.055em;
+      }
+      h1 span {
+        display: block;
+        color: var(--air-ink-secondary);
+      }
+      p {
+        max-width: 28ch;
+        margin: 0;
+        color: var(--air-ink-secondary);
+        font-size: 22px;
+        line-height: 1.5;
+      }
+      .preview {
+        padding: 12px;
+        border: 1px solid var(--air-line);
+        border-radius: var(--air-radius-panel);
+        background: var(--air-surface);
+        box-shadow: var(--air-shadow-surface);
+      }
+      .preview img {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--air-radius-chip);
+      }
+      footer {
+        position: absolute;
+        bottom: 42px;
+        left: 56px;
+        font-size: 18px;
+        color: var(--air-ink-muted);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <img src="../public/cloakresume-mark.svg" width="36" height="36" alt="" />
+      CloakResume<span>resume.cloakyard.com</span>
+    </header>
+    <main>
+      <div>
+        <h1>Your next chapter.<span>In your words.</span></h1>
+        <p>Build, tailor and export.<br />Your draft stays on your device.</p>
+      </div>
+      <div class="preview">
+        <img
+          src="../public/screenshots/editor-wide-light.png"
+          width="1440"
+          height="900"
+          alt="CloakResume’s Air editor and a synthetic sample résumé in Classic Sidebar"
+        />
+      </div>
+    </main>
+    <footer>Open source. No account needed.</footer>
+  </body>
+</html>

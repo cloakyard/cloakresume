@@ -12,10 +12,9 @@
  */
 
 import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { createPortal } from "react-dom";
+import { AtsReviewDialog } from "./components/AtsReviewDialog.tsx";
 import { ErrorBoundary } from "./components/ErrorBoundary.tsx";
 import { Layout } from "./components/Layout.tsx";
-import { OrientationLock } from "./components/OrientationLock.tsx";
 import { ReloadPrompt } from "./components/ReloadPrompt.tsx";
 import { ToolbarActions } from "./components/ToolbarActions.tsx";
 import { ToolbarCenter } from "./components/ToolbarCenter.tsx";
@@ -25,43 +24,11 @@ import { SECTIONS, type SectionId } from "./components/SectionRail.tsx";
 import type { MobileView } from "./components/ViewSegment.tsx";
 import { Preview } from "./components/Preview.tsx";
 
-// Code-split the ATS review — the panel plus its four sub-panes and the
-// Harper grammar engine only need to land in the client the first time
-// the user actually opens the review.
-const AtsReviewModal = lazy(() =>
-  import("./components/AtsReviewModal.tsx").then((m) => ({ default: m.AtsReviewModal })),
+// Keep review panes lazy while dismissal/focus remain available in the shared frame.
+const AtsReviewContent = lazy(() =>
+  import("./components/AtsReviewContent.tsx").then((m) => ({ default: m.AtsReviewContent })),
 );
 
-function AtsReviewLoading({ open }: { open: boolean }) {
-  if (!open) return null;
-
-  return createPortal(
-    <div
-      className="cr-overlay fixed inset-0 flex items-end justify-center min-[640px]:items-center min-[640px]:p-6 print:hidden"
-      role="presentation"
-    >
-      <div
-        className="cr-dialog cr-dialog-wide cr-sheet relative flex h-[var(--sheet-max-block-size)] w-full flex-col overflow-hidden pb-[env(safe-area-inset-bottom,0px)] min-[640px]:h-[min(51.25rem,var(--dialog-max-block-size))] min-[640px]:!w-[min(var(--dialog-wide-max),calc(100vw-3rem))] min-[640px]:pb-0"
-        role="status"
-        aria-live="polite"
-        aria-busy="true"
-      >
-        <div className="flex h-16 shrink-0 items-center border-b border-(--line) px-5 min-[640px]:px-7">
-          <span className="text-base font-semibold text-(--ink-1)">ATS review</span>
-        </div>
-        <div className="grid min-h-0 flex-1 place-items-center px-6 text-center">
-          <div>
-            <p className="m-0 text-sm font-semibold text-(--ink-1)">Preparing your analysis…</p>
-            <p className="mt-1 text-sm text-(--ink-4)">
-              Loading the private, on-device review workspace.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>,
-    document.body,
-  );
-}
 import { CloakWorkbenchLanding } from "./components/CloakWorkbenchLanding.tsx";
 import { ConfirmDialog } from "./components/ConfirmDialog.tsx";
 import { generateSampleResume } from "./data/sampleResume.ts";
@@ -164,13 +131,6 @@ export function App() {
     setMobileSectionOpen(true);
   }, []);
   const [atsOpen, setAtsOpen] = useState(false);
-  /** True once the user has opened the ATS review at least once — gates the
-   *  lazy AtsReviewModal chunk so it's not downloaded until actually needed. */
-  const [atsMounted, setAtsMounted] = useState(false);
-  const openAts = useCallback(() => {
-    setAtsMounted(true);
-    setAtsOpen(true);
-  }, []);
   /**
    * The start landing shows on every app load — users always land here first and
    * pick "Resume editing" (when there's saved work) or one of the
@@ -188,8 +148,18 @@ export function App() {
     () => resumeHasContent(resume) || jobDescription.trim().length > 0,
     [resume, jobDescription],
   );
-  /** Confirmation prompt before clearing the current work via the "New" button. */
+  const latestHasSavedWork = useRef(hasSavedWork);
+  useEffect(() => {
+    latestHasSavedWork.current = hasSavedWork;
+  }, [hasSavedWork]);
+  /** Open start options without discarding the current draft. */
   const [newConfirmOpen, setNewConfirmOpen] = useState(false);
+  const [pendingStart, setPendingStart] = useState<ResumeData | null>(null);
+  const [pendingFile, setPendingFile] = useState<Awaited<ReturnType<typeof readResumeFile>> | null>(
+    null,
+  );
+  const [loadingFile, setLoadingFile] = useState(false);
+  const fileLoadInFlight = useRef(false);
   /** Family notice used for recoverable file and export failures. */
   const [notice, setNotice] = useState<AppNotice | null>(null);
 
@@ -197,7 +167,7 @@ export function App() {
     () => ({ resume, templateId, primary, paperSize, jobDescription, activeSection }),
     [resume, templateId, primary, paperSize, jobDescription, activeSection],
   );
-  const { error: saveError, savedAt } = useAutosave(LS_KEY, persisted, !showLanding);
+  const { error: saveError, savedAt, flush } = useAutosave(LS_KEY, persisted, !showLanding);
   useEffect(() => {
     if (saveError) setNotice({ title: "Draft not saved", description: saveError });
   }, [saveError]);
@@ -206,8 +176,8 @@ export function App() {
   const palette = useMemo(() => derivePalette(primary), [primary]);
 
   /**
-   * Grammar / spelling analysis runs in a Web Worker so the ~700 KB English
-   * dictionary doesn't land on the main thread. It's triggered lazily when
+   * Grammar / spelling analysis runs in a Web Worker to keep language
+   * processing off the main thread. It's triggered lazily when
    * the user opens the ATS review — no per-keystroke work.
    */
   const {
@@ -216,6 +186,7 @@ export function App() {
     scanning: grammarScanning,
     engineReady: grammarEngineReady,
     engineProgress: grammarEngineProgress,
+    completedAt: grammarCompletedAt,
     scan: runGrammarScan,
   } = useGrammarScan(resume);
 
@@ -225,10 +196,10 @@ export function App() {
     [resume, jobDescription, grammarReport],
   );
 
-  /** Kick off a fresh grammar scan whenever the panel opens. */
-  useEffect(() => {
-    if (atsOpen) runGrammarScan();
-  }, [atsOpen, runGrammarScan]);
+  const openAts = useCallback(() => {
+    runGrammarScan();
+    setAtsOpen(true);
+  }, [runGrammarScan]);
 
   // Only the current document revision needs a background scan. An edit made
   // during the initial engine download must also be scanned when it becomes ready.
@@ -244,13 +215,13 @@ export function App() {
     setActiveSection("jd");
     setMobileSectionOpen(true);
     setMobileView("panel");
+    highlightField("target-job-description");
   }, []);
 
   /**
    * Tap-to-fix jump from the Insights tab: translate a grammar segment id
    * (e.g. `experience.0.bullets.2`) into the editor rail section, close
-   * the review modal, then soft-glow the specific field so the user sees
-   * exactly which bullet / summary / description to edit.
+   * the review modal, then focus the specific bullet / summary / description.
    */
   const handleJumpToField = useCallback((segmentId: string) => {
     const prefix = segmentId.split(".")[0];
@@ -272,19 +243,20 @@ export function App() {
     // On mobile the edit mode contains the split preview/editor workbench.
     setMobileView("panel");
     setAtsOpen(false);
-    // Delay past the sheet's close animation + section mount so the field
-    // exists in the DOM by the time we try to query + scroll to it.
-    window.setTimeout(() => highlightField(segmentId), 320);
+    // The field helper waits for the section mount; review dismissal is immediate.
+    highlightField(segmentId);
   }, []);
 
   const TemplateComponent = TEMPLATES[templateId].component;
   const exportInFlight = useRef(false);
   const [exporting, setExporting] = useState(false);
+  const [exportStatus, setExportStatus] = useState("");
 
   const handleExportPdf = useCallback(async () => {
     if (exportInFlight.current) return;
     const root = document.querySelector<HTMLElement>('.resume-root[data-template-ready="true"]');
     if (!root) {
+      setExportStatus("Document is still preparing. Try again when the preview is ready.");
       setNotice({
         title: "Document is still preparing",
         description:
@@ -294,12 +266,14 @@ export function App() {
     }
     exportInFlight.current = true;
     setExporting(true);
+    setExportStatus("Preparing your PDF…");
     try {
-      // Lazy-loaded so the ~200 kB html2canvas-pro + jsPDF bundle only lands
-      // in the client after the user actually asks for an export.
+      // Keep the PDF renderer out of the initial editor bundle.
       const { exportResumeToPdf } = await import("./utils/pdfExport.ts");
       await exportResumeToPdf(root, buildDownloadFilename(resume.profile.name, "pdf"), paperSize);
+      setExportStatus("PDF download started.");
     } catch (err) {
+      setExportStatus("PDF export failed. Dismiss the message, then try again.");
       setNotice({
         title: "PDF export failed",
         description: `CloakResume couldn't generate the PDF. ${
@@ -313,30 +287,50 @@ export function App() {
   }, [resume.profile.name, paperSize]);
 
   const handleSaveFile = useCallback(() => {
-    downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
-  }, [resume, templateId, primary, paperSize, jobDescription]);
-
-  const handleLoadFile = useCallback(async (file: File) => {
     try {
-      const payload = await readResumeFile(file);
-      setResume(payload.resume);
-      setTemplateId(resolveTemplateId(payload.templateId));
-      setPrimary(payload.primary);
-      setPaperSize(payload.paperSize);
-      setJobDescription(payload.jobDescription);
-      setActiveSection("profile");
-      setMobileSectionOpen(true);
-      setMobileView("panel");
-      setShowLanding(false);
+      downloadResumeFile({ resume, templateId, primary, paperSize, jobDescription });
     } catch (err) {
       setNotice({
-        title: "Resume file couldn't be opened",
-        description: `CloakResume couldn't load that file. ${
-          err instanceof Error ? err.message : "Choose another CloakResume file and try again."
-        }`,
+        title: "Resume file couldn’t be saved",
+        description: `Your draft is still here. ${err instanceof Error ? err.message : "Please try again."}`,
       });
     }
+  }, [resume, templateId, primary, paperSize, jobDescription]);
+
+  const applyFile = useCallback((payload: Awaited<ReturnType<typeof readResumeFile>>) => {
+    setResume(payload.resume);
+    setTemplateId(resolveTemplateId(payload.templateId));
+    setPrimary(payload.primary);
+    setPaperSize(payload.paperSize);
+    setJobDescription(payload.jobDescription);
+    setActiveSection("profile");
+    setMobileSectionOpen(true);
+    setMobileView("panel");
+    setShowLanding(false);
   }, []);
+
+  const handleLoadFile = useCallback(
+    async (file: File) => {
+      if (fileLoadInFlight.current) return;
+      fileLoadInFlight.current = true;
+      setLoadingFile(true);
+      try {
+        const payload = await readResumeFile(file);
+        // Validate before asking to replace; a bad file must never discard a draft.
+        if (latestHasSavedWork.current) setPendingFile(payload);
+        else applyFile(payload);
+      } catch (err) {
+        setNotice({
+          title: "Resume file couldn't be opened",
+          description: `CloakResume couldn't load that file. ${err instanceof Error ? err.message : "Choose another CloakResume file and try again."}`,
+        });
+      } finally {
+        fileLoadInFlight.current = false;
+        setLoadingFile(false);
+      }
+    },
+    [applyFile],
+  );
 
   /** Welcome-screen → seed with the given resume data and close the overlay. */
   const startWithResume = useCallback((data: ResumeData) => {
@@ -367,20 +361,17 @@ export function App() {
     setShowLanding(false);
   }, []);
 
-  return (
-    <>
-      {/* Phone-only portrait enforcement. Tries the JS lock for
-       * installed PWAs, then falls back to a "rotate your phone"
-       * overlay on devices that reject the lock (iOS Safari, etc.).
-       * Mounted at the very top so it outranks every modal / sheet. */}
-      <OrientationLock />
+  const beforeReload = useCallback(() => {
+    if (exportInFlight.current || fileLoadInFlight.current)
+      return "Finish the current file operation, then try updating again. Your draft stays here.";
+    return flush()
+      ? null
+      : "Your latest changes could not be saved. Keep editing or download a JSON copy before leaving. Free browser storage, then retry the update.";
+  }, [flush]);
 
-      {/* Service-worker lifecycle prompt — surfaces "Update
-       * available" when a new SW version lands and a brief "Ready
-       * offline" toast on first install. Owns the SW registration
-       * via `useRegisterSW` so registration and the UI that reacts
-       * to it stay co-located. */}
-      <ReloadPrompt />
+  return (
+    <div className={showLanding ? "resume-app" : "resume-app resume-app--editing"}>
+      <ReloadPrompt beforeReload={beforeReload} />
 
       {/* The editor and the welcome screen are mutually exclusive — only
        * one is mounted at a time. Keeping both mounted (with the editor
@@ -409,6 +400,8 @@ export function App() {
               <ToolbarActions
                 onExportPdf={handleExportPdf}
                 exporting={exporting}
+                exportStatus={exportStatus}
+                loadingFile={loadingFile}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
                 onNewResume={handleNewResume}
@@ -421,6 +414,8 @@ export function App() {
                 onPaperSizeChange={setPaperSize}
                 onExportPdf={handleExportPdf}
                 exporting={exporting}
+                exportStatus={exportStatus}
+                loadingFile={loadingFile}
                 onNewResume={handleNewResume}
                 onSaveFile={handleSaveFile}
                 onLoadFile={handleLoadFile}
@@ -460,32 +455,46 @@ export function App() {
         />
       )}
 
-      {atsMounted && !showLanding && (
+      {atsOpen && !showLanding && (
         <ErrorBoundary title="ATS review hit a snag">
-          <Suspense fallback={<AtsReviewLoading open={atsOpen} />}>
-            <AtsReviewModal
-              open={atsOpen}
-              onClose={() => setAtsOpen(false)}
-              report={atsReport}
-              resume={resume}
-              hasJobDescription={jobDescription.trim().length > 0}
-              onOpenJdEditor={focusJdEditor}
-              grammarScanning={grammarScanning}
-              grammarError={grammarError}
-              engineReady={grammarEngineReady}
-              engineProgress={grammarEngineProgress}
-              onRescan={runGrammarScan}
-              onJumpToField={handleJumpToField}
-            />
-          </Suspense>
+          <AtsReviewDialog onClose={() => setAtsOpen(false)}>
+            <Suspense
+              fallback={
+                <div className="resume-review-body">
+                  <p role="status">Loading the local review workspace…</p>
+                </div>
+              }
+            >
+              <AtsReviewContent
+                report={atsReport}
+                resume={resume}
+                hasJobDescription={jobDescription.trim().length > 0}
+                onOpenJdEditor={focusJdEditor}
+                grammarScanning={grammarScanning}
+                grammarError={grammarError}
+                engineReady={grammarEngineReady}
+                engineProgress={grammarEngineProgress}
+                scannedAt={grammarCompletedAt}
+                onRescan={runGrammarScan}
+                onJumpToField={handleJumpToField}
+              />
+            </Suspense>
+          </AtsReviewDialog>
         </ErrorBoundary>
       )}
 
       {showLanding && (
         <CloakWorkbenchLanding
-          onStartBlank={() => startWithResume(blankResume)}
-          onLoadSample={() => startWithResume(generateSampleResume())}
+          onStartBlank={() =>
+            hasSavedWork ? setPendingStart(blankResume) : startWithResume(blankResume)
+          }
+          onLoadSample={() =>
+            hasSavedWork
+              ? setPendingStart(generateSampleResume())
+              : startWithResume(generateSampleResume())
+          }
           onLoadFile={handleLoadFile}
+          loading={loadingFile}
           onDismiss={hasSavedWork ? dismissLanding : undefined}
           onResumeEditing={hasSavedWork ? dismissLanding : undefined}
           lastSavedAt={hasSavedWork ? (savedAt ?? initial.savedAt) : undefined}
@@ -493,12 +502,29 @@ export function App() {
       )}
 
       <ConfirmDialog
+        open={pendingStart !== null || pendingFile !== null}
+        title="Replace this draft?"
+        description="Your current résumé will be replaced. Cancel to keep it, or save a JSON copy from the editor first."
+        confirmLabel="Replace draft"
+        tone="danger"
+        onConfirm={() => {
+          if (pendingFile) applyFile(pendingFile);
+          else if (pendingStart) startWithResume(pendingStart);
+          setPendingFile(null);
+          setPendingStart(null);
+        }}
+        onCancel={() => {
+          setPendingFile(null);
+          setPendingStart(null);
+        }}
+      />
+
+      <ConfirmDialog
         open={newConfirmOpen}
-        title="Start a new resume?"
-        description="Your current resume will be replaced. Save it first if you want to keep a copy."
+        title="Open start options?"
+        description="Your current draft stays available under Resume editing until you choose to replace it."
         confirmLabel="Continue"
         cancelLabel="Cancel"
-        tone="danger"
         onConfirm={confirmNewResume}
         onCancel={() => setNewConfirmOpen(false)}
       />
@@ -513,6 +539,6 @@ export function App() {
         onConfirm={() => setNotice(null)}
         onCancel={() => setNotice(null)}
       />
-    </>
+    </div>
   );
 }
