@@ -1,5 +1,17 @@
 # Air validation record
 
+## 2026-10-25 — skill refresh and portable artwork contract
+
+Updated all seven CLI-managed project skills with npx. The two legacy Vercel
+lock entries were refreshed with explicit source paths. Vendored skill scripts
+and Claude symlinks stay outside application lint/format; upstream bytes are
+preserved. Pinned the complete Air 1.1.0 artwork contract/lifecycle and fixed-paper
+tokens without mounting new landing artwork or changing Resume UI/output.
+
+`vp check`, all 373 tests in 10 files, production build, design conformance and
+20 isolated portability checks pass. No new package dependency, push or deploy.
+The existing migration and physical/assistive acceptance gates remain unchanged.
+
 ## 2026-10-11 — portable contract and baseline
 
 `vp check` and the production build pass. The initial concurrent browser suites
