@@ -45,8 +45,7 @@ body:has(.resume-site) {
 .resume-menu {
   display: none;
 }
-.resume-header svg,
-.resume-footer nav svg {
+.resume-header svg {
   width: 16px;
   height: 16px;
 }
@@ -98,7 +97,7 @@ body:has(.resume-site) {
   line-height: 1.4;
   margin: 16px 0 8px;
 }
-.resume-site p {
+.resume-site :where(main) p {
   color: var(--air-ink-secondary);
   margin: 0 0 24px;
   overflow-wrap: anywhere;
@@ -166,12 +165,6 @@ body:has(.resume-site) {
   grid-template-columns: 1fr 1fr;
   gap: 48px;
   padding-block: 64px;
-}
-.resume-footer {
-  align-items: center;
-}
-.resume-footer nav {
-  align-items: center;
 }
 .resume-overlay {
   background: var(--air-scrim);

@@ -26,9 +26,19 @@
         <img class="air-page-mark" src="/cloakresume-mark.svg" alt="" width="36" height="36" />
         <span translate="no">CloakResume</span>
       </a>
-      <nav class="air-page-nav" aria-label="Main navigation">
-        <a href="/"
-          >Home <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg
+      <nav class="air-page-nav" aria-label="Primary navigation">
+        <a href="%BASE_URL%">Home</a>
+        <a href="https://github.com/cloakyard/cloakresume"
+          >Source
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 17 17 7M7 7h10v10" /></svg
         ></a>
       </nav>
     </header>
@@ -44,27 +54,55 @@
           >Return to CloakResume
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg
         ></a>
+        <a
+          class="air-button air-button--quiet"
+          href="https://github.com/cloakyard/cloakresume/issues/new"
+          >Report a broken link
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 17 17 7M7 7h10v10" /></svg
+        ></a>
       </div>
       <p class="resume-request" id="requested-path" hidden></p>
     </main>
-    <footer class="air-page-width air-page-footer">
-      <a class="air-page-brand" href="/" aria-label="CloakResume home"
-        ><img
-          class="air-page-mark"
-          src="/cloakresume-mark.svg"
-          alt=""
-          width="36"
-          height="36"
-        /><span translate="no">CloakResume</span></a
-      >
+    <footer class="air-page-footer air-page-width">
+      <p class="air-page-identity">
+        <span translate="no">CloakResume v%VITE_APP_VERSION%</span
+        ><span
+          >Built by
+          <a href="https://github.com/sumitsahoo" target="_blank" rel="noreferrer"
+            >Sumit Sahoo</a
+          ></span
+        >
+      </p>
       <nav aria-label="Footer navigation">
-        <a href="https://cloakyard.com"
+        <a href="%BASE_URL%#privacy-policy">Privacy policy</a>
+        <a href="https://github.com/cloakyard/cloakresume" target="_blank" rel="noreferrer"
+          >Source</a
+        >
+        <a
+          href="https://github.com/cloakyard/cloakresume/blob/main/LICENSE"
+          target="_blank"
+          rel="noreferrer"
+          >MIT license</a
+        >
+        <a href="https://cloakyard.com" target="_blank" rel="noreferrer"
           >Cloakyard
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg
-        ></a>
-        <a href="https://github.com/cloakyard/cloakresume/issues/new"
-          >Report a broken link
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10" /></svg
+          <svg
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            fill="none"
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <path d="M7 17 17 7M7 7h10v10" /></svg
         ></a>
       </nav>
     </footer>
