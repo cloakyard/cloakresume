@@ -1,5 +1,23 @@
 # Air validation record
 
+## 2026-10-26 — Full web cleanup audit
+
+Audited all web imports/exports, dependencies, custom styles, public assets and
+build/generator/test entry points. Restricted Tailwind to shipped `src/` and root
+HTML, removing 18,816 bytes of generated CSS (3,106 bytes at gzip level 9). Removed
+the obsolete two-column media rule and its two orphaned data attributes; made
+ReloadPromptView, assertExportFits and ProjectItem module-private. Their live
+behavior and data types remain. Added accurate Knip entry points, including static
+recovery CSS. Preserve Air font mappings consumed by preflight, lazy templates,
+fonts, date/drag adapters and export safety checks. No dependency change.
+
+Lint/types/dead-code, all 373 tests in 10 files with no skips (serial production
+run), build and 20 portability checks pass. All 12 landing/editor and 34 template/paper
+capture pairs match exactly. Four real PDF exports retain identical raster, text,
+links and page geometry. The final family audit passes 552 Chrome layouts with zero
+deviations/browser errors; desktop/laptop/phone light/dark rendered review passes. Evidence: `docs/air/evidence/code-cleanup-2026-10-26/`.
+Physical/assistive and existing product follow-ups remain open. Local only.
+
 ## 2026-10-26 — Storyline and family chrome
 
 Implemented the approved finite Storyline and kept immediate blank/restore entry

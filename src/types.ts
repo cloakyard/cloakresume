@@ -51,7 +51,7 @@ interface EducationItem {
   detail: string; // e.g. "8.11 CGPA"
 }
 
-export interface ProjectItem {
+interface ProjectItem {
   id: string;
   name: string;
   description: string;

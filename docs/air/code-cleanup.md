@@ -190,3 +190,19 @@ editor/template/export, update, source/download and native features.
 
 Validation and evidence: `storyline-family-2026-10-26` in current validation records.
 This is a bounded source cleanup; broader migration and physical gates remain open.
+
+## 2026-10-26 — Full web cleanup audit
+
+Audited all web imports/exports, dependencies, custom styles, public assets and
+build/generator/test entry points. Restricted Tailwind to shipped `src/` and root
+HTML, removing 18,816 bytes of generated CSS (3,106 bytes at gzip level 9). Removed
+the obsolete two-column media rule and its two orphaned data attributes; made
+ReloadPromptView, assertExportFits and ProjectItem module-private. Their live
+behavior and data types remain. Added accurate Knip entry points, including static
+recovery CSS. Preserve Air font mappings consumed by preflight, lazy templates,
+fonts, date/drag adapters and export safety checks. No dependency change.
+
+The earlier broad Tailwind scan follow-up is now resolved. Dynamic
+`resume-section-nav--rail` remains live; no unsafe selector purge was used.
+All 373 serial production tests, exact render/export comparisons, lint/build and
+Air gates pass; see `evidence/code-cleanup-2026-10-26/`.
