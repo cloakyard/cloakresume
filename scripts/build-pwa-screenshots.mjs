@@ -1,7 +1,7 @@
 /** Capture real Air landing/editor states from a production build. See docs/brand-assets.md. */
 import assert from "node:assert/strict";
 import { spawn } from "node:child_process";
-import { mkdir } from "node:fs/promises";
+import { mkdir, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import puppeteer from "puppeteer-core";
 
@@ -117,7 +117,19 @@ try {
         });
         assert.deepEqual(errors, [], `${target.name}/${theme} failed`);
         const path = resolve(output, `${target.name}-${theme}.png`);
-        await page.screenshot({ path, captureBeyondViewport: false });
+        // Font readiness can precede the final glyph paint in a fresh theme context.
+        // Require stable pixels over several frames before publishing the preview.
+        let previous;
+        let stable = 0;
+        for (let attempt = 0; attempt < 12; attempt++) {
+          await new Promise((resolve) => setTimeout(resolve, 150));
+          const next = Buffer.from(await page.screenshot({ captureBeyondViewport: false }));
+          stable = previous?.equals(next) ? stable + 1 : 0;
+          previous = next;
+          if (attempt >= 3 && stable >= 2) break;
+        }
+        assert.ok(stable >= 2, `${target.name}/${theme} pixels did not settle`);
+        await writeFile(path, previous);
         console.log(
           `Wrote ${path} (${target.width * target.deviceScaleFactor}×${target.height * target.deviceScaleFactor})`,
         );

@@ -24,7 +24,6 @@ const move = (x: number, y: number) => `translate(${x}px, ${y}px)`;
 /** One illustrative career path; never reads a draft or delays entry to the editor. */
 export function Storyline() {
   const root = useRef<HTMLDivElement>(null);
-  const control = useRef<HTMLButtonElement>(null);
   useLayoutEffect(() => {
     const element = root.current;
     if (!element) return;
@@ -35,7 +34,6 @@ export function Storyline() {
     const rows = [...stage.querySelectorAll<HTMLElement>(".resume-story-chapter")];
     let width = stage.clientWidth;
     const artwork = mountAirArtwork(element, {
-      control: control.current,
       settle() {}, // Markup and CSS always describe the complete static résumé.
       run: (animate) => {
         width = stage.clientWidth;
@@ -162,11 +160,6 @@ export function Storyline() {
         {pieces.map((t) => (
           <span className="resume-story-line" key={t} style={{ transform: pose(t, 1, 0) }} />
         ))}
-      </div>
-      <div className="resume-story-controls">
-        <button type="button" className="air-button air-button--quiet" ref={control} hidden>
-          Pause animation
-        </button>
       </div>
     </div>
   );

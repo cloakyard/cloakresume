@@ -1,4 +1,4 @@
-/** Built landing artwork: geometry, accessible controls, lifecycle and static profiles. */
+/** Built landing artwork: geometry, finite arrival, lifecycle and static profiles. */
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
 import puppeteer from "puppeteer-core";
@@ -80,7 +80,7 @@ try {
             running: root.getAnimations({ subtree: true }).length,
             decorative: stage.getAttribute("aria-hidden"),
             ink: getComputedStyle(root.querySelector(".resume-story-name")).color,
-            controlsHidden: root.querySelector("button").hidden,
+            controlsAbsent: !root.querySelector("button"),
             input: !document.querySelector("input[name=resume-file]").disabled,
           };
         }, text);
@@ -94,7 +94,7 @@ try {
             running: 0,
             decorative: "true",
             ink: "rgb(32, 35, 41)",
-            controlsHidden: true,
+            controlsAbsent: true,
             input: true,
           },
           JSON.stringify({ width, height, theme, text, result }),
@@ -126,8 +126,9 @@ try {
     if (mode === "normal") {
       await state(page, "playing");
       await page.screenshot({ path: `${out}/story-arrival.png` });
-      await page.click(".resume-story button");
-      await state(page, "paused");
+      assert.equal(await page.$(".resume-story button"), null);
+      await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pagehide")));
+      await state(page, "hidden");
       await page.$eval(".resume-story", (e) =>
         Promise.all(e.getAnimations({ subtree: true }).map((a) => a.ready)),
       );
@@ -138,12 +139,7 @@ try {
       const before = await times();
       await pause(180);
       assert.deepEqual(await times(), before);
-      await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pagehide")));
-      await state(page, "hidden");
       await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pageshow")));
-      await state(page, "paused");
-      await page.focus(".resume-story button");
-      await page.keyboard.press("Enter");
       await state(page, "playing");
       await page.evaluate(() => scrollTo(0, document.body.scrollHeight));
       await state(page, "offscreen");
@@ -153,21 +149,20 @@ try {
         await page.$eval(".resume-story", (e) => e.getAnimations({ subtree: true }).length),
         0,
       );
-      assert.equal(
-        await page.$eval(".resume-story button", (e) => e.textContent),
-        "Replay animation",
-      );
-      await page.click(".resume-story button");
+      await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pagehide")));
+      await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pageshow")));
+      await state(page, "complete");
+      await page.reload({ waitUntil: "domcontentloaded" });
       await state(page, "playing");
       await page.setViewport({ width: 390, height: 844 });
       await state(page, "complete");
-      await page.click(".resume-story button");
+      await page.reload({ waitUntil: "domcontentloaded" });
       await state(page, "playing");
       await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "reduce" }]);
       await state(page, "reduced");
       await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
       await state(page, "complete");
-      await page.click(".resume-story button");
+      await page.reload({ waitUntil: "domcontentloaded" });
       await state(page, "playing");
       await page.evaluate(() => {
         window.storyEffects = document
@@ -183,15 +178,14 @@ try {
         true,
       );
       evidence.lifecycle.push(
-        "pause/keyboard/resume, hidden and manual pause, offscreen, finite completion, resize settle/replay, live reduced motion, editor cleanup",
+        "no controls; hidden time frozen; offscreen; finite completion without restart; resize settle; live reduced motion; editor cleanup",
       );
     } else {
       await state(page, mode);
       assert.equal(
         await page.$eval(
           ".resume-story",
-          (e) =>
-            e.getAnimations({ subtree: true }).length === 0 && e.querySelector("button").hidden,
+          (e) => e.getAnimations({ subtree: true }).length === 0 && !e.querySelector("button"),
         ),
         true,
       );
@@ -220,8 +214,6 @@ try {
       await page.$eval(".resume-story", (e) => e.scrollIntoView({ block: "center" }));
       const result = await page.evaluate(async () => {
         const root = document.querySelector(".resume-story");
-        const control = root.querySelector("button");
-        if (root.dataset.artState === "complete") control.click();
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
         root.getAnimations({ subtree: true }).forEach((a) => {
           a.pause();

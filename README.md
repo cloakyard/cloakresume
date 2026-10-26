@@ -32,8 +32,8 @@ CloakResume is a browser-native editor for the complete résumé workflow:
 - **Carry** — export PDF, save or load editable JSON, start with realistic sample content, and return to a browser-saved local draft.
 
 The application follows [Cloakyard Air](DESIGN.md): quiet neutral surfaces,
-readable system typography, shared controls and a green landing light drawn from
-CloakResume’s mark. Public hyperlinks stay neutral, including hover, with angled
+readable system typography, shared controls and a green career path that gathers
+into a résumé once, then rests without playback controls. Public hyperlinks stay neutral, including hover, with angled
 cues where appropriate. Résumé templates preserve their individual typography,
 author-selected colours and pagination in both application themes.
 

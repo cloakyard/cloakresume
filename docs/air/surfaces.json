@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.0",
+  "contractVersion": "1.2.1",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -762,7 +762,7 @@
       "validated": false,
       "states": [
         "animated arrival",
-        "pause/play/replay",
+        "finite arrival without playback controls",
         "finite completion",
         "hidden/offscreen suspension",
         "resize settlement",
@@ -1805,7 +1805,7 @@
       "validated": false,
       "states": [
         "animated arrival",
-        "pause/play/replay",
+        "finite arrival without playback controls",
         "finite completion",
         "hidden/offscreen suspension",
         "resize settlement",

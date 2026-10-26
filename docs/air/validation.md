@@ -1,5 +1,16 @@
 # Air validation record
 
+## 2026-10-26 — Automatic landing artwork without playback controls
+
+Removes the button/ref/CSS while preserving the 3,400ms Storyline arrival. All 373 production tests in ten files pass with zero skips; 68 artwork layouts, eight arrival layouts and lifecycle/static profiles pass. PWA/README screenshots were regenerated from the production build; the editor-based OG composition is unchanged. Visual inspection caught an existing capture timing fault that omitted dark-mode paper text. The generator now requires stable pixels after font readiness; all four repeated captures match exactly. No application rendering change was needed.
+
+Air 1.2.1 requires automatic finite landing artwork without Play/Pause/Replay.
+Hidden/offscreen suspension and reduced-motion/static fallbacks remain. Shared
+Chrome/Firefox checks pass 1,104 layouts. Applicable checks, build, dead-code,
+design and portable-bundle checks pass. See `evidence/finite-artwork-2026-10-26/`.
+Physical/assistive/device and earlier product acceptance remain open. Deployment
+is tracked by the family release ledger after passing dev → main PRs.
+
 ## 2026-10-26 — Full web cleanup audit
 
 Audited all web imports/exports, dependencies, custom styles, public assets and
