@@ -115,8 +115,8 @@ describe("CloakResume family contract", () => {
       source("src/components/BrandLogo.tsx"),
       source("src/styles/air-editor.css"),
     ]);
-    expect(brandLogo).toContain('width="32"');
-    expect(brandLogo).toContain('height="32"');
+    expect(brandLogo).toContain('width="36"');
+    expect(brandLogo).toContain('height="36"');
     expect(brandLogo).toContain("cloakresume-mark.svg");
     expect(brandLogo).toContain('translate="no"');
     expect(css).toContain("font: 500 1.125rem/1.25 var(--air-font)");
@@ -132,7 +132,7 @@ describe("CloakResume family contract", () => {
       source("src/cloak-family.css"),
     ]);
     const footer = landing.match(
-      /<footer className="resume-footer resume-frame">([\s\S]*?)<\/footer>/,
+      /<footer className="air-page-footer resume-footer resume-frame">([\s\S]*?)<\/footer>/,
     )?.[1];
     expect(footer).toBeDefined();
     for (const content of [
@@ -145,9 +145,10 @@ describe("CloakResume family contract", () => {
     ])
       expect(footer).toContain(content);
     expect(main).toContain('import "./styles/air.css"');
-    expect(landing).toContain('width="32"');
+    expect(landing).toContain('width="36"');
     expect(landing).toContain('className="resume-menu"');
-    expect(landing).toContain("mountAirLight");
+    expect(landing).toContain("<Storyline />");
+    expect(landing).not.toContain("mountAirLight");
     expect(privacy).toContain('className="air-modal resume-policy"');
     expect(privacy).toContain("Complete privacy policy");
     expect(privacy).toContain('LAST_UPDATED_ISO = "2026-07-22"');

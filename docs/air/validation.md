@@ -1,5 +1,25 @@
 # Air validation record
 
+## 2026-10-26 — Storyline and family chrome
+
+Implemented the approved finite Storyline and kept immediate blank/restore entry
+above it. Shared Air 1.2.0 header/footer and 36px brand treatment now match the family;
+static recovery follows the same rules. Removed production horizon CSS/imports and
+obsolete shader precache exclusion. Reduced-motion transitions are truly immediate.
+PWA/README screenshots and OG regenerated from the production build.
+
+Lint/types/build, 373 tests in ten files (including production editor/templates),
+349 entry/recovery layouts / 14 journeys, 68 artwork layouts, eight animated-arrival
+layouts, lifecycle/four static profiles, 20 portability checks and the family
+Chrome/Firefox matrix pass. Home/404 links: 128 states / 34 keyboard checks; privacy:
+48 / 6. Rendered desktop/laptop/phone light/dark and native Safari replay/enlarged
+menu reviewed. Caption/path collision found during review was fixed. The entry
+harness now distinguishes inline credits from 44px footer navigation. No new
+runtime dependency or document-output code change. Earlier export follow-ups and
+physical/assistive acceptance remain open. Local only.
+
+Evidence: `docs/air/evidence/storyline-family-2026-10-26/`.
+
 ## 2026-10-25 — skill refresh and portable artwork contract
 
 Updated all seven CLI-managed project skills with npx. The two legacy Vercel

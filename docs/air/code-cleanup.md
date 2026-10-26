@@ -175,3 +175,18 @@ A future scan-scope cleanup should remove that generated residue with output pro
 
 Validation/evidence: [privacy/dialog evidence](evidence/privacy-dialogs-2026-10-21.json).
 Whole-product target/motion and physical/assistive/hardware gates remain open.
+
+## 2026-10-26 — Storyline and shared public chrome
+
+Removed Resume's production `mountAirLight` effect/ref/markup, horizon CSS and
+obsolete shader precache exclusion. Canonical shader references remain live in the
+family gallery/Yard; no speculative asset deletion. The family horizon test now
+lists only surviving horizon consumers. New Storyline is native transform/opacity
+motion with shared lifecycle cleanup; no runtime package or draft-data coupling.
+Removed duplicate brand/header/footer link/type/padding rules in favor of the
+portable Air shell. Fixed the reduced-motion reset to zero duration instead of
+creating tiny transitions on previously unanimated layout properties. Kept all
+editor/template/export, update, source/download and native features.
+
+Validation and evidence: `storyline-family-2026-10-26` in current validation records.
+This is a bounded source cleanup; broader migration and physical gates remain open.

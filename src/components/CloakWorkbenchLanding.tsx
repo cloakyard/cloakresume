@@ -8,7 +8,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { TEMPLATE_COUNT } from "../templates/meta.ts";
-import { mountAirLight } from "../../docs/air/light-runtime.mjs";
+import { Storyline } from "./Storyline.tsx";
 import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
@@ -49,15 +49,8 @@ export function CloakWorkbenchLanding({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDetailsElement>(null);
-  const field = useRef<HTMLDivElement>(null);
   const [privacyOpen, setPrivacyOpen] = useState(false);
   const savedLabel = useMemo(() => formatSavedAt(lastSavedAt), [lastSavedAt]);
-
-  useEffect(() => {
-    if (!field.current) return;
-    const light = mountAirLight(field.current);
-    return () => light.destroy();
-  }, []);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
@@ -127,32 +120,48 @@ export function CloakWorkbenchLanding({
       >
         Skip to content
       </a>
-      <header className="resume-header resume-frame">
-        <a className="resume-brand" href={import.meta.env.BASE_URL} aria-label="CloakResume home">
+      <header className="air-page-header resume-header resume-frame">
+        <a
+          className="air-page-brand resume-brand"
+          href={import.meta.env.BASE_URL}
+          aria-label="CloakResume home"
+        >
           <img
             src={`${import.meta.env.BASE_URL}cloakresume-mark.svg`}
             alt=""
-            width="32"
-            height="32"
+            className="air-page-mark"
+            width="36"
+            height="36"
           />
           <span translate="no">CloakResume</span>
         </a>
-        <nav className="resume-nav" aria-label="Primary navigation">
+        <nav className="air-page-nav resume-nav" aria-label="Primary navigation">
           {navigation}
         </nav>
         <details className="resume-menu" ref={menuRef}>
-          <summary className="air-button">
+          <summary className="air-button air-button--quiet">
             Menu <ChevronDown aria-hidden="true" />
           </summary>
-          <nav aria-label="Compact navigation">{navigation}</nav>
+          <nav
+            className="air-page-nav"
+            aria-label="Compact navigation"
+            onClick={(event) => {
+              if ((event.target as Element).closest("a") && menuRef.current?.open) {
+                menuRef.current.open = false;
+                menuRef.current.querySelector("summary")?.focus({ preventScroll: true });
+              }
+            }}
+          >
+            {navigation}
+          </nav>
         </details>
       </header>
       <main id="main-content" tabIndex={-1}>
         <section className="resume-hero resume-frame" aria-labelledby="landing-title">
           <h1 id="landing-title">
-            Your next chapter.
+            Your story.
             <br />
-            In your words.
+            <span>Taking shape.</span>
           </h1>
           <p>
             Build, tailor and export your résumé in your browser. Your draft and job description
@@ -171,24 +180,22 @@ export function CloakWorkbenchLanding({
               <span>{savedLabel}</span>
             </div>
           )}
-          <div ref={field} className="resume-horizon" aria-hidden="true">
-            <svg viewBox="0 0 1200 240" preserveAspectRatio="none" focusable="false">
-              <defs>
-                <linearGradient id="resume-plane" x2="0" y2="1">
-                  <stop stopColor="var(--air-surface-soft)" stopOpacity="0.8" />
-                  <stop offset="1" stopColor="var(--air-surface-soft)" stopOpacity="0" />
-                </linearGradient>
-              </defs>
-              <path d="M0 100Q600 84 1200 145V240H0Z" fill="url(#resume-plane)" />
-              <path
-                d="M0 100Q600 84 1200 145M0 182Q600 132 1200 139"
-                fill="none"
-                stroke="currentColor"
-                strokeOpacity="0.22"
-              />
-            </svg>
-            <canvas />
-          </div>
+          {!onResumeEditing && (
+            <div className="resume-hero-actions">
+              <button
+                type="button"
+                className="air-button air-button--primary"
+                disabled={loading}
+                onClick={(event) => activate(event, onStartBlank)}
+              >
+                Start blank <ArrowRight aria-hidden="true" />
+              </button>
+              <a className="air-button air-button--quiet" href="#start" onClick={navigate}>
+                Explore options <ArrowRight aria-hidden="true" />
+              </a>
+            </div>
+          )}
+          <Storyline />
         </section>
         <section
           id="start"
@@ -316,7 +323,7 @@ export function CloakWorkbenchLanding({
           </div>
         </section>
       </main>
-      <footer className="resume-footer resume-frame">
+      <footer className="air-page-footer resume-footer resume-frame">
         <p>
           <span translate="no">CloakResume v{__APP_VERSION__}</span>
           <br />

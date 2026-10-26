@@ -1,19 +1,19 @@
 ---
 name: CloakResume — Cloakyard Air
-version: 1.1.0
+version: 1.2.0
 status: approved
-date: 2026-10-25
+date: 2026-10-26
 scope: complete-web-product
 source-repository: https://github.com/cloakyard/cloakyard
 source-directory: design/air
-family-contract-sha256: a3201bc6e66483e19de257e8be66a814c6221ad266029b1c006c21d975edabfd
+family-contract-sha256: 7d42c4bc5ca00b398dcdfd5f01fc12264c02ded19c03068ec6a6894161ba9103
 ---
 
 <!-- BEGIN CLOAKYARD AIR CONTRACT -->
 
 # Cloakyard Air design contract
 
-Version: **1.1.0 — product landing artwork** · Direction: **Air** · Updated: **2026-10-25**
+Version: **1.2.0 — storyline and family chrome** · Direction: **Air** · Updated: **2026-10-26**
 
 The detailed Air system is **locked for implementation**. On 2026-10-13 the user
 authorized one final agent review followed by implementation; that review is
@@ -706,6 +706,11 @@ An accurate product screenshot may remain in the following feature section.
   hold. Use shared spatial/exit curves and linear descent with a gentle landing.
   Keep a visible, keyboard/touch-accessible Air pause/resume action for repetition.
   These are illustrative file types, never a simulated real transfer or progress bar.
+- **Resume:** a green career path with three milestones gathers into the spine of
+  one white résumé over 3,400ms with the shared spatial curve. Keep the paper's
+  name and content illustrative; do not imply automatic writing or hiring results.
+  Run once, retain visible Pause/Play/Replay and a complete static résumé fallback.
+  The headline and real Start blank/sample/import/restore actions never move.
 - Artwork uses only the product's existing `light-{app}` colour, neutral planes
   and truthful paper/image colours. The UI's focus, links and controls retain Air.
   Document lettering inside decorative paper is artwork, not a new UI font.
@@ -725,6 +730,16 @@ An accurate product screenshot may remain in the following feature section.
   still used by other products. Adopt new motifs only after their own visual review.
 
 ### Landing navigation and text resilience
+
+The portable `air-page-*` shells own public header/footer geometry. Product classes
+only arrange destinations and content: 36px marks; 12px mark/wordmark gap;
+1.125rem/500 wordmarks with −.03em tracking; 72px wide/at least 64px narrow
+headers; 44px brand and navigation targets; 14px-relative/500 navigation, 16px
+icons and 8px icon gaps. Footers use 32px block padding, one top rule, 14px-relative
+neutral copy, 8px/24px navigation gaps and 16px/32px group gaps. Inline credit links
+inherit copy and its persistent underline. Footer product directories may add an
+unboxed row; destinations and copyright/version wording remain product-specific.
+Do not use a separate mark size or wordmark scale on a reading/recovery route.
 
 - Hyperlinks with a directional cue use the angled Lucide ArrowUpRight shape
   (or its matching static SVG): Source, product/family destinations and reading
@@ -1119,8 +1134,8 @@ journeys across all apps; it is not inferred from the pilot alone.
   compact utilities must not reduce their effective targets below 44px.
 - ATS scores are heuristic review aids, not a guarantee of hiring-system success.
   Résumé/job-description content stays local; language assets may be downloaded.
-- Local CSS/Tailwind bridges alias the common tokens. The output template system
-  is the only typography/colour exception; custom app widgets are not exempt.
+- Local CSS/Tailwind bridges alias the common tokens. Output templates and the explicitly approved landing illustration
+  retain their own typesetting; custom app widgets are not exempt.
 - Required gates: `vp check`, `vp test run` (including editor browser and complete
   template matrix, with no missing-browser skip), `pnpm run build`, production
   browser/template tests where affected, exported-document inspection and the
@@ -1145,9 +1160,13 @@ journeys across all apps; it is not inferred from the pilot alone.
   focus/scroll lifecycle. Preserve native Safari opener focus, privacy swipe/cancel,
   keyboard wrap and nested notices. Recovery describes the last saved draft without
   guaranteeing that unsaved changes survived a render failure.
-- The landing horizon uses the pinned finite light lifecycle and an SVG fallback.
-  The optional shader is excluded from the PWA shell; reduced motion and unavailable
-  graphics must not prevent entry. Physical GPU/battery acceptance remains separate.
+- The approved Storyline illustration gathers three milestones into a single
+  résumé spine. It plays once in 3400ms, supports Pause/Play/Replay and uses the
+  shared artwork lifecycle. Reduced/forced colours, Save-Data, constrained or
+  unsupported devices receive the static paper; no draft data is read. Entry
+  actions remain above the artwork. Geometry changes settle it; Replay uses the
+  new width. Paper typesetting (11–26px) and decorative labels (14px) are fixed
+  illustration details, never reusable app typography. No production shader loads.
 - `node scripts/test-air-entry.mjs` checks the production entry and recovery matrix.
   Run full tests with `vp test run --no-file-parallelism`; use
   `CLOAKRESUME_BROWSER_BUILD=production` for the built browser/template sweep.
@@ -1155,7 +1174,7 @@ journeys across all apps; it is not inferred from the pilot alone.
   measuring focus/scroll; preserve assertions, templates and timeout budgets.
 
 - The editor uses a 360px compact desktop writing panel and 420px from 1280px,
-  beside the 72px section rail. The 32px mark retains a 44px link target. Header
+  beside the 72px section rail. The 36px mark retains a 44px link target. Header
   groups reflow at enlarged text; narrow headers retain the named mark link.
 - Portrait compact editing keeps equal preview/editor panes. From 640–1023px on
   screens at most 600px high, the two panes sit side by side. Both remain scrollable;
