@@ -339,9 +339,7 @@ export function CloakWorkbenchLanding({
           </span>
         </p>
         <nav aria-label="Footer navigation">
-          <button onClick={(event) => activate(event, () => setPrivacyOpen(true))}>
-            Privacy policy
-          </button>
+          <button onClick={(event) => activate(event, () => setPrivacyOpen(true))}>Privacy</button>
           <a href={GITHUB_URL} target="_blank" rel="noreferrer">
             Source
           </a>

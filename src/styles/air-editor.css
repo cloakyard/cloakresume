@@ -1517,73 +1517,7 @@ button.resume-review-finding:focus-visible {
   height: auto;
   min-height: 0;
 }
-.resume-update {
-  flex: none;
-  max-block-size: 45dvh;
-  overflow: auto;
-  scroll-padding-block: 6px;
-  overscroll-behavior: contain;
-  padding: 12px var(--air-gutter);
-  background: var(--air-page);
-  color: var(--air-ink);
-  font: 400 var(--air-text-body)/1.5 var(--air-font);
-}
-.resume-update-content {
-  max-inline-size: var(--air-page-max);
-  margin-inline: auto;
-  padding: 16px;
-  border: 1px solid var(--air-line);
-  border-radius: var(--air-radius-panel);
-  background: var(--air-surface);
-  box-shadow: var(--air-shadow-surface);
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-}
-.resume-update-content > svg {
-  flex: none;
-  align-self: start;
-  margin-block-start: 2px;
-}
-.resume-update[data-state="error"] .resume-update-content > svg {
-  color: var(--air-danger);
-}
-.resume-update-copy {
-  flex: 1 1 16rem;
-  min-inline-size: 0;
-  overflow-wrap: anywhere;
-}
-.resume-update h2 {
-  margin: 0;
-  font: 500 var(--air-text-body)/1.5 var(--air-font);
-}
-.resume-update p {
-  margin: 4px 0 0;
-  color: var(--air-ink-secondary);
-}
-.resume-update-actions {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-}
-.resume-update .air-action-labels > span {
-  white-space: normal;
-}
-.resume-update :is(button, button:active) {
-  transition: none;
-  animation: none;
-  transform: none;
-}
-.resume-update button:focus-visible {
-  outline: 2px solid var(--air-accent);
-  outline-offset: 3px;
-}
 @media print {
-  .resume-update {
-    display: none;
-  }
   .resume-app--editing {
     display: block;
     height: auto;

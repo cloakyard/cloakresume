@@ -1,152 +1,9 @@
 /** Explicit PWA updates: save current work before activation and again before reload. */
-import { CircleAlert, RefreshCw, ShieldCheck, X } from "lucide-react";
-import { useCallback, useEffect, useLayoutEffect, useId, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRegisterSW } from "virtual:pwa-register/react";
+import { AirUpdateNotice, type UpdateNoticeState } from "../../docs/air/update-notice.tsx";
 
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
-type ReloadNoticeState = "offline" | "update" | "updating" | "error";
-
-function ReloadPromptView({
-  state,
-  error,
-  onClose,
-  onUpdate,
-  onPause,
-}: {
-  state: ReloadNoticeState;
-  error?: string;
-  onClose: () => void;
-  onUpdate: () => void;
-  onPause: (paused: boolean) => void;
-}) {
-  const titleId = useId();
-  const root = useRef<HTMLElement>(null);
-  const previousFocus = useRef<HTMLElement | null>(null);
-  const busy = state === "updating";
-  const title =
-    state === "offline"
-      ? "Ready offline"
-      : busy
-        ? "Updating CloakResume"
-        : state === "error"
-          ? "Update paused"
-          : "Update ready";
-  const body =
-    state === "offline"
-      ? "The app is cached. Fonts and language tools may still need a connection."
-      : busy
-        ? "Activating the new version. Your latest changes will be saved before reloading."
-        : state === "error"
-          ? error
-          : "A new version is ready. Your draft will be saved before reloading.";
-  const Icon = state === "error" ? CircleAlert : state === "offline" ? ShieldCheck : RefreshCw;
-  const label = busy ? "Updating…" : state === "error" ? "Try again" : "Update and reload";
-
-  useLayoutEffect(() => {
-    const node = root.current;
-    const remember = () => {
-      if (document.activeElement instanceof HTMLElement && !node?.contains(document.activeElement))
-        previousFocus.current = document.activeElement;
-    };
-    remember();
-    document.addEventListener("focusin", remember);
-    const resize = new ResizeObserver(() => {
-      const focused = document.activeElement;
-      if (focused instanceof HTMLElement && node?.contains(focused))
-        focused.scrollIntoView({ block: "nearest", inline: "nearest" });
-    });
-    if (node) {
-      resize.observe(node);
-      if (node.firstElementChild) resize.observe(node.firstElementChild);
-    }
-    return () => {
-      document.removeEventListener("focusin", remember);
-      resize.disconnect();
-      if (node?.contains(document.activeElement) && previousFocus.current?.isConnected)
-        previousFocus.current.focus({ preventScroll: true });
-    };
-  }, []);
-
-  return (
-    <section
-      ref={root}
-      className="resume-update"
-      data-state={state}
-      aria-labelledby={titleId}
-      onPointerEnter={() => onPause(true)}
-      onPointerLeave={() => onPause(Boolean(root.current?.contains(document.activeElement)))}
-      onFocusCapture={() => onPause(true)}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget as Node | null))
-          onPause(event.currentTarget.matches(":hover"));
-      }}
-    >
-      <div className="resume-update-content">
-        <Icon aria-hidden="true" size={20} strokeWidth={1.6} />
-        <div
-          className="resume-update-copy"
-          role={state === "error" ? "alert" : "status"}
-          aria-atomic="true"
-        >
-          <h2 id={titleId}>{title}</h2>
-          <p>{body}</p>
-        </div>
-        <div className="resume-update-actions">
-          {state !== "offline" && (
-            <>
-              <button
-                type="button"
-                className="air-button air-button--quiet"
-                aria-disabled={busy || undefined}
-                onClick={(event) => {
-                  event.currentTarget.focus();
-                  if (!busy) onClose();
-                }}
-              >
-                Later
-              </button>
-              <button
-                type="button"
-                className="air-button air-button--primary"
-                aria-label={label}
-                aria-disabled={busy || undefined}
-                aria-busy={busy || undefined}
-                onClick={(event) => {
-                  event.currentTarget.focus();
-                  if (!busy) onUpdate();
-                }}
-              >
-                <span className="air-action-labels">
-                  {["Update and reload", "Updating…", "Try again"].map((text) => (
-                    <span
-                      key={text}
-                      data-active={label === text || undefined}
-                      aria-hidden={label !== text || undefined}
-                    >
-                      {text}
-                    </span>
-                  ))}
-                </span>
-              </button>
-            </>
-          )}
-          <button
-            type="button"
-            className="air-icon-button air-button--quiet"
-            aria-label="Dismiss update notice"
-            aria-disabled={busy || undefined}
-            onClick={(event) => {
-              event.currentTarget.focus();
-              if (!busy) onClose();
-            }}
-          >
-            <X aria-hidden="true" size={18} strokeWidth={1.6} />
-          </button>
-        </div>
-      </div>
-    </section>
-  );
-}
 
 export function ReloadPrompt({ beforeReload }: { beforeReload: () => string | null }) {
   const interval = useRef<number | null>(null);
@@ -157,7 +14,7 @@ export function ReloadPrompt({ beforeReload }: { beforeReload: () => string | nu
   const activated = useRef(false);
   const reloadStarted = useRef(false);
   const mounted = useRef(true);
-  const [state, setState] = useState<ReloadNoticeState>("update");
+  const [state, setState] = useState<UpdateNoticeState>("update");
   const [error, setError] = useState("");
   const [paused, setPaused] = useState(false);
 
@@ -329,9 +186,9 @@ export function ReloadPrompt({ beforeReload }: { beforeReload: () => string | nu
   }, [offlineReady, needRefresh, paused, setOfflineReady]);
 
   return needRefresh || offlineReady ? (
-    <ReloadPromptView
+    <AirUpdateNotice
       state={needRefresh ? state : "offline"}
-      error={error}
+      detail={state === "error" ? error : undefined}
       onClose={close}
       onUpdate={handleUpdate}
       onPause={setPaused}

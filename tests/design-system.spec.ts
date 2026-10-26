@@ -141,7 +141,7 @@ describe("CloakResume family contract", () => {
       "Sumit Sahoo",
       "MIT license",
       "Cloakyard",
-      "Privacy policy",
+      "Privacy",
     ])
       expect(footer).toContain(content);
     expect(main).toContain('import "./styles/air.css"');
@@ -383,19 +383,16 @@ describe("CloakResume family contract", () => {
     );
 
     expect(errors).toContain('const GITHUB_REPO = "cloakyard/cloakresume"');
-    expect(reload).toContain('className="resume-update"');
-    expect(reload).toContain(
-      'type ReloadNoticeState = "offline" | "update" | "updating" | "error"',
-    );
-    expect(reload).toContain("Update and reload");
-    expect(reload).toContain("Updating…");
+    const notice = await source("docs/air/update-notice.tsx");
+    expect(reload).toContain("<AirUpdateNotice");
+    expect(notice).toContain('className="air-update"');
+    expect(notice).toContain("Update and reload");
+    expect(notice).toContain("Updating…");
     expect(reload).toContain("Check your connection, then try again.");
-    expect(reload).toContain(
-      "The app is cached. Fonts and language tools may still need a connection.",
-    );
-    expect(reload).toContain("aria-disabled={busy || undefined}");
-    expect(reload).toContain('role={state === "error" ? "alert" : "status"}');
-    expect(reload).not.toContain("now installed for offline use");
+    expect(notice).toContain("The core app is cached. Some features may still need a connection.");
+    expect(notice).toContain("aria-disabled={busy || undefined}");
+    expect(notice).toContain('role={state === "error" ? "alert" : "status"}');
+    expect(notice).not.toContain("now installed for offline use");
     expect(fieldIssues).toContain('className="resume-hint-list"');
     expect(await source("src/styles/air-editor.css")).toContain(".resume-hint-list > li + li");
     expect(fieldIssues).not.toContain('className="rounded-md border bg-(--surface) p-2"');
