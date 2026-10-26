@@ -17,7 +17,7 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `artwork/og.html`                                 | app-surface         | Done         | Done               | Done       |
 | `index.html`                                      | app-surface         | Done         | Done               | Done       |
 | `src/App.tsx`                                     | app-surface         | Done         | Done               | Pending    |
-| `src/cloak-family.css`                            | app-surface         | Done         | Pending            | Pending    |
+| `src/cloak-family.css`                            | app-surface         | Done         | Done               | Pending    |
 | `src/components/AtsReviewContent.tsx`             | app-surface         | Done         | Done               | Pending    |
 | `src/components/AtsReviewDialog.tsx`              | app-surface         | Done         | Done               | Pending    |
 | `src/components/BrandLogo.tsx`                    | app-surface         | Done         | Done               | Pending    |
@@ -42,7 +42,7 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/components/RichTextArea.tsx`                 | app-surface         | Done         | Done               | Pending    |
 | `src/components/SectionPanel.tsx`                 | app-surface         | Done         | Done               | Pending    |
 | `src/components/SectionRail.tsx`                  | app-surface         | Done         | Done               | Pending    |
-| `src/components/Storyline.tsx`                    | app-surface         | Pending      | Pending            | Pending    |
+| `src/components/Storyline.tsx`                    | app-surface         | Done         | Done               | Pending    |
 | `src/components/TemplateModal.tsx`                | app-surface         | Done         | Done               | Pending    |
 | `src/components/TemplatePreview.tsx`              | app-surface         | Done         | Done               | Pending    |
 | `src/components/ToolbarActions.tsx`               | app-surface         | Done         | Done               | Pending    |
@@ -78,7 +78,7 @@ light/dark, reduced motion and keyboard/touch modes as specified in DESIGN.md.
 | `src/styles/air-entry.css`                        | app-surface         | Done         | Done               | Pending    |
 | `src/styles/air-recovery.css`                     | app-surface         | Done         | Done               | Pending    |
 | `src/styles/air.css`                              | app-surface         | Done         | Done               | Pending    |
-| `src/styles/storyline.css`                        | app-surface         | Pending      | Pending            | Pending    |
+| `src/styles/storyline.css`                        | app-surface         | Done         | Done               | Pending    |
 | `src/templates/Academic.tsx`                      | output-preservation | Pending      | Pending            | Pending    |
 | `src/templates/AtsPlain.tsx`                      | output-preservation | Pending      | Pending            | Pending    |
 | `src/templates/AtsProfessional.tsx`               | output-preservation | Pending      | Pending            | Pending    |

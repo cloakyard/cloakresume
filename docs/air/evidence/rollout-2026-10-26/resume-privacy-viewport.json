@@ -1,0 +1,38 @@
+[
+  {
+    "width": 1440,
+    "height": 900,
+    "theme": "light",
+    "focusWithin": true,
+    "skipOutsideViewport": true,
+    "dialogVisible": true,
+    "bodyInert": true
+  },
+  {
+    "width": 1440,
+    "height": 900,
+    "theme": "dark",
+    "focusWithin": true,
+    "skipOutsideViewport": true,
+    "dialogVisible": true,
+    "bodyInert": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "theme": "light",
+    "focusWithin": true,
+    "skipOutsideViewport": true,
+    "dialogVisible": true,
+    "bodyInert": true
+  },
+  {
+    "width": 390,
+    "height": 844,
+    "theme": "dark",
+    "focusWithin": true,
+    "skipOutsideViewport": true,
+    "dialogVisible": true,
+    "bodyInert": true
+  }
+]

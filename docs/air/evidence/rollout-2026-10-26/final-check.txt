@@ -1,0 +1,2 @@
+pass: All 301 files are correctly formatted (536ms, 12 threads)
+pass: Found no warnings, lint errors, or type errors in 151 files (840ms, 12 threads)
