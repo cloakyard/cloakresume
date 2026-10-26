@@ -139,7 +139,7 @@ describe("CloakResume family contract", () => {
       "CloakResume v{__APP_VERSION__}",
       "Built by",
       "Sumit Sahoo",
-      "MIT licensed",
+      "MIT license",
       "Cloakyard",
       "Privacy policy",
     ])

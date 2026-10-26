@@ -160,7 +160,7 @@ describe("brand, social, and install asset contracts", () => {
     expect(mark).toContain('aria-labelledby="cloakresume-mark-title"');
     expect(brandLogo).toContain("src={`${import.meta.env.BASE_URL}cloakresume-mark.svg`}");
     expect(html).toContain('href="/cloakresume-mark.svg"');
-    expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(2);
+    expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(1);
     expect(pwaAssets).toContain('images: ["public/icons/cloakresume-app-icon.svg"]');
     expect(pwaAssets).toContain("palette: false");
     expect(pwaAssets).toContain("adaptiveFiltering: true");

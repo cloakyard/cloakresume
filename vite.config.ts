@@ -9,6 +9,8 @@ declare const process: { env: Record<string, string | undefined> };
 const pkg = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf-8")) as {
   version: string;
 };
+// Keep the standalone recovery footer on the same version as the application.
+process.env.VITE_APP_VERSION = pkg.version;
 
 export default defineConfig({
   test: {

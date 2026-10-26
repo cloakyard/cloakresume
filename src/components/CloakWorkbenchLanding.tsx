@@ -49,7 +49,12 @@ export function CloakWorkbenchLanding({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDetailsElement>(null);
-  const [privacyOpen, setPrivacyOpen] = useState(false);
+  const [privacyOpen, setPrivacyOpen] = useState(() => location.hash === "#privacy-policy");
+  const closePrivacy = () => {
+    setPrivacyOpen(false);
+    if (location.hash === "#privacy-policy")
+      history.replaceState(null, "", location.pathname + location.search);
+  };
   const savedLabel = useMemo(() => formatSavedAt(lastSavedAt), [lastSavedAt]);
 
   useEffect(() => {
@@ -144,7 +149,7 @@ export function CloakWorkbenchLanding({
           </summary>
           <nav
             className="air-page-nav"
-            aria-label="Compact navigation"
+            aria-label="Primary navigation"
             onClick={(event) => {
               if ((event.target as Element).closest("a") && menuRef.current?.open) {
                 menuRef.current.open = false;
@@ -324,27 +329,31 @@ export function CloakWorkbenchLanding({
         </section>
       </main>
       <footer className="air-page-footer resume-footer resume-frame">
-        <p>
+        <p className="air-page-identity">
           <span translate="no">CloakResume v{__APP_VERSION__}</span>
-          <br />
-          Built by{" "}
-          <a href="https://github.com/sumitsahoo" target="_blank" rel="noreferrer">
-            Sumit Sahoo
-          </a>
+          <span>
+            Built by{" "}
+            <a href="https://github.com/sumitsahoo" target="_blank" rel="noreferrer">
+              Sumit Sahoo
+            </a>
+          </span>
         </p>
-        <nav aria-label="Footer">
+        <nav aria-label="Footer navigation">
           <button onClick={(event) => activate(event, () => setPrivacyOpen(true))}>
             Privacy policy
           </button>
+          <a href={GITHUB_URL} target="_blank" rel="noreferrer">
+            Source
+          </a>
           <a href={`${GITHUB_URL}/blob/main/LICENSE`} target="_blank" rel="noreferrer">
-            MIT licensed
+            MIT license
           </a>
           <a href="https://cloakyard.com" target="_blank" rel="noreferrer">
             Cloakyard <ArrowUpRight aria-hidden="true" />
           </a>
         </nav>
       </footer>
-      <PrivacyPolicyModal open={privacyOpen} onClose={() => setPrivacyOpen(false)} />
+      <PrivacyPolicyModal open={privacyOpen} onClose={closePrivacy} />
     </div>
   );
 }
