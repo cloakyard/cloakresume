@@ -38,7 +38,7 @@ const RENDER_SCALE = 3;
 const SKIP_TAGS = new Set(["STYLE", "SCRIPT", "SVG", "CANVAS", "NOSCRIPT"]);
 
 /** Fail visibly if a future template regression would otherwise crop its PDF. */
-export function assertExportFits(source: HTMLElement, paperSize: PaperSize): void {
+function assertExportFits(source: HTMLElement, paperSize: PaperSize): void {
   if (profileTitleOverflows(source)) {
     throw new Error(
       "Your title exceeds 4 lines. Open Profile and shorten the title or adjust its line breaks, then export again.",

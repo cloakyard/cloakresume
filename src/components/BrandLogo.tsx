@@ -10,8 +10,8 @@ export function BrandLogo() {
         src={`${import.meta.env.BASE_URL}cloakresume-mark.svg`}
         alt=""
         aria-hidden="true"
-        width="32"
-        height="32"
+        width="36"
+        height="36"
       />
       <span translate="no">CloakResume</span>
     </a>

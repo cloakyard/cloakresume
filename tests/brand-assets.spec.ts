@@ -210,7 +210,7 @@ describe("brand, social, and install asset contracts", () => {
     expect(config).toContain('background_color: "#fafbfc"');
     expect(config).not.toMatch(/iPad\.png|iPhone\.png|start workbench/);
     const ignoredAssets = config.match(/globIgnores:\s*\[([^\]]+)\]/)?.[1];
-    for (const path of ["icons/og-image.png", "screenshots/**", "**/air-light-shader-*.js"]) {
+    for (const path of ["icons/og-image.png", "screenshots/**"]) {
       expect(ignoredAssets).toContain(JSON.stringify(path));
     }
     for (const size of [64, 192, 512]) {

@@ -6,7 +6,7 @@ import { useRegisterSW } from "virtual:pwa-register/react";
 const UPDATE_CHECK_INTERVAL_MS = 10 * 60 * 1000;
 type ReloadNoticeState = "offline" | "update" | "updating" | "error";
 
-export function ReloadPromptView({
+function ReloadPromptView({
   state,
   error,
   onClose,

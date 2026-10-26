@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.0.6",
+  "contractVersion": "1.2.0",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -27,8 +27,11 @@
         "enlarged text",
         "forced colours"
       ],
-      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
-      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open."
+      "evidence": [
+        "evidence/pwa-recovery-2026-10-21.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
+      ],
+      "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "artwork/og.html",
@@ -37,14 +40,14 @@
       "airImplemented": true,
       "validated": true,
       "states": [
-        "fixed 1200×630 social composition",
+        "fixed 1200\u00d7630 social composition",
         "real synthetic editor image",
         "local Air stylesheet/mark"
       ],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],
@@ -59,9 +62,9 @@
       "validated": true,
       "states": ["canonical OG/Twitter metadata", "accurate alt text", "system theme colours"],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],
@@ -104,7 +107,7 @@
       "path": "src/cloak-family.css",
       "kind": "app-surface",
       "sourceReviewed": true,
-      "airImplemented": false,
+      "airImplemented": true,
       "validated": false,
       "states": [],
       "viewports": [],
@@ -114,9 +117,10 @@
         "docs/air/evidence/resume-review-2026-10-21.json",
         "evidence/preview-assets-2026-10-21.json",
         "evidence/unused-foundations-2026-10-21.json",
-        "evidence/privacy-dialogs-2026-10-21.json"
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
       ],
-      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance. 2026-10-21 privacy/dialog follow-up: Global body/form font, colour, background and fallback focus now reference Air. The live date presence/placement adapter and drag transform are retained for separate motion acceptance."
+      "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Legacy popup skin/focus selectors now exclude Air popovers; remaining legacy consumers retain their current rules. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance. 2026-10-21 privacy/dialog follow-up: Global body/form font, colour, background and fallback focus now reference Air. The live date presence/placement adapter and drag transform are retained for separate motion acceptance. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/components/AtsReviewContent.tsx",
@@ -204,8 +208,11 @@
         "forced colours",
         "native Firefox 200% / Safari"
       ],
-      "evidence": ["docs/air/evidence/editor-shell-2026-10-19.json"],
-      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
+      "evidence": [
+        "docs/air/evidence/editor-shell-2026-10-19.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
+      ],
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/components/CloakWorkbenchLanding.tsx",
@@ -237,9 +244,10 @@
         "evidence/entry-recovery-2026-10-19.json",
         "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
         "docs/air/link-arrows-2026-10-19.md",
-        "docs/air/hyperlinks-2026-10-19.md"
+        "docs/air/hyperlinks-2026-10-19.md",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
       ],
-      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open."
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/components/ColorPickerContent.tsx",
@@ -367,7 +375,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -477,7 +485,7 @@
         "keyboard / emulated touch cancellation / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari and Firefox actual 200%"
       ],
       "evidence": [
@@ -499,7 +507,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -747,6 +755,35 @@
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open."
     },
     {
+      "path": "src/components/Storyline.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "animated arrival",
+        "pause/play/replay",
+        "finite completion",
+        "hidden/offscreen suspension",
+        "resize settlement",
+        "reduced motion",
+        "forced colours",
+        "Save-Data/constrained/unsupported static profiles",
+        "editor handoff cleanup"
+      ],
+      "viewports": [
+        "320\u20131920px",
+        "portrait/landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "light/dark",
+        "16/32px root text"
+      ],
+      "evidence": ["evidence/storyline-family-2026-10-26/checks.json"],
+      "notes": "2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
+    },
+    {
       "path": "src/components/TemplateModal.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
@@ -758,22 +795,22 @@
         "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
       ],
       "viewports": [
-        "1920×1080",
-        "1440×900",
-        "1366×768",
-        "1280×720",
-        "1279×720",
-        "1024×768",
-        "1023×768",
-        "768×1024",
-        "767×1024",
-        "640×800",
-        "639×800",
-        "430×932",
-        "390×844",
-        "375×812",
-        "320×568",
-        "844×390",
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
         "Light/dark; 16/32px root text; fine/coarse; forced colours",
         "Native Safari; Firefox actual 200% zoom"
       ],
@@ -796,22 +833,22 @@
         "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
       ],
       "viewports": [
-        "1920×1080",
-        "1440×900",
-        "1366×768",
-        "1280×720",
-        "1279×720",
-        "1024×768",
-        "1023×768",
-        "768×1024",
-        "767×1024",
-        "640×800",
-        "639×800",
-        "430×932",
-        "390×844",
-        "375×812",
-        "320×568",
-        "844×390",
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
         "Light/dark; 16/32px root text; fine/coarse; forced colours",
         "Native Safari; Firefox actual 200% zoom"
       ],
@@ -1117,7 +1154,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1165,7 +1202,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1196,7 +1233,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1223,7 +1260,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1252,7 +1289,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1281,7 +1318,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1309,7 +1346,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1335,7 +1372,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1366,7 +1403,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1395,7 +1432,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1423,7 +1460,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1452,7 +1489,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1479,7 +1516,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1529,7 +1566,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes × light/dark × 16/32px text",
+        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -1643,9 +1680,10 @@
         "docs/air/evidence/writing-hints-2026-10-21.json",
         "docs/air/evidence/resume-review-2026-10-21.json",
         "evidence/pwa-recovery-2026-10-21.json",
-        "evidence/privacy-dialogs-2026-10-21.json"
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
       ],
-      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. 2026-10-21 privacy/dialog follow-up: Update panel uses shared Air surface, line, radius and elevation; document-loading status uses UI sans. Options, review and template library rechecked under inherited font cleanup."
+      "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. 2026-10-21 privacy/dialog follow-up: Update panel uses shared Air surface, line, radius and elevation; document-loading status uses UI sans. Options, review and template library rechecked under inherited font cleanup. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/styles/air-entry.css",
@@ -1677,9 +1715,10 @@
         "evidence/entry-recovery-2026-10-19.json",
         "docs/air/evidence/brand-horizons-2026-10-19/checks.json",
         "docs/air/neutral-links-2026-10-19.md",
-        "evidence/privacy-dialogs-2026-10-21.json"
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
       ],
-      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-21 privacy/dialog follow-up: Privacy now consumes shared air-prose and the standard dialog width with fixed close heading; duplicate paragraph-link/list/section styles retired. Shared 3px focus offset for entry and overlays."
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-21 privacy/dialog follow-up: Privacy now consumes shared air-prose and the standard dialog width with fixed close heading; duplicate paragraph-link/list/section styles retired. Shared 3px focus offset for entry and overlays. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/styles/air-recovery.css",
@@ -1706,8 +1745,11 @@
         "enlarged text",
         "forced colours"
       ],
-      "evidence": ["evidence/pwa-recovery-2026-10-21.json"],
-      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open."
+      "evidence": [
+        "evidence/pwa-recovery-2026-10-21.json",
+        "evidence/storyline-family-2026-10-26/chrome.json.gz"
+      ],
+      "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/styles/air.css",
@@ -1749,11 +1791,40 @@
         "1025x768"
       ],
       "evidence": [
-        "docs/air/validation.md — refinement 02 candidate",
+        "docs/air/validation.md \u2014 refinement 02 candidate",
         "docs/air/components.html",
         "docs/air/neutral-links-2026-10-19.md"
       ],
       "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated."
+    },
+    {
+      "path": "src/styles/storyline.css",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [
+        "animated arrival",
+        "pause/play/replay",
+        "finite completion",
+        "hidden/offscreen suspension",
+        "resize settlement",
+        "reduced motion",
+        "forced colours",
+        "Save-Data/constrained/unsupported static profiles",
+        "editor handoff cleanup"
+      ],
+      "viewports": [
+        "320\u20131920px",
+        "portrait/landscape phone",
+        "tablet",
+        "laptop",
+        "desktop",
+        "light/dark",
+        "16/32px root text"
+      ],
+      "evidence": ["evidence/storyline-family-2026-10-26/checks.json"],
+      "notes": "2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
       "path": "src/templates/Academic.tsx",
@@ -1980,7 +2051,7 @@
         "Long replacement stress; normal/reduced motion"
       ],
       "viewports": [
-        "16 required/boundary sizes × light/dark × 16/32px text",
+        "16 required/boundary sizes \u00d7 light/dark \u00d7 16/32px text",
         "Wide coarse pointer, short landscape, forced colours, offset visual viewport",
         "Native Safari; native Firefox actual 200%"
       ],
@@ -2016,9 +2087,9 @@
         "presentation assets excluded from precache"
       ],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],

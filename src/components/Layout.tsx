@@ -126,11 +126,7 @@ export function Layout({
       )}
 
       {!isMobile && (
-        <aside
-          {...editorTargetProps}
-          data-panel-root
-          className="cr-editor-panel resume-editor-panel"
-        >
+        <aside {...editorTargetProps} className="cr-editor-panel resume-editor-panel">
           {panel}
         </aside>
       )}
@@ -151,7 +147,6 @@ export function Layout({
                 <aside
                   {...editorTargetProps}
                   aria-label="Résumé editor"
-                  data-panel-root
                   className="cr-editor-panel resume-editor-panel relative"
                 >
                   {panel}

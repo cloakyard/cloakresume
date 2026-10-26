@@ -1,6 +1,9 @@
 /* Air owns UI typography and colour; local Fontsource faces belong to résumé output. */
 @import "../tokens.css";
-@import "tailwindcss";
+/* Only shipped markup may generate utilities; audit/test examples are not UI. */
+@import "tailwindcss" source(none);
+@source "./";
+@source "../*.html";
 @import "@fontsource-variable/geist/index.css";
 @import "@fontsource/instrument-serif/400.css";
 @import "@fontsource/instrument-serif/400-italic.css";
@@ -278,16 +281,5 @@
 
   .resume-root .resume-profile-title {
     overflow: hidden !important;
-  }
-}
-
-/* ────────────────────────────────────────────────────────────────
- * Editor panel responsive tweak — stacks 2-column editor grids on
- * narrow viewports. Uses a descendant selector so it reaches every
- * `grid grid-cols-2` inside the panel without touching JSX.
- * ──────────────────────────────────────────────────────────────── */
-@media (max-width: 1023px) {
-  [data-panel-root] .grid-cols-2 {
-    grid-template-columns: minmax(0, 1fr);
   }
 }

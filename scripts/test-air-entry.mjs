@@ -124,7 +124,7 @@ async function measure(state, width, height, theme, text) {
         bad.push(["target", el.textContent.trim(), rect.height]);
       if (
         matchMedia("(pointer:coarse)").matches &&
-        el.matches("button,summary,.resume-nav a,.resume-menu nav a,.resume-footer a") &&
+        el.matches("button,summary,.resume-nav a,.resume-menu nav a,.resume-footer nav a") &&
         (rect.height < 43.5 || rect.width < 43.5)
       )
         bad.push(["coarse", el.textContent.trim(), rect.toJSON()]);

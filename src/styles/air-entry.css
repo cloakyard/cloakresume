@@ -5,6 +5,7 @@ body:has(.resume-site) {
 }
 .resume-site {
   min-height: 100svh;
+  container-type: inline-size;
   color: var(--air-ink);
   background: var(--air-page);
   font: 400 1rem/1.6 var(--air-font);
@@ -27,59 +28,27 @@ body:has(.resume-site) {
   stroke-width: 1.6;
 }
 .resume-frame {
-  width: min(calc(100% - var(--air-gutter) * 2), var(--air-page-max));
+  width: 100%;
+  max-width: calc(var(--air-page-max) + 64px);
+  padding-inline: var(--air-space-32);
   margin-inline: auto;
 }
-.resume-header {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px 24px;
-  padding-block: 12px;
-  min-height: var(--air-header);
-}
 .resume-brand {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  gap: 10px;
-  color: var(--air-ink);
-  font-size: 18px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  text-decoration: none;
+  flex-shrink: 0;
 }
-.resume-brand img {
-  width: 32px;
-  height: 32px;
+.resume-brand span {
+  white-space: nowrap;
 }
-.resume-nav,
-.resume-footer nav {
-  display: flex;
-  flex-wrap: wrap;
+.resume-nav {
   align-items: center;
-  gap: 8px 24px;
-}
-.resume-nav a,
-.resume-menu nav a,
-.resume-footer :where(a, button) {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  min-height: 44px;
-  min-width: 44px;
-  color: var(--air-ink-secondary);
-  font: 500 var(--air-text-body)/1.5 var(--air-font);
-  text-decoration: none;
-  background: none;
-  border: 0;
-  padding: 0;
-  cursor: pointer;
 }
 .resume-menu {
   display: none;
-  margin-left: auto;
+}
+.resume-header svg,
+.resume-footer nav svg {
+  width: 16px;
+  height: 16px;
 }
 .resume-menu summary {
   list-style: none;
@@ -87,17 +56,8 @@ body:has(.resume-site) {
 .resume-menu summary::-webkit-details-marker {
   display: none;
 }
-.resume-menu[open] {
-  width: 100%;
-}
-.resume-menu summary {
-  width: max-content;
-  margin-left: auto;
-}
-.resume-menu nav {
-  display: grid;
-  gap: 8px;
-  padding-block: 16px;
+.resume-menu[open] summary svg {
+  rotate: 180deg;
 }
 .resume-skip {
   position: fixed;
@@ -118,16 +78,19 @@ body:has(.resume-site) {
 .resume-site h1 {
   margin: 0;
   font-size: var(--air-text-hero);
-  line-height: 1.08;
+  line-height: 1.05;
   font-weight: 400;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.045em;
+}
+.resume-hero h1 span {
+  color: var(--air-ink-secondary);
 }
 .resume-site h2 {
   margin: 0 0 32px;
   font-size: var(--air-text-section);
   line-height: 1.15;
   font-weight: 400;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.03em;
 }
 .resume-site h3 {
   font-size: 1.125rem;
@@ -149,34 +112,18 @@ body:has(.resume-site) {
   margin: 24px auto;
   font-size: 1.125rem;
 }
+.resume-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--air-space-12);
+}
 .resume-continue {
   display: grid;
   gap: 8px;
   justify-items: center;
   color: var(--air-ink-muted);
   font-size: var(--air-text-label);
-}
-.resume-horizon {
-  position: relative;
-  height: 160px;
-  overflow: hidden;
-  background: var(--air-page);
-  color: var(--air-light-cloakresume);
-  outline-color: var(--air-surface-soft);
-  pointer-events: none;
-}
-.resume-horizon svg,
-.resume-horizon canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-}
-.resume-horizon canvas {
-  visibility: hidden;
-}
-.resume-horizon[data-light-ready="true"] canvas {
-  visibility: visible;
 }
 .resume-start {
   padding-block: 32px 64px;
@@ -221,20 +168,10 @@ body:has(.resume-site) {
   padding-block: 64px;
 }
 .resume-footer {
-  border-top: 1px solid var(--air-line);
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 24px;
-  padding-block: 32px;
-  font-size: var(--air-text-body);
 }
-.resume-footer p {
-  margin: 0;
-}
-.resume-footer p a {
-  font-weight: 400;
+.resume-footer nav {
+  align-items: center;
 }
 .resume-overlay {
   background: var(--air-scrim);
@@ -311,12 +248,6 @@ body:has(.resume-site) {
   overflow-wrap: anywhere;
 }
 @media (max-width: 54rem) {
-  .resume-nav {
-    display: none;
-  }
-  .resume-menu {
-    display: block;
-  }
   .resume-start-options,
   .resume-features > div {
     gap: 24px;
@@ -325,9 +256,6 @@ body:has(.resume-site) {
 @media (max-width: 40rem) {
   .resume-hero {
     padding-top: 48px;
-  }
-  .resume-horizon {
-    height: 112px;
   }
   .resume-start-options,
   .resume-features > div,
@@ -345,9 +273,6 @@ body:has(.resume-site) {
   }
 }
 @media (forced-colors: active) {
-  .resume-horizon {
-    display: none;
-  }
   .resume-menu summary,
   .resume-overlay {
     border: 1px solid CanvasText;
@@ -375,4 +300,61 @@ body:has(.resume-site) {
 
 .resume-dialog-actions + button {
   margin-top: 24px;
+}
+
+@container (max-width: 60rem) {
+  .resume-frame {
+    padding-inline: var(--air-space-24);
+  }
+}
+/* Four destinations need compact navigation below 54rem of available text space. */
+@container (max-width: 54rem) {
+  .resume-header {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .resume-brand {
+    grid-column: 1;
+    grid-row: 1;
+    justify-self: start;
+    align-self: start;
+  }
+  .resume-nav {
+    display: none;
+  }
+  .resume-menu {
+    display: block;
+    grid-column: 1 / -1;
+    grid-row: 1;
+    min-width: 0;
+    pointer-events: none;
+  }
+  .resume-menu summary {
+    display: flex;
+    width: fit-content;
+    margin-inline-start: auto;
+    min-height: 44px;
+    pointer-events: auto;
+  }
+  .resume-menu nav {
+    display: grid;
+    gap: 0;
+    margin-block-start: 12px;
+    padding-block-start: 8px;
+    border-block-start: 1px solid var(--air-line);
+    pointer-events: auto;
+  }
+  .resume-menu nav a {
+    padding: 8px 12px;
+  }
+}
+@container (max-width: 40rem) {
+  .resume-frame {
+    padding-inline: var(--air-space-16);
+  }
+}
+@container (max-width: 22rem) {
+  .resume-brand span {
+    display: none;
+  }
 }

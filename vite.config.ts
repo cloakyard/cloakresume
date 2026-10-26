@@ -118,9 +118,8 @@ export default defineConfig({
           ),
         ],
         globPatterns: ["**/*.{js,css,html,svg,woff2}"],
-        // Presentation assets and the optional landing renderer are not offline-shell essentials.
-        // The horizon retains its SVG fallback without downloading the GPU module.
-        globIgnores: ["icons/og-image.png", "screenshots/**", "**/air-light-shader-*.js"],
+        // Presentation captures are not offline-shell essentials.
+        globIgnores: ["icons/og-image.png", "screenshots/**"],
         runtimeCaching: [
           {
             // Harper is loaded only when writing review first runs. Its production filename is
@@ -154,9 +153,9 @@ export default defineConfig({
   },
   // Local agent skill packages are development references, not application source.
   // Keeping them outside product checks also avoids rewriting vendored documentation.
-  fmt: { ignorePatterns: ["dist/**", ".agents/**", "docs/air/assets/**"] },
+  fmt: { ignorePatterns: ["dist/**", ".agents/**", ".claude/skills/**", "docs/air/assets/**"] },
   lint: {
-    ignorePatterns: ["dist/**", ".agents/**", "docs/air/assets/**"],
+    ignorePatterns: ["dist/**", ".agents/**", ".claude/skills/**", "docs/air/assets/**"],
     options: { typeAware: true, typeCheck: true },
   },
 });

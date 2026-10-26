@@ -1,5 +1,55 @@
 # Air validation record
 
+## 2026-10-26 — Full web cleanup audit
+
+Audited all web imports/exports, dependencies, custom styles, public assets and
+build/generator/test entry points. Restricted Tailwind to shipped `src/` and root
+HTML, removing 18,816 bytes of generated CSS (3,106 bytes at gzip level 9). Removed
+the obsolete two-column media rule and its two orphaned data attributes; made
+ReloadPromptView, assertExportFits and ProjectItem module-private. Their live
+behavior and data types remain. Added accurate Knip entry points, including static
+recovery CSS. Preserve Air font mappings consumed by preflight, lazy templates,
+fonts, date/drag adapters and export safety checks. No dependency change.
+
+Lint/types/dead-code, all 373 tests in 10 files with no skips (serial production
+run), build and 20 portability checks pass. All 12 landing/editor and 34 template/paper
+capture pairs match exactly. Four real PDF exports retain identical raster, text,
+links and page geometry. The final family audit passes 552 Chrome layouts with zero
+deviations/browser errors; desktop/laptop/phone light/dark rendered review passes. Evidence: `docs/air/evidence/code-cleanup-2026-10-26/`.
+Physical/assistive and existing product follow-ups remain open. Local only.
+
+## 2026-10-26 — Storyline and family chrome
+
+Implemented the approved finite Storyline and kept immediate blank/restore entry
+above it. Shared Air 1.2.0 header/footer and 36px brand treatment now match the family;
+static recovery follows the same rules. Removed production horizon CSS/imports and
+obsolete shader precache exclusion. Reduced-motion transitions are truly immediate.
+PWA/README screenshots and OG regenerated from the production build.
+
+Lint/types/build, 373 tests in ten files (including production editor/templates),
+349 entry/recovery layouts / 14 journeys, 68 artwork layouts, eight animated-arrival
+layouts, lifecycle/four static profiles, 20 portability checks and the family
+Chrome/Firefox matrix pass. Home/404 links: 128 states / 34 keyboard checks; privacy:
+48 / 6. Rendered desktop/laptop/phone light/dark and native Safari replay/enlarged
+menu reviewed. Caption/path collision found during review was fixed. The entry
+harness now distinguishes inline credits from 44px footer navigation. No new
+runtime dependency or document-output code change. Earlier export follow-ups and
+physical/assistive acceptance remain open. Local only.
+
+Evidence: `docs/air/evidence/storyline-family-2026-10-26/`.
+
+## 2026-10-25 — skill refresh and portable artwork contract
+
+Updated all seven CLI-managed project skills with npx. The two legacy Vercel
+lock entries were refreshed with explicit source paths. Vendored skill scripts
+and Claude symlinks stay outside application lint/format; upstream bytes are
+preserved. Pinned the complete Air 1.1.0 artwork contract/lifecycle and fixed-paper
+tokens without mounting new landing artwork or changing Resume UI/output.
+
+`vp check`, all 373 tests in 10 files, production build, design conformance and
+20 isolated portability checks pass. No new package dependency, push or deploy.
+The existing migration and physical/assistive acceptance gates remain unchanged.
+
 ## 2026-10-11 — portable contract and baseline
 
 `vp check` and the production build pass. The initial concurrent browser suites

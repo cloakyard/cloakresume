@@ -1,0 +1,110 @@
+/* Illustrative paper is fixed artwork; real UI and the résumé editor never use these rules. */
+.resume-story {
+  width: min(580px, 100%);
+  margin: var(--air-space-24) auto;
+}
+.resume-story-stage {
+  position: relative;
+  height: 394px;
+  isolation: isolate;
+  overflow: clip;
+}
+.resume-story-paper {
+  position: absolute;
+  left: calc(50% - 118px);
+  top: 24px;
+  width: 236px;
+  height: 344px;
+  background: white;
+  border: 1px solid var(--air-paper-line);
+  border-radius: 0;
+  box-shadow: var(--air-shadow-panel);
+}
+.resume-story-name {
+  position: absolute;
+  left: calc(50% - 76px);
+  top: 52px;
+  width: 175px;
+  color: var(--air-paper-ink);
+  text-align: left;
+}
+.resume-story-name strong {
+  display: block;
+  font:
+    400 26px/1.1 Georgia,
+    serif;
+  letter-spacing: -0.03em;
+}
+.resume-story-name span {
+  display: block;
+  margin-top: 8px;
+  font: 400 11px/1.5 var(--air-font);
+}
+.resume-story-line,
+.resume-story-node,
+.resume-story-chapter,
+.resume-story-label {
+  position: absolute;
+  top: 0;
+  left: 50%;
+}
+.resume-story-line {
+  width: 10px;
+  height: 2px;
+  transform-origin: left center;
+  background: var(--air-light-cloakresume);
+  z-index: 1;
+}
+.resume-story-node {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--air-light-cloakresume);
+  box-shadow: 0 0 0 4px white;
+  z-index: 2;
+}
+.resume-story-chapter {
+  width: 170px;
+  color: var(--air-paper-ink);
+  text-align: left;
+}
+.resume-story-chapter strong {
+  display: block;
+  font: 500 12px/1.5 var(--air-font);
+}
+.resume-story-chapter span {
+  display: block;
+  margin-top: 3px;
+  font: 400 11px/1.5 var(--air-font);
+}
+.resume-story-label {
+  opacity: 0;
+  color: var(--air-ink);
+  font: 400 14px/1.4 var(--air-font);
+  white-space: nowrap;
+}
+.resume-story-controls {
+  min-height: 44px;
+  display: flex;
+  justify-content: center;
+}
+.resume-story-controls button {
+  min-height: 44px;
+}
+@media (max-height: 480px) and (orientation: landscape) {
+  .resume-story-stage {
+    zoom: 0.78;
+  }
+  .resume-story {
+    margin-block: var(--air-space-12);
+  }
+}
+@media (forced-colors: active) {
+  .resume-story-paper,
+  .resume-story-name,
+  .resume-story-chapter,
+  .resume-story-node,
+  .resume-story-line {
+    forced-color-adjust: none;
+  }
+}
