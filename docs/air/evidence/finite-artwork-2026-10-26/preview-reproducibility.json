@@ -1,0 +1,22 @@
+[
+  {
+    "name": "landing-narrow-light.png",
+    "sha256": "09acbfcba9dafcb72bcbd6979bd85f00a714e36e815d48262c3d5ec396cd8686",
+    "equal": true
+  },
+  {
+    "name": "landing-narrow-dark.png",
+    "sha256": "98a37cf555f4aa2cedc15cc9b9ec9135ce5c774598c46b3532a17dc8fb0634b0",
+    "equal": true
+  },
+  {
+    "name": "editor-wide-light.png",
+    "sha256": "8eda113efea114d0816463b15713326454d7895f709029fd5c7b00ee8cacba68",
+    "equal": true
+  },
+  {
+    "name": "editor-wide-dark.png",
+    "sha256": "b1825a4035e5c52f80d3105d11f14f30dcebd698995830f197402d86d29fadb0",
+    "equal": true
+  }
+]

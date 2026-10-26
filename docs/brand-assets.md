@@ -55,6 +55,8 @@ waits for visible Air fields, the ready paginated template, decoded images and
 local fonts. A capture-only random seed and fixed 21 October 2026 date keep the
 built-in synthetic sample reproducible. Registration is disabled only in these
 isolated capture contexts so an offline-ready notice cannot obscure the UI.
+Capture waits for repeated identical pixel frames after font/layout readiness so
+fresh dark-theme glyphs are painted before the preview is saved.
 No personal profile, saved user draft, markup replacement or hidden controls are
 used. Browser/resource failures stop generation.
 

@@ -83,14 +83,6 @@
   font: 400 14px/1.4 var(--air-font);
   white-space: nowrap;
 }
-.resume-story-controls {
-  min-height: 44px;
-  display: flex;
-  justify-content: center;
-}
-.resume-story-controls button {
-  min-height: 44px;
-}
 @media (max-height: 480px) and (orientation: landscape) {
   .resume-story-stage {
     zoom: 0.78;
