@@ -66,7 +66,7 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
         .then((r) => r!.update())
         .then(() => undefined),
     );
-    await page.waitForSelector('.resume-update button[aria-label="Update and reload"]');
+    await page.waitForSelector('.air-update button[aria-label="Update and reload"]');
   }
   async function finishActivation() {
     await page.waitForFunction(
@@ -83,10 +83,10 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     await offerUpdate();
     // Allow the original four-second offline timer to elapse while an update is visible.
     await new Promise((resolve) => setTimeout(resolve, 4200));
-    expect(await page.$('.resume-update button[aria-label="Update and reload"]')).not.toBeNull();
-    await page.click('[aria-label="Dismiss update notice"]');
+    expect(await page.$('.air-update button[aria-label="Update and reload"]')).not.toBeNull();
+    await page.click(".air-update-actions button:first-child");
     await page.waitForSelector("[name='profile-name']:focus");
-    expect(await page.$(".resume-update")).toBeNull();
+    expect(await page.$(".air-update")).toBeNull();
   });
   it("flushes the final keystroke and reloads once after real activation", async () => {
     await startEditor();
@@ -105,11 +105,9 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     });
     await page.type("[name='profile-name']", " final");
     await page.click('[aria-label="Update and reload"]');
-    await page.waitForSelector('.resume-update [aria-busy="true"]:focus');
+    await page.waitForSelector('.air-update [aria-busy="true"]:focus');
     await page.evaluate(() => {
-      const button = document.querySelector<HTMLButtonElement>(
-        '.resume-update [aria-busy="true"]',
-      )!;
+      const button = document.querySelector<HTMLButtonElement>('.air-update [aria-busy="true"]')!;
       button.click();
       button.click();
     });
@@ -149,20 +147,18 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
         async () => (await navigator.serviceWorker.getRegistration())!.waiting?.state,
       ),
     ).toBe("installed");
-    expect(await page.$eval(".resume-update", (e) => e.textContent)).toContain(
-      "could not be saved",
-    );
+    expect(await page.$eval(".air-update", (e) => e.textContent)).toContain("could not be saved");
   });
   it("keeps a busy action and its focus outline visible after short-screen resize", async () => {
     await startEditor();
     await offerUpdate(true);
     await page.click('[aria-label="Update and reload"]');
-    await page.waitForSelector('.resume-update [aria-busy="true"]:focus');
+    await page.waitForSelector('.air-update [aria-busy="true"]:focus');
     await page.setViewport({ width: 844, height: 390 });
     await page.evaluate(() => (document.documentElement.style.fontSize = "32px"));
     await page.waitForFunction(() => {
       const button = document.activeElement;
-      const notice = button?.closest(".resume-update");
+      const notice = button?.closest(".air-update");
       if (!button || !notice) return false;
       const b = button.getBoundingClientRect(),
         n = notice.getBoundingClientRect();
@@ -173,7 +169,7 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     await startEditor();
     await offerUpdate(true);
     await page.click('[aria-label="Update and reload"]');
-    await page.waitForSelector('.resume-update [aria-busy="true"]');
+    await page.waitForSelector('.air-update [aria-busy="true"]');
     await page.evaluate(() => {
       (window as unknown as { restoreStorage: () => void }).restoreStorage = (() => {
         const old = Object.getOwnPropertyDescriptor(Storage.prototype, "setItem")!
@@ -188,7 +184,7 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     });
     await page.type("[name='profile-name']", " during activation");
     await finishActivation();
-    await page.waitForSelector('.resume-update [aria-label="Try again"]');
+    await page.waitForSelector('.air-update [aria-label="Try again"]');
     expect(
       await page.$eval("[name='profile-name']", (e) => (e as HTMLInputElement).value),
     ).toContain("during activation");
@@ -197,7 +193,7 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     );
     await page.click('[role="alertdialog"] button');
     const navigation = page.waitForNavigation();
-    await page.click('.resume-update [aria-label="Try again"]');
+    await page.click('.air-update [aria-label="Try again"]');
     await navigation;
     expect(
       await page.evaluate(
@@ -221,12 +217,12 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
       };
     });
     await page.click('[aria-label="Update and reload"]');
-    await page.waitForSelector('.resume-update [aria-label="Try again"]:focus');
-    expect(await page.$eval('.resume-update [role="alert"]', (e) => e.textContent)).toContain(
+    await page.waitForSelector('.air-update [aria-label="Try again"]:focus');
+    expect(await page.$eval('.air-update [role="alert"]', (e) => e.textContent)).toContain(
       "Check your connection",
     );
-    await page.click('.resume-update [aria-label="Try again"]');
-    await page.waitForSelector('.resume-update [aria-busy="true"]');
+    await page.click('.air-update [aria-label="Try again"]');
+    await page.waitForSelector('.air-update [aria-busy="true"]');
     const navigation = page.waitForNavigation();
     await finishActivation();
     await navigation;

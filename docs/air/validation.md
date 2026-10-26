@@ -859,3 +859,21 @@ corrections are retained in the evidence, not relabeled passes.
 Evidence: [privacy/dialog alignment](evidence/privacy-dialogs-2026-10-21.json).
 Remaining date-motion/target, physical keyboard/IME/assistive and hardware gates
 are separate. This does not declare the entire family migration complete.
+
+## Footer and PWA consistency — 2026-10-26
+
+Air 1.2.3 removes footer height/content exceptions and uses the pinned common PWA
+notice presentation. The four refreshed sites have matching 109px desktop/laptop
+and 219px phone footers at the reviewed 16px-root widths. Header order/destinations,
+neutral hyperlinks, reading/recovery shells and enlarged text remain covered.
+PDF/Resume share update/offline/busy wording, geometry and controls; worker activation
+and work safety remain product-owned. No PWA is invented for Yard/Drop's website.
+
+Evidence: `evidence/consistency-2026-10-26/`. Family: 1,152 Chrome/Firefox layouts;
+PWA comparison: 240 layouts with 30 exact screenshot pairs; PDF 44 real-worker
+deferred-update layouts plus output/cross-tab/race checks; Resume 384 PWA/recovery
+layouts plus production lifecycle tests. All applicable builds, static/design/dead-code
+checks and feature suites pass. IMG is audit-only, with isolated portable maintenance;
+its legacy footer/PWA remains pending with its parked redesign. Existing device,
+Compact beta/node-forge, official-runtime and Resume export-intermittency follow-ups
+remain open. See the central consistency audit for initial failures and deployment.

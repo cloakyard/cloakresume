@@ -99,14 +99,14 @@ try {
             await p.evaluate(() =>
               document.querySelector('[aria-label="Update and reload"]').click(),
             );
-          if (state === "updating") await p.waitForSelector('.resume-update [aria-busy="true"]');
+          if (state === "updating") await p.waitForSelector('.air-update [aria-busy="true"]');
           if (["error", "blocked"].includes(state))
-            await p.waitForSelector('.resume-update [aria-label="Try again"]');
+            await p.waitForSelector('.air-update [aria-label="Try again"]');
           if (state === "blocked") {
             await p.waitForSelector('[role="alertdialog"]');
             await p.click('[role="alertdialog"] button');
           }
-        } else await p.waitForSelector(".resume-update");
+        } else await p.waitForSelector(".air-update");
       } else {
         const r = await p.goto(server.url + "/missing/long-address?value=" + "a".repeat(120));
         assert.equal(r.status(), 404);
@@ -124,12 +124,12 @@ try {
             await frame(p);
             if (state !== "404") {
               await p.keyboard.press("Tab");
-              for (const button of await p.$$(".resume-update button")) {
+              for (const button of await p.$$(".air-update button")) {
                 await button.focus();
                 assert(
                   await button.evaluate((e) => {
                     const r = e.getBoundingClientRect(),
-                      box = e.closest(".resume-update").getBoundingClientRect();
+                      box = e.closest(".air-update").getBoundingClientRect();
                     return r.top >= box.top + 4 && r.bottom <= box.bottom - 4;
                   }),
                   `focused command clipped: ${state}/${width}/${height}/${rootPx}`,
@@ -138,7 +138,7 @@ try {
             }
             const result = await p.evaluate(
               ({ state, coarse }) => {
-                const root = document.querySelector(state === "404" ? "main" : ".resume-update");
+                const root = document.querySelector(state === "404" ? "main" : ".air-update");
                 const rect = root.getBoundingClientRect();
                 const problems = [];
                 if (document.documentElement.scrollWidth > innerWidth + 1)
@@ -146,7 +146,7 @@ try {
                 if (root.scrollWidth > root.clientWidth + 1)
                   problems.push("notice horizontal overflow");
                 if (state !== "404") {
-                  const card = root.querySelector(".resume-update-content");
+                  const card = root.querySelector(".air-update-panel");
                   const skin = getComputedStyle(card);
                   if (skin.borderRadius !== "18px" || skin.borderTopWidth !== "1px")
                     problems.push("notice does not use the Air panel shell");
@@ -159,12 +159,23 @@ try {
                     problems.push("notice exceeds available height");
                 }
                 const targets = [
-                  ...document.querySelectorAll(state === "404" ? "a" : ".resume-update button"),
+                  ...document.querySelectorAll(state === "404" ? "a" : ".air-update button"),
                 ]
                   .filter((e) => e.getClientRects().length)
                   .map((e) => {
                     const r = e.getBoundingClientRect();
-                    if (coarse && (r.height < 43.9 || r.width < 43.9))
+                    // The contract keeps credits as underlined links within prose.
+                    // Navigation and notice commands still require full touch targets.
+                    const inlineCredit = e.matches(".air-page-identity a");
+                    if (inlineCredit) {
+                      const style = getComputedStyle(e);
+                      if (
+                        style.display !== "inline" ||
+                        !style.textDecorationLine.includes("underline") ||
+                        style.color !== getComputedStyle(e.parentElement).color
+                      )
+                        problems.push("inline credit lost its Air link affordance");
+                    } else if (coarse && (r.height < 43.9 || r.width < 43.9))
                       problems.push("small target " + e.textContent.trim());
                     return {
                       label: e.getAttribute("aria-label") || e.textContent.trim(),
@@ -192,12 +203,12 @@ try {
           }
       // Focus every notice command, including those below the short-screen scroll edge.
       if (state !== "404") {
-        for (const button of await p.$$(".resume-update button")) {
+        for (const button of await p.$$(".air-update button")) {
           await button.focus();
           assert(
             await button.evaluate((e) => {
               const r = e.getBoundingClientRect(),
-                box = e.closest(".resume-update").getBoundingClientRect();
+                box = e.closest(".air-update").getBoundingClientRect();
               return r.top >= box.top - 1 && r.bottom <= box.bottom + 1;
             }),
             "focused command hidden",
@@ -214,7 +225,7 @@ try {
       await p.setViewport({ width: coarse ? 390 : 1280, height: 844, hasTouch: coarse });
       await p.evaluate(() => (document.documentElement.style.fontSize = "16px"));
       await p.keyboard.press("Tab");
-      await p.focus(state === "404" ? "main a" : ".resume-update button");
+      await p.focus(state === "404" ? "main a" : ".air-update button");
       const forced = await p.evaluate(() => ({
         active: matchMedia("(forced-colors: active)").matches,
         overflow: document.documentElement.scrollWidth > innerWidth + 1,
