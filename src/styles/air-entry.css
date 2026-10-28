@@ -55,9 +55,6 @@ body:has(.resume-site) {
 .resume-menu summary::-webkit-details-marker {
   display: none;
 }
-.resume-menu[open] summary svg {
-  rotate: 180deg;
-}
 .resume-skip {
   position: fixed;
   left: 16px;
@@ -300,8 +297,7 @@ body:has(.resume-site) {
     padding-inline: var(--air-space-24);
   }
 }
-/* Four destinations need compact navigation below 54rem of available text space. */
-@container (max-width: 54rem) {
+@container (max-width: 40rem) {
   .resume-header {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
@@ -330,15 +326,7 @@ body:has(.resume-site) {
     pointer-events: auto;
   }
   .resume-menu nav {
-    display: grid;
-    gap: 0;
-    margin-block-start: 12px;
-    padding-block-start: 8px;
-    border-block-start: 1px solid var(--air-line);
     pointer-events: auto;
-  }
-  .resume-menu nav a {
-    padding: 8px 12px;
   }
 }
 @container (max-width: 40rem) {
