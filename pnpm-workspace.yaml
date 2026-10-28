@@ -1,4 +1,7 @@
 overrides:
+  # Pinned node-resolve patch clones its fixed defaults with Node structuredClone.
+  # Remove this override and patch when upstream drops deepmerge (GHSA-gcqx-w48m-w2h4).
+  "@rollup/plugin-node-resolve@16.0.3>deepmerge": "-"
   brace-expansion: 5.0.12
   # Workbox uses the unchanged async glob API; retire its deprecated glob 11.
   "workbox-build>glob": 13.0.6
@@ -18,3 +21,6 @@ minimumReleaseAgeExclude:
   - lucide-react@1.61.0
   - puppeteer-core@25.16.0
   - serialize-javascript@7.1.4
+
+patchedDependencies:
+  "@rollup/plugin-node-resolve@16.0.3": patches/@rollup__plugin-node-resolve@16.0.3.patch
