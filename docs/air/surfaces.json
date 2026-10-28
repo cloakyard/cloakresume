@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.3",
+  "contractVersion": "1.2.4",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -249,7 +249,8 @@
         "docs/air/hyperlinks-2026-10-19.md",
         "evidence/storyline-family-2026-10-26/chrome.json.gz",
         "evidence/public-shell-2026-10-26/checks.json.gz",
-        "evidence/consistency-2026-10-26/checks.json.gz"
+        "evidence/consistency-2026-10-26/checks.json.gz",
+        "docs/air/consistency-2026-10-28.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open."
     },
@@ -624,7 +625,8 @@
       ],
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
-        "evidence/privacy-dialogs-2026-10-21.json"
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "docs/air/consistency-2026-10-28.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-21 privacy/dialog follow-up: Privacy alignment: standard 576px Air dialog, 16px/1.6 air-prose, fixed heading/close and one scrolling body; shared neutral underlined links. Software matrix rechecked; physical/assistive acceptance remains open."
     },
@@ -1723,7 +1725,8 @@
         "docs/air/neutral-links-2026-10-19.md",
         "evidence/privacy-dialogs-2026-10-21.json",
         "evidence/storyline-family-2026-10-26/chrome.json.gz",
-        "evidence/public-shell-2026-10-26/checks.json.gz"
+        "evidence/public-shell-2026-10-26/checks.json.gz",
+        "docs/air/consistency-2026-10-28.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-21 privacy/dialog follow-up: Privacy now consumes shared air-prose and the standard dialog width with fixed close heading; duplicate paragraph-link/list/section styles retired. Shared 3px focus offset for entry and overlays. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates."
     },
@@ -1942,7 +1945,7 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": [],
+      "evidence": ["docs/air/consistency-2026-10-28.md"],
       "notes": ""
     },
     {
@@ -1953,7 +1956,7 @@
       "validated": false,
       "states": [],
       "viewports": [],
-      "evidence": [],
+      "evidence": ["docs/air/consistency-2026-10-28.md"],
       "notes": ""
     },
     {
