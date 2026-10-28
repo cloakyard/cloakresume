@@ -29,4 +29,4 @@ suppression or replacement library was added. Frozen install, both resolver
 entry points, unchanged frozen defaults, full build and exact pre/post output
 hashes pass. OSV passes with only any separately approved existing exception.
 
-All 102 public application/service-worker files remain byte-identical to the verified Air candidate.
+All 101 public application/service-worker files remain byte-identical to the verified Air candidate.
