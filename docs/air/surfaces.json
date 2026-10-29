@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.6",
+  "contractVersion": "1.2.7",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -801,7 +801,10 @@
         "light/dark",
         "16/32px root text"
       ],
-      "evidence": ["evidence/storyline-family-2026-10-26/checks.json"],
+      "evidence": [
+        "evidence/storyline-family-2026-10-26/checks.json",
+        "docs/air/safari-startup-2026-10-29.md"
+      ],
       "notes": "2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
     },
     {
