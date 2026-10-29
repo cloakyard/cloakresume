@@ -103,7 +103,7 @@ async function saved() {
   });
 }
 async function measure(state, width, height, theme, text) {
-  if (["privacy", "replacement", "render-error"].includes(state))
+  if (["replacement", "render-error"].includes(state))
     await page.waitForSelector(".resume-overlay .air-modal", { visible: true });
   await page.evaluate(
     () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
@@ -202,13 +202,25 @@ try {
           await page.keyboard.press("Escape");
           assert.equal(await page.$eval(".resume-menu", (el) => el.open), false);
         }
-        await click("Read the privacy policy");
-        await page.waitForSelector('[role="dialog"]');
+        await Promise.all([
+          page.waitForNavigation({ waitUntil: "networkidle0" }),
+          page.click('a[href$="?view=privacy"]'),
+        ]);
+        await page.evaluate(
+          (text) => (document.documentElement.style.fontSize = `${text}px`),
+          text,
+        );
         await measure("privacy", width, height, theme, text);
         if (text === 16 && [1440, 1280, 768, 390, 320, 844].includes(width))
           await page.screenshot({ path: resolve(output, `privacy-${width}-${theme}.png`) });
-        await page.keyboard.press("Escape");
-        await page.waitForSelector('[role="dialog"]', { hidden: true });
+        await Promise.all([
+          page.waitForNavigation({ waitUntil: "networkidle0" }),
+          page.click(".air-policy-back"),
+        ]);
+        await page.evaluate(
+          (text) => (document.documentElement.style.fontSize = `${text}px`),
+          text,
+        );
         if (text === 16 && [1440, 1280, 768, 390, 320, 844].includes(width)) {
           await page.evaluate(() => scrollTo(0, 0));
           await page.screenshot({
@@ -217,7 +229,7 @@ try {
           });
         }
       }
-  journeys.push("responsive home, compact menu and privacy; Escape restores focus");
+  journeys.push("responsive home, compact menu and public privacy; explicit return link");
   await fresh();
   await page.setViewport({ width: 390, height: 844, hasTouch: true });
   await page.focus(".resume-menu summary");
@@ -228,22 +240,17 @@ try {
   await page.keyboard.press("Tab");
   assert.equal(await page.evaluate(() => document.activeElement.textContent.trim()), "Start blank");
   journeys.push("compact menu Space, Tab, anchor Enter and next action");
-  await click("Read the privacy policy");
-  assert.equal(await page.$eval("#app", (el) => el.inert), true);
-  await page.keyboard.press("ShiftLeft");
-  await page.keyboard.press("Tab");
-  await page.keyboard.up("ShiftLeft");
-  assert.equal(
-    await page.evaluate(() => !!document.activeElement.closest('[role="dialog"]')),
-    true,
-  );
-  await page.keyboard.press("Escape");
-  assert.equal(await page.$eval("#app", (el) => el.inert), false);
-  assert.equal(
-    await page.evaluate(() => document.activeElement.textContent.trim()),
-    "Read the privacy policy",
-  );
-  journeys.push("privacy background inert, focus trap, Escape focus return");
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: "networkidle0" }),
+    page.click('a[href$="?view=privacy"]'),
+  ]);
+  assert.ok(await page.$(".air-policy"));
+  assert.equal(await page.$('[role="dialog"]'), null);
+  await Promise.all([
+    page.waitForNavigation({ waitUntil: "networkidle0" }),
+    page.click(".air-policy-back"),
+  ]);
+  journeys.push("public privacy is a reading page with a direct home link");
   await upload("{invalid");
   await page.waitForSelector('[role="alertdialog"]');
   await page.keyboard.press("Escape");
@@ -354,30 +361,32 @@ try {
   assert.equal((await saved()).resume.profile.name, "Imported Person");
   journeys.push("pending file disables entry, blocks Escape and ignores duplicate reads");
 
+  // Public privacy no longer has modal/swipe gestures. The editor retains its
+  // in-place policy and must preserve the draft, inert background and focus return.
   await fresh();
-  await page.setViewport({ width: 390, height: 844, hasTouch: true });
-  await click("Read the privacy policy");
-  const touch = await page.createCDPSession();
-  const point = await page.$eval(".resume-sheet-handle", (el) => {
-    const r = el.getBoundingClientRect();
-    return { x: r.x + r.width / 2, y: r.y + r.height / 2 };
-  });
-  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
-  await touch.send("Input.dispatchTouchEvent", {
-    type: "touchMove",
-    touchPoints: [{ x: point.x, y: point.y + 40 }],
-  });
-  await touch.send("Input.dispatchTouchEvent", { type: "touchCancel", touchPoints: [] });
-  assert.ok(await page.$('[role="dialog"]'));
-  await page.waitForFunction(() => document.querySelector(".resume-policy").style.transform === "");
-  await touch.send("Input.dispatchTouchEvent", { type: "touchStart", touchPoints: [point] });
-  await touch.send("Input.dispatchTouchEvent", {
-    type: "touchMove",
-    touchPoints: [{ x: point.x, y: point.y + 150 }],
-  });
-  await touch.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
-  await page.waitForSelector('[role="dialog"]', { hidden: true });
-  journeys.push("privacy swipe cancellation and swipe dismissal with touch emulation");
+  await page.setViewport({ width: 1440, height: 900 });
+  await seed();
+  await click("Resume editing");
+  await page.waitForSelector(".cr-editor-panel");
+  const beforePolicy = await saved();
+  await page.click('button[aria-label="Privacy policy"]');
+  await page.waitForSelector(".resume-policy");
+  assert.equal(await page.$eval("#app", (el) => el.inert), true);
+  await page.keyboard.down("Shift");
+  await page.keyboard.press("Tab");
+  await page.keyboard.up("Shift");
+  assert.equal(
+    await page.evaluate(() => !!document.activeElement.closest('[role="dialog"]')),
+    true,
+  );
+  await page.keyboard.press("Escape");
+  assert.equal(await page.$eval("#app", (el) => el.inert), false);
+  assert.equal(
+    await page.evaluate(() => document.activeElement.getAttribute("aria-label")),
+    "Privacy policy",
+  );
+  assert.deepEqual((await saved()).resume, beforePolicy.resume);
+  journeys.push("editor privacy keeps draft, inertness, focus containment and Escape return");
 
   await fresh();
   await seed();

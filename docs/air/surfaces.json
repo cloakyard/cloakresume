@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.4",
+  "contractVersion": "1.2.5",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -42,14 +42,14 @@
       "airImplemented": true,
       "validated": true,
       "states": [
-        "fixed 1200×630 social composition",
+        "fixed 1200\u00d7630 social composition",
         "real synthetic editor image",
         "local Air stylesheet/mark"
       ],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],
@@ -64,9 +64,9 @@
       "validated": true,
       "states": ["canonical OG/Twitter metadata", "accurate alt text", "system theme colours"],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],
@@ -250,9 +250,10 @@
         "evidence/storyline-family-2026-10-26/chrome.json.gz",
         "evidence/public-shell-2026-10-26/checks.json.gz",
         "evidence/consistency-2026-10-26/checks.json.gz",
-        "docs/air/consistency-2026-10-28.md"
+        "docs/air/consistency-2026-10-28.md",
+        "evidence/privacy-2026-10-29/policies.json.gz"
       ],
-      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open."
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-19: app logo colour in both GPU and static artwork; 12 theme/viewport cases and both GPU themes pass. Physical GPU/battery acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open. Air 1.2.5 public privacy/navigation software audit passes; policy meaning/dates and editor work preserved. Full product/device gates remain separate."
     },
     {
       "path": "src/components/ColorPickerContent.tsx",
@@ -380,7 +381,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -490,7 +491,7 @@
         "keyboard / emulated touch cancellation / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari and Firefox actual 200%"
       ],
       "evidence": [
@@ -512,7 +513,7 @@
         "coarse target / emulated touch cancel / forced colours / reduced motion"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari 27 and Firefox 158 actual 200%"
       ],
       "evidence": [
@@ -598,6 +599,17 @@
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. 2026-10-21 privacy/dialog follow-up: Loading status uses Air sans on a light paper plane. All 17 template families and A4/Letter output are unchanged; 34 paper captures and four actual PDFs match."
     },
     {
+      "path": "src/components/PrivacyPolicy.tsx",
+      "kind": "app-surface",
+      "sourceReviewed": true,
+      "airImplemented": true,
+      "validated": false,
+      "states": [],
+      "viewports": [],
+      "evidence": ["evidence/privacy-2026-10-29/policies.json.gz"],
+      "notes": " Air 1.2.5 public privacy/navigation software audit passes; policy meaning/dates and editor work preserved. Full product/device gates remain separate."
+    },
+    {
       "path": "src/components/PrivacyPolicyModal.tsx",
       "kind": "app-surface",
       "sourceReviewed": true,
@@ -626,9 +638,10 @@
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
         "evidence/privacy-dialogs-2026-10-21.json",
-        "docs/air/consistency-2026-10-28.md"
+        "docs/air/consistency-2026-10-28.md",
+        "evidence/privacy-2026-10-29/policies.json.gz"
       ],
-      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-21 privacy/dialog follow-up: Privacy alignment: standard 576px Air dialog, 16px/1.6 air-prose, fixed heading/close and one scrolling body; shared neutral underlined links. Software matrix rechecked; physical/assistive acceptance remains open."
+      "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-21 privacy/dialog follow-up: Privacy alignment: standard 576px Air dialog, 16px/1.6 air-prose, fixed heading/close and one scrolling body; shared neutral underlined links. Software matrix rechecked; physical/assistive acceptance remains open. Air 1.2.5 public privacy/navigation software audit passes; policy meaning/dates and editor work preserved. Full product/device gates remain separate."
     },
     {
       "path": "src/components/ReloadPrompt.tsx",
@@ -779,7 +792,7 @@
         "editor handoff cleanup"
       ],
       "viewports": [
-        "320–1920px",
+        "320\u20131920px",
         "portrait/landscape phone",
         "tablet",
         "laptop",
@@ -802,22 +815,22 @@
         "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
       ],
       "viewports": [
-        "1920×1080",
-        "1440×900",
-        "1366×768",
-        "1280×720",
-        "1279×720",
-        "1024×768",
-        "1023×768",
-        "768×1024",
-        "767×1024",
-        "640×800",
-        "639×800",
-        "430×932",
-        "390×844",
-        "375×812",
-        "320×568",
-        "844×390",
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
         "Light/dark; 16/32px root text; fine/coarse; forced colours",
         "Native Safari; Firefox actual 200% zoom"
       ],
@@ -840,22 +853,22 @@
         "Selected choice; keyboard wrap/return; compact swipe/cancel; responsive handoff; nested save error"
       ],
       "viewports": [
-        "1920×1080",
-        "1440×900",
-        "1366×768",
-        "1280×720",
-        "1279×720",
-        "1024×768",
-        "1023×768",
-        "768×1024",
-        "767×1024",
-        "640×800",
-        "639×800",
-        "430×932",
-        "390×844",
-        "375×812",
-        "320×568",
-        "844×390",
+        "1920\u00d71080",
+        "1440\u00d7900",
+        "1366\u00d7768",
+        "1280\u00d7720",
+        "1279\u00d7720",
+        "1024\u00d7768",
+        "1023\u00d7768",
+        "768\u00d71024",
+        "767\u00d71024",
+        "640\u00d7800",
+        "639\u00d7800",
+        "430\u00d7932",
+        "390\u00d7844",
+        "375\u00d7812",
+        "320\u00d7568",
+        "844\u00d7390",
         "Light/dark; 16/32px root text; fine/coarse; forced colours",
         "Native Safari; Firefox actual 200% zoom"
       ],
@@ -1161,7 +1174,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1209,7 +1222,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1240,7 +1253,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1267,7 +1280,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1296,7 +1309,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1325,7 +1338,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1353,7 +1366,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1379,7 +1392,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1410,7 +1423,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1439,7 +1452,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1467,7 +1480,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1496,7 +1509,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1523,7 +1536,7 @@
         "persistent labels, reachable fields/actions and open grouping"
       ],
       "viewports": [
-        "16 viewport classes × light/dark × 16/32px text",
+        "16 viewport classes \u00d7 light/dark \u00d7 16/32px text",
         "coarse/fine, short landscape, forced colours",
         "native Safari and Firefox actual 200%"
       ],
@@ -1573,7 +1586,7 @@
         "coarse targets, enlarged text and forced colours"
       ],
       "viewports": [
-        "16 sizes × light/dark × 16/32px text",
+        "16 sizes \u00d7 light/dark \u00d7 16/32px text",
         "native Safari",
         "native Firefox actual 200%"
       ],
@@ -1801,13 +1814,14 @@
         "1025x768"
       ],
       "evidence": [
-        "docs/air/validation.md — refinement 02 candidate",
+        "docs/air/validation.md \u2014 refinement 02 candidate",
         "docs/air/components.html",
         "docs/air/neutral-links-2026-10-19.md",
         "evidence/public-shell-2026-10-26/checks.json.gz",
-        "evidence/consistency-2026-10-26/checks.json.gz"
+        "evidence/consistency-2026-10-26/checks.json.gz",
+        "evidence/privacy-2026-10-29/policies.json.gz"
       ],
-      "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open."
+      "notes": "Refinement 02 design candidate. Reference checks recorded; final design review, product import and all real app states remain pending. No product is considered migrated. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open. Air 1.2.5 public privacy/navigation software audit passes; policy meaning/dates and editor work preserved. Full product/device gates remain separate."
     },
     {
       "path": "src/styles/storyline.css",
@@ -1827,7 +1841,7 @@
         "editor handoff cleanup"
       ],
       "viewports": [
-        "320–1920px",
+        "320\u20131920px",
         "portrait/landscape phone",
         "tablet",
         "laptop",
@@ -2063,7 +2077,7 @@
         "Long replacement stress; normal/reduced motion"
       ],
       "viewports": [
-        "16 required/boundary sizes × light/dark × 16/32px text",
+        "16 required/boundary sizes \u00d7 light/dark \u00d7 16/32px text",
         "Wide coarse pointer, short landscape, forced colours, offset visual viewport",
         "Native Safari; native Firefox actual 200%"
       ],
@@ -2099,9 +2113,9 @@
         "presentation assets excluded from precache"
       ],
       "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
+        "OG 1200\u00d7630",
+        "phone 430\u00d7932 at 2\u00d7",
+        "desktop 1440\u00d7900 at 1\u00d7",
         "light",
         "dark"
       ],
