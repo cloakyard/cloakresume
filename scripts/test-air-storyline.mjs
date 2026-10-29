@@ -80,7 +80,7 @@ try {
             running: root.getAnimations({ subtree: true }).length,
             decorative: stage.getAttribute("aria-hidden"),
             ink: getComputedStyle(root.querySelector(".resume-story-name")).color,
-            controlsAbsent: !root.querySelector("button"),
+            replayHidden: root.querySelector(".air-artwork-replay").hidden,
             input: !document.querySelector("input[name=resume-file]").disabled,
           };
         }, text);
@@ -94,7 +94,7 @@ try {
             running: 0,
             decorative: "true",
             ink: "rgb(32, 35, 41)",
-            controlsAbsent: true,
+            replayHidden: true,
             input: true,
           },
           JSON.stringify({ width, height, theme, text, result }),
@@ -126,7 +126,13 @@ try {
     if (mode === "normal") {
       await state(page, "playing");
       await page.screenshot({ path: `${out}/story-arrival.png` });
-      assert.equal(await page.$(".resume-story button"), null);
+      assert.equal(
+        await page.$$eval(
+          ".resume-story button",
+          (buttons) => buttons.length === 1 && buttons[0].className === "air-artwork-replay",
+        ),
+        true,
+      );
       await page.evaluate(() => dispatchEvent(new PageTransitionEvent("pagehide")));
       await state(page, "hidden");
       await page.$eval(".resume-story", (e) =>
@@ -178,14 +184,16 @@ try {
         true,
       );
       evidence.lifecycle.push(
-        "no controls; hidden time frozen; offscreen; finite completion without restart; resize settle; live reduced motion; editor cleanup",
+        "artwork replay target; hidden time frozen; offscreen; finite completion without restart; resize settle; live reduced motion; editor cleanup",
       );
     } else {
       await state(page, mode);
       assert.equal(
         await page.$eval(
           ".resume-story",
-          (e) => e.getAnimations({ subtree: true }).length === 0 && !e.querySelector("button"),
+          (e) =>
+            e.getAnimations({ subtree: true }).length === 0 &&
+            e.querySelector(".air-artwork-replay").hidden,
         ),
         true,
       );
