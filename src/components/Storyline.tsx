@@ -136,7 +136,7 @@ export function Storyline() {
   }, []);
 
   return (
-    <div className="resume-story" ref={root}>
+    <div className="resume-story air-artwork" ref={root}>
       <div className="resume-story-stage" aria-hidden="true">
         <div className="resume-story-paper" />
         <div className="resume-story-name">
@@ -161,6 +161,12 @@ export function Storyline() {
           <span className="resume-story-line" key={t} style={{ transform: pose(t, 1, 0) }} />
         ))}
       </div>
+      <button
+        className="air-artwork-replay"
+        type="button"
+        aria-label="Replay CloakResume animation"
+        hidden
+      />
     </div>
   );
 }

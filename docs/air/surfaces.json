@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.2.7",
+  "contractVersion": "1.3.0",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -783,14 +783,18 @@
       "validated": false,
       "states": [
         "animated arrival",
-        "finite arrival without playback controls",
+        "finite arrival without separate playback controls",
         "finite completion",
         "hidden/offscreen suspension",
         "resize settlement",
         "reduced motion",
         "forced colours",
         "Save-Data/constrained/unsupported static profiles",
-        "editor handoff cleanup"
+        "editor handoff cleanup",
+        "explicit click/tap replay after completion",
+        "busy press ignored without queue",
+        "keyboard replay and inset focus",
+        "static fallback without replay"
       ],
       "viewports": [
         "320–1920px",
@@ -803,9 +807,10 @@
       ],
       "evidence": [
         "evidence/storyline-family-2026-10-26/checks.json",
-        "docs/air/safari-startup-2026-10-29.md"
+        "docs/air/safari-startup-2026-10-29.md",
+        "docs/air/artwork-replay-2026-10-29.md"
       ],
-      "notes": "2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate."
+      "notes": "2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Air 1.3.0 replay passes Chrome/WebKit software checks; physical/assistive acceptance remains separate."
     },
     {
       "path": "src/components/TemplateModal.tsx",

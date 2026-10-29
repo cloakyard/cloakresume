@@ -40,13 +40,13 @@ body {
   z-index: var(--z-popover, 900) !important;
 }
 
-button:not(.absolute) {
+button:not(.absolute, .air-artwork-replay) {
   transition-property: color, background-color, border-color, opacity, transform;
   transition-duration: var(--duration-fast);
   transition-timing-function: var(--ease-standard);
 }
 
-button:not(.absolute):active:not(:disabled) {
+button:not(.absolute, .air-artwork-replay):active:not(:disabled) {
   transform: scale(var(--motion-scale-press));
   transition-duration: var(--duration-press);
   transition-timing-function: var(--ease-out);
