@@ -363,6 +363,9 @@ export function CloakWorkbenchLanding({
           <a href="https://cloakyard.com" target="_blank" rel="noreferrer">
             Cloakyard <ArrowUpRight aria-hidden="true" />
           </a>
+          <a href="https://ko-fi.com/sumitsahoo21" target="_blank" rel="noopener noreferrer">
+            Buy me a coffee <ArrowUpRight aria-hidden="true" />
+          </a>
         </nav>
       </footer>
     </div>
