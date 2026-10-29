@@ -39,7 +39,7 @@ Air bundle owns application design. See `air/code-cleanup.md` for remaining work
 
 ## Result
 
-All 76 TSX files in `src/` were examined. No application route, common component,
+All 77 TSX files in `src/` were examined. No application route, common component,
 editor section, review pane, résumé output, or TSX support module was omitted.
 
 The September product chrome followed the CloakPDF-family language with CloakResume
@@ -117,7 +117,7 @@ Status key:
 |  17 | `src/components/PaginatedCanvas.tsx`              | Output  | Measurement, deterministic A4/Letter pages, continuation behavior, no clipping, and print fidelity.                                                                               |
 |  18 | `src/components/PaperSizeToggle.tsx`              | Aligned | Named A4/Letter selection, pressed state, exact 40px toolbar box, and touch-size overflow variant.                                                                                |
 |  19 | `src/components/Preview.tsx`                      | Aligned | Persistent paper stage, zoom controls, names/targets, output isolation, and responsive overflow.                                                                                  |
-|  20 | `src/components/PrivacyPolicyModal.tsx`           | Aligned | Wide architecture receipt, ruled long-form policy, accurate local/network boundary, bottom-sheet collapse, focus lifecycle, and overscroll containment.                           |
+|  20 | `src/components/PrivacyPolicyModal.tsx`           | Aligned | In-editor policy dialog sharing the public policy body; preserves draft, focus return, inertness and close behavior.                                                              |
 |  21 | `src/components/ReloadPrompt.tsx`                 | Aligned | Toast live-region semantics, update/offline states, token layer, and safe action placement.                                                                                       |
 |  22 | `src/components/RichTextArea.tsx`                 | Aligned | Explicit control name, formatting semantics, reserved issue space, and bounded measurement work.                                                                                  |
 |  23 | `src/components/SectionPanel.tsx`                 | Aligned | Responsive 328px desktop editor and fluid 384–736px wide-screen editor, 50% phone pane, close-to-picker action, title hierarchy, internal scroll, and safe area.                  |
@@ -177,6 +177,7 @@ Status key:
 | 75 | `src/components/ColorPickerPopover.tsx` | Support | Air follow-up: shared viewport-aware primary-colour portal and compact modal focus lifecycle. Current gates are in the Air inventory. |
 
 | 76 | `src/components/AtsReviewDialog.tsx` | Support | Air follow-up: persistent accessible shell through lazy loading, inert background, responsive focus return and swipe dismissal. |
+| 77 | `src/components/PrivacyPolicy.tsx` | Aligned | Air public reading page with real home link, contents and unchanged policy body shared with the editor dialog. |
 
 ## Non-TSX surfaces
 

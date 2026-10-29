@@ -124,12 +124,13 @@ describe("CloakResume family contract", () => {
   });
 
   it("uses Air for entry and policy while retaining provenance and the complete policy", async () => {
-    const [landing, privacy, main, entryCss, familyCss] = await Promise.all([
+    const [landing, privacy, main, entryCss, familyCss, policy] = await Promise.all([
       source("src/components/CloakWorkbenchLanding.tsx"),
       source("src/components/PrivacyPolicyModal.tsx"),
       source("src/main.tsx"),
       source("src/styles/air-entry.css"),
       source("src/cloak-family.css"),
+      source("src/components/PrivacyPolicy.tsx"),
     ]);
     const footer = landing.match(
       /<footer className="air-page-footer resume-footer resume-frame">([\s\S]*?)<\/footer>/,
@@ -160,7 +161,7 @@ describe("CloakResume family contract", () => {
       "The implementation is inspectable",
       "Policy revisions remain visible",
     ])
-      expect(privacy).toContain(title);
+      expect(policy).toContain(title);
     expect(entryCss).not.toMatch(/--air-[a-z-]+\s*:/);
     expect(familyCss).not.toMatch(
       /cr-family-landing|cr-privacy-dialog|cr-resume-proof|cr-statement-footer/,

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import {
   ArrowRight,
   ArrowUpRight,
@@ -9,7 +9,7 @@ import {
 } from "lucide-react";
 import { TEMPLATE_COUNT } from "../templates/meta.ts";
 import { Storyline } from "./Storyline.tsx";
-import { PrivacyPolicyModal } from "./PrivacyPolicyModal.tsx";
+import { PrivacyPolicy } from "./PrivacyPolicy.tsx";
 
 const GITHUB_URL = "https://github.com/cloakyard/cloakresume";
 
@@ -49,17 +49,14 @@ export function CloakWorkbenchLanding({
 }: Props) {
   const fileRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDetailsElement>(null);
-  const [privacyOpen, setPrivacyOpen] = useState(() => location.hash === "#privacy-policy");
-  const closePrivacy = () => {
-    setPrivacyOpen(false);
-    if (location.hash === "#privacy-policy")
-      history.replaceState(null, "", location.pathname + location.search);
-  };
+  const privacyPage =
+    new URLSearchParams(location.search).get("view") === "privacy" ||
+    location.hash === "#privacy-policy";
   const savedLabel = useMemo(() => formatSavedAt(lastSavedAt), [lastSavedAt]);
 
   useEffect(() => {
     const closeOnEscape = (event: KeyboardEvent) => {
-      if (event.key !== "Escape" || event.defaultPrevented || privacyOpen || loading) return;
+      if (event.key !== "Escape" || event.defaultPrevented || privacyPage || loading) return;
       if (menuRef.current?.open) {
         menuRef.current.open = false;
         menuRef.current.querySelector("summary")?.focus();
@@ -67,7 +64,7 @@ export function CloakWorkbenchLanding({
     };
     window.addEventListener("keydown", closeOnEscape);
     return () => window.removeEventListener("keydown", closeOnEscape);
-  }, [onDismiss, privacyOpen, loading]);
+  }, [onDismiss, privacyPage, loading]);
 
   // The entry page owns document scrolling; editor overflow is restored on exit.
   useEffect(() => {
@@ -90,6 +87,7 @@ export function CloakWorkbenchLanding({
     action();
   };
   const navigate = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (privacyPage) return;
     const target = document.getElementById(event.currentTarget.hash.slice(1));
     if (!target) return;
     event.preventDefault();
@@ -101,13 +99,16 @@ export function CloakWorkbenchLanding({
   };
   const navigation = (
     <>
-      <a href="#start" onClick={navigate}>
+      <a href={privacyPage ? `${import.meta.env.BASE_URL}#start` : "#start"} onClick={navigate}>
         Get started
       </a>
-      <a href="#features" onClick={navigate}>
+      <a
+        href={privacyPage ? `${import.meta.env.BASE_URL}#features` : "#features"}
+        onClick={navigate}
+      >
         Features
       </a>
-      <a href="#privacy" onClick={navigate}>
+      <a href={privacyPage ? `${import.meta.env.BASE_URL}#privacy` : "#privacy"} onClick={navigate}>
         Privacy
       </a>
       <a href={GITHUB_URL} target="_blank" rel="noreferrer">
@@ -161,172 +162,180 @@ export function CloakWorkbenchLanding({
           </nav>
         </details>
       </header>
-      <main id="main-content" tabIndex={-1}>
-        <section className="resume-hero resume-frame" aria-labelledby="landing-title">
-          <h1 id="landing-title">
-            Your story.
-            <br />
-            <span>Taking shape.</span>
-          </h1>
-          <p>
-            Build, tailor and export your résumé in your browser. Your draft and job description
-            stay on your device.
-          </p>
-          {onResumeEditing && (
-            <div className="resume-continue">
-              <button
-                type="button"
-                className="air-button air-button--primary"
-                disabled={loading}
-                onClick={onResumeEditing}
-              >
-                Resume editing <ArrowRight aria-hidden="true" />
-              </button>
-              <span>{savedLabel}</span>
-            </div>
-          )}
-          {!onResumeEditing && (
-            <div className="resume-hero-actions">
-              <button
-                type="button"
-                className="air-button air-button--primary"
-                disabled={loading}
-                onClick={(event) => activate(event, onStartBlank)}
-              >
-                Start blank <ArrowRight aria-hidden="true" />
-              </button>
-              <a className="air-button air-button--quiet" href="#start" onClick={navigate}>
-                Explore options <ArrowRight aria-hidden="true" />
-              </a>
-            </div>
-          )}
-          <Storyline />
-        </section>
-        <section
-          id="start"
-          className="resume-start resume-frame"
-          tabIndex={-1}
-          aria-labelledby="start-title"
-        >
-          <h2 id="start-title">Start with what you have.</h2>
-          <div className="resume-start-options">
-            <div>
-              <FilePlus2 aria-hidden="true" />
-              <h3>A fresh page</h3>
-              <p>Make room for your experience, skills and the work you’re proud of.</p>
-              <button
-                className="air-button air-button--primary"
-                disabled={loading}
-                onClick={(event) => activate(event, onStartBlank)}
-              >
-                Start blank <ArrowRight aria-hidden="true" />
-              </button>
-            </div>
-            <div>
-              <Sparkles aria-hidden="true" />
-              <h3>A little inspiration</h3>
-              <p>Explore a complete sample, then make the content and layout your own.</p>
-              <button
-                className="air-button"
-                disabled={loading}
-                onClick={(event) => activate(event, onLoadSample)}
-              >
-                Load sample
-              </button>
-            </div>
-            <div>
-              <FolderOpen aria-hidden="true" />
-              <h3>Your saved file</h3>
+      <main id="main-content" tabIndex={-1} className={privacyPage ? "resume-frame" : undefined}>
+        {privacyPage ? (
+          <PrivacyPolicy />
+        ) : (
+          <>
+            <section className="resume-hero resume-frame" aria-labelledby="landing-title">
+              <h1 id="landing-title">
+                Your story.
+                <br />
+                <span>Taking shape.</span>
+              </h1>
               <p>
-                Bring a CloakResume JSON file back into the editor and pick up where you left off.
+                Build, tailor and export your résumé in your browser. Your draft and job description
+                stay on your device.
               </p>
-              <button
-                className="air-button"
-                disabled={loading}
-                aria-busy={loading}
-                onClick={(event) => activate(event, () => fileRef.current?.click())}
-              >
-                {loading ? "Opening file…" : "Load saved file"}
-              </button>
-            </div>
-          </div>
-          <input
-            ref={fileRef}
-            className="hidden"
-            type="file"
-            name="resume-file"
-            accept=".json,application/json"
-            aria-label="Choose a saved CloakResume JSON file"
-            disabled={loading}
-            onChange={(event) => {
-              const file = event.currentTarget.files?.[0];
-              event.currentTarget.value = "";
-              if (file) onLoadFile(file);
-            }}
-          />
-        </section>
-        <section
-          id="features"
-          className="resume-features resume-frame"
-          tabIndex={-1}
-          aria-labelledby="features-title"
-        >
-          <h2 id="features-title">From first draft to ready to send.</h2>
-          <div>
-            <article>
-              <h3>Find the right shape</h3>
-              <p>
-                Choose from {TEMPLATE_COUNT} templates, set your colour, and preview every page in
-                A4 or Letter.
-              </p>
-            </article>
-            <article>
-              <h3>Write for the role</h3>
-              <p>
-                Compare your draft with a job description. Local writing checks and keyword review
-                help you spot what to improve.
-              </p>
-              <p className="resume-note">
-                Review scores are guidance, not a guarantee of hiring-system success.
-              </p>
-            </article>
-            <article>
-              <h3>Keep a copy</h3>
-              <p>
-                Export a PDF to share and a JSON file to edit again. Browser-saved drafts make it
-                easy to return on this device.
-              </p>
-            </article>
-          </div>
-        </section>
-        <section
-          id="privacy"
-          className="resume-privacy resume-frame"
-          tabIndex={-1}
-          aria-labelledby="privacy-title"
-        >
-          <h2 id="privacy-title">
-            Personal work.
-            <br />
-            Kept personal.
-          </h2>
-          <div>
-            <p>
-              Editing, writing review and export happen on your device. No account, document uploads
-              or product analytics.
-            </p>
-            <p>
-              App and language assets may download when needed. Keep a JSON copy of important work;
-              browser storage can be cleared.
-            </p>
-            <button
-              className="air-button"
-              onClick={(event) => activate(event, () => setPrivacyOpen(true))}
+              {onResumeEditing && (
+                <div className="resume-continue">
+                  <button
+                    type="button"
+                    className="air-button air-button--primary"
+                    disabled={loading}
+                    onClick={onResumeEditing}
+                  >
+                    Resume editing <ArrowRight aria-hidden="true" />
+                  </button>
+                  <span>{savedLabel}</span>
+                </div>
+              )}
+              {!onResumeEditing && (
+                <div className="resume-hero-actions">
+                  <button
+                    type="button"
+                    className="air-button air-button--primary"
+                    disabled={loading}
+                    onClick={(event) => activate(event, onStartBlank)}
+                  >
+                    Start blank <ArrowRight aria-hidden="true" />
+                  </button>
+                  <a
+                    className="air-button air-button--quiet"
+                    href={privacyPage ? `${import.meta.env.BASE_URL}#start` : "#start"}
+                    onClick={navigate}
+                  >
+                    Explore options <ArrowRight aria-hidden="true" />
+                  </a>
+                </div>
+              )}
+              <Storyline />
+            </section>
+            <section
+              id="start"
+              className="resume-start resume-frame"
+              tabIndex={-1}
+              aria-labelledby="start-title"
             >
-              Read the privacy policy <ArrowRight aria-hidden="true" />
-            </button>
-          </div>
-        </section>
+              <h2 id="start-title">Start with what you have.</h2>
+              <div className="resume-start-options">
+                <div>
+                  <FilePlus2 aria-hidden="true" />
+                  <h3>A fresh page</h3>
+                  <p>Make room for your experience, skills and the work you’re proud of.</p>
+                  <button
+                    className="air-button air-button--primary"
+                    disabled={loading}
+                    onClick={(event) => activate(event, onStartBlank)}
+                  >
+                    Start blank <ArrowRight aria-hidden="true" />
+                  </button>
+                </div>
+                <div>
+                  <Sparkles aria-hidden="true" />
+                  <h3>A little inspiration</h3>
+                  <p>Explore a complete sample, then make the content and layout your own.</p>
+                  <button
+                    className="air-button"
+                    disabled={loading}
+                    onClick={(event) => activate(event, onLoadSample)}
+                  >
+                    Load sample
+                  </button>
+                </div>
+                <div>
+                  <FolderOpen aria-hidden="true" />
+                  <h3>Your saved file</h3>
+                  <p>
+                    Bring a CloakResume JSON file back into the editor and pick up where you left
+                    off.
+                  </p>
+                  <button
+                    className="air-button"
+                    disabled={loading}
+                    aria-busy={loading}
+                    onClick={(event) => activate(event, () => fileRef.current?.click())}
+                  >
+                    {loading ? "Opening file…" : "Load saved file"}
+                  </button>
+                </div>
+              </div>
+              <input
+                ref={fileRef}
+                className="hidden"
+                type="file"
+                name="resume-file"
+                accept=".json,application/json"
+                aria-label="Choose a saved CloakResume JSON file"
+                disabled={loading}
+                onChange={(event) => {
+                  const file = event.currentTarget.files?.[0];
+                  event.currentTarget.value = "";
+                  if (file) onLoadFile(file);
+                }}
+              />
+            </section>
+            <section
+              id="features"
+              className="resume-features resume-frame"
+              tabIndex={-1}
+              aria-labelledby="features-title"
+            >
+              <h2 id="features-title">From first draft to ready to send.</h2>
+              <div>
+                <article>
+                  <h3>Find the right shape</h3>
+                  <p>
+                    Choose from {TEMPLATE_COUNT} templates, set your colour, and preview every page
+                    in A4 or Letter.
+                  </p>
+                </article>
+                <article>
+                  <h3>Write for the role</h3>
+                  <p>
+                    Compare your draft with a job description. Local writing checks and keyword
+                    review help you spot what to improve.
+                  </p>
+                  <p className="resume-note">
+                    Review scores are guidance, not a guarantee of hiring-system success.
+                  </p>
+                </article>
+                <article>
+                  <h3>Keep a copy</h3>
+                  <p>
+                    Export a PDF to share and a JSON file to edit again. Browser-saved drafts make
+                    it easy to return on this device.
+                  </p>
+                </article>
+              </div>
+            </section>
+            <section
+              id="privacy"
+              className="resume-privacy resume-frame"
+              tabIndex={-1}
+              aria-labelledby="privacy-title"
+            >
+              <h2 id="privacy-title">
+                Personal work.
+                <br />
+                Kept personal.
+              </h2>
+              <div>
+                <p>
+                  Editing, writing review and export happen on your device. No account, document
+                  uploads or product analytics.
+                </p>
+                <p>
+                  App and language assets may download when needed. Keep a JSON copy of important
+                  work; browser storage can be cleared.
+                </p>
+                <a className="air-button" href={`${import.meta.env.BASE_URL}?view=privacy`}>
+                  Read the privacy policy <ArrowUpRight aria-hidden="true" />
+                </a>
+              </div>
+            </section>
+          </>
+        )}
       </main>
       <footer className="air-page-footer resume-footer resume-frame">
         <p className="air-page-identity">
@@ -339,7 +348,12 @@ export function CloakWorkbenchLanding({
           </span>
         </p>
         <nav aria-label="Footer navigation">
-          <button onClick={(event) => activate(event, () => setPrivacyOpen(true))}>Privacy</button>
+          <a
+            href={`${import.meta.env.BASE_URL}?view=privacy`}
+            aria-current={privacyPage ? "page" : undefined}
+          >
+            Privacy
+          </a>
           <a href={GITHUB_URL} target="_blank" rel="noreferrer">
             Source
           </a>
@@ -349,9 +363,11 @@ export function CloakWorkbenchLanding({
           <a href="https://cloakyard.com" target="_blank" rel="noreferrer">
             Cloakyard <ArrowUpRight aria-hidden="true" />
           </a>
+          <a href="https://ko-fi.com/sumitsahoo21" target="_blank" rel="noopener noreferrer">
+            Buy me a coffee <ArrowUpRight aria-hidden="true" />
+          </a>
         </nav>
       </footer>
-      <PrivacyPolicyModal open={privacyOpen} onClose={closePrivacy} />
     </div>
   );
 }
