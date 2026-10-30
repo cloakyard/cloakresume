@@ -355,10 +355,10 @@ export function CloakWorkbenchLanding({
             Privacy
           </a>
           <a href={GITHUB_URL} target="_blank" rel="noreferrer">
-            Source
+            Source <ArrowUpRight aria-hidden="true" />
           </a>
           <a href={`${GITHUB_URL}/blob/main/LICENSE`} target="_blank" rel="noreferrer">
-            MIT license
+            MIT license <ArrowUpRight aria-hidden="true" />
           </a>
           <a href="https://cloakyard.com" target="_blank" rel="noreferrer">
             Cloakyard <ArrowUpRight aria-hidden="true" />
