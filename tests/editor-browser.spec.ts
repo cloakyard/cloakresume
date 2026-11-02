@@ -1875,8 +1875,8 @@ describe.skipIf(!existsSync(chromePath))(
           .map((element) => element.getAttribute("aria-label"));
       });
       expect(clipped).toEqual([]);
-      await page.click('.cr-editor-panel button[aria-label^="Remove "]');
-      await page.click('.cr-editor-panel button[aria-label^="Confirm removal of "]');
+      await page.locator('.cr-editor-panel button[aria-label^="Remove "]').click();
+      await page.locator('.cr-editor-panel button[aria-label^="Confirm removal of "]').click();
       expect((await savedResume()).contact).toEqual([]);
     });
 
