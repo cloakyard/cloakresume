@@ -7,7 +7,6 @@
  * mobile 50:50 workbench.
  */
 
-import { X } from "lucide-react";
 import type { ResumeData } from "../types.ts";
 import { Editor } from "./Editor.tsx";
 import { SECTIONS, type SectionId } from "./SectionRail.tsx";
@@ -49,9 +48,9 @@ export function SectionPanel({
             type="button"
             onClick={onClose}
             aria-label={`Close ${meta.label} editor and choose another section`}
-            className="air-icon-button air-button--quiet resume-section-close"
+            className="air-button air-button--quiet resume-section-close"
           >
-            <X aria-hidden="true" size={18} strokeWidth={1.6} />
+            Close
           </button>
         )}
       </header>
