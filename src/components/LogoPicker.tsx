@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /**
  * Header logo picker — searches a curated Lucide icon set.
  *
@@ -29,6 +30,7 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
   const searchOnOpen = useRef(true);
   const didFocus = useRef(false);
   const coords = usePickerPosition(open, buttonRef, popoverRef, query);
+  const presence = useAirPresence(open, "popover", { ref: popoverRef, ready: !!coords });
   const selected = findLogoIcon(value);
   const results = searchLogoIcons(query).slice(0, 80);
 
@@ -106,12 +108,14 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
           </button>
         )}
       </div>
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
             id={dialogId}
             ref={popoverRef}
+            inert={presence.closing}
+            aria-hidden={presence.closing || undefined}
             data-placement={coords.placement}
             role="dialog"
             aria-label="Choose a logo icon"

@@ -99,15 +99,14 @@ export function ToolbarCenter({
                 <ChevronDown className="h-3.5 w-3.5" />
               </span>
             </button>
-            {colorOpen && (
-              <ColorPickerPopover
-                id={colorPopoverId}
-                primary={primary}
-                onChange={onPrimaryChange}
-                onClose={() => setColorOpen(false)}
-                triggerRef={colorButtonRef}
-              />
-            )}
+            <ColorPickerPopover
+              open={colorOpen}
+              id={colorPopoverId}
+              primary={primary}
+              onChange={onPrimaryChange}
+              onClose={() => setColorOpen(false)}
+              triggerRef={colorButtonRef}
+            />
           </div>
 
           <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />

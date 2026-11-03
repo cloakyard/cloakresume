@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /**
  * Live writing-issue feedback on editor fields.
  *
@@ -83,6 +84,10 @@ export function FieldIssuesBadge({
   const popoverRef = useRef<HTMLDivElement>(null);
   const didFocus = useRef(false);
   const coords = usePickerPosition(open, buttonRef, popoverRef, issues);
+  const presence = useAirPresence(open && issues.length > 0, "popover", {
+    ref: popoverRef,
+    ready: !!coords,
+  });
 
   // An edit or re-scan invalidates the report. Do not reopen old hints when it returns.
   if (open && issues.length === 0) setOpen(false);
@@ -157,12 +162,14 @@ export function FieldIssuesBadge({
         {meta.icon}
         <span>{issues.length}</span>
       </button>
-      {open &&
+      {presence.mounted &&
         coords &&
         createPortal(
           <div
             id={dialogId}
             ref={surfaceRef}
+            inert={presence.closing}
+            aria-hidden={presence.closing || undefined}
             data-placement={coords.placement}
             role="dialog"
             tabIndex={-1}

@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /** Keep dismissal and focus available while the review's lazy content loads. */
 import { X } from "lucide-react";
 import { useId, useRef, type ReactNode } from "react";
@@ -6,18 +7,21 @@ import { useModalDialog } from "../utils/useModalDialog.ts";
 import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 
 export function AtsReviewDialog({
+  open,
   onClose,
   children,
 }: {
+  open: boolean;
   onClose: () => void;
   children: ReactNode;
 }) {
   const titleId = useId();
   const descriptionId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const presence = useAirPresence(open);
   const dialogRef = useModalDialog<HTMLDivElement>({
-    open: true,
-    onClose,
+    open: presence.mounted,
+    onClose: open ? onClose : undefined,
     initialFocusRef: closeRef,
     inertBackground: true,
     fallbackFocus: () =>
@@ -26,15 +30,25 @@ export function AtsReviewDialog({
       ),
   });
   const swipeHandlers = useSwipeToDismiss(dialogRef, onClose);
+  if (!presence.mounted) return null;
   return createPortal(
     <div
-      className="air-modal-viewport resume-review-viewport"
+      ref={presence.ref}
+      onClickCapture={(event) => {
+        if (!open) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      className="air-presence-viewport air-modal-viewport resume-review-viewport"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
+      <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />
       <div
+        data-air-surface
         ref={dialogRef}
         className="air-modal resume-review"
         role="dialog"

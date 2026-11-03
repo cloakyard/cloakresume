@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /**
  * Top-level error surface — catches render failures (lazy-chunk load
  * errors, exceptions inside ATS panes, etc.) that would otherwise
@@ -10,7 +11,15 @@
  */
 
 import { Check, Copy, Home } from "lucide-react";
-import { Component, useId, useRef, type ErrorInfo, type ReactNode } from "react";
+import {
+  Component,
+  useId,
+  useRef,
+  useState,
+  useEffect,
+  type ErrorInfo,
+  type ReactNode,
+} from "react";
 import { useModalDialog } from "../utils/useModalDialog.ts";
 import { GithubIcon } from "./GithubIcon.tsx";
 
@@ -104,18 +113,30 @@ function ErrorDialog({
   onGoHome: () => void;
 }) {
   const homeRef = useRef<HTMLButtonElement>(null);
+  const [open, setOpen] = useState(true);
+  const presence = useAirPresence(open);
+  useEffect(() => {
+    if (!presence.mounted) onGoHome();
+  }, [presence.mounted, onGoHome]);
+  const dismiss = () => setOpen(false);
   const titleId = useId();
   const descriptionId = useId();
   const dialogRef = useModalDialog<HTMLDivElement>({
-    open: true,
-    onClose: onGoHome,
+    open: presence.mounted,
+    onClose: open ? dismiss : undefined,
     inertBackground: true,
     initialFocusRef: homeRef,
   });
 
   return (
-    <div className="air-modal-viewport resume-overlay" role="presentation">
+    <div
+      ref={presence.ref}
+      className="air-presence-viewport air-modal-viewport resume-overlay"
+      role="presentation"
+    >
+      <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />
       <div
+        data-air-surface
         ref={dialogRef}
         className="air-modal"
         role="alertdialog"
@@ -139,7 +160,7 @@ function ErrorDialog({
           <button
             ref={homeRef}
             type="button"
-            onClick={onGoHome}
+            onClick={dismiss}
             className="air-button air-button--primary"
           >
             <Home aria-hidden="true" />

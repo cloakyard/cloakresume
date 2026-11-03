@@ -2304,6 +2304,7 @@ describe.skipIf(!existsSync(chromePath))(
     });
 
     it("dismisses the year grid before its date popup, leaves by Tab and keeps closing controls inert", async () => {
+      await page.emulateMediaFeatures([{ name: "prefers-reduced-motion", value: "no-preference" }]);
       await page.setViewport({ width: 1440, height: 1000 });
       await openSection("experience");
       const trigger = ".resume-date-trigger";

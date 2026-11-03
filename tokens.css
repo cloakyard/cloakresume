@@ -1,17 +1,7 @@
-/* Output colours and the live date-presence adapter only. All UI colour,
+/* Document output colours only. All UI colour,
  * type, focus and control geometry come from the pinned Air bundle. */
 :root {
   /* Preserve existing document/thumbnail output in either appearance. */
   --color-proof-paper: oklch(0.998 0.002 255);
   --brand: light-dark(oklch(0.508 0.118 165.612), oklch(0.765 0.151 163.223));
-
-  /* MonthYearField still consumes the presence adapter; migrate separately. */
-  --duration-press: 100ms;
-  --duration-fast: 160ms;
-  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
-  --ease-standard: cubic-bezier(0.16, 1, 0.3, 1);
-  --motion-distance-small: 4px;
-  --motion-scale-press: 0.98;
-  --motion-scale-surface: 0.98;
-  --z-popover: 900;
 }

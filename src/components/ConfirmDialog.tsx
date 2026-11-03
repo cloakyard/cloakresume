@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /**
  * Lightweight confirmation modal — a designed replacement for the
  * browser's native `window.confirm` dialog.
@@ -38,25 +39,35 @@ export function ConfirmDialog({
   const confirmRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+  const presence = useAirPresence(open);
   const dialogRef = useModalDialog<HTMLDivElement>({
-    open,
-    onClose: onCancel,
+    open: presence.mounted,
+    onClose: open ? onCancel : undefined,
     inertBackground: true,
     initialFocusRef: variant === "notice" ? confirmRef : cancelRef,
   });
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
 
   return createPortal(
     <div
-      className="air-modal-viewport resume-overlay"
+      ref={presence.ref}
+      onClickCapture={(event) => {
+        if (!open) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      className="air-presence-viewport air-modal-viewport resume-overlay"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget && !(tone === "danger" && variant === "confirm"))
           onCancel();
       }}
     >
+      <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />
       <div
+        data-air-surface
         ref={dialogRef}
         className="air-modal"
         role={variant === "notice" ? "alertdialog" : "dialog"}

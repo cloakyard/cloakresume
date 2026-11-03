@@ -185,13 +185,14 @@ export function ReloadPrompt({ beforeReload }: { beforeReload: () => string | nu
     return () => window.clearTimeout(timer);
   }, [offlineReady, needRefresh, paused, setOfflineReady]);
 
-  return needRefresh || offlineReady ? (
+  return (
     <AirUpdateNotice
+      open={needRefresh || offlineReady}
       state={needRefresh ? state : "offline"}
       detail={state === "error" ? error : undefined}
       onClose={close}
       onUpdate={handleUpdate}
       onPause={setPaused}
     />
-  ) : null;
+  );
 }
