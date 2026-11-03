@@ -1530,3 +1530,21 @@ button.resume-review-finding:focus-visible {
   color: var(--air-ink-secondary);
   font: 400 var(--air-text-body)/1.5 var(--air-font);
 }
+
+/* Crossfade section/picker surfaces in one stable, scrollable working region. */
+.resume-panel-views {
+  display: grid;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+}
+.resume-panel-view {
+  grid-area: 1 / 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+}
+.resume-panel-view:not([inert]) {
+  z-index: 1;
+}

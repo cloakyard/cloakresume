@@ -455,9 +455,9 @@ export function App() {
         />
       )}
 
-      {atsOpen && !showLanding && (
+      {!showLanding && (
         <ErrorBoundary title="ATS review hit a snag">
-          <AtsReviewDialog onClose={() => setAtsOpen(false)}>
+          <AtsReviewDialog open={atsOpen} onClose={() => setAtsOpen(false)}>
             <Suspense
               fallback={
                 <div className="resume-review-body">

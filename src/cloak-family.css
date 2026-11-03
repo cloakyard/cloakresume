@@ -1,4 +1,4 @@
-/* Editor structure and the retained date-presence adapter. Air owns all UI skins. */
+/* Editor structure. Air owns UI materials, interaction feedback and presence. */
 html {
   overflow-x: clip;
 }
@@ -34,94 +34,6 @@ body {
   outline: 2px solid var(--air-accent);
   outline-offset: 2px;
   box-shadow: none;
-}
-
-.cr-popover {
-  z-index: var(--z-popover, 900) !important;
-}
-
-button:not(.absolute, .air-artwork-replay) {
-  transition-property: color, background-color, border-color, opacity, transform;
-  transition-duration: var(--duration-fast);
-  transition-timing-function: var(--ease-standard);
-}
-
-button:not(.absolute, .air-artwork-replay):active:not(:disabled) {
-  transform: scale(var(--motion-scale-press));
-  transition-duration: var(--duration-press);
-  transition-timing-function: var(--ease-out);
-}
-
-.cr-popover button:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-
-.cr-drag-item[data-dragging="true"] {
-  transform: scale(var(--motion-scale-press));
-}
-
-/* Anchored overlays compose placement and motion on the same transform so
- * flipping a portalled popover never jumps its geometry. Transitions retarget
- * cleanly if the trigger is toggled before the previous motion has settled. */
-.cr-popover {
-  --cr-popover-resting-y: 0px;
-  --cr-popover-motion-y: 0px;
-  --cr-popover-scale: 1;
-  opacity: 1;
-  transform: translateY(calc(var(--cr-popover-resting-y) + var(--cr-popover-motion-y)))
-    scale(var(--cr-popover-scale));
-  transform-origin: left top;
-  transition:
-    opacity var(--duration-fast) var(--ease-out),
-    transform var(--duration-fast) var(--ease-out);
-}
-
-.cr-popover[data-placement="above"] {
-  transform-origin: left bottom;
-}
-
-.cr-popover[data-align="end"] {
-  transform-origin: right top;
-}
-
-.cr-popover[data-align="end"][data-placement="above"] {
-  transform-origin: right bottom;
-}
-
-.cr-popover[data-positioning="offset"][data-placement="above"] {
-  --cr-popover-resting-y: -100%;
-}
-
-.cr-popover[data-state="closing"] {
-  --cr-popover-motion-y: var(--motion-distance-small);
-  --cr-popover-scale: var(--motion-scale-surface);
-  opacity: 0;
-  pointer-events: none;
-}
-
-.cr-popover[data-state="closing"][data-placement="above"] {
-  --cr-popover-motion-y: calc(var(--motion-distance-small) * -1);
-}
-
-@starting-style {
-  .cr-popover {
-    --cr-popover-motion-y: var(--motion-distance-small);
-    --cr-popover-scale: var(--motion-scale-surface);
-    opacity: 0;
-  }
-
-  .cr-popover[data-placement="above"] {
-    --cr-popover-motion-y: calc(var(--motion-distance-small) * -1);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .cr-popover,
-  .cr-popover[data-placement="above"] {
-    --cr-popover-motion-y: 0px !important;
-    --cr-popover-scale: 1 !important;
-  }
 }
 
 @media (hover: none) and (pointer: coarse) {

@@ -12,7 +12,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Calendar, ChevronDown, ChevronLeft, ChevronRight, X } from "lucide-react";
 import { usePickerPosition } from "../utils/usePickerPosition.ts";
-import { useAnimatedPresence } from "../utils/useAnimatedPresence.ts";
+import { useAirPresence } from "../../docs/air/presence.tsx";
 
 interface MonthYearFieldProps {
   label: string;
@@ -84,7 +84,6 @@ export function MonthYearField({
   disabled = false,
 }: MonthYearFieldProps) {
   const [open, setOpen] = useState(false);
-  const presence = useAnimatedPresence(open && !disabled);
   const [showYearPicker, setShowYearPicker] = useState(false);
   const labelId = useId();
   const dialogId = useId();
@@ -100,6 +99,10 @@ export function MonthYearField({
   const didFocusPopoverRef = useRef(false);
   const selectedYearRef = useRef<HTMLButtonElement>(null);
   const coords = usePickerPosition(open && !disabled, buttonRef, popoverRef, showYearPicker);
+  const presence = useAirPresence(open && !disabled, "popover", {
+    ref: popoverRef,
+    ready: !!coords,
+  });
 
   const parsed = useMemo(() => parseValue(value), [value]);
   const todayYear = new Date().getFullYear();
@@ -227,7 +230,6 @@ export function MonthYearField({
           <div
             id={dialogId}
             ref={popoverRef}
-            data-state={presence.state}
             data-placement={coords.placement}
             role="dialog"
             aria-labelledby={labelId}
@@ -235,7 +237,7 @@ export function MonthYearField({
             aria-hidden={!open || undefined}
             inert={!open}
             tabIndex={-1}
-            className="cr-popover air-popover resume-date-picker"
+            className="air-popover resume-date-picker"
             style={{
               top: coords.top,
               left: coords.left,

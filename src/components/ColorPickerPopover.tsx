@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 import { X } from "lucide-react";
 import { useEffect, useRef, type RefObject } from "react";
 import { createPortal } from "react-dom";
@@ -7,8 +8,9 @@ import { usePickerPosition } from "../utils/usePickerPosition.ts";
 import { useSwipeToDismiss } from "../utils/useSwipeToDismiss.ts";
 import { ColorPickerContent } from "./ColorPickerContent.tsx";
 
-/** One immediate Air surface for desktop and the compact toolbar handoff. */
+/** One Air surface for desktop and the compact toolbar handoff. */
 export function ColorPickerPopover({
+  open = true,
   id,
   primary,
   onChange,
@@ -16,6 +18,7 @@ export function ColorPickerPopover({
   triggerRef,
   modal = false,
 }: {
+  open?: boolean;
   id: string;
   primary: string;
   onChange: (hex: string) => void;
@@ -27,27 +30,32 @@ export function ColorPickerPopover({
   const brightnessRef = useRef<HTMLInputElement>(null);
   const didFocus = useRef(false);
   const coarse = useMediaQuery("(pointer: coarse)");
-  const coords = usePickerPosition(true, triggerRef, surfaceRef, primary);
+  const coords = usePickerPosition(open, triggerRef, surfaceRef, primary);
+  const presence = useAirPresence(open, "popover", { ready: !!coords });
   const swipeHandlers = useSwipeToDismiss(surfaceRef, onClose);
   useModalDialog({
-    open: modal && !!coords,
-    onClose,
+    open: modal && presence.mounted && !!coords,
+    onClose: open ? onClose : undefined,
     dialogRef: surfaceRef,
     initialFocusRef: coarse ? surfaceRef : brightnessRef,
     inertBackground: true,
   });
 
   useEffect(() => {
+    if (!open) {
+      didFocus.current = false;
+      return;
+    }
     if (!coords || modal || didFocus.current) return;
     const frame = requestAnimationFrame(() => {
       didFocus.current = true;
       (coarse ? surfaceRef.current : brightnessRef.current)?.focus({ preventScroll: true });
     });
     return () => cancelAnimationFrame(frame);
-  }, [coords, coarse, modal]);
+  }, [open, coords, coarse, modal]);
 
   useEffect(() => {
-    if (modal) return;
+    if (modal || !open) return;
     const outside = (event: Event) => {
       const target = event.target as Node;
       if (!surfaceRef.current?.contains(target) && !triggerRef.current?.contains(target)) onClose();
@@ -58,16 +66,24 @@ export function ColorPickerPopover({
       document.removeEventListener("pointerdown", outside);
       document.removeEventListener("focusin", outside);
     };
-  }, [modal, onClose, triggerRef]);
+  }, [open, modal, onClose, triggerRef]);
 
   const closeAndReturn = () => {
     onClose();
-    triggerRef.current?.focus({ preventScroll: true });
+    if (!modal) triggerRef.current?.focus({ preventScroll: true });
   };
-  if (!coords) return null;
+  if (!presence.mounted || !coords) return null;
   return createPortal(
     <div
-      className={modal ? "resume-colour-scrim" : undefined}
+      ref={presence.ref}
+      inert={!modal && presence.closing}
+      onClickCapture={(event) => {
+        if (!open) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      className={modal ? "air-presence-viewport resume-colour-scrim" : undefined}
       onPointerDown={(event) => {
         if (modal && event.target === event.currentTarget) {
           event.preventDefault();
@@ -75,7 +91,9 @@ export function ColorPickerPopover({
         }
       }}
     >
+      {modal && <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />}
       <div
+        data-air-surface
         id={id}
         ref={surfaceRef}
         role="dialog"

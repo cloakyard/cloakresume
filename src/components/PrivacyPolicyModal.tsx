@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 import { PrivacySections } from "../../docs/air/privacy.tsx";
 import { privacySections } from "./PrivacyPolicy.tsx";
 import { useId, useRef } from "react";
@@ -16,23 +17,33 @@ export function PrivacyPolicyModal({ open, onClose }: { open: boolean; onClose: 
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const descriptionId = useId();
+  const presence = useAirPresence(open);
   const panelRef = useModalDialog<HTMLDivElement>({
-    open,
-    onClose,
+    open: presence.mounted,
+    onClose: open ? onClose : undefined,
     initialFocusRef: closeRef,
     inertBackground: true,
   });
   const swipeHandlers = useSwipeToDismiss(panelRef, onClose);
-  if (!open) return null;
+  if (!presence.mounted) return null;
   return createPortal(
     <div
-      className="air-modal-viewport resume-overlay"
+      ref={presence.ref}
+      onClickCapture={(event) => {
+        if (!open) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      className="air-presence-viewport air-modal-viewport resume-overlay"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
+      <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />
       <div
+        data-air-surface
         ref={panelRef}
         className="air-modal resume-policy"
         role="dialog"

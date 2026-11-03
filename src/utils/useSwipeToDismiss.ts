@@ -37,6 +37,8 @@ export function useSwipeToDismiss<T extends HTMLElement>(
       const surface = surfaceRef.current;
       if (!surface) return;
 
+      // Give direct manipulation ownership of the surface before moving it.
+      for (const animation of surface.getAnimations()) animation.finish();
       event.currentTarget.setPointerCapture(event.pointerId);
       surface.style.transition = "none";
       gestureRef.current = {

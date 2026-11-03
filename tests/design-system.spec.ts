@@ -238,7 +238,7 @@ describe("CloakResume family contract", () => {
       /resume-compact-split[\s\S]*?aria-label="Résumé preview"[\s\S]*?cr-editor-panel/,
     );
     expect(layout).toContain("mobileSectionOpen ?");
-    expect(layout).toContain('aria-label="Résumé section picker"');
+    expect(layout).toContain('mobileSectionOpen ? "Résumé editor" : "Résumé section picker"');
     expect(layout).toContain('variant="picker"');
     expect(layout).not.toMatch(/FloatingSectionPill|sectionDrawerOpen|Jump to section/);
     expect(panel).toContain("Close ${meta.label} editor and choose another section");
@@ -462,12 +462,9 @@ describe("CloakResume family contract", () => {
       source("src/utils/fieldIssues.tsx"),
       source("src/components/editor/ProjectsSection.tsx"),
     ]);
-    // The date adapter still consumes these compatibility motion values.
-    expect(tokenCss).toContain("--duration-press: 100ms");
-    expect(tokenCss).toContain("--motion-distance-small: 4px");
-    expect(tokenCss).toContain("--motion-scale-surface: 0.98");
-    expect(tokenCss).not.toContain("--ease-in:");
-    expect(tokenCss).toContain("--ease-standard: cubic-bezier(0.16, 1, 0.3, 1)");
+    // Surface motion comes from the portable Air implementation, with no second timing scale.
+    expect(tokenCss).not.toMatch(/--(?:duration|ease|motion)-/);
+    expect(await source("src/components/MonthYearField.tsx")).toContain("useAirPresence");
 
     expect(indexCss).not.toMatch(/transition-\[[^\]]*box-shadow/);
     expect(indexCss).not.toContain("cr-field-glow");
@@ -478,8 +475,8 @@ describe("CloakResume family contract", () => {
     expect(familyCss).not.toContain(".cr-family-landing .cr-landing-hero__declaration");
     expect(familyCss).not.toContain(".cr-overlay");
     expect(familyCss).not.toContain(".cr-sheet");
-    expect(familyCss).toContain('.cr-popover[data-state="closing"]');
-    expect(familyCss).toContain("@starting-style");
+    expect(familyCss).not.toContain(".cr-popover");
+    expect(familyCss).not.toContain("@starting-style");
     expect(familyCss).not.toContain('.cr-dialog [role="tabpanel"]:not([hidden])');
     expect(layout).toContain("cr-editor-shell");
     expect(layout).not.toContain("cr-workspace-enter");

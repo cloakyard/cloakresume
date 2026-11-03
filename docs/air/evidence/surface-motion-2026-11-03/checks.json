@@ -1,0 +1,18 @@
+{
+  "scope": "Dialogs, anchored pickers, compact section crossfades and PWA notices share Air presence. The preview stays mounted, autosave is preserved and modal handoffs retain native activation and focus.",
+  "checks": [
+    "373 tests / 10 files, no skips, including production browser/PWA/output journeys",
+    "16 normal-motion Close/reopen/autosave/reload journeys",
+    "12 Chrome/WebKit normal-motion modal handoff and persistent-preview journeys, including 200% text",
+    "Build, type/lint and dead-code gates"
+  ],
+  "family": {
+    "homeLayouts": 648,
+    "secondaryLayouts": 288,
+    "privacyLayouts": 408,
+    "privacyJourneys": 22,
+    "noticeLayoutsAcrossThreePWAs": 396
+  },
+  "limitations": ["physical iPhone/software keyboard", "OS IME", "spoken assistive acceptance"],
+  "rollout": "pending dev to main PR"
+}

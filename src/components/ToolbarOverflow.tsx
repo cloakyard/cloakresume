@@ -54,6 +54,7 @@ export function ToolbarOverflow({
 }: ToolbarOverflowProps) {
   const isMobile = useMediaQuery(BP.mobile);
   const [open, setOpen] = useState(false);
+  const [handoff, setHandoff] = useState(false);
   const [colorOpen, setColorOpen] = useState(false);
   const colorId = useId();
   const optionsId = useId();
@@ -71,7 +72,10 @@ export function ToolbarOverflow({
   const closeThenOpen = (next: () => void) => {
     // Finish restoring the opener before the next modal captures it. Keep the
     // native picker in this user activation; no delayed callbacks can reopen UI.
-    flushSync(() => setOpen(false));
+    flushSync(() => {
+      setHandoff(true);
+      setOpen(false);
+    });
     next();
   };
 
@@ -90,6 +94,7 @@ export function ToolbarOverflow({
           type="button"
           onClick={(event) => {
             event.currentTarget.focus();
+            setHandoff(false);
             setOpen(true);
           }}
           className="air-icon-button air-button--quiet"
@@ -118,85 +123,82 @@ export function ToolbarOverflow({
         }}
       />
 
-      {open && (
-        <OptionsDialog id={optionsId} onClose={() => setOpen(false)}>
-          <div className="resume-options-actions">
-            <OverflowItem
-              icon={<Download />}
-              label="Export PDF"
-              busyLabel="Exporting PDF…"
-              busy={exporting}
-              onClick={onExportPdf}
-              primary
-            />
-            <p className="resume-options-status" role="status">
-              {exportStatus || "Download a PDF. Your draft stays here."}
-            </p>
-            <OverflowItem
-              icon={<ScanSearch />}
-              label="Scan résumé"
-              onClick={() =>
-                closeThenOpen(() => {
-                  window.dispatchEvent(new Event("cr:scan-ats"));
-                })
-              }
-            />
-            <hr />
-            <OverflowItem icon={<LayoutTemplate />} label="Template" onClick={openTemplate} />
-            <OverflowItem
-              icon={<Palette />}
-              label="Primary colour"
-              trailing={<span className="resume-options-swatch" style={{ background: primary }} />}
-              onClick={() =>
-                closeThenOpen(() => {
-                  if (isMobile) setColorOpen(true);
-                  else
-                    document
-                      .querySelector<HTMLButtonElement>('button[aria-label="Primary colour"]')
-                      ?.click();
-                })
-              }
-            />
-            <div className="resume-options-paper">
-              <span>
-                <FileText aria-hidden="true" />
-                Paper size
-              </span>
-              <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
-            </div>
-            <hr />
-            <OverflowItem
-              icon={<FilePlus2 />}
-              label="New résumé"
-              onClick={() => closeThenOpen(onNewResume)}
-            />
-            <OverflowItem
-              icon={<Save />}
-              label="Save to file"
-              onClick={() => closeThenOpen(onSaveFile)}
-            />
-            <OverflowItem
-              icon={<Upload />}
-              label="Load from file"
-              busyLabel="Opening file…"
-              busy={loadingFile}
-              onClick={() => fileRef.current?.click()}
-            />
-            <p className="resume-options-status">Open or save a CloakResume JSON file.</p>
+      <OptionsDialog open={open} instant={handoff} id={optionsId} onClose={() => setOpen(false)}>
+        <div className="resume-options-actions">
+          <OverflowItem
+            icon={<Download />}
+            label="Export PDF"
+            busyLabel="Exporting PDF…"
+            busy={exporting}
+            onClick={onExportPdf}
+            primary
+          />
+          <p className="resume-options-status" role="status">
+            {exportStatus || "Download a PDF. Your draft stays here."}
+          </p>
+          <OverflowItem
+            icon={<ScanSearch />}
+            label="Scan résumé"
+            onClick={() =>
+              closeThenOpen(() => {
+                window.dispatchEvent(new Event("cr:scan-ats"));
+              })
+            }
+          />
+          <hr />
+          <OverflowItem icon={<LayoutTemplate />} label="Template" onClick={openTemplate} />
+          <OverflowItem
+            icon={<Palette />}
+            label="Primary colour"
+            trailing={<span className="resume-options-swatch" style={{ background: primary }} />}
+            onClick={() =>
+              closeThenOpen(() => {
+                if (isMobile) setColorOpen(true);
+                else
+                  document
+                    .querySelector<HTMLButtonElement>('button[aria-label="Primary colour"]')
+                    ?.click();
+              })
+            }
+          />
+          <div className="resume-options-paper">
+            <span>
+              <FileText aria-hidden="true" />
+              Paper size
+            </span>
+            <PaperSizeToggle value={paperSize} onChange={onPaperSizeChange} />
           </div>
-        </OptionsDialog>
-      )}
+          <hr />
+          <OverflowItem
+            icon={<FilePlus2 />}
+            label="New résumé"
+            onClick={() => closeThenOpen(onNewResume)}
+          />
+          <OverflowItem
+            icon={<Save />}
+            label="Save to file"
+            onClick={() => closeThenOpen(onSaveFile)}
+          />
+          <OverflowItem
+            icon={<Upload />}
+            label="Load from file"
+            busyLabel="Opening file…"
+            busy={loadingFile}
+            onClick={() => fileRef.current?.click()}
+          />
+          <p className="resume-options-status">Open or save a CloakResume JSON file.</p>
+        </div>
+      </OptionsDialog>
 
-      {colorOpen && (
-        <ColorPickerPopover
-          id={colorId}
-          primary={primary}
-          onChange={onPrimaryChange}
-          onClose={() => setColorOpen(false)}
-          triggerRef={moreRef}
-          modal
-        />
-      )}
+      <ColorPickerPopover
+        open={colorOpen}
+        id={colorId}
+        primary={primary}
+        onChange={onPrimaryChange}
+        onClose={() => setColorOpen(false)}
+        triggerRef={moreRef}
+        modal
+      />
     </>
   );
 }

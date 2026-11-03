@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 import { useCallback, useLayoutEffect, useRef, type MouseEvent, type ReactNode } from "react";
 import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { BrandLogo } from "./BrandLogo.tsx";
@@ -38,6 +39,7 @@ export function Layout({
   preview,
 }: LayoutProps) {
   const isMobile = useMediaQuery(BP.mobile);
+  const presence = useAirPresence(isMobile && mobileView === "panel", "panel");
   const previousPanel = useRef({ isMobile, mobileSectionOpen });
   useLayoutEffect(() => {
     const previous = previousPanel.current;
@@ -137,45 +139,71 @@ export function Layout({
        * uses side-by-side panes. Preview
        * expands the proof without unmounting any desktop-only state. */}
       {isMobile && (
-        <div className="resume-compact-body">
-          {mobileView === "panel" ? (
-            <div className="resume-compact-split">
-              <main aria-label="Résumé preview" className="cr-editor-preview resume-editor-preview">
-                {preview}
-              </main>
-              {mobileSectionOpen ? (
-                <aside
-                  {...editorTargetProps}
-                  aria-label="Résumé editor"
-                  className="cr-editor-panel resume-editor-panel relative"
-                >
-                  {panel}
-                </aside>
-              ) : (
-                <aside
-                  {...editorTargetProps}
-                  aria-label="Résumé section picker"
-                  className="cr-editor-panel resume-editor-panel resume-picker-panel cr-scroll"
-                >
-                  <header className="resume-section-heading">
-                    <h2 className="resume-section-title">Choose a section</h2>
-                    <p className="resume-section-help">Open one part of the résumé at a time.</p>
-                  </header>
-                  <div className="resume-picker-scroll">
-                    <SectionRail
-                      active={activeSection}
-                      onChange={handleMobileSectionPick}
-                      variant="picker"
-                    />
-                  </div>
-                </aside>
-              )}
-            </div>
-          ) : (
-            <main aria-label="Résumé preview" className="cr-editor-preview resume-editor-preview">
-              {preview}
-            </main>
+        <div className={`resume-compact-body${presence.mounted ? " resume-compact-split" : ""}`}>
+          <main aria-label="Résumé preview" className="cr-editor-preview resume-editor-preview">
+            {preview}
+          </main>
+          {presence.mounted && (
+            <aside
+              {...editorTargetProps}
+              ref={presence.ref}
+              inert={presence.closing}
+              aria-label={mobileSectionOpen ? "Résumé editor" : "Résumé section picker"}
+              className={`cr-editor-panel resume-editor-panel relative${mobileSectionOpen ? "" : " resume-picker-panel cr-scroll"}`}
+            >
+              <MobilePanelViews
+                sectionOpen={mobileSectionOpen}
+                active={activeSection}
+                onPick={handleMobileSectionPick}
+                panel={panel}
+              />
+            </aside>
           )}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobilePanelViews({
+  sectionOpen,
+  active,
+  onPick,
+  panel,
+}: {
+  sectionOpen: boolean;
+  active: SectionId;
+  onPick: (id: SectionId) => void;
+  panel: ReactNode;
+}) {
+  const section = useAirPresence(sectionOpen, "fade");
+  const picker = useAirPresence(!sectionOpen, "fade");
+  return (
+    <div className="resume-panel-views">
+      {section.mounted && (
+        <div
+          ref={section.ref}
+          className="resume-panel-view"
+          inert={section.closing}
+          aria-hidden={section.closing || undefined}
+        >
+          {panel}
+        </div>
+      )}
+      {picker.mounted && (
+        <div
+          ref={picker.ref}
+          className="resume-panel-view"
+          inert={picker.closing}
+          aria-hidden={picker.closing || undefined}
+        >
+          <header className="resume-section-heading">
+            <h2 className="resume-section-title">Choose a section</h2>
+            <p className="resume-section-help">Open one part of the résumé at a time.</p>
+          </header>
+          <div className="resume-picker-scroll">
+            <SectionRail active={active} onChange={onPick} variant="picker" />
+          </div>
         </div>
       )}
     </div>

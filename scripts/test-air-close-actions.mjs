@@ -25,7 +25,7 @@ for (const engine of ["chromium", "webkit"]) {
           viewport: { width, height },
           hasTouch: true,
           colorScheme: theme,
-          reducedMotion: "reduce",
+          reducedMotion: process.env.AIR_REDUCED_MOTION || "reduce",
           serviceWorkers: "block",
         });
         p.on("pageerror", (e) => errors.push(e.message));

@@ -1,3 +1,4 @@
+import { useAirPresence } from "../../docs/air/presence.tsx";
 /** Responsive library of actual document templates; previews never edit the draft. */
 import { Check, X } from "lucide-react";
 import { useId, useMemo, useRef, useState } from "react";
@@ -31,9 +32,10 @@ export function TemplateModal({
   const searchRef = useRef<HTMLInputElement>(null);
   const composing = useRef(false);
   const id = useId();
+  const presence = useAirPresence(open);
   const sheetRef = useModalDialog<HTMLDivElement>({
-    open,
-    onClose,
+    open: presence.mounted,
+    onClose: open ? onClose : undefined,
     initialFocusRef: closeRef,
     inertBackground: true,
     // Responsive chrome can replace the opener while the library stays open.
@@ -66,16 +68,25 @@ export function TemplateModal({
     [hasContent, resume],
   );
 
-  if (!open) return null;
+  if (!presence.mounted) return null;
   return createPortal(
     <div
-      className="air-modal-viewport resume-library-viewport"
+      ref={presence.ref}
+      onClickCapture={(event) => {
+        if (!open) {
+          event.preventDefault();
+          event.stopPropagation();
+        }
+      }}
+      className="air-presence-viewport air-modal-viewport resume-library-viewport"
       role="presentation"
       onClick={(event) => {
         if (event.target === event.currentTarget) onClose();
       }}
     >
+      <div data-air-backdrop className="air-presence-backdrop" aria-hidden="true" />
       <div
+        data-air-surface
         ref={sheetRef}
         className="air-modal resume-library"
         role="dialog"
