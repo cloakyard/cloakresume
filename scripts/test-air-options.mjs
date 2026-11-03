@@ -74,6 +74,13 @@ try {
       await p.evaluate(() => document.fonts.ready);
       await p.click('[aria-label="More options"]');
       await p.waitForSelector(".resume-options");
+      // Measure and activate controls after the real entrance settles; presence
+      // and interruption are covered by the family's normal-motion suite.
+      await p.$eval(".resume-options", async (dialog) => {
+        await Promise.all(
+          dialog.getAnimations({ subtree: true }).map((animation) => animation.finished),
+        );
+      });
       if (state === "busy") {
         await p.setRequestInterception(true);
         p.on("request", (r) => {
