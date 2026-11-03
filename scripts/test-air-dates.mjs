@@ -144,7 +144,7 @@ try {
           });
           await frame(p);
           await triggers[index].click();
-          await p.waitForSelector(".resume-date-picker");
+          await p.waitForSelector(".resume-date-picker:not([inert])", { visible: true });
           await frame(p);
           if (state === "years") {
             await p.click('button[aria-label="Select year"]');
@@ -166,6 +166,21 @@ try {
               radius: c.borderRadius,
               padding: c.padding,
               buttons: buttons.length,
+              occluded: buttons
+                .filter((button) => {
+                  const r = button.getBoundingClientRect();
+                  const clip = button.closest(".resume-year-grid")?.getBoundingClientRect() ?? b;
+                  const x = r.x + r.width / 2,
+                    y = r.y + r.height / 2;
+                  return (
+                    x >= b.left &&
+                    x <= b.right &&
+                    y >= Math.max(b.top, clip.top) &&
+                    y <= Math.min(b.bottom, clip.bottom) &&
+                    !button.contains(document.elementFromPoint(x, y))
+                  );
+                })
+                .map((button) => button.ariaLabel || button.textContent),
               small: buttons
                 .filter((x) => {
                   const r = x.getBoundingClientRect();
@@ -190,6 +205,11 @@ try {
             JSON.stringify({ w, h, theme, text, state, metrics }),
           );
           assert.ok(metrics.focused);
+          assert.deepEqual(
+            metrics.occluded,
+            [],
+            JSON.stringify({ w, h, theme, text, state, metrics }),
+          );
           assert.equal(metrics.radius, "12px");
           assert.equal(metrics.padding, "20px");
           if (state === "years") {
@@ -234,6 +254,7 @@ try {
             await p.screenshot({ path: `${out}/date-${state}-${w}-${theme}-${text}.png` });
           await p.keyboard.press("Escape");
           if (state === "years") await p.keyboard.press("Escape");
+          await p.waitForSelector(".resume-date-picker", { hidden: true });
           await frame(p);
           assert.ok(await triggers[index].evaluate((e) => document.activeElement === e));
           layouts.push({ w, h, theme, text, state, fields, metrics });
