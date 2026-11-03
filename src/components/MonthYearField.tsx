@@ -334,7 +334,7 @@ export function MonthYearField({
             </div>
             {showYearPicker ? (
               <div
-                className="air-segments cr-scroll resume-date-grid resume-year-grid"
+                className="air-segments air-scroll resume-date-grid resume-year-grid"
                 aria-label="Years"
               >
                 {yearList.map((year) => (

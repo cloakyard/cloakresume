@@ -160,7 +160,7 @@ export function ColorPickerPopover({
         <div className="resume-colour-heading">
           <h2 className="air-floating-title">Primary colour</h2>
           <button
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             type="button"
             aria-label="Close primary colour"
             onClick={closeAndReturn}

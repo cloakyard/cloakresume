@@ -170,7 +170,7 @@ describe.skipIf(!existsSync(chromePath))(
             field.focus({ preventScroll: true });
             const position = Math.floor(field.value.length / 2);
             field.setSelectionRange(position, position);
-            const scroller = field.closest<HTMLElement>(".cr-scroll")!;
+            const scroller = field.closest<HTMLElement>(".air-scroll")!;
             scroller.scrollTop +=
               field.getBoundingClientRect().top -
               scroller.getBoundingClientRect().top +
@@ -190,7 +190,7 @@ describe.skipIf(!existsSync(chromePath))(
               ),
             );
             return {
-              scroll: field.closest(".cr-scroll")!.scrollTop,
+              scroll: field.closest(".air-scroll")!.scrollTop,
               position: field.selectionStart,
               focused: document.activeElement === field,
             };
@@ -2053,7 +2053,7 @@ describe.skipIf(!existsSync(chromePath))(
         });
         await page.setViewport({ width, height: 1000 });
         await page.locator('button[aria-label="Logo icon: none"]').click();
-        await page.waitForSelector('[aria-label="Choose a logo icon"] .cr-scroll button');
+        await page.waitForSelector('[aria-label="Choose a logo icon"] .air-scroll button');
         async function checkEdges(selector: string, expectedExtent = 4) {
           await page.evaluate(
             () =>
@@ -2072,7 +2072,7 @@ describe.skipIf(!existsSync(chromePath))(
               const style = getComputedStyle(element);
               const extent = parseFloat(style.outlineWidth) + parseFloat(style.outlineOffset);
               const rect = element.getBoundingClientRect();
-              const grid = element.closest(".cr-scroll")!.getBoundingClientRect();
+              const grid = element.closest(".air-scroll")!.getBoundingClientRect();
               return {
                 extent,
                 gaps: [
@@ -2090,7 +2090,7 @@ describe.skipIf(!existsSync(chromePath))(
               );
           }
         }
-        await checkEdges('[aria-label="Choose a logo icon"] .cr-scroll button', 5);
+        await checkEdges('[aria-label="Choose a logo icon"] .air-scroll button', 5);
         await page.keyboard.press("Escape");
         await page.setViewport({ width: 1920, height: 1000 });
         // Resizing updates the responsive React layout on the next render.
@@ -2098,7 +2098,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.setViewport({ width, height: 1000 });
         await page.locator('.cr-editor-panel button[aria-haspopup="dialog"]').click();
         await page.locator('button[aria-label="Select year"]').click();
-        await checkEdges('[role="dialog"] .cr-scroll button', 5);
+        await checkEdges('[role="dialog"] .air-scroll button', 5);
       },
     );
 

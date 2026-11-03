@@ -113,7 +113,7 @@ export function AtsReviewContent({
     tabRefs.current[TABS[next].id]?.focus({ preventScroll: true });
   }
   return (
-    <div ref={scrollRef} className="resume-review-body">
+    <div ref={scrollRef} className="air-scroll resume-review-body">
       <p className="resume-review-description">
         Feedback stays on your device. Scores are guidance; actual hiring-system results may differ.
       </p>

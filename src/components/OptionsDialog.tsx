@@ -73,14 +73,14 @@ export function OptionsDialog({
           <button
             ref={closeRef}
             type="button"
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             onClick={onClose}
             aria-label="Close options"
           >
             <X size={18} strokeWidth={1.6} aria-hidden="true" />
           </button>
         </div>
-        <div className="resume-options-body">{children}</div>
+        <div className="air-scroll resume-options-body">{children}</div>
       </div>
     </div>,
     document.body,

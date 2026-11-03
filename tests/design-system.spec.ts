@@ -375,7 +375,7 @@ describe("CloakResume family contract", () => {
     expect(app).toContain("<AtsReviewDialog");
     expect(ats).toContain('className="air-modal resume-review"');
     expect(templates).toContain('className="air-modal resume-library"');
-    expect(templates).toContain('className="resume-library-body"');
+    expect(templates).toContain('className="air-scroll resume-library-body"');
     expect(await source("src/styles/air.css")).toMatch(
       /\.air-modal\s*\{[^}]*max-block-size: calc\(100dvh - 16px\);[^}]*padding-bottom: max\(24px, env\(safe-area-inset-bottom\)\);/,
     );

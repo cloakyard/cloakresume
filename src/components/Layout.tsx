@@ -149,7 +149,7 @@ export function Layout({
               ref={presence.ref}
               inert={presence.closing}
               aria-label={mobileSectionOpen ? "Résumé editor" : "Résumé section picker"}
-              className={`cr-editor-panel resume-editor-panel relative${mobileSectionOpen ? "" : " resume-picker-panel cr-scroll"}`}
+              className={`cr-editor-panel resume-editor-panel relative${mobileSectionOpen ? "" : " resume-picker-panel air-scroll"}`}
             >
               <MobilePanelViews
                 sectionOpen={mobileSectionOpen}

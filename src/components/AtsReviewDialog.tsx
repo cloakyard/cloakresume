@@ -65,7 +65,7 @@ export function AtsReviewDialog({
           <button
             ref={closeRef}
             type="button"
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             onClick={onClose}
             aria-label="Close ATS review"
           >

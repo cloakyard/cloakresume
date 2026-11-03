@@ -174,7 +174,7 @@ export function LogoPicker({ value, onChange }: LogoPickerProps) {
                 className="air-field"
               />
             </div>
-            <div className="resume-logo-grid cr-scroll">
+            <div className="resume-logo-grid air-scroll">
               {results.map((entry) => (
                 <button
                   key={entry.name}
