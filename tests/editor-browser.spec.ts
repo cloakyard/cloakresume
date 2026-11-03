@@ -1991,7 +1991,7 @@ describe.skipIf(!existsSync(chromePath))(
                 document.body.append(probe);
                 const outline = getComputedStyle(probe).outline;
                 probe.remove();
-                return { outline, offset: "2px", shadow: "none" };
+                return { outline, offset: "3px", shadow: "none" };
               })
             : expectedRing;
           expect(result.focused).toBe(true);

@@ -250,15 +250,9 @@
   transform: none;
 }
 .resume-editor
-  :is(
-    .resume-section-link,
-    .air-segments > button,
-    .air-button,
-    .air-icon-button,
-    .resume-editor-brand
-  ):focus-visible {
+  :is(.resume-section-link, .air-segments > button, .resume-editor-brand):focus-visible {
   outline: 2px solid var(--air-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
   box-shadow: none;
 }
 @media (hover: hover) {
@@ -1068,7 +1062,7 @@ textarea.resume-writing-field[data-resizable="false"] {
 }
 .resume-template-choice:focus-visible {
   outline: 2px solid var(--air-accent);
-  outline-offset: 2px;
+  outline-offset: 3px;
 }
 @media (max-width: 640px) {
   .resume-library-viewport {
