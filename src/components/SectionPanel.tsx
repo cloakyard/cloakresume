@@ -34,7 +34,7 @@ export function SectionPanel({
   const meta = SECTIONS.find((s) => s.id === active) ?? SECTIONS[0];
 
   return (
-    <section aria-label={`${meta.label} editor`} className="cr-scroll resume-section print:hidden">
+    <section aria-label={`${meta.label} editor`} className="air-scroll resume-section print:hidden">
       <header className="resume-section-heading">
         <div className="flex-1 min-w-0">
           <h2 className="resume-section-title">

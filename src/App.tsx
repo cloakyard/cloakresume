@@ -460,7 +460,7 @@ export function App() {
           <AtsReviewDialog open={atsOpen} onClose={() => setAtsOpen(false)}>
             <Suspense
               fallback={
-                <div className="resume-review-body">
+                <div className="air-scroll resume-review-body">
                   <p role="status">Loading the local review workspace…</p>
                 </div>
               }

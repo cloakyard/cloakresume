@@ -59,14 +59,14 @@ export function PrivacyPolicyModal({ open, onClose }: { open: boolean; onClose: 
           <h2 id={titleId}>Privacy policy</h2>
           <button
             ref={closeRef}
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             onClick={onClose}
             aria-label="Close privacy policy"
           >
             <X aria-hidden="true" />
           </button>
         </div>
-        <div className="resume-policy-body">
+        <div className="air-scroll resume-policy-body">
           <p id={descriptionId}>
             Your résumé and target job description stay on your device. App and language assets may
             download when needed.

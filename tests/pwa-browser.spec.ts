@@ -84,7 +84,7 @@ describe("PWA recovery on production assets", { timeout: 20_000 }, () => {
     // Allow the original four-second offline timer to elapse while an update is visible.
     await new Promise((resolve) => setTimeout(resolve, 4200));
     expect(await page.$('.air-update button[aria-label="Update and reload"]')).not.toBeNull();
-    await page.click(".air-update-actions button:first-child");
+    await page.click('.air-update [aria-label="Dismiss update notification"]');
     await page.waitForSelector("[name='profile-name']:focus");
     expect(await page.$(".air-update")).toBeNull();
   });

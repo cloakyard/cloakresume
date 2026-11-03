@@ -79,7 +79,7 @@ export function ConfirmDialog({
         <div className="resume-dialog-heading">
           <h2 id={titleId}>{title}</h2>
           <button
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             onClick={onCancel}
             aria-label="Close"
           >

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.5.0",
+  "contractVersion": "1.6.0",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -189,7 +189,8 @@
       ],
       "evidence": [
         "docs/air/evidence/resume-review-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "Air review implemented and software-validated; scores, keyword counts and Parse content preserved. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open; validated is deliberately false. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -354,7 +355,8 @@
       "evidence": [
         "evidence/entry-recovery-2026-10-19.json",
         "evidence/privacy-dialogs-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-21 privacy/dialog follow-up: Destructive confirmation ignores backdrop presses; safe navigation and alert notices retain dismissal. Escape and safe initial/return focus remain. Software checks revalidated. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -491,7 +493,8 @@
       "evidence": [
         "docs/air/evidence/editor-shell-2026-10-19.json",
         "docs/air/evidence/template-library-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -567,7 +570,8 @@
       ],
       "evidence": [
         "docs/air/evidence/options-export-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -660,7 +664,8 @@
         "evidence/privacy-dialogs-2026-10-21.json",
         "docs/air/consistency-2026-10-28.md",
         "evidence/privacy-2026-10-29/policies.json.gz",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "2026-10-19 entry/recovery software checkpoint. Physical touch, software keyboards and spoken assistive acceptance remain open. States apply where relevant to each source; editor/PWA/static404 and previews remain separate. 2026-10-21 privacy/dialog follow-up: Privacy alignment: standard 576px Air dialog, 16px/1.6 air-prose, fixed heading/close and one scrolling body; shared neutral underlined links. Software matrix rechecked; physical/assistive acceptance remains open. Air 1.2.5 public privacy/navigation software audit passes; policy meaning/dates and editor work preserved. Full product/device gates remain separate. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -693,7 +698,8 @@
         "evidence/pwa-recovery-2026-10-21.json",
         "evidence/privacy-dialogs-2026-10-21.json",
         "evidence/consistency-2026-10-26/checks.json.gz",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": " PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. 2026-10-21 privacy/dialog follow-up: Update alignment: neutral opaque Air panel and shared actions, semantic error icon, honest cached-assets copy; actual activation/draft preservation/error recovery retained. Software matrix rechecked; physical/assistive gates remain open. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -870,7 +876,8 @@
         "docs/air/editor-audit.md",
         "docs/air/editor-conditional-audit.json",
         "docs/air/evidence/template-library-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "Air library composition and real inert preview source reviewed. Document fonts/geometry/colour remain output exceptions. Physical touch/software keyboard, OS IME and spoken assistive acceptance remain open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -1652,7 +1659,8 @@
         "docs/air/evidence/writing-hints-2026-10-21.json",
         "evidence/preview-assets-2026-10-21.json",
         "evidence/unused-foundations-2026-10-21.json",
-        "evidence/privacy-dialogs-2026-10-21.json"
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": " Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. 2026-10-21 assets: unused cr-input skin and stale capture selector removed together; retained font/output/popup bridges are tracked in code-cleanup.md. Responsive rendered geometry/styles and template/PDF output preserved. 2026-10-21 cleanup: removed 61 unused token names, unused JSON mirror and unreachable non-Air popup skin. Live font/token, drag and date-position/presence adapters remain for deliberate migration; this does not close full-source acceptance. 2026-10-21 privacy/dialog follow-up: Remaining legacy UI-font, palette and geometry aliases removed; Tailwind sans/mono defaults resolve to Air. Document Fontsource imports and output geometry retained. Broad Tailwind source scanning still emits obsolete utility names from historical evidence/tests; track separately."
     },
@@ -1861,7 +1869,8 @@
         "docs/air/family-2026-10-29.md",
         "docs/air/simple-actions-2026-11-02.md",
         "docs/air/canvas-first-contract-2026-11-03.md",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "docs/air/compact-popups-2026-11-03.md"
       ],
       "notes": "Air 1.3.3 source and rendered automated states reviewed; see dated action audit. Physical device, OS IME and spoken assistive acceptance remain separate and open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },

@@ -104,13 +104,13 @@ export function TemplateModal({
             ref={closeRef}
             type="button"
             onClick={onClose}
-            className="air-icon-button air-button--quiet"
+            className="air-icon-button air-button--quiet air-dismiss"
             aria-label="Close template library"
           >
             <X size={18} strokeWidth={1.6} aria-hidden="true" />
           </button>
         </div>
-        <div className="resume-library-body">
+        <div className="air-scroll resume-library-body">
           <p id={`${id}-description`} className="resume-library-description">
             Your content stays — only the layout changes.
             {!hasContent && " Sample content is shown until you add your own."}

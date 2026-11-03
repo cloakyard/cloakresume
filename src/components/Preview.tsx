@@ -220,7 +220,7 @@ export function Preview({
     <div className="resume-preview-frame">
       <div
         ref={containerRef}
-        className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto cr-scroll [touch-action:pan-x_pan-y_pinch-zoom]"
+        className="cr-preview-scroll relative flex-1 min-w-0 min-h-0 overflow-auto air-scroll [touch-action:pan-x_pan-y_pinch-zoom]"
       >
         {/* Outer frame sizes the scroll box to the *scaled* page so the
           transform actually affects layout dimensions — otherwise the

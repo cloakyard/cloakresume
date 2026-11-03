@@ -142,7 +142,7 @@ export function SectionRail({ active, onChange, variant = "rail" }: Props) {
   const picker = variant === "picker";
   return (
     <nav
-      className={`cr-scroll resume-section-nav resume-section-nav--${variant}`}
+      className={`air-scroll resume-section-nav resume-section-nav--${variant}`}
       aria-label="Resume sections"
     >
       {SECTIONS.map((s) => {
