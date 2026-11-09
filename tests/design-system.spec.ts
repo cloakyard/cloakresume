@@ -64,9 +64,9 @@ describe("CloakResume family contract", () => {
 
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
-    expect(pkg.packageManager).toBe("pnpm@12.15.0");
-    expect(workspace).toContain("vite-plus: 1.4.0");
-    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.4.0");
+    expect(pkg.packageManager).toBe("pnpm@12.18.0");
+    expect(workspace).toContain("vite-plus: 1.5.0");
+    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.5.0");
     expect(pkg.devDependencies).not.toHaveProperty("vitest");
   });
 
@@ -185,7 +185,7 @@ describe("CloakResume family contract", () => {
     expect(layout).toContain('<h1 className="sr-only">CloakResume editor</h1>');
     expect(layout).toContain('href="#editor-content"');
     expect(layout).toContain('id: "editor-content"');
-    expect(view).toContain('className="air-segments resume-view-segment"');
+    expect(view).toContain('className="air-button air-button--quiet resume-view-button"');
     expect(paper).toContain('className="air-segments resume-paper-size"');
     expect(monthYear).toContain(
       "usePickerPosition(open && !disabled, buttonRef, popoverRef, showYearPicker)",
@@ -482,7 +482,7 @@ describe("CloakResume family contract", () => {
     expect(layout).not.toContain("cr-workspace-enter");
     expect(panel).not.toContain("cr-section-enter");
     expect(rail).toContain("cr-section-nav-button");
-    expect(viewSegment).toContain("air-segments");
+    expect(viewSegment).toContain("air-button--quiet resume-view-button");
     expect(paperToggle).toContain("air-segments");
     expect(templateModal).toContain("resume-template-card");
     expect(templateModal).toContain("<TemplatePreview");

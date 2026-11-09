@@ -1472,7 +1472,7 @@ describe.skipIf(!existsSync(chromePath))(
 
     async function openTemplateLibrary(width = 1440) {
       if (width < 1024) {
-        await page.click('button[aria-label="More options"]');
+        await page.click('button[aria-label="More actions"]');
         await clickText("Template", '[role="dialog"]');
       } else {
         await page.click('button[aria-label^="Template:"]');
@@ -1542,7 +1542,7 @@ describe.skipIf(!existsSync(chromePath))(
           }),
         ).toEqual({ templateId: "prism", primary: "#123456", paperSize: "letter" });
         expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-          width < 1024 ? "More options" : "Template: Prism",
+          width < 1024 ? "More actions" : "Template: Prism",
         );
         await resumeEditing();
         await openTemplateLibrary(width);
@@ -1679,7 +1679,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.type('[name="template-search"]', "Prism");
         await page.setViewport({ width: to, height: 900, hasTouch: from === 390 });
         await page.waitForSelector(
-          to < 1024 ? '[aria-label="More options"]' : '[aria-label^="Template:"]',
+          to < 1024 ? '[aria-label="More actions"]' : '[aria-label^="Template:"]',
         );
         expect(
           await page.$eval('[name="template-search"]', (el) => (el as HTMLInputElement).value),
@@ -1688,7 +1688,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.keyboard.press("Escape");
         await page.waitForSelector(".resume-library", { hidden: true });
         expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-          to < 1024 ? "More options" : "Template: ATS Plain",
+          to < 1024 ? "More actions" : "Template: ATS Plain",
         );
       },
     );
@@ -1733,7 +1733,7 @@ describe.skipIf(!existsSync(chromePath))(
       await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await page.waitForSelector(".resume-library", { hidden: true });
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "More options",
+        "More actions",
       );
     });
 
@@ -2347,7 +2347,7 @@ describe.skipIf(!existsSync(chromePath))(
 
     async function openColour(width = 1440) {
       if (width < 1024) {
-        await page.click('button[aria-label="More options"]');
+        await page.click('button[aria-label="More actions"]');
         await clickText("Primary colour", '[role="dialog"]');
       } else await page.click('button[aria-label="Primary colour"]');
       await page.waitForSelector(".resume-colour-picker", { visible: true });
@@ -2394,7 +2394,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.keyboard.press("Escape");
         await page.waitForSelector(".resume-colour-picker", { hidden: true });
         expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-          width < 1024 ? "More options" : "Primary colour",
+          width < 1024 ? "More actions" : "Primary colour",
         );
         expect(await page.$eval("#app", (el) => (el as HTMLElement).inert)).toBe(false);
         await resumeEditing();
@@ -2405,7 +2405,7 @@ describe.skipIf(!existsSync(chromePath))(
           await page.waitForSelector(".resume-colour-picker", { hidden: true });
           expect(
             await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
-          ).toBe("More options");
+          ).toBe("More actions");
         }
       },
     );
@@ -2582,7 +2582,7 @@ describe.skipIf(!existsSync(chromePath))(
       await session.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await page.waitForSelector(".resume-colour-picker", { hidden: true });
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "More options",
+        "More actions",
       );
       await openColour(390);
       expect(await colourHex()).toBe("#123456");
@@ -2607,7 +2607,7 @@ describe.skipIf(!existsSync(chromePath))(
       "Options hands off %s immediately and restores the compact opener",
       async (action) => {
         await openDraft(undefined, {}, 390, true);
-        await page.click('[aria-label="More options"]');
+        await page.click('[aria-label="More actions"]');
         await clickText(action, ".resume-options");
         await page.waitForSelector(".resume-options", { hidden: true });
         await page.waitForSelector('[role="dialog"]');
@@ -2616,7 +2616,7 @@ describe.skipIf(!existsSync(chromePath))(
         await page.keyboard.press("Escape");
         await page.waitForSelector('[role="dialog"]', { hidden: true });
         expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-          "More options",
+          "More actions",
         );
         expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
         expect((await savedResume()).profile.summary).toBe("Draft for audit");
@@ -2625,7 +2625,7 @@ describe.skipIf(!existsSync(chromePath))(
 
     it("Options preserves paper state through resizing and restores a visible desktop action", async () => {
       await openDraft(undefined, {}, 390, true);
-      await page.click('[aria-label="More options"]');
+      await page.click('[aria-label="More actions"]');
       await clickText("Letter", ".resume-options");
       await page.setViewport({ width: 1440, height: 900, hasTouch: true });
       await page.waitForSelector('button[aria-label="Export to PDF"]');
@@ -2647,7 +2647,7 @@ describe.skipIf(!existsSync(chromePath))(
 
     it("Options keeps a not-ready export notice nested and returns to its export action", async () => {
       await openDraft(undefined, {}, 390, true);
-      await page.click('[aria-label="More options"]');
+      await page.click('[aria-label="More actions"]');
       await page.$eval(".resume-root", (e) => {
         (e as HTMLElement).dataset.templateReady = "false";
       });
@@ -2674,8 +2674,11 @@ describe.skipIf(!existsSync(chromePath))(
       async (width) => {
         await openDraft(undefined, {}, width, width === 390);
         await page.waitForSelector('.resume-root[data-template-ready="true"]');
-        if (width === 390) await page.click('[aria-label="More options"]');
-        const action = "button[data-export-pdf]";
+        if (width === 390) await page.click('[aria-label="More actions"]');
+        const action =
+          width === 390
+            ? ".resume-options button[data-export-pdf]"
+            : ".resume-editor-header button[data-export-pdf]";
         const size = () =>
           page.$eval(action, (e) => {
             const r = e.getBoundingClientRect();
@@ -2801,7 +2804,7 @@ describe.skipIf(!existsSync(chromePath))(
         else await picker.cancel();
       };
       try {
-        await page.click('[aria-label="More options"]');
+        await page.click('[aria-label="More actions"]');
         await choose();
         expect(await page.$(".resume-options")).not.toBeNull();
         expect((await savedResume()).profile.summary).toBe("Draft for audit");
@@ -2810,14 +2813,14 @@ describe.skipIf(!existsSync(chromePath))(
         await page.keyboard.press("Escape");
         await page.waitForSelector('[role="alertdialog"]', { hidden: true });
         expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-          "More options",
+          "More actions",
         );
-        await page.click('[aria-label="More options"]');
+        await page.click('[aria-label="More actions"]');
         await choose(good);
         await page.waitForSelector('[role="dialog"]');
         await clickText("Cancel", '[role="dialog"]');
         expect((await savedResume()).profile.summary).toBe("Draft for audit");
-        await page.click('[aria-label="More options"]');
+        await page.click('[aria-label="More actions"]');
         await choose(good);
         await clickText("Replace draft", '[role="dialog"]');
         await page.waitForFunction(
@@ -2837,9 +2840,9 @@ describe.skipIf(!existsSync(chromePath))(
     it("Options traps keyboard focus, scrolls every command into view and supports swipe cancellation/dismissal", async () => {
       await openDraft(undefined, {}, 390, true);
       await page.setViewport({ width: 390, height: 568, hasTouch: true });
-      await page.click('[aria-label="More options"]');
+      await page.click('[aria-label="More actions"]');
       await page.waitForFunction(
-        () => document.activeElement?.getAttribute("aria-label") === "Close options",
+        () => document.activeElement?.getAttribute("aria-label") === "Close actions",
       );
       await page.keyboard.down("Shift");
       await page.keyboard.press("Tab");
@@ -2882,7 +2885,7 @@ describe.skipIf(!existsSync(chromePath))(
       }
       await page.keyboard.press("Tab");
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "Close options",
+        "Close actions",
       );
       const handle = ".resume-options .resume-sheet-handle";
       const cancelBox = (await (await page.$(handle))!.boundingBox())!;
@@ -2908,13 +2911,13 @@ describe.skipIf(!existsSync(chromePath))(
       await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await page.waitForSelector(".resume-options", { hidden: true });
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "More options",
+        "More actions",
       );
     });
 
     it("Options recovers from a JSON save failure without discarding the draft", async () => {
       await openDraft(undefined, {}, 390, true);
-      await page.click('[aria-label="More options"]');
+      await page.click('[aria-label="More actions"]');
       await page.evaluate(() => {
         URL.createObjectURL = () => {
           throw new Error("Downloads unavailable");
@@ -2928,7 +2931,7 @@ describe.skipIf(!existsSync(chromePath))(
       await page.keyboard.press("Escape");
       await page.waitForSelector('[role="alertdialog"]', { hidden: true });
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "More options",
+        "More actions",
       );
       expect((await savedResume()).profile.summary).toBe("Draft for audit");
     });
@@ -3051,7 +3054,7 @@ describe.skipIf(!existsSync(chromePath))(
       await openDraft();
       await page.setViewport({ width: 390, height: 900 });
       await page.locator('button[aria-label="Show preview"]').click();
-      await page.locator('button[aria-label="More options"]').click();
+      await page.locator('button[aria-label="More actions"]').click();
       await clickText("Scan résumé", '[role="dialog"]');
       await page.waitForSelector('[role="tab"][id$="tab-keywords"]', { visible: true });
       await page.setViewport({ width: 320, height: 900 });
@@ -3080,11 +3083,8 @@ describe.skipIf(!existsSync(chromePath))(
       await page.locator('[role="tab"][id$="tab-keywords"]').click();
       await clickText("Open JD editor", '[role="dialog"]');
       await page.waitForSelector('textarea[name="target-job-description"]', { visible: true });
-      expect(
-        await page.$eval('button[aria-label="Show editor"]', (element) =>
-          element.getAttribute("aria-pressed"),
-        ),
-      ).toBe("true");
+      expect(await page.$('button[aria-label="Show preview"]')).not.toBeNull();
+      expect(await page.$('button[aria-label="Show editor"]')).toBeNull();
       await page.type(
         'textarea[name="target-job-description"]',
         "Kubernetes TypeScript leadership",
@@ -3543,7 +3543,7 @@ describe.skipIf(!existsSync(chromePath))(
       await page.waitForSelector('[aria-label="Close ATS review"]:focus');
       await page.setViewport({ width: 390, height: 844 });
       await page.keyboard.press("Escape");
-      await page.waitForSelector('[aria-label="More options"]:focus');
+      await page.waitForSelector('[aria-label="More actions"]:focus');
       expect(await page.$('[aria-label="Scan résumé for ATS and writing issues"]')).toBeNull();
       expect(await page.$eval("#app", (e) => (e as HTMLElement).inert)).toBe(false);
     });
@@ -3582,17 +3582,17 @@ describe.skipIf(!existsSync(chromePath))(
         await page.$eval('[role="tabpanel"]:not([hidden]) pre', (el) => el.textContent),
       ).toContain("Built TypeScript tools.");
       await page.keyboard.press("Escape");
-      await page.waitForSelector('[aria-label="More options"]:focus');
-      await page.click('[aria-label="More options"]');
+      await page.waitForSelector('[aria-label="More actions"]:focus');
+      await page.click('[aria-label="More actions"]');
       await clickText("Scan résumé", '[role="dialog"]');
       await page.waitForSelector('[role="tab"][id$="tab-overview"][aria-selected="true"]');
       await page.keyboard.press("Escape");
-      await page.waitForSelector('[aria-label="More options"]:focus');
+      await page.waitForSelector('[aria-label="More actions"]:focus');
     }, 40_000);
 
     it("cancels a review handle drag and dismisses with the compact swipe alternative", async () => {
       await openDraft(undefined, {}, 390, true);
-      await page.click('[aria-label="More options"]');
+      await page.click('[aria-label="More actions"]');
       await clickText("Scan résumé", '[role="dialog"]');
       await page.waitForSelector(".resume-review");
       const handle = ".resume-review .resume-sheet-handle";
@@ -3632,7 +3632,7 @@ describe.skipIf(!existsSync(chromePath))(
       await cdp.send("Input.dispatchTouchEvent", { type: "touchEnd", touchPoints: [] });
       await page.waitForSelector(".resume-review", { hidden: true });
       expect(await page.evaluate(() => document.activeElement?.getAttribute("aria-label"))).toBe(
-        "More options",
+        "More actions",
       );
     });
 

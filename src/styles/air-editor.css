@@ -161,8 +161,9 @@
   width: 100%;
   height: 100%;
   min-height: 0;
-  overflow: auto;
-  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 .resume-section-heading {
   display: flex;
@@ -203,16 +204,12 @@
 .resume-picker-scroll {
   padding: 0 12px max(16px, env(safe-area-inset-bottom));
 }
-.resume-view-segment,
 .resume-paper-size {
   margin: 0;
   border: 0;
   flex: none;
 }
-.resume-view-segment > button {
-  min-width: 40px;
-  padding-inline: 8px;
-}
+
 .resume-toolbar-label {
   display: none;
 }
@@ -283,7 +280,7 @@
 }
 .resume-compact-split {
   display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr));
+  grid-template-rows: minmax(40%, 1fr) minmax(min(60%, 18rem), 1fr);
   grid-template-areas: "preview" "panel";
   min-height: 0;
   flex: 1;
@@ -317,7 +314,6 @@
   }
 }
 @media (pointer: coarse) {
-  .resume-view-segment > button,
   .resume-paper-size > button {
     min-width: 44px;
   }
@@ -1542,4 +1538,33 @@ button.resume-review-finding:focus-visible {
 }
 .resume-panel-view:not([inert]) {
   z-index: 1;
+}
+
+/* Close stays reachable while long autosaved sections scroll. */
+.resume-section-heading {
+  flex: none;
+}
+.resume-section-body {
+  min-height: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+}
+.resume-section-body > .resume-section-help {
+  margin: 0 0 16px;
+}
+.resume-editor--compact .resume-section-heading {
+  min-height: 64px;
+  padding: 8px 16px;
+  align-items: center;
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-editor--compact .resume-section-title {
+  font-size: var(--air-text-body);
+  letter-spacing: normal;
+}
+.resume-editor--compact .resume-section-body {
+  padding-top: 16px;
+}
+.resume-editor--compact .resume-section-close {
+  min-height: 48px;
 }

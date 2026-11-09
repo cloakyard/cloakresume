@@ -1,10 +1,4 @@
-/**
- * Right-hand toolbar cluster: Scan résumé · New · Save · Load · Export PDF.
- *
- * Desktop shows the full cluster. Mobile renders nothing — the Export PDF
- * primary action and the secondary actions all live in `ToolbarOverflow`,
- * keeping the mobile header to brand + view-toggle + 3-dot menu.
- */
+/** Export stays directly reachable; secondary compact commands live in Actions. */
 
 import { Download, FilePlus2, Save, ScanSearch, Upload } from "lucide-react";
 import { useRef } from "react";
@@ -38,86 +32,87 @@ export function ToolbarActions({
   const loadInputRef = useRef<HTMLInputElement>(null);
   const isMobile = useMediaQuery(BP.mobile);
 
-  if (isMobile) return null;
-
   return (
     <>
-      <button
-        type="button"
-        onClick={(event) => {
-          event.currentTarget.focus();
-          onScanAts();
-        }}
-        className="air-icon-button air-button--quiet resume-toolbar-action"
-        title="Scan résumé for ATS and writing issues"
-        aria-label="Scan résumé for ATS and writing issues"
-      >
-        <ScanSearch aria-hidden="true" size={18} strokeWidth={1.6} />
-        <span className="resume-toolbar-label">Scan résumé</span>
-      </button>
+      {!isMobile && (
+        <>
+          <button
+            type="button"
+            onClick={(event) => {
+              event.currentTarget.focus();
+              onScanAts();
+            }}
+            className="air-icon-button air-button--quiet resume-toolbar-action"
+            title="Scan résumé for ATS and writing issues"
+            aria-label="Scan résumé for ATS and writing issues"
+          >
+            <ScanSearch aria-hidden="true" size={18} strokeWidth={1.6} />
+            <span className="resume-toolbar-label">Scan résumé</span>
+          </button>
 
-      <ToolbarDivider />
+          <ToolbarDivider />
 
-      <div className="flex items-center gap-0.5">
-        <button
-          type="button"
-          onClick={(event) => {
-            event.currentTarget.focus();
-            onNewResume();
-          }}
-          className="air-icon-button air-button--quiet resume-toolbar-action"
-          title="Start a new blank resume"
-          aria-label="Start a new blank resume"
-        >
-          <FilePlus2 aria-hidden="true" size={18} strokeWidth={1.6} />
-          <span className="resume-toolbar-label">New</span>
-        </button>
-        <button
-          type="button"
-          onClick={(event) => {
-            event.currentTarget.focus();
-            onSaveFile();
-          }}
-          className="air-icon-button air-button--quiet resume-toolbar-action"
-          title="Save resume data as JSON file"
-          aria-label="Save resume data as JSON file"
-        >
-          <Save aria-hidden="true" size={18} strokeWidth={1.6} />
-          <span className="resume-toolbar-label">Save</span>
-        </button>
-        <button
-          type="button"
-          aria-disabled={loadingFile || undefined}
-          aria-busy={loadingFile || undefined}
-          onClick={(event) => {
-            event.currentTarget.focus();
-            if (!loadingFile) loadInputRef.current?.click();
-          }}
-          className="air-icon-button air-button--quiet resume-toolbar-action"
-          title="Load a previously saved resume file"
-          aria-label="Load a previously saved resume file"
-        >
-          <Upload aria-hidden="true" size={18} strokeWidth={1.6} />
-          <span className="resume-toolbar-label">Load</span>
-        </button>
-      </div>
+          <div className="flex items-center gap-0.5">
+            <button
+              type="button"
+              onClick={(event) => {
+                event.currentTarget.focus();
+                onNewResume();
+              }}
+              className="air-icon-button air-button--quiet resume-toolbar-action"
+              title="Start a new blank resume"
+              aria-label="Start a new blank resume"
+            >
+              <FilePlus2 aria-hidden="true" size={18} strokeWidth={1.6} />
+              <span className="resume-toolbar-label">New</span>
+            </button>
+            <button
+              type="button"
+              onClick={(event) => {
+                event.currentTarget.focus();
+                onSaveFile();
+              }}
+              className="air-icon-button air-button--quiet resume-toolbar-action"
+              title="Save resume data as JSON file"
+              aria-label="Save resume data as JSON file"
+            >
+              <Save aria-hidden="true" size={18} strokeWidth={1.6} />
+              <span className="resume-toolbar-label">Save</span>
+            </button>
+            <button
+              type="button"
+              aria-disabled={loadingFile || undefined}
+              aria-busy={loadingFile || undefined}
+              onClick={(event) => {
+                event.currentTarget.focus();
+                if (!loadingFile) loadInputRef.current?.click();
+              }}
+              className="air-icon-button air-button--quiet resume-toolbar-action"
+              title="Load a previously saved resume file"
+              aria-label="Load a previously saved resume file"
+            >
+              <Upload aria-hidden="true" size={18} strokeWidth={1.6} />
+              <span className="resume-toolbar-label">Load</span>
+            </button>
+          </div>
 
-      <ToolbarDivider />
+          <ToolbarDivider />
 
-      <input
-        ref={loadInputRef}
-        type="file"
-        name="resume-file"
-        aria-label="Load résumé JSON file"
-        accept="application/json,.json"
-        className="hidden"
-        onChange={(e) => {
-          const f = e.target.files?.[0];
-          if (f) onLoadFile(f);
-          e.target.value = "";
-        }}
-      />
-
+          <input
+            ref={loadInputRef}
+            type="file"
+            name="resume-file"
+            aria-label="Load résumé JSON file"
+            accept="application/json,.json"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) onLoadFile(f);
+              e.target.value = "";
+            }}
+          />
+        </>
+      )}
       <button
         type="button"
         data-export-pdf=""

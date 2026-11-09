@@ -34,14 +34,13 @@ export function SectionPanel({
   const meta = SECTIONS.find((s) => s.id === active) ?? SECTIONS[0];
 
   return (
-    <section aria-label={`${meta.label} editor`} className="air-scroll resume-section print:hidden">
+    <section aria-label={`${meta.label} editor`} className="resume-section print:hidden">
       <header className="resume-section-heading">
         <div className="flex-1 min-w-0">
           <h2 className="resume-section-title">
             <span>{meta.label}</span>
             {meta.id === "jd" && <span className="resume-section-optional">Optional</span>}
           </h2>
-          <div className="resume-section-help">{meta.description}</div>
         </div>
         {onClose && (
           <button
@@ -54,7 +53,8 @@ export function SectionPanel({
           </button>
         )}
       </header>
-      <div key={active} className="resume-section-body">
+      <div key={active} className="air-scroll resume-section-body">
+        <div className="resume-section-help">{meta.description}</div>
         <Editor
           active={active}
           resume={resume}

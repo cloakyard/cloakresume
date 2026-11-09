@@ -29,7 +29,7 @@ export function OptionsDialog({
     inertBackground: true,
     fallbackFocus: () =>
       document.querySelector<HTMLButtonElement>(
-        'button[aria-label="More options"], button[data-export-pdf]',
+        'button[aria-label="More actions"], button[data-export-pdf]',
       ),
   });
   const swipe = useSwipeToDismiss(dialogRef, onClose);
@@ -69,13 +69,13 @@ export function OptionsDialog({
           <span />
         </div>
         <div className="resume-dialog-heading">
-          <h2 id={titleId}>Options</h2>
+          <h2 id={titleId}>Actions</h2>
           <button
             ref={closeRef}
             type="button"
             className="air-icon-button air-button--quiet air-dismiss"
             onClick={onClose}
-            aria-label="Close options"
+            aria-label="Close actions"
           >
             <X size={18} strokeWidth={1.6} aria-hidden="true" />
           </button>
