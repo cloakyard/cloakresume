@@ -25,4 +25,4 @@ Browser captures include phone, tablet, laptop, desktop, short landscape and
 32px root text. Physical devices, software keyboards/IME, real browser zoom and
 spoken assistive acceptance remain open. Family receipts live in Cloakyard's
 `docs/air/evidence/mobile-simplicity-2026-11-09`; the complete Air contract remains
-bundled here. Deployment is pending the release PR.
+bundled here. The preceding release is deployed through #60; exact-main checks and production verification are recorded in that PR.

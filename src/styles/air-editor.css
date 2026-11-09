@@ -1006,7 +1006,7 @@ textarea.resume-writing-field[data-resizable="false"] {
 }
 .resume-template-paper {
   overflow: hidden;
-  border-radius: 0 0 17px 17px;
+  border-radius: 0 0 calc(var(--air-radius-panel) - 1px) calc(var(--air-radius-panel) - 1px);
   border-top: 1px solid var(--air-line);
 }
 .resume-template-details {
