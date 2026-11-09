@@ -34,7 +34,7 @@ const sections = [
   "Certifications",
   "Awards",
   "Languages",
-  "Interests & Tools",
+  "Interests & tools",
   "Quick stats",
   "Custom",
   "Target JD",
@@ -347,7 +347,12 @@ try {
             }
           }
           // Forced-colour / non-reduced state uses the same live section, no injected component.
-          if (w === 1024 && text === 32 && state === "populated") {
+          if (
+            w === 1024 &&
+            text === 32 &&
+            state === "populated" &&
+            sections.includes("Target JD")
+          ) {
             const cdp = await page.createCDPSession();
             await cdp.send("Emulation.setEmulatedMedia", {
               features: [

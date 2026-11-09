@@ -1,17 +1,14 @@
-<div align="center">
+# CloakResume
 
-  <p><strong>Your next chapter. In your words.</strong></p>
-  <p>Build, tailor, review and export your résumé in your browser.</p>
+**Your next chapter. In your words.**
 
-  <p><a href="https://resume.cloakyard.com/">resume.cloakyard.com</a></p>
+[Website](https://resume.cloakyard.com/) · [Source](https://github.com/cloakyard/cloakresume) · [Support](https://ko-fi.com/sumitsahoo21)
 
-  <p>
+<p align="center">
     <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-yellow.svg" alt="MIT License" /></a>
     <img src="https://img.shields.io/badge/platform-Web%20%7C%20PWA-blue" alt="Platform: Web and PWA" />
     <img src="https://img.shields.io/badge/privacy-local--first-047857" alt="Local-first privacy" />
   </p>
-
-</div>
 
 <p align="center">
   <picture>
@@ -20,9 +17,11 @@
   </picture>
 </p>
 
----
+## Overview
 
-## What it does
+Build, tailor, review and export a résumé in your browser. The application keeps document content local while supporting multiple layouts, portable files and writing review.
+
+## Features
 
 CloakResume is a browser-native editor for the complete résumé workflow:
 
@@ -37,7 +36,7 @@ into a résumé once, then rests without playback controls. Public hyperlinks st
 cues where appropriate. Résumé templates preserve their individual typography,
 author-selected colours and pagination in both application themes.
 
-## Portable files
+### Portable files
 
 **Save** writes a versioned `.cloakresume.json` file containing the résumé, selected
 template, document colour, paper size, and optional job description. **Load** checks
@@ -59,7 +58,7 @@ Ordinary prose keeps natural word boundaries; emergency wrapping is reserved for
 unbroken values such as URLs. The final A4 sample export was visually inspected across
 all five pages and checked with independent PDF text and link extraction tools.
 
-## Privacy and offline behavior
+## Privacy
 
 Résumé and job-description content is processed in the browser. The app has no résumé
 upload endpoint, required account, analytics, or tracking integration. Drafts use
@@ -74,18 +73,13 @@ still requires a network connection.
 
 See [SECURITY.md](SECURITY.md) for the security boundary and disclosure guidance.
 
-## Technology
-
-| Area              | Technology                                                                                                    |
-| ----------------- | ------------------------------------------------------------------------------------------------------------- |
-| Application       | [React 19](https://react.dev/) + [TypeScript 7](https://www.typescriptlang.org/)                              |
-| Styling           | [Tailwind CSS 4](https://tailwindcss.com/) + app-wide design tokens                                           |
-| Build and tooling | [Vite+ (`vp`)](https://viteplus.dev/)                                                                         |
-| Writing review    | [Harper](https://writewithharper.com/) WebAssembly in a dedicated worker                                      |
-| PDF export        | [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) + [jsPDF](https://github.com/parallax/jsPDF) |
-| PWA               | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) + Workbox                                                |
-
 ## Getting started
+
+Open [resume.cloakyard.com](https://resume.cloakyard.com/) in a modern browser. Start blank, use a sample, import an editable file or restore a saved draft. Choose a section to edit, then export or save a portable copy.
+
+The installable PWA caches its core shell after loading. The writing-review language engine requires its own initial download; cached availability depends on browser storage.
+
+## Development
 
 Requires Node.js 24 or newer and the Vite+ CLI.
 
@@ -102,8 +96,8 @@ vp dev
 | `vp install`                  | Install the locked dependency graph                           |
 | `vp dev`                      | Start the development server                                  |
 | `vp check`                    | Format, lint, and type-check with TypeScript 7                |
-| `vp test`                     | Run the test suite                                            |
-| `vp build`                    | Create the production bundle                                  |
+| `vp test run`                 | Run the test suite                                            |
+| `vp run build`                | Create the production bundle                                  |
 | `vp preview`                  | Preview a production build                                    |
 | `vp outdated`                 | Report packages with newer releases                           |
 | `vp pm audit`                 | Audit the installed dependency graph                          |
@@ -115,7 +109,31 @@ The browser regression tests cover long-field editing, current-job dates, autosa
 
 Vitest is pinned to the version bundled by Vite+. Upgrade that pin together with Vite+ rather than independently. The PWA asset generator runs through `vp run generate-icons`; the Vite plugin's optional asset-generation integration is disabled.
 
-## Project map
+### Verification
+
+Run `vp check`, `npx --yes knip@6.44.2`, `vp run build` and the production browser/test command above. A missing browser or skipped required test is not a passing gate. Preserve template typography, pagination, selectable text and links.
+
+### Technology
+
+| Area              | Technology                                                                                                    |
+| ----------------- | ------------------------------------------------------------------------------------------------------------- |
+| Application       | [React 19](https://react.dev/) + [TypeScript 7](https://www.typescriptlang.org/)                              |
+| Styling           | [Tailwind CSS 4](https://tailwindcss.com/) + app-wide design tokens                                           |
+| Build and tooling | [Vite+ (`vp`)](https://viteplus.dev/)                                                                         |
+| Writing review    | [Harper](https://writewithharper.com/) WebAssembly in a dedicated worker                                      |
+| PDF export        | [html2canvas-pro](https://github.com/yorickshan/html2canvas-pro) + [jsPDF](https://github.com/parallax/jsPDF) |
+| PWA               | [vite-plugin-pwa](https://vite-pwa-org.netlify.app/) + Workbox                                                |
+
+## Design and assets
+
+- [DESIGN.md](DESIGN.md) defines the complete portable Air contract and CloakResume requirements. [src/styles/air.css](src/styles/air.css) is the pinned family stylesheet.
+- [docs/air/surfaces.json](docs/air/surfaces.json), [validation](docs/air/validation.md) and [cleanup record](docs/air/code-cleanup.md) track current migration coverage and remaining acceptance gates. [docs/design-audit.md](docs/design-audit.md) preserves the historical Workbench audit.
+- [tokens.css](tokens.css) retains live compatibility/output values; the pinned Air bundle owns application design.
+- [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
+- [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
+- [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.
+
+## Project structure
 
 ```text
 cloakresume/
@@ -132,7 +150,7 @@ cloakresume/
 │   ├── templates/             # 17 output layouts and shared pagination helpers
 │   ├── utils/                 # ATS, grammar, export, colour, storage, and rich-text logic
 │   ├── App.tsx                # State and workflow composition
-│   ├── cloak-family.css       # Remaining compatibility adapters; see cleanup record
+│   ├── cloak-family.css       # Live compatibility adapters
 │   └── index.css              # Base styles and Tailwind theme bridge
 ├── DESIGN.md                  # Authoritative layout and interaction contract
 ├── tokens.css                 # Legacy/output bridge; pinned Air CSS owns application UI
@@ -144,21 +162,20 @@ cloakresume/
 └── package.json
 ```
 
-## Design and asset references
+## Deployment and releases
 
-- [DESIGN.md](DESIGN.md) defines the complete portable Air contract and CloakResume requirements. [src/styles/air.css](src/styles/air.css) is the pinned family stylesheet.
-- [docs/air/surfaces.json](docs/air/surfaces.json), [validation](docs/air/validation.md) and [cleanup record](docs/air/code-cleanup.md) track current migration coverage and remaining acceptance gates. [docs/design-audit.md](docs/design-audit.md) preserves the historical Workbench audit.
-- [tokens.css](tokens.css) retains live compatibility/output values; the pinned Air bundle owns application design.
-- [docs/logic-audit-2026-09-14.md](docs/logic-audit-2026-09-14.md) records the reliability audit, resolved bugs, verification, and remaining improvements.
-- [docs/brand-assets.md](docs/brand-assets.md) records canonical OG, PWA screenshot, favicon, and launcher-asset dimensions plus the capture states used to generate them.
-- [src/templates/TEMPLATE_INSTRUCTIONS.md](src/templates/TEMPLATE_INSTRUCTIONS.md) is the contract for résumé template coverage, pagination, accessibility, and ATS-safe output.
+The production build is served as static assets by Cloudflare Workers using `wrangler.jsonc`. Run `vp run build` before `vp preview` or a deployment dry run. Work on `dev`, open a PR into `main`, merge only after required checks pass, and update `dev` from `main`.
 
-## Contributing and license
+Only the configured main-branch deployment publishes production. Check the exact main commit, hosting result and live assets; a local build does not prove deployment.
 
-Contributions are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) before changing
-application chrome or résumé templates. CloakResume is licensed under the
-[MIT License](LICENSE).
+## Contributing
 
-<p align="center">
-  Built with care by <a href="https://github.com/sumitsahoo">Sumit Sahoo</a>
-</p>
+Read [AGENTS.md](AGENTS.md), [CLAUDE.md](CLAUDE.md) and [DESIGN.md](DESIGN.md) before changes. See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution and disclosure guidance. Keep changes bounded, preserve features and output, remove obsolete references, and record actual verification. Compare all applicable views in phone, tablet, laptop and desktop layouts, both themes.
+
+The [family README standard](https://github.com/cloakyard/cloakyard/blob/main/docs/README_STANDARD.md) defines this document's section order. Support the project through [Buy me a coffee](https://ko-fi.com/sumitsahoo21).
+
+## License
+
+Released under the [MIT License](LICENSE). Third-party components retain their own licenses.
+
+Built by [Sumit Sahoo](https://github.com/sumitsahoo), part of [Cloakyard](https://cloakyard.com/).

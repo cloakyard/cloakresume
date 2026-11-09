@@ -267,7 +267,7 @@ export const TEMPLATE_CATEGORIES: {
 }[] = [
   {
     id: "ats",
-    label: "ATS-Friendly",
+    label: "ATS-friendly",
     description: "Maximum parseability for online applications",
   },
   {
