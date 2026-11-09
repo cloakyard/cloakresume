@@ -206,3 +206,10 @@ The earlier broad Tailwind scan follow-up is now resolved. Dynamic
 `resume-section-nav--rail` remains live; no unsafe selector purge was used.
 All 373 serial production tests, exact render/export comparisons, lint/build and
 Air gates pass; see `evidence/code-cleanup-2026-10-26/`.
+
+### 2026-11-09 — compact simplicity
+
+Removed the two-button view-segment implementation and its skins; Preview/Edit is
+one explicit switch. Actions rows consume the portable menu recipe. Replaced stale
+Options accessibility selectors and motion/PWA guidance. Section headings stay
+outside scrolling controls; no extra state or expansion toggle was added.

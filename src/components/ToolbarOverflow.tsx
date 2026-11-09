@@ -98,7 +98,7 @@ export function ToolbarOverflow({
             setOpen(true);
           }}
           className="air-icon-button air-button--quiet"
-          aria-label="More options"
+          aria-label="More actions"
           aria-expanded={open || colorOpen}
           aria-controls={colorOpen ? colorId : open ? optionsId : undefined}
           aria-haspopup="dialog"
@@ -124,7 +124,7 @@ export function ToolbarOverflow({
       />
 
       <OptionsDialog open={open} instant={handoff} id={optionsId} onClose={() => setOpen(false)}>
-        <div className="resume-options-actions">
+        <div className="resume-options-actions air-editor-menu">
           <OverflowItem
             icon={<Download />}
             label="Export PDF"
@@ -231,7 +231,7 @@ function OverflowItem({
         event.currentTarget.focus();
         if (!busy) onClick();
       }}
-      className={`air-button resume-options-action${primary ? " air-button--primary" : " air-button--quiet"}`}
+      className={`air-button air-editor-menu__item resume-options-action${primary ? " air-button--primary" : " air-button--quiet"}`}
     >
       <span aria-hidden="true" className="resume-options-icon">
         {icon}

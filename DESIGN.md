@@ -1,19 +1,19 @@
 ---
 name: CloakResume — Cloakyard Air
-version: 1.6.0
+version: 1.7.0
 status: approved
-date: 2026-11-03
+date: 2026-11-09
 scope: complete-web-product
 source-repository: https://github.com/cloakyard/cloakyard
 source-directory: design/air
-family-contract-sha256: ebcfe4f5ccc2c530fa9676b957664cc1c6e1ad4e7b1612a9771a2e38c89360ca
+family-contract-sha256: 33da13992befe0dcc707978bb702ffcb3e1d2d59dcb9ddec156043d0a0c0c015
 ---
 
 <!-- BEGIN CLOAKYARD AIR CONTRACT -->
 
 # Cloakyard Air design contract
 
-Version: **1.6.0 — compact notices and quiet scrolling** · Direction: **Air** · Updated: **2026-11-03**
+Version: **1.7.0 — simpler compact editors** · Direction: **Air** · Updated: **2026-11-09**
 
 The detailed Air system is **locked for implementation**. On 2026-10-13 the user
 authorized one final agent review followed by implementation; that review is
@@ -367,31 +367,38 @@ No glass blur behind forms, body copy, tables, or document content.
   controls on phones/tablets. Never repeat the same commit in the header, panel
   body or canvas. Different operations (such as detecting, printing or downloading)
   retain their descriptive verbs and their real consent/output boundaries.
-- **Canvas-first touch composition:** the approved IMG phone/tablet variant puts
-  one X / tick pair in the fixed tool-panel header beside its title. X means
-  Cancel, tick means Apply; accessible names and keyboard/hover tooltips state
-  those verbs. Use `air-editor-actions--compact`, neutral secondary/monochrome
-  primary materials and 48px targets. Close-only panels retain a labelled Close.
+- **Compact tool completion:** PDF and IMG phone/tablet editing use one X / tick
+  pair in the fixed tool-panel header beside its title. X means Cancel; tick means
+  Apply. Accessible names and keyboard/hover tooltips state those verbs. Use
+  `air-editor-actions--compact`, neutral secondary/monochrome primary materials
+  and 48px targets. Desktop controls retain text labels. Inspection/output panels
+  use labelled Close; autosaved writing uses Close without inventing a transaction.
   Keep errors in the reachable scrolling body, announced and associated with the
-  actions. Never duplicate this pair in the canvas toolbar or panel footer.
-  Reserve at least 40% of the visible editor height for the image viewport;
-  maintain image aspect ratio and scroll only the tool body. Tablet and short
-  landscape may place the inspector beside the photo. Global history/view/export
-  controls form a small opaque floating group on the canvas plane. The compact
-  composition replaces expansion toggles, not real tool transactions. Preserve
-  every navigation/output action, safe-area clearance and keyboard access.
-  This optional composition does not force icon-only actions into document
-  editing or autosaved writing; their labelled actions remain the default.
+  actions. Never duplicate this pair in the canvas header or panel footer.
+- **Compact editor header:** use `air-editor-header--compact`, with a 64px minimum
+  height, 12px side insets, quiet canvas-plane background and no floating toolbar
+  enclosure. Place the home mark at the leading edge; Export and More actions are
+  the trailing actions. Export uses the monochrome primary button; More actions
+  opens the shared Actions dialog/sheet. Use `air-editor-menu` and its rows/zoom
+  composition with shared 18px/1.6 icons. Task-specific navigation or history may
+  use the remaining space; secondary commands remain available in Actions.
+  Filename/context wraps fully in the sheet. Desktop canvas chrome may retain its
+  task-specific layout; compact chrome cannot shrink targets to fit it.
+- Reserve at least 40% of the visible editor working area for the photo/document
+  preview, maintain its aspect ratio and scroll the controls independently. Tablet
+  and short landscape may place controls beside the preview. Remove panel expansion
+  toggles when scrolling serves the task. A full-preview action is distinct from
+  editing and must provide a clearly named return to Edit. Preserve every real
+  navigation/output action, safe-area clearance, drafts and keyboard access.
 - **Apply** accepts the current edit once; **Cancel** restores its entry state.
   Await work, retain failed/invalid drafts for correction and block repeated
   activation. An inspection or output panel with no staged edit uses **Close**;
   autosaved writing stays autosaved, with no invented Apply/Cancel transaction.
   Use **Save**, **Download** or another precise verb when that is the real action.
   Done is reserved for finishing a transient picker whose value is already live.
-- Keep **Expand controls / Split view** separate from edit completion. Changing
-  the view never applies or cancels work; a swipe must not silently commit an edit.
-  The action region wraps at enlarged text, retains 44px touch targets and leaves
-  the photo/document plus a reachable scrolling control region on short screens.
+- Changing views never applies or cancels work; a swipe must not silently commit
+  an edit. Keep the action region outside the scrolling controls, and retain
+  reachable controls and a visible preview on short screens and at enlarged text.
 
 - Use a real button for actions. Ready, busy, success and recoverable failure
   retain the same geometry and hierarchy. Reserve the intrinsic size of all
@@ -1252,7 +1259,7 @@ performance approval.
   pending initialization. Reduced motion, Save-Data, unavailable WebGPU, and
   reported memory/core counts of 4 or fewer use the static artwork. These browser
   hints supplement, rather than replace, real-device performance validation.
-- Bundle Shaders locally, pinned to 4.0.5 for this candidate, with no telemetry,
+- Bundle Shaders locally, pinned to 4.0.7 for this candidate, with no telemetry,
   hosted presets or remote assets. The lazy study bundle is approximately 369 kB
   gzip, with a 400 kB build ceiling. This is a measured study budget, not an
   approved production payload. Preserve dependency licenses and asset hashes.
@@ -1380,10 +1387,11 @@ an Apply transaction. Keep the existing accessible section-specific name.
 - The editor uses a 360px compact desktop writing panel and 420px from 1280px,
   beside the 72px section rail. The 36px mark retains a 44px link target. Header
   groups reflow at enlarged text; narrow headers retain the named mark link.
-- Portrait compact editing keeps equal preview/editor panes. From 640–1023px on
+- Portrait compact editing starts with equal preview/editor panes; enlarged text may
+  give the writing panel up to 60% while preserving at least 40% preview. From 640–1023px on
   screens at most 600px high, the two panes sit side by side. Both remain scrollable;
   expanded Preview and the skip-to-editor action remain available. No rotation lock.
-- The panel heading scrolls with its content on short screens. Picker handoffs move
+- The panel heading and Close action stay outside the independently scrolling body. Picker handoffs move
   focus to the selected section or back to its selected row; resizing does not steal
   focus. The zoom dock is outside document scrolling and stays reachable at any zoom.
 - `node scripts/test-air-editor-shell.mjs` checks shell geometry and all 13 navigation
@@ -1448,7 +1456,8 @@ an Apply transaction. Keep the existing accessible section-specific name.
   retain stable icon names, the 80-result cap and every existing icon. Unknown
   imported names remain visible and unchanged until an explicit choice or clear.
   Search retains a stable-height result area so filtering cannot move a tap target.
-- Logo opening/closing is immediate. Mouse/keyboard opening focuses search;
+- Logo opening/closing uses shared popover presence (180ms/160ms), settling immediately
+  for reduced motion. Mouse/keyboard opening focuses search;
   touch opening focuses the surface without summoning a software keyboard.
   Escape/clear/selection restore the trigger; Tab can leave the non-modal popup.
   The logo and date portals share viewport placement, safe edges and short-screen
@@ -1467,7 +1476,7 @@ an Apply transaction. Keep the existing accessible section-specific name.
   pre-drag value. Invalid hex remains editable with an associated blur error.
 - The colour body and portal are shared by both toolbar paths. Desktop is a
   non-modal popover with Tab exit; compact mode is modal with background inertness,
-  contained focus and return to More options. Phone drag-handle dismissal and
+  contained focus and return to More actions. Phone drag-handle dismissal and
   cancellation remain available without intercepting wheel gestures. Reuse date/logo
   viewport placement,
   16px safe edges and internal scrolling. Fine input starts at Brightness; coarse
@@ -1533,10 +1542,10 @@ an Apply transaction. Keep the existing accessible section-specific name.
   lazy template modules, fonts, A4 scaling and document geometry. No gallery style
   may alter document typography, symbols, images or JSON/PDF output.
 - The library reuses the established modal lifecycle, background inertness and
-  compact swipe handling. Frequent library opening/dismissal is immediate. Native
+  compact swipe handling. Library opening/dismissal uses shared dialog presence (240ms/160ms). Native
   Safari opener focus, keyboard wrap/return, nested save-error notices and drag
   cancellation remain supported. The toolbar stays mounted across responsive
-  changes; dismissal returns to the surviving Template or More options control.
+  changes; dismissal returns to the surviving Template or More actions control.
 - `node scripts/test-air-library.mjs` checks gallery, filtered and no-results states,
   blank/populated drafts, every viewport class, both themes, text enlargement,
   coarse/fine targets and forced colours. Native Safari and actual Firefox zoom
@@ -1549,7 +1558,7 @@ an Apply transaction. Keep the existing accessible section-specific name.
   loads eagerly so Close, Escape, focus containment and background inertness work
   while the four panes download. Close stays outside the scrolling report. Short
   panels share the tab anchor with long panels; tabs wrap at enlarged text and
-  never cover focused report content. Opening and dismissal are immediate.
+  never cover focused report content. Opening and dismissal use shared dialog presence.
 - Keep Overview, Keywords, Insights and Parse, their numeric scores, thresholds,
   dimensions, keyword matching/counts, ordering and complete plain-text output.
   Score colours are semantic data ink, not tinted application surfaces. Metadata
@@ -1567,7 +1576,7 @@ an Apply transaction. Keep the existing accessible section-specific name.
   leaves the browser, and the existing JD exclusion from grammar stays intact.
 - Tab arrows/Home/End preserve roving focus and their associated panels. Field/JD
   handoffs focus the destination after its section mounts. Dismissal returns to
-  the surviving Scan/More options opener across responsive changes. Nested save
+  the surviving Scan/More actions opener across responsive changes. Nested save
   notices and compact swipe/cancel retain the shared modal lifecycle.
 - `node scripts/test-air-review.mjs` covers all panes and empty/short/populated
   reports across required sizes, themes and enlarged text. The companion
@@ -1576,19 +1585,19 @@ an Apply transaction. Keep the existing accessible section-specific name.
   responses, lazy dismissal, real retry/completion, stale edits and field handoffs.
   These are software checks; physical touch/software keyboard, OS IME and spoken
   assistive acceptance remain open. Final product acceptance and cleanup
-  are still required; CloakIMG stays last.
+  are still required across the family, including CloakIMG.
 
-### Options and export controls
+### Actions and export controls
 
-- Options uses the standard Air dialog/sheet with a persistent heading, background
+- Actions uses the standard Air dialog/sheet with a persistent heading, background
   inertness and one scrolling command region. Keep PDF, Scan, Template, Primary
   colour, A4/Letter, New, Save JSON and Load JSON available with full relative-size
   labels and shared neutral controls. The open sheet survives desktop/compact
   resize; paper state remains unchanged. Read current viewport matches when
   rendering, even before native change notifications, so dismissal returns to the
   visible toolbar. Colour handoffs use the existing picker.
-- Frequent command handoffs are immediate. Finish closing Options and restoring
-  its opener before the destination captures focus; never queue a 200ms callback.
+- Command handoffs follow actual exit completion. Finish closing Actions and restoring
+  its opener before the destination captures focus; never use a guessed timer.
   Keep native file acquisition inside user activation. Cancel preserves the draft;
   malformed files fail before replacement confirmation; reset the input so the same
   file can be chosen again. Pointer actions explicitly focus their initiators for
@@ -1600,8 +1609,8 @@ an Apply transaction. Keep the existing accessible section-specific name.
   Keep duplicate guards, template readiness, actual layout rejection, cleanup and
   retry. JSON save failures also preserve work and show a recoverable notice.
 - Keep the lazy raster/text/link exporter, filenames, data schema, all templates,
-  paper dimensions, fonts and output unchanged. The Options surface is immediate,
-  including reduced motion; emulated swipe/cancel and keyboard dismissal remain.
+  paper dimensions, fonts and output unchanged. The Actions surface uses shared dialog presence,
+  settling immediately for reduced motion; swipe/cancel and keyboard dismissal remain.
 - Track removals and retained legacy consumers in `docs/air/code-cleanup.md`.
   `scripts/test-air-options.mjs` covers ready/busy/failure layouts in both themes
   and enlarged text; production browser regressions cover native acquisition,
@@ -1611,9 +1620,10 @@ an Apply transaction. Keep the existing accessible section-specific name.
 
 ### PWA update and static recovery — 2026-10-21
 
-- Place update/offline status in normal flow, with readable neutral copy and shared
-  Air actions. Keep editor/modal controls uncovered; constrain a long notice to
-  45dvh with reachable scrollable actions. No decorative spinner or timed reload.
+- Use the shared compact bottom-right update/offline popup (384px capped to safe
+  viewport insets), below dialogs and outside editor layout. Keep readable neutral
+  copy and shared Air actions; constrain long notices to 45dvh with reachable
+  scrollable actions. No decorative spinner or timed reload.
 - Do not steal focus on arrival. Preserve the invoking focus while busy and restore
   the previous connected target on dismissal. Pause the offline notice timer while
   hovered/focused; its timer must never dismiss a pending update.

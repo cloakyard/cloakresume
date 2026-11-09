@@ -46,7 +46,7 @@ async function press(page, selector) {
 }
 async function open(page, width) {
   if (width < 1024) {
-    await press(page, '[aria-label="More options"]');
+    await press(page, '[aria-label="More actions"]');
     await page.evaluate(() =>
       [...document.querySelectorAll('[role="dialog"] button')]
         .find((el) => el.textContent.trim() === "Template")
@@ -302,7 +302,7 @@ try {
           assert.equal(
             await page.evaluate(() => document.activeElement?.getAttribute("aria-label")),
             w < 1024
-              ? "More options"
+              ? "More actions"
               : draft === "empty"
                 ? "Template: Classic Sidebar"
                 : "Template: ATS Plain",

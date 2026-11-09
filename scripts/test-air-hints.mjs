@@ -162,7 +162,7 @@ async function openPage(w, h, theme, text, feature) {
   await page.evaluate(() => document.fonts.ready);
   await frame(page);
   if (w < 1024) {
-    await page.click('button[aria-label="More options"]');
+    await page.click('button[aria-label="More actions"]');
     await page.waitForFunction(() =>
       [...document.querySelectorAll('[role="dialog"] button')].some(
         (b) => b.textContent.trim() === "Scan résumé",

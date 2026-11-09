@@ -26,7 +26,7 @@ export function AtsReviewDialog({
     inertBackground: true,
     fallbackFocus: () =>
       document.querySelector<HTMLButtonElement>(
-        'button[aria-label="Scan résumé for ATS and writing issues"], button[aria-label="More options"]',
+        'button[aria-label="Scan résumé for ATS and writing issues"], button[aria-label="More actions"]',
       ),
   });
   const swipeHandlers = useSwipeToDismiss(dialogRef, onClose);

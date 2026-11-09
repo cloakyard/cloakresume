@@ -105,7 +105,9 @@ export function Layout({
         Skip to résumé editor
       </a>
       <h1 className="sr-only">CloakResume editor</h1>
-      <header className="cr-editor-header resume-editor-header print:hidden">
+      <header
+        className={`cr-editor-header resume-editor-header print:hidden${isMobile ? " air-editor-header--compact" : ""}`}
+      >
         <BrandLogo />
 
         {/* Flex spacer pushes the remaining groups to the right edge. */}

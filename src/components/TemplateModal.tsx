@@ -41,7 +41,7 @@ export function TemplateModal({
     // Responsive chrome can replace the opener while the library stays open.
     fallbackFocus: () =>
       document.querySelector<HTMLButtonElement>(
-        'button[aria-label^="Template:"], button[aria-label="More options"]',
+        'button[aria-label^="Template:"], button[aria-label="More actions"]',
       ),
   });
   const swipeHandlers = useSwipeToDismiss(sheetRef, onClose);

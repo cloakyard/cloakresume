@@ -72,7 +72,7 @@ try {
       );
       await p.waitForSelector('.resume-root[data-template-ready="true"]');
       await p.evaluate(() => document.fonts.ready);
-      await p.click('[aria-label="More options"]');
+      await p.click('[aria-label="More actions"]');
       await p.waitForSelector(".resume-options");
       // Measure and activate controls after the real entrance settles; presence
       // and interruption are covered by the family's normal-motion suite.
@@ -205,7 +205,7 @@ try {
         await cdp.send("Emulation.setEmulatedMedia", {
           features: [{ name: "forced-colors", value: "active" }],
         });
-        await p.focus('[aria-label="Close options"]');
+        await p.focus('[aria-label="Close actions"]');
         await frame(p);
         await p.screenshot({ path: `${out}/forced-${coarse}.png` });
       }

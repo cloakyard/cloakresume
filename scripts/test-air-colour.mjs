@@ -85,7 +85,7 @@ try {
         await frame(p);
         const open = async () => {
           if (w < 1024) {
-            await p.click('button[aria-label="More options"]');
+            await p.click('button[aria-label="More actions"]');
             await p.waitForFunction(() =>
               [...document.querySelectorAll('[role="dialog"] button')].some(
                 (e) => e.textContent.trim() === "Primary colour",

@@ -255,7 +255,7 @@ try {
         );
         await clickText("A4", "[data-paper-size-control]");
       } else {
-        await press('[aria-label="More options"]');
+        await press('[aria-label="More actions"]');
         await page.waitForSelector('[role="dialog"]', { visible: true });
         await clickText("Letter", "[data-paper-size-control]");
         await page.keyboard.press("Escape");
