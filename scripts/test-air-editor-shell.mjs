@@ -44,7 +44,7 @@ const sections = [
   "Certifications",
   "Awards",
   "Languages",
-  "Interests & Tools",
+  "Interests & tools",
   "Quick stats",
   "Custom",
   "Target JD",

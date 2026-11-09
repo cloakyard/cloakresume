@@ -1406,7 +1406,7 @@ describe.skipIf(!existsSync(chromePath))(
 
     it("preserves comma entry, custom labels, and both interests and tools on reload", async () => {
       await openDraft();
-      await page.click('nav button[aria-label="Interests & Tools"]');
+      await page.click('nav button[aria-label="Interests & tools"]');
       const fields = await page.$$(".cr-editor-panel input");
       await fields[0].type("Outside work");
       await fields[1].type("Writing, , Running, Reading,");

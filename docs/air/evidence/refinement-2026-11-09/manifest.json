@@ -1,0 +1,86 @@
+{
+  "date": "2026-11-09",
+  "scope": "See local refinement record and canonical per-view ledger. Initial copy-scope diagnostic is resolved by the final 128-layout receipt; the full matrix retains forced-colour coverage.",
+  "receipts": [
+    {
+      "source": "gates.json",
+      "file": "gates.json.gz",
+      "sha256": "87eba3d898297b0a03383fba98f8fc5cd3a86c57df6747377e80797351d62f94"
+    },
+    {
+      "source": "ui-shared.json",
+      "file": "ui-shared.json.gz",
+      "sha256": "fa7bd93d7cab4f77154d6027b7873073808af30ee77695483dc206714dcdcf8c"
+    },
+    {
+      "source": "ui-tools-rerun.json",
+      "file": "ui-tools-rerun.json.gz",
+      "sha256": "ccd0bcce7bf1d6d2335f0aa4fa6004135f7732ca2854e3e16b50d25690e3367b"
+    },
+    {
+      "source": "css-review.json",
+      "file": "css-review.json.gz",
+      "sha256": "68ff93c2c0c6254e46ba985bc321cad0a67166ddaf65b1612e2287376d9b7049"
+    },
+    {
+      "source": "resume-copy-final.json",
+      "file": "resume-copy-final.json.gz",
+      "sha256": "8e66e5138c3408c5b7a0d5479d656f92a44e77bbe6f6bb21b48d8036e9ca1f3e"
+    },
+    {
+      "source": "resume-copy-states-final.log",
+      "file": "resume-copy-states-final.log.gz",
+      "sha256": "8c44f4f2b98e8032161a66a8ea470b2f8d037eebd1ef5dfb5fc151238ef2fc58"
+    },
+    {
+      "source": "resume-copy-states/results.json",
+      "file": "resume-copy-states--results.json.gz",
+      "sha256": "7556e01e874198cd2eb437cee4584d6b13a71d7bebfd99eb79d4f528b7af38b3"
+    },
+    {
+      "source": "resume-library-copy/results.json",
+      "file": "resume-library-copy--results.json.gz",
+      "sha256": "e843579ef1e99372672d6b4b0183c3f47373c2fdc4b8f3e3bb59276f1cd4eff2"
+    },
+    {
+      "source": "resume-library-copy-feature.log",
+      "file": "resume-library-copy-feature.log.gz",
+      "sha256": "d13a7f111280e328d032289ca3a4d31f1557f285c544e202b644462d9dc021b4"
+    },
+    {
+      "source": "resume-sections/results.json",
+      "file": "resume-sections--results.json.gz",
+      "sha256": "e0c6f82368f975e4b2394757a462f6fcaab0cde4306650bbfe1b4f61753f1f3a"
+    },
+    {
+      "source": "resume-library/results.json",
+      "file": "resume-library--results.json.gz",
+      "sha256": "8a8ada242c207facd3ac67ff55babf84dd165108a034a78acf505b97b945586a"
+    },
+    {
+      "source": "resume-review/results.json",
+      "file": "resume-review--results.json.gz",
+      "sha256": "b40df5d3be9c4ade2c260e0943ac028485d541b1d72d2f05eac88b624a170541"
+    },
+    {
+      "source": "resume-options/matrix.json",
+      "file": "resume-options--matrix.json.gz",
+      "sha256": "f415cb14d6af05efefe60bf9d27165548daf81a097a469c451cccc0a2b1432a4"
+    },
+    {
+      "source": "resume-dates/layouts.json",
+      "file": "resume-dates--layouts.json.gz",
+      "sha256": "191412a2d1dd1fa13cc0eb5046584325c2281ccb324daf2fcb995aac9778df05"
+    },
+    {
+      "source": "resume-contact-selects/layouts.json",
+      "file": "resume-contact-selects--layouts.json.gz",
+      "sha256": "8b06a9a24236c49dd5a201558ff7b81fcee9c500d9793deeb2f80927dca9a0e9"
+    },
+    {
+      "source": "resume-logo-photo/cloakresume-logo-photo-TcHTP4/layouts.json",
+      "file": "resume-logo-photo--cloakresume-logo-photo-TcHTP4--layouts.json.gz",
+      "sha256": "53efdc0bd3d58f9b0206c0e62bac4e8385af8e9f60edbd5f54770f7aada484fd"
+    }
+  ]
+}

@@ -1,5 +1,10 @@
 # Air validation record
 
+## 2026-11-09 — Refinement and README consistency
+
+See [the refinement record](refinement-2026-11-09.md) for all-view software
+coverage, focused copy verification and preserved physical acceptance limits.
+
 ## 2026-10-26 — Automatic landing artwork without playback controls
 
 Removes the button/ref/CSS while preserving the 3,400ms Storyline arrival. All 373 production tests in ten files pass with zero skips; 68 artwork layouts, eight arrival layouts and lifecycle/static profiles pass. PWA/README screenshots were regenerated from the production build; the editor-based OG composition is unchanged. Visual inspection caught an existing capture timing fault that omitted dark-mode paper text. The generator now requires stable pixels after font readiness; all four repeated captures match exactly. No application rendering change was needed.

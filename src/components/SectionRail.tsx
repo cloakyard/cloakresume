@@ -106,7 +106,7 @@ export const SECTIONS: SectionMeta[] = [
   },
   {
     id: "interests",
-    label: "Interests & Tools",
+    label: "Interests & tools",
     description: "Personal interests and daily tools",
     icon: Heart,
   },
