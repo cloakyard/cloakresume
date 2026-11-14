@@ -2,13 +2,13 @@ overrides:
   # Pinned node-resolve patch clones its fixed defaults with Node structuredClone.
   # Remove this override and patch when upstream drops deepmerge (GHSA-gcqx-w48m-w2h4).
   "@rollup/plugin-node-resolve@16.0.3>deepmerge": "-"
-  brace-expansion: 5.0.12
+  brace-expansion: 5.0.13
   # Workbox uses the unchanged async glob API; use the patched cancellation-safe glob release.
   "workbox-build>glob": 14.0.4
   vite@*: "catalog:"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
-  vite-plus: 1.5.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
+  vite-plus: 1.6.0
 allowBuilds:
   sharp: true
   core-js: false
@@ -21,4 +21,5 @@ peerDependencyRules:
 patchedDependencies:
   "@rollup/plugin-node-resolve@16.0.3": patches/@rollup__plugin-node-resolve@16.0.3.patch
 minimumReleaseAgeExclude:
-  - "@vitejs/plugin-react@6.3.0"
+  - harper.js@3.2.0
+  - lucide-react@1.73.0
