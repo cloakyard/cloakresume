@@ -1,6 +1,9 @@
 import { PrivacyPage, type PrivacySection } from "../../docs/air/privacy.tsx";
 const REPO_URL = "https://github.com/cloakyard/cloakresume";
 const CLOAKYARD_URL = "https://cloakyard.com";
+export const PRIVACY_DATE = "2026-11-14";
+export const PRIVACY_LEAD =
+  "Your résumé and target job description stay on your device. App and language assets may download when needed.";
 export const privacySections: PrivacySection[] = [
   {
     id: "local-processing",
@@ -42,15 +45,15 @@ export const privacySections: PrivacySection[] = [
     body: (
       <>
         <p>
-          CloakResume does not ask for a name or email address, create user profiles, set tracking
-          cookies, or install third-party analytics and advertising scripts. The application does
-          not intentionally collect or retain personal information about how you use the editor.
+          CloakResume has no accounts, advertising, analytics, or tracking cookies. Names, contact
+          details, and other information you enter belong to your local résumé; they are not sent to
+          the CloakResume project.
         </p>
         <ul>
           <li>No account or profile database</li>
           <li>No résumé-content telemetry</li>
           <li>No advertising identifiers or behavioural tracking</li>
-          <li>No cookies beyond browser-managed local app storage and cache</li>
+          <li>Local drafts and cached app assets are not tracking cookies</li>
         </ul>
       </>
     ),
@@ -110,8 +113,8 @@ export function PrivacyPolicy() {
     <PrivacyPage
       product="CloakResume"
       home={import.meta.env.BASE_URL}
-      date="2026-07-22"
-      lead="Your résumé and target job description stay on your device. App and language assets may download when needed."
+      date={PRIVACY_DATE}
+      lead={PRIVACY_LEAD}
       sections={privacySections}
     />
   );

@@ -65,8 +65,8 @@ describe("CloakResume family contract", () => {
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
     expect(pkg.packageManager).toBe("pnpm@12.18.0");
-    expect(workspace).toContain("vite-plus: 1.5.0");
-    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.5.0");
+    expect(workspace).toContain("vite-plus: 1.6.0");
+    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.6.0");
     expect(pkg.devDependencies).not.toHaveProperty("vitest");
   });
 
@@ -152,7 +152,10 @@ describe("CloakResume family contract", () => {
     expect(landing).not.toContain("mountAirLight");
     expect(privacy).toContain('className="air-modal resume-policy"');
     expect(privacy).toContain("Complete privacy policy");
-    expect(privacy).toContain('LAST_UPDATED_ISO = "2026-07-22"');
+    expect(policy).toContain('PRIVACY_DATE = "2026-11-14"');
+    expect(privacy).toContain("dateTime={PRIVACY_DATE}");
+    expect(privacy).toContain("{PRIVACY_LEAD}");
+    expect(policy).toContain("date={PRIVACY_DATE}");
     for (const title of [
       "Your résumé stays on your device",
       "Your working draft remains local",

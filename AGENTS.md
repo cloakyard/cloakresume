@@ -45,7 +45,7 @@ pass. An unavailable browser or skipped feature test does not count as a pass.
 
 ## Dead-code audit
 
-Run `npx --yes knip@6.43.0` for the declared web graph in `knip.json`. The pinned
+Run `npx --yes knip@6.45.1` for the declared web graph in `knip.json`. The pinned
 CLI can also be supplied externally; no runtime package is required. Manual audit
 commands and portable Air library entries are deliberate public entry points.
 Static `404.html` imports `src/styles/air-recovery.css`; preserve its explicit entry.
