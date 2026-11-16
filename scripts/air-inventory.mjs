@@ -29,7 +29,6 @@ const paths = [
   ...(await scan(scanRoot)),
   "404.html",
   "src/static-recovery.ts",
-  "artwork/og.html",
   "index.html",
   "vite.config.ts",
 ].sort((a, b) => (a < b ? -1 : a > b ? 1 : 0));

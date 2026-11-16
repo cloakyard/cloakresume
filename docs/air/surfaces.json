@@ -1,6 +1,6 @@
 {
   "schemaVersion": 1,
-  "contractVersion": "1.7.4",
+  "contractVersion": "1.7.5",
   "note": "Presence in this inventory is not audit or validation. Preserve evidence when updating.",
   "surfaces": [
     {
@@ -34,27 +34,6 @@
         "evidence/consistency-2026-10-26/checks.json.gz"
       ],
       "notes": "Standalone Air recovery; HTTP 404 and safe requested-path text tested. Physical/assistive acceptance remains open. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Public header/footer content, spacing, rendering and navigation verified in Air 1.2.2; this evidence does not close unrelated product/device gates. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open."
-    },
-    {
-      "path": "artwork/og.html",
-      "kind": "app-surface",
-      "sourceReviewed": true,
-      "airImplemented": true,
-      "validated": true,
-      "states": [
-        "fixed 1200×630 social composition",
-        "real synthetic editor image",
-        "local Air stylesheet/mark"
-      ],
-      "viewports": [
-        "OG 1200×630",
-        "phone 430×932 at 2×",
-        "desktop 1440×900 at 1×",
-        "light",
-        "dark"
-      ],
-      "evidence": ["evidence/preview-assets-2026-10-21.json"],
-      "notes": "Actual production assets, manifest image decode, README theme selection and independent generation hashes checked; not a full-product acceptance claim."
     },
     {
       "path": "index.html",

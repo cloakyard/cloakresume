@@ -2,27 +2,27 @@
 
 CloakResume’s previews follow [Cloakyard Air](../DESIGN.md). PWA and README images
 capture actual production landing/editor states. The 1200×630 social card uses
-[artwork/og.html](../artwork/og.html), pinned local Air CSS, the canonical mark and
-the real light editor capture. It shares the family’s quiet typography, neutral
-surfaces and product-proof composition; it does not invent application controls.
+[artwork/social.json](../artwork/social.json), the shared Air template, the canonical
+mark and the static landing résumé. It shares the family’s typography and spacing;
+see [the portable workflow](air/social-previews.md).
 
 ## Sources and consumers
 
-| Asset                                         |     Size | Consumer                                   |
-| --------------------------------------------- | -------: | ------------------------------------------ |
-| `public/cloakresume-mark.svg`                 |    64×64 | Header and SVG favicon                     |
-| `public/icons/cloakresume-app-icon.svg`       |    64×64 | Full-bleed launcher source                 |
-| `public/icons/og-image.png`                   | 1200×630 | Open Graph and X/Twitter metadata          |
-| `public/screenshots/landing-narrow-light.png` | 860×1864 | Narrow PWA screenshot, light               |
-| `public/screenshots/landing-narrow-dark.png`  | 860×1864 | Narrow PWA screenshot, dark                |
-| `public/screenshots/editor-wide-light.png`    | 1440×900 | Wide PWA, README fallback and social proof |
-| `public/screenshots/editor-wide-dark.png`     | 1440×900 | Wide PWA and dark README picture source    |
-| `public/icons/pwa-64x64.png`                  |    64×64 | Small PWA launcher                         |
-| `public/icons/pwa-192x192.png`                |  192×192 | Standard PWA launcher                      |
-| `public/icons/pwa-512x512.png`                |  512×512 | High-resolution PWA launcher               |
-| `public/icons/maskable-icon-512x512.png`      |  512×512 | Maskable launcher                          |
-| `public/icons/apple-touch-icon.png`           |  180×180 | iOS launcher                               |
-| `public/icons/safari-pinned-tab.svg`          |      SVG | Monochrome Safari pinned tab               |
+| Asset                                         |     Size | Consumer                                |
+| --------------------------------------------- | -------: | --------------------------------------- |
+| `public/cloakresume-mark.svg`                 |    64×64 | Header and SVG favicon                  |
+| `public/icons/cloakresume-app-icon.svg`       |    64×64 | Full-bleed launcher source              |
+| `public/icons/og-image.png`                   | 1200×630 | Open Graph and X/Twitter metadata       |
+| `public/screenshots/landing-narrow-light.png` | 860×1864 | Narrow PWA screenshot, light            |
+| `public/screenshots/landing-narrow-dark.png`  | 860×1864 | Narrow PWA screenshot, dark             |
+| `public/screenshots/editor-wide-light.png`    | 1440×900 | Wide PWA and README fallback            |
+| `public/screenshots/editor-wide-dark.png`     | 1440×900 | Wide PWA and dark README picture source |
+| `public/icons/pwa-64x64.png`                  |    64×64 | Small PWA launcher                      |
+| `public/icons/pwa-192x192.png`                |  192×192 | Standard PWA launcher                   |
+| `public/icons/pwa-512x512.png`                |  512×512 | High-resolution PWA launcher            |
+| `public/icons/maskable-icon-512x512.png`      |  512×512 | Maskable launcher                       |
+| `public/icons/apple-touch-icon.png`           |  180×180 | iOS launcher                            |
+| `public/icons/safari-pinned-tab.svg`          |      SVG | Monochrome Safari pinned tab            |
 
 The unchanged mark uses the family’s 64×64 circular construction, diameter-42
 glyph keyline and 3px white stroke. The full-bleed launcher keeps the complete
@@ -44,9 +44,9 @@ production preview at port 4180 and close it afterwards. To use an existing
 production preview, set `SCREENSHOT_URL=http://127.0.0.1:4180/`. A dev server is
 rejected. Set `CHROME_PATH` to a Chrome/Chromium executable outside the standard
 macOS installation. `PREVIEW_OUTPUT_DIR` writes generated files to another public
-asset root for comparisons; the social card always reads its canonical screenshot.
-The OG renderer needs no server and loads only local files. Software rasterization
-keeps its scaled editor image reproducible across available GPU backends.
+asset root for screenshot comparisons. The OG renderer starts its own temporary
+loopback server for the production landing; `AIR_SOCIAL_OUTPUT` writes a comparison
+card. It rejects external requests and uses a static reduced-motion pose.
 
 Each screenshot uses a fresh browser context, reduced motion and system light or
 dark appearance. Phone landing: 430×932 CSS pixels at 2×, with coarse input. Desktop
