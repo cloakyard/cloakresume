@@ -102,7 +102,7 @@ vp dev
 | `vp outdated`                 | Report packages with newer releases                           |
 | `vp pm audit`                 | Audit the installed dependency graph                          |
 | `vp run generate-icons`       | Regenerate favicon and install icons from the app-icon source |
-| `vp run generate-og`          | Render the Air social card using the real editor capture      |
+| `vp run generate-og`          | Render the shared Air card from the static landing résumé     |
 | `vp run generate-screenshots` | Capture production landing/editor images in light and dark    |
 
 The browser regression tests cover long-field editing, current-job dates, autosave recovery, imports, photo uploads, writing-engine retries, and page clipping. They use Google Chrome on macOS by default; set `CHROME_PATH` to a Chrome or Chromium executable elsewhere. A missing browser is a blocked validation gate, even if an individual suite reports a skip. After `vp run build`, run the complete production suite with `CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism`; acceptance requires zero skipped tests.
@@ -137,7 +137,7 @@ Run `vp check`, `npx --yes knip@6.44.2`, `vp run build` and the production brows
 
 ```text
 cloakresume/
-├── artwork/og.html            # Air social composition using the real editor capture
+├── artwork/social.json        # Copy and artwork selector for the shared Air social card
 ├── public/
 │   ├── cloakresume-mark.svg  # Canonical 64px product mark and favicon source
 │   ├── icons/                 # Favicons, install icons, and Open Graph image

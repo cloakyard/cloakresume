@@ -74,14 +74,15 @@ function captureTarget(script: string, name: string) {
 describe("brand, social, and install asset contracts", () => {
   it("keeps Open Graph and Twitter metadata on one canonical 1200x630 image", async () => {
     const html = await source("index.html");
-    const canonicalImage = "https://resume.cloakyard.com/icons/og-image.png";
+    const social = JSON.parse(await source("artwork/social.json")) as { imagePath: string };
+    const canonicalImage = new URL(social.imagePath, "https://resume.cloakyard.com/").href;
 
     expect(metaContent(html, "property", "og:image")).toBe(canonicalImage);
     expect(metaContent(html, "property", "og:image:type")).toBe("image/png");
     expect(metaContent(html, "property", "og:image:width")).toBe("1200");
     expect(metaContent(html, "property", "og:image:height")).toBe("630");
     expect(metaContent(html, "property", "og:image:alt")).toMatch(
-      /Air editor.*synthetic sample résumé/i,
+      /white résumé.*green career timeline/i,
     );
     expect(metaContent(html, "name", "twitter:card")).toBe("summary_large_image");
     expect(metaContent(html, "name", "twitter:image")).toBe(canonicalImage);
@@ -93,7 +94,7 @@ describe("brand, social, and install asset contracts", () => {
   it("keeps preview generation documented and README sources theme-aware", async () => {
     const [packageSource, artwork, brandDocs, readme] = await Promise.all([
       source("package.json"),
-      source("artwork/og.html"),
+      source("docs/air/social.html"),
       source("docs/brand-assets.md"),
       source("README.md"),
     ]);
@@ -103,8 +104,9 @@ describe("brand, social, and install asset contracts", () => {
       expect(brandDocs).toContain(`vp run ${command}`);
       expect(readme).toContain(`vp run ${command}`);
     }
-    expect(artwork).toContain('href="../src/styles/air.css"');
-    expect(artwork).toContain('src="../public/screenshots/editor-wide-light.png"');
+    expect(artwork).toContain("__AIR_CSS__");
+    expect(artwork).toContain('width="480" height="328" alt="__ART_ALT__"');
+    expect(brandDocs).toContain("artwork/social.json");
     expect(readme).toContain(
       'media="(prefers-color-scheme: dark)" srcset="public/screenshots/editor-wide-dark.png"',
     );
