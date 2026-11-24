@@ -111,7 +111,7 @@ Vitest is pinned to the version bundled by Vite+. Upgrade that pin together with
 
 ### Verification
 
-Run `vp check`, `npx --yes knip@6.44.2`, `vp run build` and the production browser/test command above. A missing browser or skipped required test is not a passing gate. Preserve template typography, pagination, selectable text and links.
+Run `vp check`, `npx --yes knip@6.48.0`, `vp run build` and the production browser/test command above. A missing browser or skipped required test is not a passing gate. Preserve template typography, pagination, selectable text and links.
 
 ### Technology
 

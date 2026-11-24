@@ -1,3 +1,5 @@
+import { mountLandingReveals } from "../../docs/air/landing-reveal.mjs";
+import "../../docs/air/landing-reveal.css";
 import { useEffect, useMemo, useRef } from "react";
 import {
   ArrowRight,
@@ -47,6 +49,7 @@ export function CloakWorkbenchLanding({
   lastSavedAt,
   loading = false,
 }: Props) {
+  const mainRef = useRef<HTMLElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const menuRef = useRef<HTMLDetailsElement>(null);
   const privacyPage =
@@ -79,6 +82,11 @@ export function CloakWorkbenchLanding({
     });
     return () => elements.forEach((el, i) => Object.assign(el.style, previous[i]));
   }, []);
+
+  useEffect(() => {
+    if (!privacyPage && mainRef.current)
+      return mountLandingReveals(mainRef.current, { restoreFragment: true });
+  }, [privacyPage]);
 
   const activate = (event: React.MouseEvent<HTMLButtonElement>, action: () => void) => {
     // Safari does not focus a pointer-activated button by default. Remember the
@@ -162,7 +170,12 @@ export function CloakWorkbenchLanding({
           </nav>
         </details>
       </header>
-      <main id="main-content" tabIndex={-1} className={privacyPage ? "resume-frame" : undefined}>
+      <main
+        ref={mainRef}
+        id="main-content"
+        tabIndex={-1}
+        className={privacyPage ? "resume-frame" : undefined}
+      >
         {privacyPage ? (
           <PrivacyPolicy />
         ) : (
@@ -219,7 +232,7 @@ export function CloakWorkbenchLanding({
             >
               <h2 id="start-title">Start with what you have.</h2>
               <div className="resume-start-options">
-                <div>
+                <div data-air-reveal="">
                   <FilePlus2 aria-hidden="true" />
                   <h3>A fresh page</h3>
                   <p>Make room for your experience, skills and the work you’re proud of.</p>
@@ -230,8 +243,9 @@ export function CloakWorkbenchLanding({
                   >
                     Start blank <ArrowRight aria-hidden="true" />
                   </button>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </div>
-                <div>
+                <div data-air-reveal="">
                   <Sparkles aria-hidden="true" />
                   <h3>A little inspiration</h3>
                   <p>Explore a complete sample, then make the content and layout your own.</p>
@@ -242,8 +256,9 @@ export function CloakWorkbenchLanding({
                   >
                     Load sample
                   </button>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </div>
-                <div>
+                <div data-air-reveal="">
                   <FolderOpen aria-hidden="true" />
                   <h3>Your saved file</h3>
                   <p>
@@ -258,6 +273,7 @@ export function CloakWorkbenchLanding({
                   >
                     {loading ? "Opening file…" : "Load saved file"}
                   </button>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </div>
               </div>
               <input
@@ -283,14 +299,15 @@ export function CloakWorkbenchLanding({
             >
               <h2 id="features-title">From first draft to ready to send.</h2>
               <div>
-                <article>
+                <article data-air-reveal="">
                   <h3>Find the right shape</h3>
                   <p>
                     Choose from {TEMPLATE_COUNT} templates, set your colour, and preview every page
                     in A4 or Letter.
                   </p>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </article>
-                <article>
+                <article data-air-reveal="">
                   <h3>Write for the role</h3>
                   <p>
                     Compare your draft with a job description. Local writing checks and keyword
@@ -299,17 +316,20 @@ export function CloakWorkbenchLanding({
                   <p className="resume-note">
                     Review scores are guidance, not a guarantee of hiring-system success.
                   </p>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </article>
-                <article>
+                <article data-air-reveal="">
                   <h3>Keep a copy</h3>
                   <p>
                     Export a PDF to share and a JSON file to edit again. Browser-saved drafts make
                     it easy to return on this device.
                   </p>
+                  <span className="air-reveal-veil" aria-hidden="true" />
                 </article>
               </div>
             </section>
             <section
+              data-air-reveal=""
               id="privacy"
               className="resume-privacy resume-frame"
               tabIndex={-1}
@@ -333,6 +353,7 @@ export function CloakWorkbenchLanding({
                   Read the privacy policy <ArrowUpRight aria-hidden="true" />
                 </a>
               </div>
+              <span className="air-reveal-veil" aria-hidden="true" />
             </section>
           </>
         )}
