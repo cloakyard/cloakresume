@@ -148,6 +148,24 @@ describe.skipIf(!existsSync(chromePath))(
     }
 
     for (const width of [1440, 390]) {
+      it(`can tab into the document and scroll its pages at ${width}px`, async () => {
+        await page.setViewport({ width, height: 844 });
+        await openSection("profile");
+        const pages = '[role="group"][aria-label="Résumé pages"][tabindex="0"]';
+        await page.waitForSelector(`${pages} [data-template-ready="true"]`);
+        await page.focus('button[aria-label="Zoom out"]');
+        await page.keyboard.down("Shift");
+        await page.keyboard.press("Tab");
+        await page.keyboard.up("Shift");
+        expect(await page.$eval(pages, (el) => el.matches(":focus-visible"))).toBe(true);
+        await page.keyboard.press("PageDown");
+        await page.waitForFunction(
+          (selector) => document.querySelector(selector)!.scrollTop > 0,
+          {},
+          pages,
+        );
+      });
+
       it.each([
         ["profile", "profile.summary"],
         ["experience", "experience.0.bullets.0"],
