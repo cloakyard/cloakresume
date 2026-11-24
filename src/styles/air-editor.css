@@ -228,6 +228,10 @@
   background: var(--air-surface-soft);
   padding: 16px;
 }
+.cr-preview-scroll:focus-visible {
+  outline: 2px solid var(--air-accent);
+  outline-offset: -2px;
+}
 .resume-preview-tools {
   display: flex;
   justify-content: center;
