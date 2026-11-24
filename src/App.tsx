@@ -371,8 +371,6 @@ export function App() {
 
   return (
     <div className={showLanding ? "resume-app" : "resume-app resume-app--editing"}>
-      <ReloadPrompt beforeReload={beforeReload} />
-
       {/* The editor and the welcome screen are mutually exclusive — only
        * one is mounted at a time. Keeping both mounted (with the editor
        * hidden behind a fixed overlay) was the previous approach, but
@@ -529,6 +527,7 @@ export function App() {
         onCancel={() => setNewConfirmOpen(false)}
       />
 
+      <ReloadPrompt beforeReload={beforeReload} />
       <ConfirmDialog
         open={notice !== null}
         title={notice?.title ?? "Action couldn't be completed"}

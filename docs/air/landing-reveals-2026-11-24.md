@@ -22,3 +22,7 @@ Frozen pnpm installation, build, type/lint/format checks, Knip and package audit
 
 This review covered the web landing and the listed regression checks on local
 builds. Physical-device and assistive-technology acceptance remain open.
+
+## Release verification
+
+The shared update notice follows the résumé preview so zoom and fit actions stay reachable. The worker lifecycle and autosave protection remain part of the production regression suite.
