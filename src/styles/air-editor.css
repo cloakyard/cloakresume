@@ -21,6 +21,10 @@
   font-family: var(--air-font);
   z-index: var(--air-z-navigation);
 }
+.air-editor-header--compact [data-export-pdf] {
+  min-width: 44px;
+  min-height: 44px;
+}
 .resume-header-spacer {
   flex: 1;
 }
