@@ -64,9 +64,9 @@ describe("CloakResume family contract", () => {
 
     expect(pkg.devDependencies.typescript).toBe("^7.0.2");
     expect(pkg.devDependencies["vite-plus"]).toBe("catalog:");
-    expect(pkg.packageManager).toBe("pnpm@12.18.0");
-    expect(workspace).toContain("vite-plus: 1.6.0");
-    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@1.6.0");
+    expect(pkg.packageManager).toBe("pnpm@12.23.0");
+    expect(workspace).toContain("vite-plus: 1.8.0");
+    expect(workspace).toContain("vite: npm:@voidzero-dev/vite-plus-core@8.3.8001");
     expect(pkg.devDependencies).not.toHaveProperty("vitest");
   });
 

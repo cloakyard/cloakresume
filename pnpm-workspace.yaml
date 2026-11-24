@@ -2,13 +2,13 @@ overrides:
   # Pinned node-resolve patch clones its fixed defaults with Node structuredClone.
   # Remove this override and patch when upstream drops deepmerge (GHSA-gcqx-w48m-w2h4).
   "@rollup/plugin-node-resolve@16.0.3>deepmerge": "-"
-  brace-expansion: 5.0.13
+  brace-expansion: 5.1.0
   # Workbox uses the unchanged async glob API; use the patched cancellation-safe glob release.
-  "workbox-build>glob": 14.0.4
+  "workbox-build>glob": 14.0.6
   vite@*: "catalog:"
 catalog:
-  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
-  vite-plus: 1.6.0
+  vite: npm:@voidzero-dev/vite-plus-core@8.3.8001
+  vite-plus: 1.8.0
 allowBuilds:
   sharp: true
   core-js: false
@@ -22,4 +22,15 @@ patchedDependencies:
   "@rollup/plugin-node-resolve@16.0.3": patches/@rollup__plugin-node-resolve@16.0.3.patch
 minimumReleaseAgeExclude:
   - harper.js@3.2.0
-  - lucide-react@1.73.0
+  - lucide-react@1.78.0
+  - "@voidzero-dev/vite-plus-core@8.3.8001"
+  - "@voidzero-dev/vite-plus-darwin-arm64@1.8.0"
+  - "@voidzero-dev/vite-plus-darwin-x64@1.8.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-gnu@1.8.0"
+  - "@voidzero-dev/vite-plus-linux-arm64-musl@1.8.0"
+  - "@voidzero-dev/vite-plus-linux-x64-gnu@1.8.0"
+  - "@voidzero-dev/vite-plus-linux-x64-musl@1.8.0"
+  - "@voidzero-dev/vite-plus-win32-arm64-msvc@1.8.0"
+  - "@voidzero-dev/vite-plus-win32-x64-msvc@1.8.0"
+  - brace-expansion@5.1.0
+  - vite-plus@1.8.0
