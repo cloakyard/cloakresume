@@ -122,7 +122,7 @@ export function ToolbarActions({
         }}
         aria-disabled={exporting || undefined}
         aria-busy={exporting}
-        className="air-icon-button air-button--primary resume-toolbar-action"
+        className={`air-icon-button resume-toolbar-action ${isMobile ? "air-button--quiet" : "air-button--primary"}`}
         aria-label={exporting ? "Exporting PDF…" : "Export to PDF"}
         title={exporting ? "Exporting PDF…" : "Export to PDF"}
       >
