@@ -22,7 +22,7 @@ patchedDependencies:
   "@rollup/plugin-node-resolve@16.0.3": patches/@rollup__plugin-node-resolve@16.0.3.patch
 minimumReleaseAgeExclude:
   - harper.js@3.2.0
-  - lucide-react@1.78.0
+  - lucide-react@1.78.0 || 1.79.0
   - "@voidzero-dev/vite-plus-core@8.3.8001"
   - "@voidzero-dev/vite-plus-darwin-arm64@1.8.0"
   - "@voidzero-dev/vite-plus-darwin-x64@1.8.0"

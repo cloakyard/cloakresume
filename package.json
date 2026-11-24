@@ -24,7 +24,7 @@
     "harper.js": "^3.2.0",
     "html2canvas-pro": "^2.6.4",
     "jspdf": "^4.2.1",
-    "lucide-react": "^1.78.0",
+    "lucide-react": "^1.79.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "workbox-window": "^7.4.1"
