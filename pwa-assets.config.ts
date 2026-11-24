@@ -1,8 +1,6 @@
 import { defineConfig, minimal2023Preset } from "@vite-pwa/assets-generator/config";
 
-// The dedicated full-bleed app icon shares the canonical mark's
-// diameter-42 glyph keyline. Render it without generator-added padding
-// so launcher masks preserve the Cloakyard family proportions.
+// The launcher master includes the clearance needed for OS masks.
 const noPadding = {
   padding: 0,
   resizeOptions: { fit: "cover" as const, background: "transparent" },

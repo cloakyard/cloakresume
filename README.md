@@ -139,7 +139,7 @@ Run `vp check`, `npx --yes knip@6.48.0`, `vp run build` and the production brows
 cloakresume/
 ├── artwork/social.json        # Copy and artwork selector for the shared Air social card
 ├── public/
-│   ├── cloakresume-mark.svg  # Canonical 64px product mark and favicon source
+│   ├── cloakresume-mark.svg  # Canonical 64px product mark
 │   ├── icons/                 # Favicons, install icons, and Open Graph image
 │   └── screenshots/           # Narrow and wide PWA/README captures
 ├── src/

@@ -1,18 +1,16 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <path
-    d="M32 12.1 48.2 18.7v13.6c0 8.6-5.4 15.2-16.2 20.4-10.8-5.2-16.2-11.8-16.2-20.4V18.7L32 12.1Z"
-    fill="none"
-    stroke="#000"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    stroke-width="3"
-  />
-  <circle cx="25.2" cy="27.5" r="2.55" fill="#000" />
-  <path
-    d="M31.6 26.3h8.5M31.6 31.7h6.3M24.4 37.5h15.2M25.2 42h9.8"
-    fill="none"
-    stroke="#000"
-    stroke-linecap="round"
-    stroke-width="3"
-  />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16">
+  <title>CloakResume</title>
+  <defs>
+    <path id="index-tab" d="M0 1.95V1.6L.42.33Q.52 0 .87 0h1.38q.35 0 .45.33l.425 1.27v.35Z"/>
+  </defs>
+  <g id="artwork">
+    <g id="ground" transform="translate(1.6 1.6) scale(.8)">
+      <use href="#index-tab" x="10.25" y="3.36" fill="black"/>
+      <use href="#index-tab" x="6.5" y="3.36" fill="black"/>
+    </g>
+    <g id="card" transform="translate(1.6 1.6) scale(.8)">
+      <use href="#index-tab" x="2.75" y="3.36" fill="black"/>
+      <path fill="black" fill-rule="evenodd" d="M2.14 4.96h11.77v7.89H2.14ZM5.44 5.97a.88.88 0 1 0 .01 0Zm-1.65 3.27q.18-1.29 1.62-1.29t1.64 1.29Zm4.42-2.71v.9h3.85v-.9Zm0 1.83v.89h2.63v-.89Zm-4.3 2.21v.92h8.15v-.92Z"/>
+    </g>
+  </g>
 </svg>
