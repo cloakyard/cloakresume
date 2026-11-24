@@ -1,6 +1,7 @@
 /// <reference types="node" />
 
 import { readFile } from "node:fs/promises";
+import sharp from "sharp";
 import { describe, expect, it } from "vite-plus/test";
 
 const projectRoot = new URL("../", import.meta.url);
@@ -141,27 +142,18 @@ describe("brand, social, and install asset contracts", () => {
       source("docs/brand-assets.md"),
     ]);
 
-    for (const svg of [mark, favicon, appIcon, legacyLogo]) {
-      expect(svg).toContain('viewBox="0 0 64 64"');
-      expect(svg).toContain('data-glyph-keyline="42"');
-      expect(svg).toContain('stroke-width="3"');
-      expect(svg).toContain("#047857");
-    }
-    for (const svg of [mark, favicon]) {
-      expect(svg).toContain('data-logo-spec="cloakyard-mark-v1"');
-    }
-    for (const svg of [appIcon, legacyLogo]) {
-      expect(svg).toContain('data-logo-spec="cloakyard-app-icon-v1"');
-    }
+    expect(mark).toContain('viewBox="0 0 64 64"');
+    expect(favicon).toContain('viewBox="0 0 16 16"');
+    for (const svg of [mark, favicon]) expect(svg).toContain('data-logo-spec="cloakyard-mark-v2"');
+    expect(appIcon).toContain('data-logo-spec="cloakyard-app-icon-v2"');
+    expect(legacyLogo).toBe(appIcon);
     expect(appIcon).toContain('data-maskable-safe-zone="circle(32 32 25.6)"');
-    for (const svg of [mark, favicon, appIcon, legacyLogo, pinnedTab]) {
-      expect(svg).toContain("M24.4 37.5h15.2");
-      expect(svg).toContain("M25.2 42h9.8");
-      expect(svg).not.toContain("M23.9 44");
+    for (const svg of [mark, favicon, appIcon, pinnedTab]) {
+      expect(svg.match(/href="#index-tab"/g)).toHaveLength(3);
     }
-    expect(mark).toContain('aria-labelledby="cloakresume-mark-title"');
+    expect(mark).toContain('id="profile-cut"');
     expect(brandLogo).toContain("src={`${import.meta.env.BASE_URL}cloakresume-mark.svg`}");
-    expect(html).toContain('href="/cloakresume-mark.svg"');
+    expect(html).toContain('href="/icons/favicon.svg"');
     expect(notFound.match(/src="\/cloakresume-mark\.svg"/g)).toHaveLength(1);
     expect(pwaAssets).toContain('images: ["public/icons/cloakresume-app-icon.svg"]');
     expect(pwaAssets).toContain("palette: false");
@@ -173,22 +165,28 @@ describe("brand, social, and install asset contracts", () => {
 
   it("keeps the Android launcher glyph inside the complete maskable safe zone", async () => {
     const appIcon = await source("public/icons/cloakresume-app-icon.svg");
-    const safeZone = { x: 32, y: 32, radius: 25.6 };
-    const glyphExtrema = [
-      [32, 10.6],
-      [49.7, 18.7],
-      [49.7, 32.3],
-      [32, 54.2],
-      [14.3, 32.3],
-      [14.3, 18.7],
-    ] as const;
-
-    expect(appIcon).toContain(
-      "M32 12.1 48.2 18.7v13.6c0 8.6-5.4 15.2-16.2 20.4-10.8-5.2-16.2-11.8-16.2-20.4V18.7L32 12.1Z",
+    const backdrop = appIcon.replace(/<g id="artwork"[\s\S]*<\/g>\s*<\/svg>/, "</svg>");
+    expect(backdrop).not.toBe(appIcon);
+    const size = 512;
+    const [full, background] = await Promise.all(
+      [appIcon, backdrop].map((svg) =>
+        sharp(Buffer.from(svg)).resize(size, size).removeAlpha().raw().toBuffer(),
+      ),
     );
-    for (const [x, y] of glyphExtrema) {
-      expect(Math.hypot(x - safeZone.x, y - safeZone.y)).toBeLessThan(safeZone.radius);
+    let maxRadius = 0;
+    for (let offset = 0; offset < full.length; offset += 3) {
+      const changed = [0, 1, 2].some(
+        (c) => Math.abs(full[offset + c] - background[offset + c]) > 1,
+      );
+      if (!changed) continue;
+      const pixel = offset / 3;
+      maxRadius = Math.max(
+        maxRadius,
+        Math.hypot((pixel % size) + 0.5 - size / 2, Math.floor(pixel / size) + 0.5 - size / 2),
+      );
     }
+    expect(maxRadius).toBeGreaterThan(size / 4);
+    expect(maxRadius).toBeLessThanOrEqual(size * 0.4);
   });
 
   it("keeps PWA manifest declarations, generators, and documentation in agreement", async () => {

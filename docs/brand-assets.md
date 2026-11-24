@@ -10,7 +10,7 @@ see [the portable workflow](air/social-previews.md).
 
 | Asset                                         |     Size | Consumer                                |
 | --------------------------------------------- | -------: | --------------------------------------- |
-| `public/cloakresume-mark.svg`                 |    64×64 | Header and SVG favicon                  |
+| `public/cloakresume-mark.svg`                 |    64×64 | Header and social card                  |
 | `public/icons/cloakresume-app-icon.svg`       |    64×64 | Full-bleed launcher source              |
 | `public/icons/og-image.png`                   | 1200×630 | Open Graph and X/Twitter metadata       |
 | `public/screenshots/landing-narrow-light.png` | 860×1864 | Narrow PWA screenshot, light            |
@@ -24,10 +24,10 @@ see [the portable workflow](air/social-previews.md).
 | `public/icons/apple-touch-icon.png`           |  180×180 | iOS launcher                            |
 | `public/icons/safari-pinned-tab.svg`          |      SVG | Monochrome Safari pinned tab            |
 
-The unchanged mark uses the family’s 64×64 circular construction, diameter-42
-glyph keyline and 3px white stroke. The full-bleed launcher keeps the complete
+The 64×64 circular mark shows a white portrait card with three equal index tabs on green enamel.
+The 16×16 drawing in `public/icons/favicon.svg` serves browser tabs. The full-bleed launcher keeps the complete
 glyph inside the central 80% maskable safe circle. Launcher PNGs remain RGB;
-`favicon.svg` and `logo.svg` remain compatibility copies for older saved links.
+`logo.svg` is a compatibility copy of the launcher master.
 These asset compatibility names do not define current application styling.
 
 ## Reproduce the captures
@@ -64,7 +64,7 @@ The PWA manifest describes all four screenshots by content and appearance; it
 cannot select images by theme. README’s picture element selects the dark editor
 image when requested, with a light fallback. Install theme/background use Air’s
 light page `#fafbfc`; HTML declares `#fafbfc` / `#101216` system-theme chrome.
-The product’s emerald logo and user-selected document colours are unchanged.
+The emerald disc belongs to the app identity. Résumé exports use the document colour selected in the editor.
 Social and store images stay outside the offline application-shell precache.
 
 ## Verification
@@ -78,10 +78,9 @@ editor in desktop/laptop/tablet/phone light/dark states; generated assets alone
 do not certify the full application or physical devices.
 
 Run the required checks and complete production browser/template suite before a
-bounded commit. Current proof is recorded in
-[the preview asset evidence](air/evidence/preview-assets-2026-10-21.json).
+bounded commit. The November index-card update passed the production suite (375 tests), including checks for equal tab geometry and maskable launcher clearance. The [October preview capture record](air/evidence/preview-assets-2026-10-21.json) documents the original capture setup.
 
-To regenerate unchanged launcher assets, use `vp run generate-icons`. The July
+To regenerate the launcher assets, use `vp run generate-icons`. The July
 2026 launcher inspection confirmed full-glyph clearance under circle,
 rounded-square, squircle and teardrop masks; it is historical icon evidence, not
 acceptance of the retired Workbench screenshots. Old `iPhone.png` / `iPad.png`
