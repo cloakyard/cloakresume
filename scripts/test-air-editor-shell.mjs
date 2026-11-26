@@ -18,6 +18,8 @@ const sizes = [
   [1920, 1080],
   [1440, 900],
   [1280, 800],
+  [1366, 768],
+  [1280, 720],
   [1024, 768],
   [1023, 768],
   [864, 900],
@@ -29,6 +31,7 @@ const sizes = [
   [430, 932],
   [390, 844],
   [375, 667],
+  [375, 812],
   [360, 800],
   [320, 568],
   [844, 390],
@@ -112,7 +115,7 @@ async function measure(state, w, h, theme, text) {
     const rect = (e) => e.getBoundingClientRect(),
       visible = (e) => rect(e).width && rect(e).height;
     const selectors =
-      ".resume-editor-header button, .resume-editor-brand, .resume-preview-tools button, .resume-section-close, .resume-section-link";
+      ".resume-editor-header button, .resume-editor-brand, .resume-preview-tools button, .resume-section-dock button, .resume-picker-heading button, .resume-section-close, .resume-section-link";
     const controls = [...document.querySelectorAll(selectors)].filter(visible);
     const compact = matchMedia("(max-width:1023px)").matches,
       coarse = matchMedia("(pointer:coarse)").matches;
@@ -140,6 +143,7 @@ async function measure(state, w, h, theme, text) {
       ".resume-editor-panel",
       ".resume-editor-preview",
       ".resume-preview-tools",
+      ".resume-section-dock",
     ]) {
       const e = document.querySelector(selector);
       if (!e) continue;
@@ -235,6 +239,7 @@ try {
         await page.evaluate(() => JSON.parse(localStorage.getItem("cloakresume:v1")).resume),
         before,
       );
+      if (w < 1024) await press('[aria-label="More actions"]');
       const zoom = () => page.$eval(".resume-zoom-value", (e) => parseInt(e.textContent));
       await press('[aria-label="Fit preview"]');
       const fit = await zoom();
@@ -246,6 +251,7 @@ try {
       assert.equal(await zoom(), 100);
       await press('[aria-label="Fit preview"]');
       assert.equal(await zoom(), fit);
+      if (w < 1024) await press('[aria-label="Close actions"]');
       await page.$eval(".cr-preview-scroll", (e) => (e.scrollTop = e.scrollHeight));
       await measure("scrolled-preview", w, h, theme, 16);
       if (w >= 1024) {

@@ -16,6 +16,8 @@
 
 import { Maximize2, ZoomIn, ZoomOut } from "lucide-react";
 import { Suspense, useCallback, useEffect, useRef, useState, type ComponentType } from "react";
+import { createPortal } from "react-dom";
+import { BP, useMediaQuery } from "../utils/useMediaQuery.ts";
 import { PaperSizeContext } from "./PaginatedCanvas.tsx";
 import type { TemplateProps } from "../templates/index.ts";
 import type { ResumeData } from "../types.ts";
@@ -24,6 +26,7 @@ import { PAPER_SIZES, type PaperSize } from "../utils/paperSize.ts";
 import { profileTitleOverflows } from "../utils/profileTitle.ts";
 
 interface PreviewProps {
+  compactZoomHost: HTMLDivElement | null;
   resume: ResumeData;
   palette: PrimaryPalette;
   paperSize: PaperSize;
@@ -62,12 +65,14 @@ function ReadyTemplate({
 }
 
 export function Preview({
+  compactZoomHost,
   resume,
   palette,
   paperSize,
   TemplateComponent,
   onTitleOverflowChange,
 }: PreviewProps) {
+  const isCompact = useMediaQuery(BP.mobile);
   const containerRef = useRef<HTMLDivElement>(null);
   const innerRef = useRef<HTMLDivElement>(null);
   const [zoom, setZoom] = useState(0.75);
@@ -117,12 +122,12 @@ export function Preview({
 
   const computeFitZoom = useCallback(
     (containerWidth: number): number => {
-      const available = Math.max(200, containerWidth - FIT_PADDING);
+      const available = Math.max(200, isCompact ? containerWidth : containerWidth - FIT_PADDING);
       const raw = available / pageWidthPx;
       // Desktop users get up to 100 % but never more; mobile clamps to MIN_ZOOM.
       return clampZoom(Math.min(1, raw));
     },
-    [pageWidthPx],
+    [isCompact, pageWidthPx],
   );
 
   useEffect(() => {
@@ -216,6 +221,57 @@ export function Preview({
     setZoom(fitZoomRef.current);
   };
 
+  const zoomControls = (
+    <div
+      className={
+        isCompact
+          ? "air-editor-menu__zoom resume-options-zoom"
+          : "cr-preview-tools resume-preview-tools print-hide"
+      }
+      role="group"
+      aria-label="Preview zoom"
+    >
+      {isCompact && <span>Zoom</span>}
+      <button
+        type="button"
+        onClick={onZoomOut}
+        aria-label="Zoom out"
+        title="Zoom out"
+        className="air-icon-button air-button--quiet"
+      >
+        <ZoomOut aria-hidden="true" size={18} strokeWidth={1.6} />
+      </button>
+      <button
+        type="button"
+        onClick={onReset}
+        aria-label={`Reset zoom to 100 percent. Current zoom ${Math.round(zoom * 100)} percent`}
+        title="Reset to 100%"
+        className="air-button air-button--quiet resume-zoom-value"
+      >
+        {Math.round(zoom * 100)}%
+      </button>
+      <button
+        type="button"
+        onClick={onZoomIn}
+        aria-label="Zoom in"
+        title="Zoom in"
+        className="air-icon-button air-button--quiet"
+      >
+        <ZoomIn aria-hidden="true" size={18} strokeWidth={1.6} />
+      </button>
+      {!isCompact && <span className="resume-header-divider" aria-hidden="true" />}
+      <button
+        type="button"
+        onClick={onFit}
+        aria-label="Fit preview"
+        title="Fit preview"
+        className="air-icon-button air-button--quiet"
+      >
+        <Maximize2 aria-hidden="true" size={18} strokeWidth={1.6} />
+      </button>
+    </div>
+  );
+
   return (
     <div className="resume-preview-frame">
       <div
@@ -264,49 +320,7 @@ export function Preview({
           </div>
         </div>
       </div>
-      <div
-        className="cr-preview-tools resume-preview-tools print-hide"
-        role="group"
-        aria-label="Preview zoom"
-      >
-        <button
-          type="button"
-          onClick={onZoomOut}
-          aria-label="Zoom out"
-          title="Zoom out"
-          className="air-icon-button air-button--quiet"
-        >
-          <ZoomOut aria-hidden="true" size={18} strokeWidth={1.6} />
-        </button>
-        <button
-          type="button"
-          onClick={onReset}
-          aria-label={`Reset zoom to 100 percent. Current zoom ${Math.round(zoom * 100)} percent`}
-          title="Reset to 100%"
-          className="air-button air-button--quiet resume-zoom-value"
-        >
-          {Math.round(zoom * 100)}%
-        </button>
-        <button
-          type="button"
-          onClick={onZoomIn}
-          aria-label="Zoom in"
-          title="Zoom in"
-          className="air-icon-button air-button--quiet"
-        >
-          <ZoomIn aria-hidden="true" size={18} strokeWidth={1.6} />
-        </button>
-        <span className="resume-header-divider" aria-hidden="true" />
-        <button
-          type="button"
-          onClick={onFit}
-          aria-label="Fit preview"
-          title="Fit preview"
-          className="air-icon-button air-button--quiet"
-        >
-          <Maximize2 aria-hidden="true" size={18} strokeWidth={1.6} />
-        </button>
-      </div>
+      {isCompact ? compactZoomHost && createPortal(zoomControls, compactZoomHost) : zoomControls}
     </div>
   );
 }

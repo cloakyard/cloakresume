@@ -125,6 +125,7 @@ export function App() {
   const [jobDescription, setJobDescription] = useState<string>(initial.jobDescription);
   const [activeSection, setActiveSection] = useState<SectionId>(initial.activeSection);
   const [mobileView, setMobileView] = useState<MobileView>("panel");
+  const [compactZoomHost, setCompactZoomHost] = useState<HTMLDivElement | null>(null);
   const [mobileSectionOpen, setMobileSectionOpen] = useState(true);
   const handleSectionChange = useCallback((next: SectionId) => {
     setActiveSection(next);
@@ -338,7 +339,7 @@ export function App() {
     setJobDescription("");
     setActiveSection("profile");
     setMobileSectionOpen(true);
-    setMobileView("panel");
+    setMobileView(data === blankResume ? "panel" : "preview");
     setTemplateId(DEFAULT_TEMPLATE_ID);
     setShowLanding(false);
   }, []);
@@ -406,6 +407,7 @@ export function App() {
                 onScanAts={openAts}
               />
               <ToolbarOverflow
+                zoomHostRef={setCompactZoomHost}
                 primary={primary}
                 onPrimaryChange={setPrimary}
                 paperSize={paperSize}
@@ -443,6 +445,7 @@ export function App() {
           }
           preview={
             <Preview
+              compactZoomHost={compactZoomHost}
               resume={resume}
               palette={palette}
               paperSize={paperSize}

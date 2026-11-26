@@ -213,3 +213,12 @@ Removed the two-button view-segment implementation and its skins; Preview/Edit i
 one explicit switch. Actions rows consume the portable menu recipe. Replaced stale
 Options accessibility selectors and motion/PWA guidance. Section headings stay
 outside scrolling controls; no extra state or expansion toggle was added.
+
+### 2026-11-26 — compact section navigation
+
+The expanded preview and searchable section picker share the section registry with
+the desktop rail. Removed the old picker wrapper and its unused scroll rules.
+The compact Actions sheet hosts the preview's existing zoom controls so pinch,
+reset, fit and the percentage all use the same zoom state.
+
+[Mobile navigation evidence](evidence/mobile-sections-2026-11-26/verification.json)

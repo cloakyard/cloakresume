@@ -50,6 +50,37 @@ for (const engine of ["chromium", "webkit"]) {
         await p.reload();
         await p.getByRole("button", { name: /^Resume editing/ }).click();
         assert.equal(await name.inputValue(), "Air local example");
+        await p.getByRole("button", { name: "Show preview" }).click();
+        const dock = p.getByRole("navigation", { name: "Section shortcuts" });
+        await dock.getByRole("button", { name: "Experience" }).click();
+        assert.equal(await p.locator(".resume-section-title").first().innerText(), "Experience");
+        await close.click();
+        const search = p.getByRole("searchbox", { name: "Search sections" });
+        await search.fill("no-such-section");
+        await p.getByText("No matching sections", { exact: true }).waitFor();
+        await search.press("Escape");
+        assert.equal(await search.inputValue(), "");
+        // Candidate confirmation must leave the picker open until composition ends.
+        await search.dispatchEvent("compositionstart");
+        await search.fill("phone");
+        await search.press("Enter");
+        const rows = p.locator(".resume-section-nav--picker button");
+        assert.equal(await rows.count(), 13);
+        await search.dispatchEvent("compositionend", { data: "phone" });
+        await rows.getByText("Contact", { exact: true }).waitFor();
+        assert.equal(await rows.count(), 1);
+        await search.press("Enter");
+        await p.getByRole("region", { name: "Contact editor" }).waitFor();
+        await close.click();
+        await p.getByRole("button", { name: "Close sections" }).click();
+        const all = dock.getByRole("button", { name: "All sections" });
+        await p.waitForFunction(() => document.activeElement?.hasAttribute("data-all-sections"));
+        await all.click();
+        await p
+          .locator(".resume-section-nav--picker")
+          .getByRole("button", { name: "Profile", exact: true })
+          .click();
+        assert.equal(await name.inputValue(), "Air local example");
         results.push({
           engine,
           width,
@@ -57,6 +88,7 @@ for (const engine of ["chromium", "webkit"]) {
           theme,
           closeRetainsDraft: true,
           reloadRetainsDraft: true,
+          shortcutSearchAndFocusReturn: true,
         });
         await p.close();
       }

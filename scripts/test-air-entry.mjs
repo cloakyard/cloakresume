@@ -299,7 +299,9 @@ try {
   await page.reload({ waitUntil: "networkidle0" });
   await click("Load sample");
   await click("Replace draft", '[role="dialog"]');
-  await page.waitForSelector(".cr-editor-panel");
+  await page.waitForSelector('.resume-root[data-template-ready="true"]');
+  if (await page.evaluate(() => matchMedia("(max-width: 1023px)").matches))
+    await page.waitForSelector("[data-all-sections]");
   assert.notEqual((await saved()).resume.profile.name, "Imported Person");
   assert.ok((await saved()).resume.experience.length);
   journeys.push("confirmed sample enters populated editor");

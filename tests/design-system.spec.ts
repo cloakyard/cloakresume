@@ -242,7 +242,8 @@ describe("CloakResume family contract", () => {
     );
     expect(layout).toContain("mobileSectionOpen ?");
     expect(layout).toContain('mobileSectionOpen ? "Résumé editor" : "Résumé section picker"');
-    expect(layout).toContain('variant="picker"');
+    expect(layout).toContain("<SectionPicker");
+    expect(layout).toContain("<SectionDock");
     expect(layout).not.toMatch(/FloatingSectionPill|sectionDrawerOpen|Jump to section/);
     expect(panel).toContain("Close ${meta.label} editor and choose another section");
     expect(panel).toContain("resume-section-close");
@@ -509,7 +510,8 @@ describe("CloakResume family contract", () => {
 
     expect(indexCss).not.toContain("filter: brightness");
     expect(indexCss).toContain("box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.12)");
-    expect(preview).toContain('className="cr-preview-tools');
+    expect(preview).toContain("cr-preview-tools resume-preview-tools print-hide");
+    expect(preview).toContain("createPortal(zoomControls, compactZoomHost)");
     expect(preview).toContain("<Suspense fallback={<TemplateLoadingPage />}");
     expect(preview).toContain('data-template-ready={readyTemplate === TemplateComponent ? "true"');
     expect(`${indexCss}\n${preview}`).not.toContain("surface-glass");

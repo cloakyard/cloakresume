@@ -66,7 +66,8 @@
         "delivery-error",
         "retry",
         "dismissal-focus",
-        "static-404"
+        "static-404",
+        "Compact blank and restored drafts open the editor; the sample opens the preview"
       ],
       "viewports": [
         "phone",
@@ -81,7 +82,8 @@
         "docs/air/evidence/writing-hints-2026-10-21.json",
         "docs/air/evidence/resume-review-2026-10-21.json",
         "evidence/pwa-recovery-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "evidence/mobile-sections-2026-11-26/verification.json"
       ],
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -461,7 +463,9 @@
         "section navigation",
         "preview zoom/scroll",
         "paper/view choice",
-        "compact picker/expanded preview"
+        "compact picker/expanded preview",
+        "Compact shortcut dock, picker and section focus handoffs",
+        "Shortened visual viewport with a focused writing field"
       ],
       "viewports": [
         "desktop/laptop/tablet/phone",
@@ -475,7 +479,8 @@
         "docs/air/evidence/editor-shell-2026-10-19.json",
         "docs/air/evidence/template-library-2026-10-21.json",
         "docs/air/surface-motion-2026-11-03.md",
-        "docs/air/compact-popups-2026-11-03.md"
+        "docs/air/compact-popups-2026-11-03.md",
+        "evidence/mobile-sections-2026-11-26/verification.json"
       ],
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -598,9 +603,15 @@
       "sourceReviewed": true,
       "airImplemented": false,
       "validated": false,
-      "states": [],
+      "states": [
+        "Compact fit to the available paper width",
+        "Zoom, reset and fit from compact Actions"
+      ],
       "viewports": [],
-      "evidence": ["evidence/privacy-dialogs-2026-10-21.json"],
+      "evidence": [
+        "evidence/privacy-dialogs-2026-10-21.json",
+        "evidence/mobile-sections-2026-11-26/verification.json"
+      ],
       "notes": "Entry and shell use Air. Header triggers, paper segments and preview surround/dock are migrated; template loading, export busy-label stability and widget/sheet/section/PWA interiors remain open. Three nested formatting action rows wrap to preserve 320px containment. Do not infer whole-source migration. 2026-10-21 privacy/dialog follow-up: Loading status uses Air sans on a light paper plane. All 17 template families and A4/Letter output are unchanged; 34 paper captures and four actual PDFs match."
     },
     {
@@ -761,7 +772,9 @@
         "section navigation",
         "preview zoom/scroll",
         "paper/view choice",
-        "compact picker/expanded preview"
+        "compact picker/expanded preview",
+        "Profile, Experience and Skills shortcuts",
+        "Grouped section picker; matches by name or description; empty results, clear, composition and keyboard selection"
       ],
       "viewports": [
         "1440x900 light/dark fine",
@@ -781,7 +794,8 @@
         "docs/air/editor-mobile-audit.json",
         "docs/air/editor-layout-audit.json",
         "docs/air/evidence/editor-shell-2026-10-19.json",
-        "docs/air/refinement-2026-11-09.md"
+        "docs/air/refinement-2026-11-09.md",
+        "evidence/mobile-sections-2026-11-26/verification.json"
       ],
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. 2026-11-09: sentence-case copy and fresh section/library software verification; physical acceptance remains separate."
     },
@@ -954,7 +968,8 @@
         "immediate dialog handoffs",
         "resize and focus return",
         "keyboard wrap/scroll",
-        "swipe/cancel"
+        "swipe/cancel",
+        "Compact preview zoom and fit inside Actions"
       ],
       "viewports": [
         "16 required sizes and breakpoint neighbors",
@@ -966,7 +981,8 @@
       ],
       "evidence": [
         "docs/air/evidence/options-export-2026-10-21.json",
-        "docs/air/surface-motion-2026-11-03.md"
+        "docs/air/surface-motion-2026-11-03.md",
+        "evidence/mobile-sections-2026-11-26/verification.json"
       ],
       "notes": "Air Options/export implemented and software-validated. Physical touch/software keyboard, OS IME and spoken assistive gates remain open; validated remains false. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },
@@ -1704,7 +1720,9 @@
         "delivery-error",
         "retry",
         "dismissal-focus",
-        "static-404"
+        "static-404",
+        "Compact section dock, pinned search and independently scrolling results",
+        "Short picker and writing area above the software keyboard"
       ],
       "viewports": [
         "desktop/laptop/tablet/phone",
@@ -1731,7 +1749,8 @@
         "evidence/storyline-family-2026-10-26/chrome.json.gz",
         "evidence/consistency-2026-10-26/checks.json.gz",
         "docs/air/surface-motion-2026-11-03.md",
-        "docs/air/component-consistency-2026-11-03.md"
+        "docs/air/component-consistency-2026-11-03.md",
+        "evidence/mobile-sections-2026-11-26/verification.json"
       ],
       "notes": "Shell composition implemented; child editor/widget sources are tracked independently. Physical touch, OS keyboard/IME and spoken assistive gates remain open. Logo and date portals share viewport placement; all 256 date layouts pass after extraction. Logo/photo styles use Air; the unused cr-control skin is removed. Forced-colour selection uses a visible border. Primary-colour body/portal adopts Air with shared viewport placement and compact focus/swipe handling. Legacy lightness styles and unused colour event bridge removed. Other interiors remain separately tracked. Review frame/loading, direct and compact Scan focus handoffs use Air; obsolete wide-dialog aliases removed. Whole-source acceptance remains subject to the remaining overflow/export/PWA slices. PWA/static recovery software-validated in 2026-10-21 piece. Root 404.html and its enhancement are explicitly inventoried alongside source surfaces. Physical/assistive acceptance remains open. 2026-10-21 privacy/dialog follow-up: Update panel uses shared Air surface, line, radius and elevation; document-loading status uses UI sans. Options, review and template library rechecked under inherited font cleanup. 2026-10-26: Air 1.2.0 public-shell/Storyline software audit passes; see current validation. Physical/assistive gates stay separate. Air 1.2.3 compares footer heights/content directly across products and uses the pinned PWA notice; current software checks pass. Separate product/device gates remain open. Air 1.5.0 surface-motion software audit recorded; physical/assistive acceptance remains separate."
     },

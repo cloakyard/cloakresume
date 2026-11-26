@@ -199,14 +199,99 @@
 .resume-section-body {
   padding: 0 20px max(24px, env(safe-area-inset-bottom));
 }
-.resume-picker-panel {
+/* Compact preview shortcuts and the section sheet share CloakPDF's bottom edge. */
+.resume-section-dock {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)) 1px minmax(0, 1fr);
+  align-items: stretch;
+  flex: none;
+  min-height: 64px;
+  padding: 3px max(6px, env(safe-area-inset-right)) max(3px, env(safe-area-inset-bottom))
+    max(6px, env(safe-area-inset-left));
+  background: var(--air-surface);
+}
+.resume-section-dock .air-button {
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  padding: 4px 2px;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  font: 500 var(--air-text-meta)/1.25 var(--air-font);
+}
+.resume-section-dock .resume-header-divider {
+  align-self: center;
+}
+.resume-section-picker {
+  container: section-picker / size;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+.resume-picker-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+  padding: 4px 16px 8px;
+  border-bottom: 1px solid var(--air-line);
+}
+.resume-picker-heading h2 {
+  flex: 1;
+}
+.resume-picker-heading search {
+  flex: 1 0 100%;
+  min-width: 0;
+}
+.resume-picker-heading .air-field-group > svg {
+  flex: none;
+  margin-inline-start: 12px;
+  color: var(--air-ink-secondary);
+}
+.resume-picker-heading input {
+  font-size: max(16px, var(--air-text-body));
+}
+.resume-section-nav--picker {
+  flex: 1;
+  gap: 0;
   overflow: auto;
+  overscroll-behavior: contain;
+  padding: 4px 16px max(16px, env(safe-area-inset-bottom));
 }
-.resume-picker-panel > .resume-section-heading {
-  display: block;
+.resume-picker-group {
+  margin: 12px 0 4px;
+  color: var(--air-ink-secondary);
+  font: 500 var(--air-text-meta)/1.4 var(--air-font);
 }
-.resume-picker-scroll {
-  padding: 0 12px max(16px, env(safe-area-inset-bottom));
+.resume-section-nav--picker .resume-section-link {
+  width: 100%;
+  min-height: 48px;
+  padding: 6px 8px;
+  color: var(--air-ink);
+}
+.resume-section-nav--picker > div + div {
+  border-top: 1px solid var(--air-line);
+}
+@container section-picker (max-height: 235px) {
+  .resume-picker-heading h2 {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  .resume-picker-heading search {
+    flex: 1;
+  }
+}
+.resume-options-zoom > span {
+  flex-basis: 100%;
+}
+.resume-options-zoom {
+  justify-content: space-between;
+  padding: 4px 12px;
+  font-size: var(--air-text-body);
 }
 .resume-paper-size {
   margin: 0;
@@ -1515,6 +1600,13 @@ button.resume-review-finding:focus-visible {
   flex: 1;
   height: auto;
   min-height: 0;
+}
+@media screen {
+  .resume-app--editing > .resume-editor--compact {
+    position: fixed;
+    inset: var(--resume-visible-top, 0px) 0 auto;
+    height: var(--resume-visible-height, 100dvh);
+  }
 }
 @media print {
   .resume-app--editing {

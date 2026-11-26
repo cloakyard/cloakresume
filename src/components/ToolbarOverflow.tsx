@@ -26,6 +26,7 @@ import { ColorPickerPopover } from "./ColorPickerPopover.tsx";
 import { PaperSizeToggle } from "./PaperSizeToggle.tsx";
 
 interface ToolbarOverflowProps {
+  zoomHostRef: (node: HTMLDivElement | null) => void;
   primary: string;
   onPrimaryChange: (hex: string) => void;
   paperSize: PaperSize;
@@ -40,6 +41,7 @@ interface ToolbarOverflowProps {
 }
 
 export function ToolbarOverflow({
+  zoomHostRef,
   primary,
   onPrimaryChange,
   paperSize,
@@ -161,6 +163,7 @@ export function ToolbarOverflow({
               })
             }
           />
+          {isMobile && <div ref={zoomHostRef} />}
           <div className="resume-options-paper">
             <span>
               <FileText aria-hidden="true" />

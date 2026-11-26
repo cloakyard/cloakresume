@@ -1,0 +1,153 @@
+{
+  "date": "2026-11-26",
+  "reference": {
+    "product": "CloakPDF",
+    "revision": "cde2a36",
+    "viewport": [390, 844],
+    "interactions": [
+      "Open a PDF",
+      "Open All tools",
+      "Inspect shortcut dock, searchable picker and Actions"
+    ]
+  },
+  "captures": {
+    "expandedPreview": "preview.png",
+    "sectionPicker": "sections.png",
+    "safariKeyboard": "ios-search.png"
+  },
+  "softwareChecks": {
+    "editorShell": {
+      "command": "node scripts/test-air-editor-shell.mjs",
+      "browser": "Chrome/158.0.8127.37",
+      "layouts": 344,
+      "sectionZoomAndPaperJourneys": 10,
+      "viewportSizes": [
+        [320, 568],
+        [360, 800],
+        [375, 667],
+        [375, 812],
+        [390, 844],
+        [390, 900],
+        [430, 932],
+        [639, 800],
+        [640, 800],
+        [667, 375],
+        [768, 1024],
+        [820, 900],
+        [820, 1180],
+        [844, 390],
+        [863, 900],
+        [864, 900],
+        [1023, 768],
+        [1024, 768],
+        [1024, 900],
+        [1280, 720],
+        [1280, 800],
+        [1366, 768],
+        [1440, 900],
+        [1920, 1080]
+      ],
+      "rootFontSizesPx": [16, 32],
+      "themes": ["light", "dark"],
+      "failures": 0
+    },
+    "sections": {
+      "command": "node scripts/test-air-sections.mjs",
+      "layouts": 1666,
+      "contrastPairs": 16,
+      "failures": 0
+    },
+    "actions": {
+      "command": "node scripts/test-air-options.mjs",
+      "layouts": 192,
+      "failures": 0
+    },
+    "entry": {
+      "command": "node scripts/test-air-entry.mjs",
+      "layouts": 336,
+      "journeys": 14
+    },
+    "sectionNavigation": {
+      "command": "node scripts/test-air-close-actions.mjs",
+      "engines": ["Chromium", "WebKit"],
+      "reducedMotionJourneys": 16,
+      "normalMotionJourneys": 16,
+      "nativeFirefox": [
+        {
+          "engine": "firefox/161.0",
+          "width": 390,
+          "height": 844,
+          "theme": "light"
+        },
+        {
+          "engine": "firefox/161.0",
+          "width": 844,
+          "height": 390,
+          "theme": "light"
+        },
+        {
+          "engine": "firefox/161.0",
+          "width": 768,
+          "height": 1024,
+          "theme": "light"
+        },
+        {
+          "engine": "firefox/161.0",
+          "width": 390,
+          "height": 844,
+          "theme": "dark"
+        },
+        {
+          "engine": "firefox/161.0",
+          "width": 844,
+          "height": 390,
+          "theme": "dark"
+        },
+        {
+          "engine": "firefox/161.0",
+          "width": 768,
+          "height": 1024,
+          "theme": "dark"
+        }
+      ]
+    },
+    "iOS": {
+      "device": "iPhone 17 simulator",
+      "runtime": "iOS 26.2",
+      "browser": "Safari",
+      "successfulRuns": 2,
+      "journey": [
+        "Edit Full name with the software keyboard open",
+        "Close Profile and search for phone",
+        "Tap Contact above the keyboard",
+        "Return through the Profile shortcut and verify the name"
+      ],
+      "scope": "Simulator input. Physical hardware and spoken assistive technology remain separate."
+    },
+    "export": {
+      "entry": "Compact Export to PDF",
+      "fixture": "Built-in sample",
+      "pages": 5,
+      "paper": "A4",
+      "pageSizePoints": [595.28, 841.89],
+      "inspection": "Opened and rendered the downloaded PDF."
+    },
+    "productionSuite": {
+      "command": "CLOAKRESUME_BROWSER_BUILD=production vp test run --no-file-parallelism",
+      "testFiles": 10,
+      "passed": 376,
+      "failed": 0,
+      "skipped": 0,
+      "templateCoverage": "All 17 templates on A4 and Letter"
+    },
+    "projectChecks": [
+      "vp check",
+      "vp run build",
+      "vp run design:inventory",
+      "node scripts/check-air-design.mjs",
+      "vp run design:portability",
+      "vp run test:air-links",
+      "npx --yes knip@6.48.0"
+    ]
+  }
+}

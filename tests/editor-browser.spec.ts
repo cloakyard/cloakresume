@@ -147,16 +147,48 @@ describe.skipIf(!existsSync(chromePath))(
       });
     }
 
+    it("keeps the focused writing field and section controls inside a shortened visual viewport", async () => {
+      await page.setViewport({ width: 390, height: 844, hasTouch: true });
+      await openSection("profile");
+      const bounds = await page.evaluate(() => {
+        const viewport = window.visualViewport!;
+        const field = document.querySelector<HTMLInputElement>(
+          '[aria-label="Full name"], input[name="profile-name"]',
+        )!;
+        field.focus();
+        Object.defineProperties(viewport, {
+          height: { configurable: true, value: 410 },
+          offsetTop: { configurable: true, value: 16 },
+        });
+        viewport.dispatchEvent(new Event("resize"));
+        const shell = document.querySelector(".resume-editor")!.getBoundingClientRect();
+        const close = document.querySelector(".resume-section-close")!.getBoundingClientRect();
+        const input = field.getBoundingClientRect();
+        return {
+          height: shell.height,
+          top: shell.top,
+          fieldVisible: input.top >= close.bottom && input.bottom <= shell.bottom + 1,
+          focused: field === document.activeElement,
+        };
+      });
+      expect(bounds).toEqual({ height: 410, top: 16, fieldVisible: true, focused: true });
+    });
+
     for (const width of [1440, 390]) {
       it(`can tab into the document and scroll its pages at ${width}px`, async () => {
         await page.setViewport({ width, height: 844 });
         await openSection("profile");
         const pages = '[role="group"][aria-label="Résumé pages"][tabindex="0"]';
         await page.waitForSelector(`${pages} [data-template-ready="true"]`);
-        await page.focus('button[aria-label="Zoom out"]');
-        await page.keyboard.down("Shift");
-        await page.keyboard.press("Tab");
-        await page.keyboard.up("Shift");
+        if (width < 1024) {
+          await page.focus('button[aria-label="More actions"]');
+          await page.keyboard.press("Tab");
+        } else {
+          await page.focus('button[aria-label="Zoom out"]');
+          await page.keyboard.down("Shift");
+          await page.keyboard.press("Tab");
+          await page.keyboard.up("Shift");
+        }
         expect(await page.$eval(pages, (el) => el.matches(":focus-visible"))).toBe(true);
         await page.keyboard.press("PageDown");
         await page.waitForFunction(
@@ -2385,6 +2417,7 @@ describe.skipIf(!existsSync(chromePath))(
       "preserves the exact primary colour when opening, dismissing and restoring at %ipx",
       async (width) => {
         await openDraft(undefined, { primary: "#123456" }, width, width < 1024);
+        await page.waitForSelector('.resume-root[data-template-ready="true"]');
         const before = await page.$eval(".resume-root", (el) => el.innerHTML);
         await openColour(width);
         expect(await colourHex()).toBe("#123456");
